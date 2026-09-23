@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme {
+  /* Palier dédié à l'en-tête : le lien « Informations sur le parcours »
+     ne tient dans la rangée qu'à partir de cette largeur. */
+  --breakpoint-wide: 87.5rem;
+
+  /* Palette club — valeurs provisoires, à aligner sur la charte des maquettes. */
+  --color-club-950: #0f2a1d;
+  --color-club-800: #1f4531;
+  --color-club-600: #2d6a4f;
+  --color-club-300: #95d5b2;
+
+  --color-sable-50: #f9f6f0;
+  --color-sable-100: #f2ede1;
+  --color-sable-300: #ddd3bd;
+
+  --color-or-400: #c6a96f;
+  --color-or-500: #b8944f;
+  --color-or-600: #967741;
+  --color-gris-500: #73756b;
+  --color-encre: #1a1a18;
+}
+
+@theme inline {
+  /* Bricolage Grotesque pour tout le site ; `font-display` reste un alias
+     distinct pour les titres, au cas où une seconde fonte serait ajoutée. */
+  --font-sans: var(--font-bricolage);
+  --font-display: var(--font-bricolage);
+  /* Butler n'est pas distribuée par Google Fonts : déposer les fichiers dans
+     public/fonts/butler/ et déclarer la fonte via next/font/local pour
+     remplacer la serif de repli. */
+  --font-butler: "Butler", ui-serif, Georgia, "Times New Roman", serif;
+}
+
+body {
+  background-color: var(--color-sable-50);
+  color: var(--color-encre);
+}
+
+::selection {
+  background-color: var(--color-club-300);
+  color: var(--color-club-950);
+}

@@ -1,7 +1,7 @@
 import { cacheLife, cacheTag } from "next/cache";
 
 import { ApiError, apiFetch, apiIsConfigured } from "@/lib/api/client";
-import { creerClientPublic } from "@/lib/supabase/public";
+import { creerClientPublic, supabaseConfigure } from "@/lib/supabase/public";
 import { actualitesMock } from "@/lib/api/mock/actualites";
 import { bandeauMock } from "@/lib/api/mock/bandeau";
 import { formulesMock } from "@/lib/api/mock/formules";
@@ -76,6 +76,13 @@ export async function getCompetitions(): Promise<CompetitionAvecEtat[]> {
   cacheTag(tags.competitions);
   cacheLife("hours");
 
+  if (!supabaseConfigure) {
+    console.error(
+      "Compétitions indisponibles : variables d'environnement Supabase manquantes.",
+    );
+    return [];
+  }
+
   const supabase = creerClientPublic();
   const { data, error } = await supabase
     .from("competitions")
@@ -119,6 +126,8 @@ export async function getCompetition(
   cacheTag(tags.competitions, `competition:${slug}`);
   cacheLife("hours");
 
+  if (!supabaseConfigure) return null;
+
   const supabase = creerClientPublic();
   const { data, error } = await supabase
     .from("competitions")
@@ -147,7 +156,7 @@ export async function getBandeau(): Promise<Bandeau> {
   cacheLife("days");
 
   // Sans Supabase configuré (tests, environnement vierge), on sert le mock.
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return bandeauMock;
+  if (!supabaseConfigure) return bandeauMock;
 
   const supabase = creerClientPublic();
   const { data, error } = await supabase

@@ -3,16 +3,16 @@ import { notFound } from "next/navigation";
 
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { getCompetition, getCompetitions } from "@/lib/api/content";
+import { getCompetition } from "@/lib/api/content";
 import { formatDate } from "@/lib/format";
 import { tonsPastille } from "@/lib/competitions";
 
-/** Les compétitions publiées au build sont prérendues ; les autres à la demande. */
-export async function generateStaticParams() {
-  const competitions = await getCompetitions();
-  return competitions.map((competition) => ({ slug: competition.slug }));
-}
-
+/**
+ * Pas de `generateStaticParams` : avec Cache Components, elle doit renvoyer au
+ * moins un résultat, ce qui ferait échouer le build dès que la liste est vide
+ * (aucune compétition publiée, base injoignable). Les pages sont donc rendues
+ * à la demande, les données restant mises en cache par `getCompetition`.
+ */
 export const instant = false;
 
 export async function generateMetadata({

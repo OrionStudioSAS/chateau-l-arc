@@ -1,6 +1,40 @@
 import type { Route } from "next";
 
 /**
+ * URL publique du site.
+ *
+ * `??` ne rattrape qu'une variable absente, pas une variable définie mais
+ * vide — cas d'une variable créée sans valeur sur Vercel, qui faisait échouer
+ * `new URL()` au build. On valide donc chaque candidat avant de le retenir, et
+ * on se rabat sur le domaine fourni par Vercel quand rien n'est renseigné.
+ */
+const URL_PAR_DEFAUT = "https://www.golfchateaularc.com";
+
+function resoudreUrlSite(): string {
+  const candidats = [
+    process.env.NEXT_PUBLIC_SITE_URL,
+    process.env.VERCEL_PROJECT_PRODUCTION_URL,
+    process.env.VERCEL_URL,
+    URL_PAR_DEFAUT,
+  ];
+
+  for (const candidat of candidats) {
+    const valeur = candidat?.trim();
+    if (!valeur) continue;
+
+    const avecProtocole = /^https?:\/\//.test(valeur) ? valeur : `https://${valeur}`;
+
+    try {
+      return new URL(avecProtocole).origin;
+    } catch {
+      // Valeur inexploitable : on essaie le candidat suivant.
+    }
+  }
+
+  return URL_PAR_DEFAUT;
+}
+
+/**
  * Informations institutionnelles du club.
  * TODO : faire valider chaque valeur par le client (adresse, téléphone, horaires, réseaux).
  */
@@ -13,7 +47,7 @@ export const site = {
     "Parcours 18 trous dessiné par Robert Trent Jones II · Aux portes d'Aix-en-Provence",
   description:
     "Parcours 18 trous, académie, restaurant et événements privés au Golf Château l'Arc, à Fuveau, entre Aix-en-Provence et la Sainte-Victoire.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.golfchateaularc.com",
+  url: resoudreUrlSite(),
   contact: {
     adresse: "Domaine Château l'Arc",
     codePostalVille: "13710 Fuveau",

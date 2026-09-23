@@ -3,16 +3,13 @@ import { notFound } from "next/navigation";
 
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
-import { getActualite, getActualites } from "@/lib/api/content";
+import { getActualite } from "@/lib/api/content";
 import { formatDate } from "@/lib/format";
 
-/** Les articles connus au build sont prérendus ; les autres sont rendus à la demande. */
-export async function generateStaticParams() {
-  const actualites = await getActualites();
-  return actualites.map((article) => ({ slug: article.slug }));
-}
-
-// Autorise le rendu bloquant pour un slug publié après le build.
+/**
+ * Comme pour les compétitions : pas de `generateStaticParams`, qui ferait
+ * échouer le build sur une liste vide. Rendu à la demande, données en cache.
+ */
 export const instant = false;
 
 export async function generateMetadata({

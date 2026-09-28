@@ -42,3 +42,26 @@ body {
   background-color: var(--color-club-300);
   color: var(--color-club-950);
 }
+
+/* Changement de trou dans « Explorez le parcours » : le panneau réapparaît en
+   fondu, sans mouvement si la personne a demandé à réduire les animations. */
+@keyframes apparition-trou {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animation-trou {
+  animation: apparition-trou 350ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animation-trou {
+    animation: none;
+  }
+}

@@ -50,3 +50,14 @@ export function formatMoisCourt(iso: string): string {
 export function formatJour(iso: string): string {
   return jourFormatter.format(new Date(iso));
 }
+
+const dateCourteFormatter = new Intl.DateTimeFormat("fr-FR", {
+  day: "numeric",
+  month: "long",
+  timeZone: "Europe/Paris",
+});
+
+/** « 28 juin », sans l'année : utilisé quand le contexte la rend évidente. */
+export function formatDateCourte(iso: string): string {
+  return dateCourteFormatter.format(new Date(iso));
+}

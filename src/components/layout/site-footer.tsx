@@ -15,7 +15,7 @@ const telSansEspaces = (numero: string) => numero.replace(/[^+\d]/g, "");
 
 export function SiteFooter() {
   return (
-    <footer className="mt-20 bg-club-800 text-sable-50">
+    <footer className="bg-club-800 text-sable-50">
       <div className="mx-auto w-full max-w-[1400px] px-6 py-12">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
           <div>

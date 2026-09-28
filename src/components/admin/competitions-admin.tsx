@@ -5,8 +5,14 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useActionState } from "react";
 
-import { enregistrerCompetition } from "@/app/(admin)/admin/(tableau-de-bord)/competitions/actions";
-import type { EtatCompetitionFormulaire } from "@/lib/admin/formulaire-competition";
+import {
+  enregistrerCompetition,
+  publierResultats,
+} from "@/app/(admin)/admin/(tableau-de-bord)/competitions/actions";
+import type {
+  EtatCompetitionFormulaire,
+  EtatResultats,
+} from "@/lib/admin/formulaire-competition";
 import type { CompetitionAvecEtat } from "@/lib/api/types";
 import { tonsPastille } from "@/lib/competitions";
 import { cn } from "@/lib/cn";
@@ -54,6 +60,7 @@ export function CompetitionsAdmin({
 }) {
   const [enEdition, setEnEdition] = useState<CompetitionAvecEtat | null>(null);
   const [modaleOuverte, setModaleOuverte] = useState(false);
+  const [resultatsPour, setResultatsPour] = useState<CompetitionAvecEtat | null>(null);
 
   const ouvrir = (competition: CompetitionAvecEtat | null) => {
     setEnEdition(competition);
@@ -140,12 +147,23 @@ export function CompetitionsAdmin({
                 Modifier
               </button>
 
-              <span
-                title="Publication des résultats à venir"
-                className="cursor-not-allowed text-sm font-medium text-neutral-300"
-              >
-                Résultats
-              </span>
+              {/* Les résultats ne se déposent qu'une fois la compétition passée. */}
+              {competition.etat.cle === "terminee" ? (
+                <button
+                  type="button"
+                  onClick={() => setResultatsPour(competition)}
+                  className="text-sm font-medium text-neutral-800 underline-offset-4 hover:underline"
+                >
+                  {competition.resultatsPublies ? "Remplacer les résultats" : "Résultats"}
+                </button>
+              ) : (
+                <span
+                  title="Disponible une fois les inscriptions closes"
+                  className="cursor-not-allowed text-sm font-medium text-neutral-300"
+                >
+                  Résultats
+                </span>
+              )}
             </li>
           ))}
         </ul>
@@ -178,6 +196,13 @@ export function CompetitionsAdmin({
         <ModaleCompetition
           competition={enEdition}
           onFermer={() => setModaleOuverte(false)}
+        />
+      ) : null}
+
+      {resultatsPour ? (
+        <ModaleResultats
+          competition={resultatsPour}
+          onFermer={() => setResultatsPour(null)}
         />
       ) : null}
     </>
@@ -483,6 +508,110 @@ function ModaleCompetition({
             <p className="text-xs text-neutral-500">
               Après la compétition : publication des résultats (PDF) à venir.
             </p>
+          </div>
+
+          {etat.statut === "erreur" ? (
+            <p role="alert" className="mt-4 text-sm text-red-700">
+              {etat.message}
+            </p>
+          ) : null}
+        </form>
+      </div>
+    </div>
+  );
+}
+
+function ModaleResultats({
+  competition,
+  onFermer,
+}: {
+  competition: CompetitionAvecEtat;
+  onFermer: () => void;
+}) {
+  const router = useRouter();
+  const [etat, action, enCours] = useActionState<EtatResultats, FormData>(
+    publierResultats,
+    { statut: "vide" },
+  );
+
+  useEffect(() => {
+    if (etat.statut === "succes") {
+      router.refresh();
+      onFermer();
+    }
+  }, [etat, router, onFermer]);
+
+  useEffect(() => {
+    const surTouche = (evenement: KeyboardEvent) => {
+      if (evenement.key === "Escape") onFermer();
+    };
+    document.addEventListener("keydown", surTouche);
+    return () => document.removeEventListener("keydown", surTouche);
+  }, [onFermer]);
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Publier les résultats"
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-neutral-900/40 p-6"
+    >
+      <div className="w-full max-w-lg rounded-2xl bg-white p-8 shadow-xl">
+        <div className="flex items-start justify-between gap-4">
+          <h2 className="text-lg font-bold text-neutral-900">
+            Résultats — {competition.nom}
+          </h2>
+          <button
+            type="button"
+            onClick={onFermer}
+            className="text-sm text-neutral-500 hover:text-neutral-800"
+          >
+            Fermer
+          </button>
+        </div>
+
+        <form action={action} className="mt-6">
+          <input type="hidden" name="id" value={competition.id} />
+          <input type="hidden" name="slug" value={competition.slug} />
+
+          <label className={etiquette} htmlFor="fichier">
+            Classement au format PDF
+          </label>
+          <input
+            id="fichier"
+            name="fichier"
+            type="file"
+            accept="application/pdf"
+            required
+            className="mt-2 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2.5 text-sm file:mr-4 file:rounded-md file:border-0 file:bg-neutral-100 file:px-3 file:py-1.5 file:text-sm"
+          />
+          <p className="mt-2 text-xs text-neutral-500">
+            10 Mo maximum. Le document sera téléchargeable depuis la page
+            compétitions.
+          </p>
+
+          {competition.resultatsPublies && competition.resultatsUrl ? (
+            <p className="mt-4 text-xs text-neutral-500">
+              Fichier actuel :{" "}
+              <a
+                href={competition.resultatsUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="underline underline-offset-4"
+              >
+                consulter
+              </a>
+            </p>
+          ) : null}
+
+          <div className="mt-6 flex flex-wrap items-center gap-4">
+            <button
+              type="submit"
+              disabled={enCours}
+              className="rounded-lg bg-club-950 px-5 py-3 text-sm font-semibold text-sable-50 transition-colors hover:bg-club-800 disabled:opacity-60"
+            >
+              {enCours ? "Envoi…" : "Publier les résultats"}
+            </button>
           </div>
 
           {etat.statut === "erreur" ? (

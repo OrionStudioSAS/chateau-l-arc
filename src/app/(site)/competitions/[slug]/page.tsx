@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ButtonLink } from "@/components/ui/button";
-import { Container } from "@/components/ui/container";
+import { ContainerEtroit } from "@/components/ui/container";
 import { getCompetition } from "@/lib/api/content";
 import { formatDate } from "@/lib/format";
 import { tonsPastille } from "@/lib/competitions";
@@ -55,7 +55,7 @@ export default async function Page({ params }: PageProps<"/competitions/[slug]">
 
   return (
     <article className="py-20">
-      <Container className="max-w-3xl">
+      <ContainerEtroit>
         <p className="text-xs uppercase tracking-[0.15em] text-club-600">
           {formatDate(competition.dateDebut)}
           {competition.dateFin ? ` → ${formatDate(competition.dateFin)}` : ""}
@@ -104,7 +104,7 @@ export default async function Page({ params }: PageProps<"/competitions/[slug]">
             Retour au calendrier
           </ButtonLink>
         </div>
-      </Container>
+      </ContainerEtroit>
     </article>
   );
 }

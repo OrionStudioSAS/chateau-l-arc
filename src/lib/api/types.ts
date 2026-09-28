@@ -23,6 +23,8 @@ export type Article = {
 
 export type StatutCompetition = "brouillon" | "publie";
 
+export type CategorieCompetition = "club" | "grand-prix" | "sponsorisee" | "loisir";
+
 /** Compétition du club, telle que saisie dans le back-office. */
 export type Competition = {
   id: string;
@@ -46,14 +48,19 @@ export type Competition = {
   inclus?: string;
   description?: string;
   afficheUrl?: string;
+  categorie: CategorieCompetition;
   statut: StatutCompetition;
   resultatsUrl?: string;
   resultatsPublies: boolean;
 };
 
 /** État dérivé des dates, calculé côté serveur pour rester déterministe. */
+/**
+ * État d'inscription, déduit de la fenêtre d'inscription :
+ * avant l'ouverture, pendant, puis après la clôture.
+ */
 export type EtatCompetition = {
-  cle: "ouverte" | "a-venir" | "close" | "resultats-attente" | "resultats-publies";
+  cle: "a-venir" | "ouverte" | "terminee";
   libelle: string;
   ton: "vert" | "ambre" | "neutre";
   action: string;

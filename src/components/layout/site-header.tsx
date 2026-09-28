@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { Logo } from "@/components/layout/logo";
+import { BoutonClair } from "@/components/ui/bouton-clair";
 import { BoutonOr } from "@/components/ui/bouton-or";
 import { headerActions, headerNav, routesHeroSombre } from "@/config/site";
 import { cn } from "@/lib/cn";
@@ -84,12 +85,12 @@ export function SiteHeader() {
           >
             {headerActions.info.label}
           </Link>
-          <Link
+          <BoutonClair
             href={headerActions.membre.href}
-            className="hidden whitespace-nowrap rounded-sm bg-sable-100 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-club-950 transition-colors hover:bg-white lg:inline-block xl:px-5"
+            className="hidden lg:inline-flex"
           >
             {headerActions.membre.label}
-          </Link>
+          </BoutonClair>
           <BoutonOr
             href={headerActions.reservation.href}
             className="hidden lg:inline-flex"
@@ -141,13 +142,12 @@ export function SiteHeader() {
               </li>
             </ul>
             <div className="mt-5 flex flex-col gap-3">
-              <Link
+              <BoutonClair
                 href={headerActions.membre.href}
-                onClick={() => setMenuOuvert(false)}
-                className="rounded-sm bg-sable-100 px-5 py-3 text-center text-xs font-semibold uppercase tracking-[0.14em] text-club-950"
+                className="justify-center"
               >
                 {headerActions.membre.label}
-              </Link>
+              </BoutonClair>
               <BoutonOr
                 href={headerActions.reservation.href}
                 className="justify-center"

@@ -7,7 +7,7 @@ import { creerClientServeur } from "@/lib/supabase/server";
 export const COMPETITIONS_PAR_PAGE = 6;
 
 const COLONNES =
-  "id, slug, nom, date_debut, date_fin, formule, depart, trous, index_maximum, categories, sponsor, inscription_ouverture, inscription_cloture, places, inscrits, mode_inscription, droit_jeu_membres, droit_jeu_visiteurs, inclus, description, affiche_url, statut, resultats_url, resultats_publies";
+  "id, slug, nom, date_debut, date_fin, formule, depart, trous, index_maximum, categories, sponsor, inscription_ouverture, inscription_cloture, places, inscrits, mode_inscription, droit_jeu_membres, droit_jeu_visiteurs, inclus, description, affiche_url, categorie, statut, resultats_url, resultats_publies";
 
 /**
  * Liste du back-office : brouillons compris, de la plus récente à la plus

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { Container } from "@/components/ui/container";
+import { ContainerEtroit } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { getActualite } from "@/lib/api/content";
 import { formatDate } from "@/lib/format";
@@ -41,7 +41,7 @@ export default async function Page({ params }: PageProps<"/actualites/[slug]">) 
 
   return (
     <article className="py-16">
-      <Container className="max-w-3xl">
+      <ContainerEtroit>
         <p className="text-xs uppercase tracking-[0.15em] text-club-600">
           {formatDate(article.publieLe)}
           {article.categorie ? ` · ${article.categorie}` : ""}
@@ -59,7 +59,7 @@ export default async function Page({ params }: PageProps<"/actualites/[slug]">) 
             Retour aux actualités
           </ButtonLink>
         </div>
-      </Container>
+      </ContainerEtroit>
     </article>
   );
 }

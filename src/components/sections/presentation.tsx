@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { Container } from "@/components/ui/container";
+import { Container, ContainerEtroit } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 
 /**
@@ -55,7 +55,7 @@ export function Presentation() {
           ))}
         </div>
 
-        <Container className="relative max-w-xl text-center">
+        <ContainerEtroit className="relative max-w-xl text-center">
           <Surtitre className="text-encre/70">
             Le plus beau golf entre Aix et Marseille
           </Surtitre>
@@ -72,10 +72,10 @@ export function Presentation() {
             d&apos;exception puisqu&apos;il donne une vue fantastique sur la montagne
             Sainte-Victoire.
           </p>
-        </Container>
+        </ContainerEtroit>
       </div>
 
-      <div className="mx-auto mt-20 w-full max-w-6xl px-5 sm:px-8">
+      <Container className="mt-20">
         <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-club-950">
           {VIDEO_YOUTUBE_ID ? (
             <iframe
@@ -96,7 +96,7 @@ export function Presentation() {
             />
           )}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

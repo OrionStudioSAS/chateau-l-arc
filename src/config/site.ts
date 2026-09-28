@@ -110,6 +110,20 @@ export const servicesContact = [
   { nom: "Pro-shop", horaires: "Lundi - Dimanche | 12h-1h", telephone: "+33 1 34 76 65 57" },
 ];
 
+/**
+ * Partenaires du club.
+ * TODO : `logo` pointe vers un visuel d'attente commun, à remplacer par les
+ * fichiers fournis ; `url` reste vide tant que les liens ne sont pas connus.
+ */
+export const partenaires: { nom: string; logo: string; url?: string }[] = [
+  { nom: "Golf d'Aix-en-Provence", logo: "/images/partenaire-logo.svg" },
+  { nom: "Le Cabre d'Or", logo: "/images/partenaire-logo.svg" },
+  { nom: "Le Club Golf", logo: "/images/partenaire-logo.svg" },
+  { nom: "Les Masques", logo: "/images/partenaire-logo.svg" },
+  { nom: "Les Alchimistes", logo: "/images/partenaire-logo.svg" },
+  { nom: "Golf des Marques", logo: "/images/partenaire-logo.svg" },
+];
+
 /** Toutes les pages publiques, pour le plan du site. */
 export const routesPubliques: NavItem[] = [
   ...headerNav,
@@ -117,6 +131,8 @@ export const routesPubliques: NavItem[] = [
   { label: "Actualités", href: "/actualites" },
   { label: "Devenir membre", href: "/devenir-membre" },
   { label: "Réserver un départ", href: "/reserver" },
+  { label: "La table du golf", href: "/restaurant" },
+  { label: "Pro-shop", href: "/proshop" },
   { label: "Informations sur le parcours", href: "/informations-parcours" },
   ...liensInstitutionnels,
   ...liensLegaux,
@@ -126,4 +142,11 @@ export const routesPubliques: NavItem[] = [
  * Pages dont la première section est sombre : l'en-tête y est transparent
  * tant que la page n'a pas défilé. Partout ailleurs il reste blanc.
  */
-export const routesHeroSombre: string[] = ["/"];
+export const routesHeroSombre: string[] = [
+  "/",
+  "/le-parcours",
+  "/histoire",
+  "/competitions",
+  "/tarifs",
+  "/academie",
+];

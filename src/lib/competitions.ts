@@ -27,6 +27,7 @@ export type LigneCompetition = {
   inclus: string | null;
   description: string | null;
   affiche_url: string | null;
+  categorie: "club" | "grand-prix" | "sponsorisee" | "loisir";
   statut: "brouillon" | "publie";
   resultats_url: string | null;
   resultats_publies: boolean;
@@ -57,6 +58,7 @@ export function mapperCompetition(ligne: LigneCompetition): Competition {
     inclus: sansNull(ligne.inclus),
     description: sansNull(ligne.description),
     afficheUrl: sansNull(ligne.affiche_url),
+    categorie: ligne.categorie,
     statut: ligne.statut,
     resultatsUrl: sansNull(ligne.resultats_url),
     resultatsPublies: ligne.resultats_publies,
@@ -64,13 +66,16 @@ export function mapperCompetition(ligne: LigneCompetition): Competition {
 }
 
 const jourMois = new Intl.DateTimeFormat("fr-FR", {
-  day: "2-digit",
-  month: "2-digit",
+  day: "numeric",
+  month: "long",
   timeZone: "Europe/Paris",
 });
 
 /**
- * État d'une compétition déduit de ses dates.
+ * État d'une compétition, déduit de sa fenêtre d'inscription :
+ * avant l'ouverture → « Être prévenu », pendant → « S'inscrire »,
+ * après la clôture → « Terminé ».
+ *
  * `maintenant` est passé explicitement : la fonction reste déterministe et
  * peut donc être appelée dans un scope « use cache ».
  */
@@ -78,25 +83,6 @@ export function etatCompetition(
   competition: Competition,
   maintenant: Date,
 ): EtatCompetition {
-  const finDeJournee = new Date(competition.dateFin ?? competition.dateDebut);
-  finDeJournee.setHours(23, 59, 59, 999);
-
-  if (finDeJournee < maintenant) {
-    return competition.resultatsPublies
-      ? {
-          cle: "resultats-publies",
-          libelle: "Résultats publiés",
-          ton: "neutre",
-          action: "Voir les résultats",
-        }
-      : {
-          cle: "resultats-attente",
-          libelle: "Résultats en attente",
-          ton: "ambre",
-          action: "Voir le détail",
-        };
-  }
-
   if (
     competition.inscriptionOuverture &&
     new Date(competition.inscriptionOuverture) > maintenant
@@ -109,16 +95,18 @@ export function etatCompetition(
     };
   }
 
-  if (
-    competition.inscriptionCloture &&
-    new Date(competition.inscriptionCloture) < maintenant
-  ) {
-    return {
-      cle: "close",
-      libelle: "Inscriptions closes",
-      ton: "neutre",
-      action: "Voir le détail",
-    };
+  const cloture = competition.inscriptionCloture
+    ? new Date(competition.inscriptionCloture)
+    : // Sans clôture renseignée, c'est la compétition elle-même qui fait foi :
+      // elle se termine à la fin de sa dernière journée.
+      (() => {
+        const fin = new Date(competition.dateFin ?? competition.dateDebut);
+        fin.setHours(23, 59, 59, 999);
+        return fin;
+      })();
+
+  if (cloture < maintenant) {
+    return { cle: "terminee", libelle: "Terminé", ton: "neutre", action: "Terminé" };
   }
 
   return {

@@ -1,18 +1,53 @@
 import type { Metadata } from "next";
 
-import { PageHero } from "@/components/layout/page-hero";
-import { EnConstruction } from "@/components/sections/en-construction";
+import { Banniere } from "@/components/layout/banniere";
+import { ChiffresCles } from "@/components/sections/chiffres-cles";
+import { ExplorerParcours } from "@/components/sections/explorer-parcours";
+import { ParcoursDescription } from "@/components/sections/parcours-description";
+import { ReperesDepart } from "@/components/sections/reperes-depart";
+import { ZoneEntrainement } from "@/components/sections/zone-entrainement";
+import { BoutonClair } from "@/components/ui/bouton-clair";
+import { BoutonOr } from "@/components/ui/bouton-or";
 
 export const metadata: Metadata = {
   title: "Le parcours",
-  description: "Trou par trou, les distances, les pars et les points de repère du parcours.",
+  description:
+    "18 trous entre pins et garrigue, face à la montagne Sainte-Victoire : le parcours du Golf Château l'Arc, dessiné par Robert Trent Jones II.",
 };
 
 export default function Page() {
   return (
     <>
-      <PageHero surtitre="18 trous" titre="Le parcours" chapo="Trou par trou, les distances, les pars et les points de repère du parcours." />
-      <EnConstruction />
+      <Banniere
+        image="/images/parcours.png"
+        accroche="18 trous entre pins et garrigue, face à la montagne Sainte-Victoire."
+        titre="Parcours"
+        // Titre court : la taille est recalibrée pour occuper la largeur.
+        tailleTitre="text-[16.25cqw]"
+        actions={
+          <>
+            <BoutonOr href="/reserver">Réserver ce parcours</BoutonOr>
+            <BoutonClair href="/le-parcours/scorecard">Voir la scorecard</BoutonClair>
+          </>
+        }
+      />
+
+      <ChiffresCles
+        chiffres={[
+          { valeur: "18", ligne1: "Trous" },
+          { valeur: "5817", ligne1: "Mètres" },
+          { valeur: "70", ligne1: "Par" },
+          { valeur: "128", ligne1: "Slope" },
+        ]}
+      />
+
+      <ParcoursDescription />
+
+      <ReperesDepart />
+
+      <ExplorerParcours />
+
+      <ZoneEntrainement />
     </>
   );
 }

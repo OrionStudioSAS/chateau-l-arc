@@ -5,7 +5,9 @@ import { updateTag } from "next/cache";
 import { tags } from "@/lib/api/content";
 import {
   slugifier,
+  TAILLE_MAX_RESULTATS,
   type EtatCompetitionFormulaire,
+  type EtatResultats,
 } from "@/lib/admin/formulaire-competition";
 import { creerClientServeur } from "@/lib/supabase/server";
 
@@ -136,4 +138,70 @@ export async function enregistrerCompetition(
         ? "Compétition publiée sur le site."
         : "Brouillon enregistré.",
   };
+}
+
+/**
+ * Dépose le PDF des résultats d'une compétition terminée, puis le publie sur
+ * le site. Le fichier va dans le bucket « resultats », en lecture publique ;
+ * l'écriture y est réservée aux administrateurs par les politiques RLS.
+ */
+export async function publierResultats(
+  _etat: EtatResultats,
+  formData: FormData,
+): Promise<EtatResultats> {
+  const id = String(formData.get("id") ?? "");
+  const slug = String(formData.get("slug") ?? "");
+  const fichier = formData.get("fichier");
+
+  if (!id || !(fichier instanceof File) || fichier.size === 0) {
+    return { statut: "erreur", message: "Choisissez un fichier PDF." };
+  }
+
+  if (fichier.type !== "application/pdf") {
+    return { statut: "erreur", message: "Le fichier doit être un PDF." };
+  }
+
+  if (fichier.size > TAILLE_MAX_RESULTATS) {
+    return { statut: "erreur", message: "Le fichier dépasse 10 Mo." };
+  }
+
+  const supabase = await creerClientServeur();
+  const { data: session } = await supabase.auth.getClaims();
+
+  if (!session?.claims?.sub) {
+    return { statut: "erreur", message: "Session expirée. Reconnectez-vous." };
+  }
+
+  // Horodatage dans le nom : un nouveau dépôt ne heurte pas le cache du CDN
+  // sur l'ancienne URL.
+  const chemin = `${slug || id}-${Date.now()}.pdf`;
+
+  const { error: erreurDepot } = await supabase.storage
+    .from("resultats")
+    .upload(chemin, fichier, { contentType: "application/pdf", upsert: false });
+
+  if (erreurDepot) {
+    console.error("Dépôt du PDF de résultats impossible", erreurDepot);
+    return { statut: "erreur", message: "L'envoi du fichier a échoué." };
+  }
+
+  const { data: url } = supabase.storage.from("resultats").getPublicUrl(chemin);
+
+  const { error } = await supabase
+    .from("competitions")
+    .update({
+      resultats_url: url.publicUrl,
+      resultats_publies: true,
+      maj_le: new Date().toISOString(),
+    })
+    .eq("id", id);
+
+  if (error) {
+    console.error("Publication des résultats impossible", error);
+    return { statut: "erreur", message: "L'enregistrement a échoué." };
+  }
+
+  updateTag(tags.competitions);
+
+  return { statut: "succes", message: "Résultats publiés sur le site." };
 }

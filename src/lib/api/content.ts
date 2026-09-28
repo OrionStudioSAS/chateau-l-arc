@@ -64,7 +64,7 @@ export async function getActualite(slug: string): Promise<Article | null> {
 }
 
 const COLONNES_COMPETITION =
-  "id, slug, nom, date_debut, date_fin, formule, depart, trous, index_maximum, categories, sponsor, inscription_ouverture, inscription_cloture, places, inscrits, mode_inscription, droit_jeu_membres, droit_jeu_visiteurs, inclus, description, affiche_url, statut, resultats_url, resultats_publies";
+  "id, slug, nom, date_debut, date_fin, formule, depart, trous, index_maximum, categories, sponsor, inscription_ouverture, inscription_cloture, places, inscrits, mode_inscription, droit_jeu_membres, droit_jeu_visiteurs, inclus, description, affiche_url, categorie, statut, resultats_url, resultats_publies";
 
 /**
  * Compétitions publiées, de la plus proche à la plus lointaine.
@@ -111,9 +111,7 @@ export async function getProchainesCompetitions(
 
   const competitions = await getCompetitions();
   const aVenir = competitions.filter(
-    (competition) =>
-      competition.etat.cle !== "resultats-attente" &&
-      competition.etat.cle !== "resultats-publies",
+    (competition) => competition.etat.cle !== "terminee",
   );
 
   return (aVenir.length > 0 ? aVenir : competitions).slice(0, limite);
@@ -189,4 +187,20 @@ export async function getFormulesAccueil(): Promise<FormuleAccueil[]> {
 
   if (!apiIsConfigured) return formulesMock;
   return apiFetch<FormuleAccueil[]>("/formules-accueil");
+}
+
+/** Compétitions dont les résultats sont en ligne, la plus récente d'abord. */
+export async function getCompetitionsAvecResultats(
+  limite = 3,
+): Promise<CompetitionAvecEtat[]> {
+  "use cache";
+  cacheTag(tags.competitions);
+  cacheLife("hours");
+
+  const competitions = await getCompetitions();
+
+  return competitions
+    .filter((competition) => competition.resultatsPublies && competition.resultatsUrl)
+    .sort((a, b) => b.dateDebut.localeCompare(a.dateDebut))
+    .slice(0, limite);
 }

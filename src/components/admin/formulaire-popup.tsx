@@ -223,7 +223,7 @@ export function FormulairePopup({ popup }: { popup: Popup | null }) {
 
       <div className="lg:sticky lg:top-10">
         <p className="text-xs font-semibold text-neutral-700">Aperçu sur le site</p>
-        <div className="mt-2 flex min-h-[420px] items-center justify-center rounded-2xl bg-gradient-to-b from-club-800 to-club-950 p-8">
+        <div className="mt-2 flex min-h-[300px] items-center justify-center rounded-2xl bg-gradient-to-b from-club-800 to-club-950 p-5 sm:min-h-[420px] sm:p-8">
           <CartePopup
             titre={titre}
             texte={texte}

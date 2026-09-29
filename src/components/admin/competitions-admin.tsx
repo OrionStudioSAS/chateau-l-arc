@@ -69,9 +69,9 @@ export function CompetitionsAdmin({
 
   return (
     <>
-      <header className="mb-8 flex flex-wrap items-start justify-between gap-4">
+      <header className="mb-6 flex flex-wrap items-start justify-between gap-4 sm:mb-8">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-neutral-900">
+          <h1 className="text-xl font-bold tracking-tight text-neutral-900 sm:text-2xl">
             Compétitions
           </h1>
           <p className="mt-2 text-sm text-neutral-500">
@@ -89,7 +89,7 @@ export function CompetitionsAdmin({
       </header>
 
       {competitions.length === 0 ? (
-        <p className="rounded-2xl border border-dashed border-neutral-300 bg-white/60 px-8 py-16 text-center text-sm text-neutral-500">
+        <p className="rounded-2xl border border-dashed border-neutral-300 bg-white/60 px-5 py-12 text-center text-sm text-neutral-500 sm:px-8 sm:py-16">
           Aucune compétition pour le moment.
         </p>
       ) : (
@@ -97,7 +97,7 @@ export function CompetitionsAdmin({
           {competitions.map((competition) => (
             <li
               key={competition.id}
-              className="flex flex-wrap items-center gap-5 rounded-2xl border border-neutral-200 bg-white p-5 shadow-[0_1px_2px_rgba(16,24,40,0.04)]"
+              className="flex flex-wrap items-center gap-4 rounded-2xl border border-neutral-200 bg-white p-4 sm:gap-5 sm:p-5 shadow-[0_1px_2px_rgba(16,24,40,0.04)]"
             >
               <p className="flex size-14 shrink-0 flex-col items-center justify-center rounded-lg bg-club-950 leading-none text-sable-50">
                 <span className="font-butler text-lg font-bold">
@@ -110,8 +110,8 @@ export function CompetitionsAdmin({
                 </span>
               </p>
 
-              <div className="min-w-0 flex-1">
-                <p className="flex items-center gap-2 text-base font-semibold text-neutral-900">
+              <div className="min-w-0 flex-1 basis-[calc(100%-4.5rem)] sm:basis-0">
+                <p className="flex flex-wrap items-center gap-2 text-base font-semibold text-neutral-900">
                   {competition.nom}
                   {competition.statut === "brouillon" ? (
                     <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-medium uppercase text-neutral-500">
@@ -119,7 +119,7 @@ export function CompetitionsAdmin({
                     </span>
                   ) : null}
                 </p>
-                <p className="mt-1 truncate text-sm text-neutral-500">
+                <p className="mt-1 text-sm text-neutral-500 sm:truncate">
                   {[
                     competition.formule,
                     competition.depart,
@@ -130,40 +130,43 @@ export function CompetitionsAdmin({
                 </p>
               </div>
 
-              <span
-                className={cn(
-                  "rounded-full px-3 py-1 text-[11px] font-medium",
-                  tonsPastille[competition.etat.ton],
-                )}
-              >
-                {competition.etat.libelle}
-              </span>
+              {/* Mobile : état et actions passent sous le nom, sur une ligne. */}
+              <div className="flex w-full flex-wrap items-center gap-x-5 gap-y-2 border-t border-neutral-100 pt-3 sm:w-auto sm:border-0 sm:pt-0">
+                <span
+                  className={cn(
+                    "rounded-full px-3 py-1 text-[11px] font-medium",
+                    tonsPastille[competition.etat.ton],
+                  )}
+                >
+                  {competition.etat.libelle}
+                </span>
 
-              <button
-                type="button"
-                onClick={() => ouvrir(competition)}
-                className="text-sm font-medium text-neutral-800 underline-offset-4 hover:underline"
-              >
-                Modifier
-              </button>
-
-              {/* Les résultats ne se déposent qu'une fois la compétition passée. */}
-              {competition.etat.cle === "terminee" ? (
                 <button
                   type="button"
-                  onClick={() => setResultatsPour(competition)}
+                  onClick={() => ouvrir(competition)}
                   className="text-sm font-medium text-neutral-800 underline-offset-4 hover:underline"
                 >
-                  {competition.resultatsPublies ? "Remplacer les résultats" : "Résultats"}
+                  Modifier
                 </button>
-              ) : (
-                <span
-                  title="Disponible une fois les inscriptions closes"
-                  className="cursor-not-allowed text-sm font-medium text-neutral-300"
-                >
-                  Résultats
-                </span>
-              )}
+
+                {/* Les résultats ne se déposent qu'une fois la compétition passée. */}
+                {competition.etat.cle === "terminee" ? (
+                  <button
+                    type="button"
+                    onClick={() => setResultatsPour(competition)}
+                    className="text-sm font-medium text-neutral-800 underline-offset-4 hover:underline"
+                  >
+                    {competition.resultatsPublies ? "Remplacer les résultats" : "Résultats"}
+                  </button>
+                ) : (
+                  <span
+                    title="Disponible une fois les inscriptions closes"
+                    className="cursor-not-allowed text-sm font-medium text-neutral-300"
+                  >
+                    Résultats
+                  </span>
+                )}
+              </div>
             </li>
           ))}
         </ul>
@@ -172,7 +175,7 @@ export function CompetitionsAdmin({
       {pages > 1 ? (
         <nav
           aria-label="Pagination des compétitions"
-          className="mt-10 flex items-center justify-center gap-2"
+          className="mt-8 flex flex-wrap items-center justify-center gap-2 sm:mt-10"
         >
           {Array.from({ length: pages }, (_, index) => index + 1).map((numero) => (
             <Link
@@ -242,9 +245,9 @@ function ModaleCompetition({
       role="dialog"
       aria-modal="true"
       aria-label={competition ? "Modifier la compétition" : "Nouvelle compétition"}
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-neutral-900/40 p-6"
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-neutral-900/40 p-3 sm:p-6"
     >
-      <div className="w-full max-w-4xl rounded-2xl bg-white p-8 shadow-xl">
+      <div className="w-full max-w-4xl rounded-2xl bg-white p-5 shadow-xl sm:p-8">
         <div className="flex items-start justify-between gap-4">
           <h2 className="text-lg font-bold text-neutral-900">
             {competition ? "Modifier la compétition" : "Nouvelle compétition"}
@@ -264,8 +267,8 @@ function ModaleCompetition({
           ) : null}
 
           <p className={titreSection}>Le jeu</p>
-          <div className="mt-3 grid gap-4 sm:grid-cols-6">
-            <div className="sm:col-span-2">
+          <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
+            <div className="lg:col-span-2">
               <label className={etiquette} htmlFor="nom">
                 Nom de la compétition
               </label>
@@ -326,7 +329,7 @@ function ModaleCompetition({
                 className={champ}
               />
             </div>
-            <div className="sm:col-span-2">
+            <div className="lg:col-span-2">
               <label className={etiquette} htmlFor="depart">
                 Départ
               </label>
@@ -338,7 +341,7 @@ function ModaleCompetition({
                 className={champ}
               />
             </div>
-            <div className="sm:col-span-2">
+            <div className="lg:col-span-2">
               <label className={etiquette} htmlFor="indexMaximum">
                 Index maximum
               </label>
@@ -376,8 +379,8 @@ function ModaleCompetition({
           </div>
 
           <p className={cn(titreSection, "mt-8")}>Inscriptions</p>
-          <div className="mt-3 grid gap-4 sm:grid-cols-6">
-            <div className="sm:col-span-2">
+          <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
+            <div className="lg:col-span-2">
               <label className={etiquette} htmlFor="inscriptionOuverture">
                 Ouverture
               </label>
@@ -389,7 +392,7 @@ function ModaleCompetition({
                 className={champ}
               />
             </div>
-            <div className="sm:col-span-2">
+            <div className="lg:col-span-2">
               <label className={etiquette} htmlFor="inscriptionCloture">
                 Clôture
               </label>
@@ -426,7 +429,7 @@ function ModaleCompetition({
                 className={champ}
               />
             </div>
-            <div className="sm:col-span-2">
+            <div className="lg:col-span-2">
               <label className={etiquette} htmlFor="droitJeuMembres">
                 Droit de jeu — membres
               </label>
@@ -438,7 +441,7 @@ function ModaleCompetition({
                 className={champ}
               />
             </div>
-            <div className="sm:col-span-2">
+            <div className="lg:col-span-2">
               <label className={etiquette} htmlFor="droitJeuVisiteurs">
                 Droit de jeu — visiteurs
               </label>
@@ -450,7 +453,7 @@ function ModaleCompetition({
                 className={champ}
               />
             </div>
-            <div className="sm:col-span-2">
+            <div className="lg:col-span-2">
               <label className={etiquette} htmlFor="inclus">
                 Inclus
               </label>
@@ -554,9 +557,9 @@ function ModaleResultats({
       role="dialog"
       aria-modal="true"
       aria-label="Publier les résultats"
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-neutral-900/40 p-6"
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-neutral-900/40 p-3 sm:p-6"
     >
-      <div className="w-full max-w-lg rounded-2xl bg-white p-8 shadow-xl">
+      <div className="w-full max-w-lg rounded-2xl bg-white p-5 shadow-xl sm:p-8">
         <div className="flex items-start justify-between gap-4">
           <h2 className="text-lg font-bold text-neutral-900">
             Résultats — {competition.nom}

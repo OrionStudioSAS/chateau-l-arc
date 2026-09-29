@@ -58,20 +58,20 @@ export function FormulaireStatutBandeau({
               return (
                 <li
                   key={installation.cle}
-                  className="flex items-center justify-between gap-4 py-3"
+                  className="flex items-center justify-between gap-3 py-3 sm:gap-4"
                 >
                   <label
                     htmlFor={`statut-${installation.cle}`}
-                    className="flex items-center gap-3 text-[15px] font-medium text-neutral-900"
+                    className="flex min-w-0 items-center gap-2 text-[14px] font-medium text-neutral-900 sm:gap-3 sm:text-[15px]"
                   >
                     <span aria-hidden="true">{icones[installation.cle] ?? "•"}</span>
                     {installation.libelle}
                   </label>
 
-                  <div className="flex items-center gap-3">
+                  <div className="flex shrink-0 items-center gap-2 sm:gap-3">
                     <span
                       className={cn(
-                        "rounded-full px-3 py-1 text-xs font-semibold",
+                        "rounded-full px-2.5 py-1 text-xs font-semibold sm:px-3",
                         actif
                           ? "bg-club-600/15 text-club-800"
                           : "bg-amber-500/15 text-amber-800",

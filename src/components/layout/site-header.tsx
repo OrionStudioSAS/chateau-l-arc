@@ -2,21 +2,54 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
+import { ListeStatut } from "@/components/layout/liste-statut";
 import { Logo } from "@/components/layout/logo";
 import { BoutonClair } from "@/components/ui/bouton-clair";
 import { BoutonOr } from "@/components/ui/bouton-or";
 import { headerActions, headerNav, routesHeroSombre } from "@/config/site";
 import { cn } from "@/lib/cn";
+import type { Installation } from "@/lib/api/types";
 
 const lienNav =
   "whitespace-nowrap text-[12px] font-normal uppercase tracking-[-0.12px] transition-colors";
 
-export function SiteHeader() {
+export function SiteHeader({ statut }: { statut: Installation[] }) {
   const pathname = usePathname();
   const [defile, setDefile] = useState(false);
   const [menuOuvert, setMenuOuvert] = useState(false);
+  const [infosOuvertes, setInfosOuvertes] = useState(false);
+  const zoneInfos = useRef<HTMLDivElement>(null);
+
+  // Le panneau d'informations se referme au clic à l'extérieur et sur Échap.
+  useEffect(() => {
+    if (!infosOuvertes) return;
+
+    const surClic = (evenement: MouseEvent) => {
+      if (!zoneInfos.current?.contains(evenement.target as Node)) {
+        setInfosOuvertes(false);
+      }
+    };
+    const surTouche = (evenement: KeyboardEvent) => {
+      if (evenement.key === "Escape") setInfosOuvertes(false);
+    };
+
+    document.addEventListener("mousedown", surClic);
+    document.addEventListener("keydown", surTouche);
+    return () => {
+      document.removeEventListener("mousedown", surClic);
+      document.removeEventListener("keydown", surTouche);
+    };
+  }, [infosOuvertes]);
+
+  // Changement de page : le panneau ne doit pas rester ouvert. Ajusté pendant
+  // le rendu plutôt que dans un effet, pour éviter un rendu en cascade.
+  const [cheminPrecedent, setCheminPrecedent] = useState(pathname);
+  if (pathname !== cheminPrecedent) {
+    setCheminPrecedent(pathname);
+    setInfosOuvertes(false);
+  }
 
   useEffect(() => {
     const surDefilement = () => setDefile(window.scrollY > 8);
@@ -75,16 +108,53 @@ export function SiteHeader() {
         </Link>
 
         <div className="col-start-3 flex items-center justify-self-end lg:gap-4 xl:gap-5">
-          <Link
-            href={headerActions.info.href}
-            className={cn(
-              lienNav,
-              "mr-4 hidden wide:inline",
-              transparent ? "text-white" : "text-encre",
-            )}
-          >
-            {headerActions.info.label}
-          </Link>
+          {/* Panneau déroulant (motif « disclosure ») : il présente un état,
+              pas des actions, d'où un bouton + région plutôt qu'un role="menu". */}
+          {/* h-20 : la zone occupe toute la hauteur de l'en-tête, pour que le
+              panneau (top-full) parte exactement de son bord inférieur. */}
+          <div ref={zoneInfos} className="relative mr-4 hidden h-20 items-center wide:flex">
+            <button
+              type="button"
+              aria-expanded={infosOuvertes}
+              aria-controls="infos-parcours"
+              onClick={() => setInfosOuvertes((ouvert) => !ouvert)}
+              className={cn(
+                lienNav,
+                "flex items-center gap-2",
+                transparent ? "text-white" : "text-encre",
+              )}
+            >
+              {headerActions.info.label}
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 12 12"
+                className={cn(
+                  "size-3 transition-transform duration-200",
+                  infosOuvertes && "rotate-180",
+                )}
+              >
+                <path
+                  d="M2 4l4 4 4-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+
+            {infosOuvertes ? (
+              <div
+                id="infos-parcours"
+                role="region"
+                aria-label="État des installations"
+                className="absolute left-1/2 top-full w-[420px] -translate-x-1/2 rounded-b-xl bg-white text-encre shadow-[0_18px_40px_rgba(16,24,40,0.18)]"
+              >
+                <ListeStatut installations={statut} />
+              </div>
+            ) : null}
+          </div>
           <BoutonClair
             href={headerActions.membre.href}
             className="hidden lg:inline-flex"

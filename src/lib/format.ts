@@ -61,3 +61,10 @@ const dateCourteFormatter = new Intl.DateTimeFormat("fr-FR", {
 export function formatDateCourte(iso: string): string {
   return dateCourteFormatter.format(new Date(iso));
 }
+
+const jourIsoFormatter = new Intl.DateTimeFormat("fr-CA", { timeZone: "Europe/Paris" });
+
+/** Date du jour à Paris, au format AAAA-MM-JJ, comparable aux dates de la base. */
+export function aujourdhuiAParis(): string {
+  return jourIsoFormatter.format(new Date());
+}

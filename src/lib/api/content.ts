@@ -16,6 +16,8 @@ import type {
   Bandeau,
   CompetitionAvecEtat,
   FormuleAccueil,
+  Installation,
+  Popup,
   Tarif,
 } from "@/lib/api/types";
 
@@ -26,6 +28,8 @@ import type {
  */
 export const tags = {
   bandeau: "bandeau",
+  statut: "statut",
+  popup: "popup",
   actualites: "actualites",
   competitions: "competitions",
   tarifs: "tarifs",
@@ -203,4 +207,79 @@ export async function getCompetitionsAvecResultats(
     .filter((competition) => competition.resultatsPublies && competition.resultatsUrl)
     .sort((a, b) => b.dateDebut.localeCompare(a.dateDebut))
     .slice(0, limite);
+}
+
+/** État des installations, dans l'ordre d'affichage (par groupe puis par ordre). */
+export async function getStatutInstallations(): Promise<Installation[]> {
+  "use cache";
+  cacheTag(tags.statut);
+  cacheLife("days");
+
+  if (!supabaseConfigure) return [];
+
+  const supabase = creerClientPublic();
+  const { data, error } = await supabase
+    .from("statut_installations")
+    .select("cle, libelle, groupe, type, feminin, actif")
+    .order("groupe", { ascending: true })
+    .order("ordre", { ascending: true });
+
+  if (error || !data) {
+    console.error("Lecture du statut des installations impossible", error);
+    return [];
+  }
+
+  return data as Installation[];
+}
+
+/**
+ * Pop-up active, ou null. La période d'affichage n'est pas filtrée ici : le
+ * contrôle se fait dans le navigateur, avec l'horloge du visiteur, pour que la
+ * pop-up disparaisse à minuit pile et non à l'expiration du cache.
+ */
+export async function getPopupActive(): Promise<Popup | null> {
+  "use cache";
+  cacheTag(tags.popup);
+  cacheLife("hours");
+
+  if (!supabaseConfigure) return null;
+
+  const supabase = creerClientPublic();
+  // RLS : le public ne voit la ligne que si elle est active.
+  const { data, error } = await supabase
+    .from("popup")
+    .select("actif, titre, texte, bouton_libelle, bouton_lien, debut, fin, affiche_url, maj_le")
+    .eq("id", "principal")
+    .maybeSingle();
+
+  if (error) console.error("Lecture de la pop-up impossible", error);
+  if (!data || !data.actif) return null;
+
+  return mapperPopup(data);
+}
+
+type LignePopup = {
+  actif: boolean;
+  titre: string;
+  texte: string;
+  bouton_libelle: string | null;
+  bouton_lien: string | null;
+  debut: string | null;
+  fin: string | null;
+  affiche_url: string | null;
+  maj_le: string;
+};
+
+export function mapperPopup(ligne: LignePopup): Popup {
+  return {
+    actif: ligne.actif,
+    titre: ligne.titre,
+    texte: ligne.texte,
+    boutonLibelle: ligne.bouton_libelle ?? undefined,
+    boutonLien: ligne.bouton_lien ?? undefined,
+    debut: ligne.debut ?? undefined,
+    fin: ligne.fin ?? undefined,
+    afficheUrl: ligne.affiche_url ?? undefined,
+    version: ligne.maj_le,
+  };
 }

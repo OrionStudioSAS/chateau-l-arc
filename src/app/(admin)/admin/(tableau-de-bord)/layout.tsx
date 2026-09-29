@@ -62,7 +62,7 @@ export default async function TableauDeBordLayout({
       </aside>
 
       <main className="flex-1 px-10 py-10">
-        <div className="mx-auto max-w-3xl">{children}</div>
+        <div className="max-w-6xl">{children}</div>
       </main>
     </div>
   );

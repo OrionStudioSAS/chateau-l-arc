@@ -108,3 +108,26 @@ export type FormuleAccueil = {
   prix: string;
   detail: string;
 };
+
+/** Une installation du domaine et son état, pour le menu « Informations sur le parcours ». */
+export type Installation = {
+  cle: string;
+  libelle: string;
+  groupe: number;
+  type: "ouverture" | "autorisation";
+  feminin: boolean;
+  actif: boolean;
+};
+
+/** Pop-up marketing (une seule à la fois). `version` change à chaque publication. */
+export type Popup = {
+  actif: boolean;
+  titre: string;
+  texte: string;
+  boutonLibelle?: string;
+  boutonLien?: string;
+  debut?: string; // AAAA-MM-JJ
+  fin?: string; // AAAA-MM-JJ
+  afficheUrl?: string;
+  version: string;
+};

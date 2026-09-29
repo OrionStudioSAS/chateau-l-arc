@@ -60,10 +60,10 @@ export async function seDeconnecter(): Promise<void> {
 }
 
 /**
- * Publie le message du bandeau dans Supabase, puis rafraîchit le cache
- * du site public.
+ * Publie d'un coup l'état des installations et le message du bandeau, puis
+ * rafraîchit le site public (en-tête et bandeau).
  */
-export async function publierBandeau(
+export async function publierStatutEtBandeau(
   _etat: EtatBandeau,
   formData: FormData,
 ): Promise<EtatBandeau> {
@@ -87,24 +87,58 @@ export async function publierBandeau(
     };
   }
 
-  const { error } = await supabase
-    .from("bandeau")
-    .update({
-      message,
-      actif: message !== "",
-      publie_le: new Date().toISOString(),
-      publie_par: identifiant,
-    })
-    .eq("id", "principal");
+  // La liste des installations fait foi : on ne touche qu'aux clés connues.
+  const { data: installations, error: erreurLecture } = await supabase
+    .from("statut_installations")
+    .select("cle");
 
-  if (error) {
+  if (erreurLecture || !installations) {
+    return { statut: "erreur", message: "Lecture du statut impossible." };
+  }
+
+  const cles = installations.map((installation) => installation.cle as string);
+  const actives = cles.filter((cle) => formData.get(`statut-${cle}`) === "on");
+  const inactives = cles.filter((cle) => !actives.includes(cle));
+  const maintenant = new Date().toISOString();
+
+  // Deux requêtes plutôt qu'une par installation.
+  const resultats = await Promise.all([
+    actives.length
+      ? supabase
+          .from("statut_installations")
+          .update({ actif: true, maj_le: maintenant })
+          .in("cle", actives)
+      : null,
+    inactives.length
+      ? supabase
+          .from("statut_installations")
+          .update({ actif: false, maj_le: maintenant })
+          .in("cle", inactives)
+      : null,
+    supabase
+      .from("bandeau")
+      .update({
+        message,
+        actif: message !== "",
+        publie_le: maintenant,
+        publie_par: identifiant,
+      })
+      .eq("id", "principal"),
+  ]);
+
+  if (resultats.some((resultat) => resultat?.error)) {
+    console.error(
+      "Publication du statut ou du bandeau impossible",
+      resultats.map((resultat) => resultat?.error).filter(Boolean),
+    );
     return {
       statut: "erreur",
       message: "La publication a échoué. Réessayez dans un instant.",
     };
   }
 
+  updateTag(tags.statut);
   updateTag(tags.bandeau);
 
-  return { statut: "succes", message: "Bandeau publié sur le site." };
+  return { statut: "succes", message: "Statut et bandeau publiés sur le site." };
 }

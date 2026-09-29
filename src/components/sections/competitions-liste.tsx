@@ -32,17 +32,19 @@ export function CompetitionsListe({
     .filter((competition) => toutAfficher || competition.etat.cle !== "terminee");
 
   return (
-    <section className="bg-sable-100 py-20">
+    <section className="bg-sable-100 py-14 lg:py-20">
       <Container>
-        <ul className="flex flex-wrap justify-center gap-3">
+        {/* Mobile : une rangée qui défile horizontalement plutôt que des filtres
+            répartis sur plusieurs lignes. */}
+        <ul className="sans-barre -mx-5 flex gap-2 overflow-x-auto px-5 sm:mx-0 sm:flex-wrap sm:justify-center sm:gap-3 sm:overflow-visible sm:px-0">
           {filtres.map((item) => (
-            <li key={item.cle}>
+            <li key={item.cle} className="shrink-0">
               <button
                 type="button"
                 onClick={() => setFiltre(item.cle)}
                 aria-pressed={filtre === item.cle}
                 className={cn(
-                  "rounded-full px-6 py-3 text-[15px] font-medium transition-colors",
+                  "whitespace-nowrap rounded-full px-5 py-2.5 text-[14px] font-medium transition-colors sm:px-6 sm:py-3 sm:text-[15px]",
                   filtre === item.cle
                     ? "bg-club-950 text-sable-50"
                     : "border border-club-950/15 bg-white text-club-950 hover:border-club-950/40",
@@ -59,11 +61,11 @@ export function CompetitionsListe({
             Aucune compétition dans cette catégorie pour le moment.
           </p>
         ) : (
-          <ul className="mt-10 space-y-4">
+          <ul className="mt-8 space-y-3 sm:mt-10 sm:space-y-4">
             {visibles.map((competition) => (
               <li
                 key={competition.id}
-                className="flex flex-wrap items-center gap-5 rounded-lg bg-white p-5"
+                className="flex flex-wrap items-center gap-4 rounded-lg bg-white p-4 sm:gap-5 sm:p-5"
               >
                 <p className="flex size-16 shrink-0 flex-col items-center justify-center rounded-lg bg-club-950 leading-none text-sable-50">
                   <span className="text-[11px] font-medium uppercase tracking-[0.08em]">
@@ -74,8 +76,8 @@ export function CompetitionsListe({
                   </span>
                 </p>
 
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-butler text-[22px] font-bold leading-tight text-club-950">
+                <div className="min-w-0 flex-1 basis-[calc(100%-5rem)] sm:basis-0">
+                  <h3 className="font-butler text-[20px] sm:text-[22px] font-bold leading-tight text-club-950">
                     <Link
                       href={`/competitions/${competition.slug}`}
                       className="underline-offset-4 hover:underline"
@@ -84,7 +86,7 @@ export function CompetitionsListe({
                     </Link>
                   </h3>
 
-                  <p className="mt-1 text-[15px] text-gris-500">
+                  <p className="mt-1 text-[14px] text-gris-500 sm:text-[15px]">
                     {[
                       competition.formule,
                       competition.depart,
@@ -106,14 +108,14 @@ export function CompetitionsListe({
 
                 {/* Terminé : plus rien à faire, le bouton devient un simple état. */}
                 {competition.etat.cle === "terminee" ? (
-                  <span className="cursor-not-allowed rounded-lg border border-club-950/15 px-6 py-3 text-[16px] font-medium text-encre/40">
+                  <span className="w-full cursor-not-allowed rounded-lg border border-club-950/15 px-6 py-3 text-center text-[16px] font-medium text-encre/40 sm:w-auto">
                     Terminé
                   </span>
                 ) : (
                   <Link
                     href={`/competitions/${competition.slug}`}
                     className={cn(
-                      "rounded-lg px-6 py-3 text-[16px] font-medium transition-colors",
+                      "w-full rounded-lg px-6 py-3 text-center text-[16px] font-medium transition-colors sm:w-auto",
                       competition.etat.cle === "ouverte"
                         ? "bg-or-500 text-white hover:bg-or-600"
                         : "border border-club-950/20 text-club-950 hover:bg-club-950/5",

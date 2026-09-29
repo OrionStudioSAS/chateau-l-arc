@@ -34,14 +34,14 @@ export function ChiffresCles({
         colonnes égales : le contenu étant aligné à gauche dans sa colonne, la
         dernière laissait un vide à droite et l'ensemble paraissait décalé.
       */}
-      <Container className="grid gap-x-8 gap-y-12 py-20 sm:grid-cols-2 lg:flex lg:justify-between">
+      <Container className="grid grid-cols-2 gap-x-6 gap-y-10 py-14 sm:gap-x-8 sm:gap-y-12 lg:flex lg:justify-between lg:py-20">
         {chiffres.map((chiffre) => (
           <div key={chiffre.valeur}>
-            <p className="font-butler text-[56px] font-medium leading-none tracking-[-1px] text-encre">
+            <p className="font-butler text-[36px] font-medium leading-none tracking-[-1px] text-encre min-[400px]:text-[42px] sm:text-[56px]">
               {chiffre.valeur}
             </p>
-            <span aria-hidden="true" className="mt-5 block h-0.5 w-7 bg-or-500" />
-            <p className="mt-4 text-[13px] font-normal uppercase leading-[1.7] text-encre/55">
+            <span aria-hidden="true" className="mt-4 block h-0.5 w-7 bg-or-500 sm:mt-5" />
+            <p className="mt-3 text-[12px] font-normal uppercase leading-[1.7] text-encre/55 sm:mt-4 sm:text-[13px]">
               <span className="block">{chiffre.ligne1}</span>
               {chiffre.ligne2 ? <span className="block">{chiffre.ligne2}</span> : null}
             </p>

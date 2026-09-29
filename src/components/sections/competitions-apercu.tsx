@@ -9,7 +9,7 @@ export async function CompetitionsApercu() {
   const competitions = await getProchainesCompetitions(3);
 
   return (
-    <section className="py-20">
+    <section className="py-14 lg:py-20">
       <Container>
         <div className="text-center">
           <Surtitre filet="gris" className="text-encre/60">
@@ -21,11 +21,11 @@ export async function CompetitionsApercu() {
           </h2>
         </div>
 
-        <ul className="mt-14 grid gap-6 md:grid-cols-3">
+        <ul className="mt-10 grid gap-4 sm:gap-6 lg:mt-14 lg:grid-cols-3">
           {competitions.map((competition) => (
               <li
                 key={competition.id}
-                className="flex items-center gap-5 rounded-lg bg-sable-100 p-6"
+                className="flex items-center gap-5 rounded-lg bg-sable-100 p-5 sm:p-6"
               >
                 <p className="flex size-[72px] shrink-0 flex-col items-center justify-center rounded-lg bg-club-950">
                   <span className="text-[12px] font-medium uppercase text-or-500">

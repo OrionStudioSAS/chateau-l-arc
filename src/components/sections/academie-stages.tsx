@@ -11,7 +11,7 @@ const IMAGE_PROVISOIRE = "/images/academie.png";
 
 export function AcademieStages() {
   return (
-    <section className="py-20">
+    <section className="py-14 lg:py-20">
       <Container>
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
           <ul className="grid gap-5 sm:grid-cols-2">

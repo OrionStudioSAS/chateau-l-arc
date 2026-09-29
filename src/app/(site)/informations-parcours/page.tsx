@@ -22,7 +22,7 @@ export default async function Page() {
         chapo="État du parcours et des installations, mis à jour par l'accueil du club."
       />
 
-      <Container className="py-20">
+      <Container className="py-14 lg:py-20">
         <div className="mx-auto max-w-xl overflow-hidden rounded-xl bg-white shadow-[0_2px_18px_rgba(16,24,40,0.07)]">
           <ListeStatut installations={statut} />
         </div>

@@ -7,7 +7,7 @@ import { cn } from "@/lib/cn";
 
 export function TarifsGreenFees() {
   return (
-    <section className="bg-sable-100 py-20">
+    <section className="bg-sable-100 py-14 lg:py-20">
       <Container>
         <div className="text-center">
           <Surtitre className="text-or-600">Visiteurs</Surtitre>

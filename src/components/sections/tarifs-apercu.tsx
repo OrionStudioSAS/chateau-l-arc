@@ -10,14 +10,14 @@ export async function TarifsApercu() {
   const formules = await getFormulesAccueil();
 
   return (
-    <section className="py-20">
+    <section className="py-14 lg:py-20">
       <Container>
         <div className="text-center">
           <Surtitre filet="gris" className="text-encre/60">
             Tarifs
           </Surtitre>
 
-          <h2 className="mt-6 font-butler text-[64px] font-medium leading-[1.1] text-club-950">
+          <h2 className="mt-6 font-butler text-[40px] font-medium leading-[1.1] text-club-950 sm:text-[64px]">
             Green fees
           </h2>
 
@@ -26,17 +26,17 @@ export async function TarifsApercu() {
           </p>
         </div>
 
-        <ul className="mt-14 grid gap-7 md:grid-cols-3">
+        <ul className="mt-10 grid gap-5 md:grid-cols-3 md:gap-4 lg:mt-14 lg:gap-7">
           {formules.map((formule) => (
             <li
               key={formule.id}
-              className="flex flex-col items-center rounded-lg bg-white px-8 py-10 text-center shadow-[0_2px_18px_rgba(16,24,40,0.07)]"
+              className="flex flex-col items-center rounded-lg bg-white px-5 py-8 text-center lg:px-8 lg:py-10 shadow-[0_2px_18px_rgba(16,24,40,0.07)]"
             >
               <p className="text-[20px] font-medium tracking-[-0.2px] text-encre">
                 {formule.titre}
               </p>
 
-              <p className="mt-5 font-butler text-[48px] font-bold leading-none text-or-500">
+              <p className="mt-5 font-butler text-[44px] lg:text-[48px] font-bold leading-none text-or-500">
                 {formule.prix}
               </p>
 

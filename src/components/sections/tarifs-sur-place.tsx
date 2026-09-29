@@ -4,7 +4,7 @@ import { surPlace } from "@/lib/tarifs";
 
 export function TarifsSurPlace() {
   return (
-    <section className="bg-white py-20">
+    <section className="bg-white py-14 lg:py-20">
       <Container>
         <div className="text-center">
           <Surtitre className="text-or-600">Sur place</Surtitre>

@@ -14,7 +14,7 @@ const details: Record<string, { distance: string; public: string }> = {
 
 export function ReperesDepart() {
   return (
-    <section className="bg-white py-20">
+    <section className="bg-white py-14 lg:py-20">
       <Container>
         <div className="text-center">
           <Surtitre filet="gris" className="text-encre/60">

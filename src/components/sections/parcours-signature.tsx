@@ -16,7 +16,7 @@ const statistiques = [
 
 export function ParcoursSignature() {
   return (
-    <section className="py-20">
+    <section className="py-14 lg:py-20">
       <Container>
         <div className="text-center">
           <Surtitre className="text-encre/60">Golf</Surtitre>

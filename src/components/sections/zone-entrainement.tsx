@@ -8,7 +8,7 @@ const IMAGE_PROVISOIRE = "/images/parcours.png";
 
 export function ZoneEntrainement() {
   return (
-    <section className="py-20">
+    <section className="py-14 lg:py-20">
       <Container>
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-start">
           <div>

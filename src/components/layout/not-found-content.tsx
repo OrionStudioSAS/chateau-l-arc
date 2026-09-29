@@ -31,7 +31,7 @@ const departs: { href: Route; titre: string; texte: string }[] = [
 
 export function NotFoundContent() {
   return (
-    <section className="py-20">
+    <section className="py-14 lg:py-20">
       <Container>
         <div className="text-center">
           <Surtitre className="text-encre/60">Erreur 404</Surtitre>

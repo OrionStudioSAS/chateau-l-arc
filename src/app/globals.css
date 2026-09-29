@@ -85,3 +85,13 @@ body {
     animation: none;
   }
 }
+
+/* Défilement horizontal (carrousels mobiles, filtres) : barre masquée, le
+   débordement de la carte suivante suffit à signaler qu'on peut faire glisser. */
+@utility sans-barre {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

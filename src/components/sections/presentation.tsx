@@ -30,7 +30,7 @@ const vignettes = [
 
 export function Presentation() {
   return (
-    <section className="overflow-hidden bg-white py-20">
+    <section className="overflow-hidden bg-white py-14 lg:py-20">
       <div className="relative">
         <div aria-hidden="true" className="absolute inset-0 hidden lg:block">
           {vignettes.map((vignette) => (

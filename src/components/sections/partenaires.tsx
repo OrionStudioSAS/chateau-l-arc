@@ -6,7 +6,7 @@ import { partenaires } from "@/config/site";
 
 export function Partenaires() {
   return (
-    <section className="py-20">
+    <section className="py-14 lg:py-20">
       <Container>
         <div className="text-center">
           <Surtitre filet="gris" className="text-encre/60">
@@ -18,7 +18,7 @@ export function Partenaires() {
           </h2>
         </div>
 
-        <ul className="mt-14 grid grid-cols-2 items-center gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
+        <ul className="mt-10 grid grid-cols-2 items-center gap-x-6 gap-y-6 sm:grid-cols-3 sm:gap-x-8 sm:gap-y-10 lg:mt-14 lg:grid-cols-6">
           {partenaires.map((partenaire, index) => {
             const logo = (
               <Image

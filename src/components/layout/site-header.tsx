@@ -49,7 +49,34 @@ export function SiteHeader({ statut }: { statut: Installation[] }) {
   if (pathname !== cheminPrecedent) {
     setCheminPrecedent(pathname);
     setInfosOuvertes(false);
+    setMenuOuvert(false);
   }
+
+  // Menu mobile ouvert : la page derrière ne défile plus, Échap le referme,
+  // et il se ferme de lui-même si la fenêtre passe en affichage bureau.
+  useEffect(() => {
+    if (!menuOuvert) return;
+
+    const racine = document.documentElement;
+    const debordement = racine.style.overflow;
+    racine.style.overflow = "hidden";
+
+    const surTouche = (evenement: KeyboardEvent) => {
+      if (evenement.key === "Escape") setMenuOuvert(false);
+    };
+    const bureau = window.matchMedia("(min-width: 1024px)");
+    const surBureau = (evenement: MediaQueryListEvent) => {
+      if (evenement.matches) setMenuOuvert(false);
+    };
+
+    document.addEventListener("keydown", surTouche);
+    bureau.addEventListener("change", surBureau);
+    return () => {
+      racine.style.overflow = debordement;
+      document.removeEventListener("keydown", surTouche);
+      bureau.removeEventListener("change", surBureau);
+    };
+  }, [menuOuvert]);
 
   useEffect(() => {
     const surDefilement = () => setDefile(window.scrollY > 8);
@@ -63,171 +90,185 @@ export function SiteHeader({ statut }: { statut: Installation[] }) {
     !defile && !menuOuvert && routesHeroSombre.includes(pathname);
 
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-50 transition-colors duration-300",
-        transparent
-          ? "bg-transparent text-sable-50"
-          : "border-b border-club-950/10 bg-white text-encre",
-      )}
-    >
-      {/* Grille en trois colonnes : le logo reste centré sans recouvrir les
-          liens, quelle que soit la largeur des blocs latéraux. */}
-      <div className="mx-auto grid h-20 w-full max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 sm:px-8">
-        <nav aria-label="Navigation principale" className="hidden lg:block">
-          <ul className="flex items-center gap-4 xl:gap-8">
-            {headerNav.map((item) => {
-              const actif =
-                pathname === item.href || pathname.startsWith(`${item.href}/`);
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    aria-current={actif ? "page" : undefined}
-                    className={cn(
-                      lienNav,
-                      transparent ? "text-white" : "text-encre",
-                    )}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+    <>
+      <header
+        className={cn(
+          "sticky top-0 z-50 transition-colors duration-300",
+          transparent
+            ? "bg-transparent text-sable-50"
+            : "border-b border-club-950/10 bg-white text-encre",
+        )}
+      >
+        {/* Grille en trois colonnes : le logo reste centré sans recouvrir les
+            liens, quelle que soit la largeur des blocs latéraux. */}
+        <div className="mx-auto grid h-20 w-full max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 sm:px-8">
+          <nav aria-label="Navigation principale" className="hidden lg:block">
+            <ul className="flex items-center gap-4 xl:gap-8">
+              {headerNav.map((item) => {
+                const actif =
+                  pathname === item.href || pathname.startsWith(`${item.href}/`);
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      aria-current={actif ? "page" : undefined}
+                      className={cn(
+                        lienNav,
+                        transparent ? "text-white" : "text-encre",
+                      )}
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
 
-        <Link
-          href="/"
-          aria-label="Accueil"
-          onClick={() => setMenuOuvert(false)}
-          // col-start explicite : la nav masquée sort de la grille en mobile.
-          className="col-start-2 justify-self-center"
-        >
-          <Logo />
-        </Link>
+          <Link
+            href="/"
+            aria-label="Accueil"
+            onClick={() => setMenuOuvert(false)}
+            // col-start explicite : la nav masquée sort de la grille en mobile.
+            className="col-start-2 justify-self-center"
+          >
+            <Logo />
+          </Link>
 
-        <div className="col-start-3 flex items-center justify-self-end lg:gap-4 xl:gap-5">
-          {/* Panneau déroulant (motif « disclosure ») : il présente un état,
-              pas des actions, d'où un bouton + région plutôt qu'un role="menu". */}
-          {/* h-20 : la zone occupe toute la hauteur de l'en-tête, pour que le
-              panneau (top-full) parte exactement de son bord inférieur. */}
-          <div ref={zoneInfos} className="relative mr-4 hidden h-20 items-center wide:flex">
-            <button
-              type="button"
-              aria-expanded={infosOuvertes}
-              aria-controls="infos-parcours"
-              onClick={() => setInfosOuvertes((ouvert) => !ouvert)}
-              className={cn(
-                lienNav,
-                "flex items-center gap-2",
-                transparent ? "text-white" : "text-encre",
-              )}
-            >
-              {headerActions.info.label}
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 12 12"
+          <div className="col-start-3 flex items-center justify-self-end lg:gap-4 xl:gap-5">
+            {/* Panneau déroulant (motif « disclosure ») : il présente un état,
+                pas des actions, d'où un bouton + région plutôt qu'un role="menu". */}
+            {/* h-20 : la zone occupe toute la hauteur de l'en-tête, pour que le
+                panneau (top-full) parte exactement de son bord inférieur. */}
+            <div ref={zoneInfos} className="relative mr-4 hidden h-20 items-center wide:flex">
+              <button
+                type="button"
+                aria-expanded={infosOuvertes}
+                aria-controls="infos-parcours"
+                onClick={() => setInfosOuvertes((ouvert) => !ouvert)}
                 className={cn(
-                  "size-3 transition-transform duration-200",
-                  infosOuvertes && "rotate-180",
+                  lienNav,
+                  "flex items-center gap-2",
+                  transparent ? "text-white" : "text-encre",
                 )}
               >
-                <path
-                  d="M2 4l4 4 4-4"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+                {headerActions.info.label}
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 12 12"
+                  className={cn(
+                    "size-3 transition-transform duration-200",
+                    infosOuvertes && "rotate-180",
+                  )}
+                >
+                  <path
+                    d="M2 4l4 4 4-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+
+              {infosOuvertes ? (
+                <div
+                  id="infos-parcours"
+                  role="region"
+                  aria-label="État des installations"
+                  className="absolute left-1/2 top-full w-[420px] -translate-x-1/2 rounded-b-xl bg-white text-encre shadow-[0_18px_40px_rgba(16,24,40,0.18)]"
+                >
+                  <ListeStatut installations={statut} />
+                </div>
+              ) : null}
+            </div>
+            <BoutonClair
+              href={headerActions.membre.href}
+              className="hidden lg:inline-flex"
+            >
+              {headerActions.membre.label}
+            </BoutonClair>
+            <BoutonOr
+              href={headerActions.reservation.href}
+              className="hidden lg:inline-flex"
+            >
+              {headerActions.reservation.label}
+            </BoutonOr>
+
+            <button
+              type="button"
+              aria-expanded={menuOuvert}
+              aria-controls="menu-mobile"
+              onClick={() => setMenuOuvert((ouvert) => !ouvert)}
+              className={cn(
+                "rounded-full border px-4 py-2 text-xs uppercase tracking-[0.14em] lg:hidden",
+                transparent ? "border-sable-50/40" : "border-club-950/15",
+              )}
+            >
+              {menuOuvert ? "Fermer" : "Menu"}
             </button>
-
-            {infosOuvertes ? (
-              <div
-                id="infos-parcours"
-                role="region"
-                aria-label="État des installations"
-                className="absolute left-1/2 top-full w-[420px] -translate-x-1/2 rounded-b-xl bg-white text-encre shadow-[0_18px_40px_rgba(16,24,40,0.18)]"
-              >
-                <ListeStatut installations={statut} />
-              </div>
-            ) : null}
           </div>
-          <BoutonClair
-            href={headerActions.membre.href}
-            className="hidden lg:inline-flex"
-          >
-            {headerActions.membre.label}
-          </BoutonClair>
-          <BoutonOr
-            href={headerActions.reservation.href}
-            className="hidden lg:inline-flex"
-          >
-            {headerActions.reservation.label}
-          </BoutonOr>
-
-          <button
-            type="button"
-            aria-expanded={menuOuvert}
-            aria-controls="menu-mobile"
-            onClick={() => setMenuOuvert((ouvert) => !ouvert)}
-            className={cn(
-              "rounded-full border px-4 py-2 text-xs uppercase tracking-[0.14em] lg:hidden",
-              transparent ? "border-sable-50/40" : "border-club-950/15",
-            )}
-          >
-            {menuOuvert ? "Fermer" : "Menu"}
-          </button>
         </div>
-      </div>
 
-      {menuOuvert ? (
-        <div
-          id="menu-mobile"
-          className="border-t border-club-950/10 bg-white text-encre lg:hidden"
-        >
-          <div className="mx-auto w-full max-w-[1600px] px-5 py-4 sm:px-8">
-            <ul className="flex flex-col">
-              {headerNav.map((item) => (
-                <li key={item.href}>
+        {menuOuvert ? (
+          <div
+            id="menu-mobile"
+            // Hauteur bornée à l'écran : le menu défile lui-même sur les petits
+            // téléphones en paysage, la page étant bloquée derrière.
+            className="max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain border-t border-club-950/10 bg-white text-encre lg:hidden"
+          >
+            <div className="mx-auto w-full max-w-[1600px] px-5 pb-8 pt-2 sm:px-8">
+              <ul className="flex flex-col">
+                {headerNav.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      onClick={() => setMenuOuvert(false)}
+                      className="block border-b border-club-950/10 py-4 text-[14px] uppercase tracking-[0.14em] text-encre"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+                <li>
                   <Link
-                    href={item.href}
+                    href={headerActions.info.href}
                     onClick={() => setMenuOuvert(false)}
-                    className="block border-b border-club-950/5 py-3 text-sm uppercase tracking-[0.14em] text-encre/80"
+                    className="block border-b border-club-950/10 py-4 text-[14px] uppercase tracking-[0.14em] text-encre"
                   >
-                    {item.label}
+                    {headerActions.info.label}
                   </Link>
                 </li>
-              ))}
-              <li>
-                <Link
-                  href={headerActions.info.href}
-                  onClick={() => setMenuOuvert(false)}
-                  className="block border-b border-club-950/5 py-3 text-sm uppercase tracking-[0.14em] text-encre/80"
+              </ul>
+              <div className="mt-6 flex flex-col gap-3">
+                <BoutonClair
+                  href={headerActions.membre.href}
+                  // Fond sable sur blanc : un filet pour que le bouton se détache.
+                  className="justify-center border border-club-950/10 py-4"
                 >
-                  {headerActions.info.label}
-                </Link>
-              </li>
-            </ul>
-            <div className="mt-5 flex flex-col gap-3">
-              <BoutonClair
-                href={headerActions.membre.href}
-                className="justify-center"
-              >
-                {headerActions.membre.label}
-              </BoutonClair>
-              <BoutonOr
-                href={headerActions.reservation.href}
-                className="justify-center"
-              >
-                {headerActions.reservation.label}
-              </BoutonOr>
+                  {headerActions.membre.label}
+                </BoutonClair>
+                <BoutonOr
+                  href={headerActions.reservation.href}
+                  className="justify-center py-4"
+                >
+                  {headerActions.reservation.label}
+                </BoutonOr>
+              </div>
             </div>
           </div>
-        </div>
+        ) : null}
+      </header>
+
+      {/* Voile sous le menu mobile : assombrit la page et referme au toucher. */}
+      {menuOuvert ? (
+        <div
+          aria-hidden="true"
+          onClick={() => setMenuOuvert(false)}
+          className="fixed inset-0 z-40 bg-club-950/40 lg:hidden"
+        />
       ) : null}
-    </header>
+    </>
   );
 }

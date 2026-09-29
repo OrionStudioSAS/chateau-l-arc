@@ -37,7 +37,7 @@ const etapes = [
 
 export function FriseHistoire() {
   return (
-    <section className="bg-sable-100 py-20">
+    <section className="bg-sable-100 py-14 lg:py-20">
       <Container>
         <ol className="relative mx-auto max-w-3xl">
           {/* Filet vertical, passant derrière les pastilles de date. */}

@@ -12,7 +12,7 @@ export async function AnnouncementBar() {
   return (
     <aside
       aria-label="Information du club"
-      className="bg-club-950 px-5 py-2.5 text-center text-sm text-sable-100"
+      className="bg-club-950 px-5 py-2.5 text-center text-[13px] text-sable-100 sm:text-sm"
     >
       <p className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-4 gap-y-1">
         <span>{bandeau.message}</span>

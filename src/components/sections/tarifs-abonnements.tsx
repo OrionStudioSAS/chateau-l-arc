@@ -10,7 +10,7 @@ import { cn } from "@/lib/cn";
 
 export function TarifsAbonnements({ annee }: { annee: number }) {
   return (
-    <section className="bg-white py-20">
+    <section className="bg-white py-14 lg:py-20">
       <Container>
         <div className="text-center">
           <Surtitre className="text-or-600">Devenir membre</Surtitre>

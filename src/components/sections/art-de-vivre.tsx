@@ -67,7 +67,7 @@ function ContenuCarte({ carte }: { carte: Carte }) {
         src={IMAGE_PROVISOIRE}
         alt=""
         fill
-        sizes="(min-width: 1024px) 50vw, 100vw"
+        sizes="(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 85vw"
         className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         style={{ objectPosition: carte.cadrage }}
       />
@@ -78,7 +78,7 @@ function ContenuCarte({ carte }: { carte: Carte }) {
         className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/5"
       />
 
-      <div className="relative mt-auto p-6 sm:p-8">
+      <div className="relative mt-auto p-5 sm:p-8">
         <p className="text-[12px] font-normal uppercase tracking-[0.2em] text-white/90">
           {carte.label}
         </p>
@@ -99,7 +99,7 @@ function ContenuCarte({ carte }: { carte: Carte }) {
 
 export function ArtDeVivre() {
   return (
-    <section className="py-20">
+    <section className="py-14 lg:py-20">
       <Container>
         <div className="grid gap-8 lg:grid-cols-2 lg:items-start">
           <div>
@@ -129,12 +129,16 @@ export function ArtDeVivre() {
           </div>
         </div>
 
-        {/* Mosaïque : la première carte occupe deux rangées, les deux suivantes
-            se partagent la colonne de droite, les deux dernières une rangée. */}
-        <div className="mt-14 grid gap-4 lg:grid-cols-6 lg:grid-rows-[220px_220px_290px]">
-          {cartes.map((carte) => {
+        {/* Mobile : carrousel horizontal qui déborde jusqu'aux bords de l'écran.
+            Tablette : grille de deux colonnes, la première carte en pleine largeur.
+            À partir de 1024 px, mosaïque : la première carte occupe deux rangées,
+            les deux suivantes se partagent la colonne de droite, les deux
+            dernières une rangée. */}
+        <div className="sans-barre -mx-5 mt-10 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 sm:-mx-8 sm:scroll-px-8 sm:px-8 md:mx-0 md:mt-14 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 lg:grid-cols-6 lg:grid-rows-[220px_220px_290px]">
+          {cartes.map((carte, index) => {
             const classes = cn(
-              "group relative flex min-h-[260px] flex-col overflow-hidden rounded-sm lg:min-h-0",
+              "group relative flex min-h-[340px] w-[82%] shrink-0 snap-start flex-col overflow-hidden rounded-sm sm:w-[60%] md:min-h-[280px] md:w-auto lg:min-h-0",
+              index === 0 && "md:col-span-2",
               carte.grille,
             );
 

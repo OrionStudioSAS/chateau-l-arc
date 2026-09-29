@@ -77,7 +77,7 @@ export function PopupMarketing({ popup }: { popup: Popup | null }) {
         aria-labelledby="popup-titre"
         tabIndex={-1}
         onClick={(evenement) => evenement.stopPropagation()}
-        className="w-full max-w-sm outline-none"
+        className="max-h-full w-full max-w-sm overflow-y-auto rounded-xl outline-none"
       >
         <CartePopup
           titre={popup.titre}

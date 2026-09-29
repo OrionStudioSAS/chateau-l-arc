@@ -54,7 +54,7 @@ export default async function Page({ params }: PageProps<"/competitions/[slug]">
   ].filter((ligne) => Boolean(ligne.valeur));
 
   return (
-    <article className="py-20">
+    <article className="py-14 lg:py-20">
       <ContainerEtroit>
         <p className="text-xs uppercase tracking-[0.15em] text-club-600">
           {formatDate(competition.dateDebut)}

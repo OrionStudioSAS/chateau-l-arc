@@ -4,7 +4,7 @@ import { Container } from "@/components/ui/container";
 
 export function AppelSaison() {
   return (
-    <section className="bg-club-950 py-20 text-sable-50">
+    <section className="bg-club-950 py-14 lg:py-20 text-sable-50">
       <Container>
         <div className="text-center">
           <h2 className="font-butler text-[32px] font-medium leading-tight sm:text-[40px]">

@@ -6,7 +6,7 @@ import { formulesJuniors, noteJuniors } from "@/lib/academie";
 
 export function AcademieJuniors() {
   return (
-    <section className="py-20">
+    <section className="py-14 lg:py-20">
       <Container>
         <div className="text-center">
           <Surtitre className="text-or-600">École de golf juniors</Surtitre>

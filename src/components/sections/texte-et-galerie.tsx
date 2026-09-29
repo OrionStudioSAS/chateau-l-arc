@@ -29,10 +29,18 @@ export function TexteEtGalerie({
   classeTexte?: string;
   children: React.ReactNode;
 }) {
-  const formats = ["aspect-[2/3]", "aspect-[4/3]", "aspect-[4/3]", "aspect-[4/3]", "aspect-[4/3]"];
+  // Mobile et tablette : la première photo en pleine largeur, les quatre
+  // autres en grille 2 × 2, plutôt que cinq grandes photos empilées.
+  const formats = [
+    "col-span-2 aspect-[4/3] sm:aspect-[16/9]",
+    "aspect-square sm:aspect-[4/3]",
+    "aspect-square sm:aspect-[4/3]",
+    "aspect-square sm:aspect-[4/3]",
+    "aspect-square sm:aspect-[4/3]",
+  ];
 
   return (
-    <section className="bg-white py-20">
+    <section className="bg-white py-14 lg:py-20">
       <Container>
         {/* Colonnes inégales : le titre respire, le texte reste sur une
             colonne étroite. */}
@@ -59,7 +67,7 @@ export function TexteEtGalerie({
           </div>
         </div>
 
-        <div className="mt-14 grid gap-4 lg:grid-cols-3 lg:grid-rows-[292px_292px]">
+        <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 lg:mt-14 lg:grid-cols-3 lg:grid-rows-[292px_292px]">
           {photos.slice(0, 5).map((photo, index) => (
             <div
               key={`${photo.src}-${photo.cadrage}`}
@@ -67,14 +75,14 @@ export function TexteEtGalerie({
                 "relative overflow-hidden rounded-sm",
                 formats[index],
                 "lg:aspect-auto",
-                index === 0 ? "lg:row-span-2" : "",
+                index === 0 ? "lg:col-span-1 lg:row-span-2" : "",
               )}
             >
               <Image
                 src={photo.src}
                 alt=""
                 fill
-                sizes="(min-width: 1024px) 33vw, 100vw"
+                sizes={index === 0 ? "(min-width: 1024px) 33vw, 100vw" : "(min-width: 1024px) 33vw, 50vw"}
                 loading={index === 0 ? "eager" : "lazy"}
                 className="object-cover"
                 style={{ objectPosition: photo.cadrage }}

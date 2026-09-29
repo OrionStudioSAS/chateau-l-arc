@@ -37,7 +37,7 @@ export function Banniere({
   actions?: React.ReactNode;
 }) {
   return (
-    <section className="relative -mt-20 flex min-h-[80vh] flex-col justify-end bg-club-950 text-white">
+    <section className="relative -mt-20 flex min-h-[80svh] flex-col justify-end bg-club-950 text-white">
       <Image
         src={image}
         alt=""
@@ -53,8 +53,8 @@ export function Banniere({
         className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
       />
 
-      <div className="@container relative w-full px-6 pb-4">
-        <p className="text-[20px] font-medium uppercase tracking-[-0.2px] text-white/70">
+      <div className="@container relative w-full px-5 pb-4 sm:px-6">
+        <p className="max-w-3xl text-[14px] font-medium uppercase tracking-[-0.14px] text-white/70 sm:text-[17px] lg:text-[20px] lg:tracking-[-0.2px]">
           {accroche}
         </p>
 
@@ -70,7 +70,7 @@ export function Banniere({
         <h1
           className={cn(
             tailleTitre,
-            "mt-3 font-butler font-bold uppercase tracking-[2px] text-white/70",
+            "mt-2 font-butler sm:mt-3 font-bold uppercase tracking-[2px] text-white/70",
             retourLigne ? "whitespace-pre-line" : "whitespace-nowrap",
             // En dernier : tailwind-merge laisserait sinon la classe de taille
             // écraser l'interligne (voir le commentaire ci-dessus).

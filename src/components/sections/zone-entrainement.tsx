@@ -1,10 +1,8 @@
-import Image from "next/image";
-
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 
-/** TODO : image temporaire, à remplacer par la vue aérienne du practice. */
-const IMAGE_PROVISOIRE = "/images/parcours.png";
+/** Vidéo de la zone d'entraînement (youtube.com/watch?v=SQA8D9P9i-8). */
+const VIDEO_YOUTUBE_ID = "SQA8D9P9i-8";
 
 export function ZoneEntrainement() {
   return (
@@ -51,13 +49,16 @@ export function ZoneEntrainement() {
           </div>
         </div>
 
-        <div className="relative mt-14 aspect-[2/1] w-full overflow-hidden rounded-sm bg-club-950">
-          <Image
-            src={IMAGE_PROVISOIRE}
-            alt=""
-            fill
-            sizes="(min-width: 1600px) 1400px, 100vw"
-            className="object-cover"
+        {/* Version « sans cookie » de YouTube : rien n'est déposé tant que la
+            lecture n'est pas lancée. */}
+        <div className="relative mt-14 aspect-video w-full overflow-hidden rounded-sm bg-club-950">
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${VIDEO_YOUTUBE_ID}`}
+            title="Vidéo de la zone d'entraînement du Golf Château l'Arc"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            loading="lazy"
+            className="absolute inset-0 h-full w-full"
           />
         </div>
       </Container>

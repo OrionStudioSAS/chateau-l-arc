@@ -35,9 +35,11 @@ export function Banniere({
   hauteur = "min-h-[80svh]",
   filAriane,
   actions,
+  pied,
 }: {
   image: string;
-  accroche: string;
+  /** Ligne au-dessus du titre (facultative). */
+  accroche?: string;
   titre: string;
   tailleTitre?: string;
   interligneTitre?: string;
@@ -49,6 +51,8 @@ export function Banniere({
   /** Fil d'Ariane sous l'en-tête ; le dernier élément est la page courante. */
   filAriane?: { label: string; href?: Route }[];
   actions?: React.ReactNode;
+  /** Rangée pleine largeur sous le texte (onglets de la page Tarifs…). */
+  pied?: React.ReactNode;
 }) {
   return (
     <section
@@ -84,7 +88,7 @@ export function Banniere({
           <ol className="flex flex-wrap items-center gap-2">
             {filAriane.map((etape, index) => (
               <li key={etape.label} className="flex items-center gap-2">
-                {index > 0 ? <span aria-hidden="true">/</span> : null}
+                {index > 0 ? <span aria-hidden="true">›</span> : null}
                 {etape.href ? (
                   <Link href={etape.href} className="transition-colors hover:text-white">
                     {etape.label}
@@ -101,12 +105,14 @@ export function Banniere({
       ) : null}
 
       <div className="@container relative w-full px-5 pb-4 sm:px-6">
-        <p
-          className="entree-texte max-w-3xl text-[14px] font-medium uppercase lg:max-w-none tracking-[-0.14px] text-white/70 sm:text-[17px] lg:text-[20px] lg:tracking-[-0.2px]"
-          style={delaiEntree(150)}
-        >
-          {accroche}
-        </p>
+        {accroche ? (
+          <p
+            className="entree-texte max-w-3xl text-[14px] font-medium uppercase lg:max-w-none tracking-[-0.14px] text-white/70 sm:text-[17px] lg:text-[20px] lg:tracking-[-0.2px]"
+            style={delaiEntree(150)}
+          >
+            {accroche}
+          </p>
+        ) : null}
 
         {/*
           leading resserré : la boîte de ligne laisse un vide proportionnel à la
@@ -146,6 +152,12 @@ export function Banniere({
             style={delaiEntree(600)}
           >
             {actions}
+          </div>
+        ) : null}
+
+        {pied ? (
+          <div className="entree-texte mt-8 pb-2 sm:mt-10" style={delaiEntree(600)}>
+            {pied}
           </div>
         ) : null}
       </div>

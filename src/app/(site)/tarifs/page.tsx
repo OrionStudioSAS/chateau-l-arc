@@ -1,47 +1,41 @@
 import type { Metadata } from "next";
 
 import { Banniere } from "@/components/layout/banniere";
-import { SuivezNous } from "@/components/sections/suivez-nous";
+import { AvantagesMembres } from "@/components/sections/avantages-membres";
+import { QuestionsTarifs } from "@/components/sections/questions-tarifs";
 import { TarifsAbonnements } from "@/components/sections/tarifs-abonnements";
 import { TarifsGreenFees } from "@/components/sections/tarifs-green-fees";
-import { TarifsSurPlace } from "@/components/sections/tarifs-sur-place";
-import { BoutonClair } from "@/components/ui/bouton-clair";
-import { BoutonOr } from "@/components/ui/bouton-or";
-import { headerActions } from "@/config/site";
+import { TarifsNavigation } from "@/components/sections/tarifs-navigation";
 
 export const metadata: Metadata = {
-  title: "Tarifs",
+  title: "Tarifs & abonnements",
   description:
-    "Green fees, carnets, locations et abonnements annuels du Golf Château l'Arc. Basse saison du 15 novembre au 15 avril.",
+    "Green fees, carnets, locations, practice et abonnements annuels du Golf Château l'Arc. Haute saison du 16 avril au 14 novembre, basse saison du 15 novembre au 15 avril.",
 };
 
-/** TODO : année de la grille tarifaire, à faire suivre chaque saison. */
-const ANNEE_TARIFS = 2026;
+/** TODO : année des abonnements, à faire suivre chaque saison. */
+const ANNEE_ABONNEMENTS = 2027;
 
 export default function Page() {
   return (
     <>
       <Banniere
         image="/images/tarifs.png"
-        accroche="Des tarifs simples, toute l'année. Basse saison du 15 novembre au 15 avril."
+        filAriane={[{ label: "Accueil", href: "/" }, { label: "Tarifs & abonnements" }]}
         titre="Tarifs"
-        // Titre de 6 lettres : taille calée pour occuper la largeur.
-        tailleTitre="text-[24.7cqw]"
-        actions={
-          <>
-            <BoutonOr href={headerActions.reservation.href}>Réserver un départ</BoutonOr>
-            <BoutonClair href="/contact">Nous appeler</BoutonClair>
-          </>
-        }
+        // TODO : vrai une fois la grille gérée depuis le back-office (cf. lib/tarifs).
+        texte="Les prix affichés sont toujours à jour : ils sont gérés directement par l'accueil du club."
+        hauteur="min-h-[70svh]"
+        pied={<TarifsNavigation />}
       />
 
       <TarifsGreenFees />
 
-      <TarifsSurPlace />
+      <TarifsAbonnements annee={ANNEE_ABONNEMENTS} />
 
-      <TarifsAbonnements annee={ANNEE_TARIFS} />
+      <AvantagesMembres />
 
-      <SuivezNous />
+      <QuestionsTarifs />
     </>
   );
 }

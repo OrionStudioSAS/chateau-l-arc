@@ -44,7 +44,9 @@ export function AnimationsDefilement() {
       lerp: 0.09,
       // Carrousels, menus et pop-up gardent leur défilement natif.
       allowNestedScroll: true,
-      anchors: { offset: -100 },
+      // Le décalage sous l'en-tête vient du `scroll-margin-top` de chaque
+      // section ciblée (classe scroll-mt-*), que Lenis respecte.
+      anchors: true,
       stopInertiaOnNavigate: true,
     });
     lenis.current = instance;

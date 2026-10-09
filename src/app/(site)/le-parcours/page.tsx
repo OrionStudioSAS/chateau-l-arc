@@ -23,8 +23,6 @@ export default function Page() {
         filAriane={[{ label: "Accueil", href: "/" }, { label: "Parcours" }]}
         accroche="18 trous entre pins et garrigue, face à la montagne Sainte-Victoire."
         titre="Parcours"
-        // Titre court : la taille est recalibrée pour occuper la largeur.
-        tailleTitre="text-[16.25cqw]"
         texte="18 trous · par 70 · 5 817 m, dessinés par Robert Trent Jones II entre pins, garrigue et Sainte-Victoire."
       />
 

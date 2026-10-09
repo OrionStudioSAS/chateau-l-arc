@@ -3,6 +3,7 @@ import Link from "next/link";
 import { AdminNav } from "@/components/admin/admin-nav";
 import { BarreAdminMobile } from "@/components/admin/barre-admin-mobile";
 import { DeconnexionBouton } from "@/components/admin/deconnexion-bouton";
+import { Blason } from "@/components/ui/blason";
 import { site } from "@/config/site";
 import { exigerUtilisateur } from "@/lib/supabase/session";
 
@@ -26,9 +27,9 @@ export default async function TableauDeBordLayout({
     <Link href="/admin" className="flex items-center gap-3 px-1">
       <span
         aria-hidden="true"
-        className="flex size-9 items-center justify-center rounded-lg bg-club-950 text-sm text-sable-50"
+        className="flex size-9 items-center justify-center rounded-lg bg-club-950"
       >
-        CA
+        <Blason className="h-5" />
       </span>
       <span>
         <span className="block text-sm font-semibold leading-tight">

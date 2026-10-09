@@ -67,6 +67,9 @@ export async function getMeteo(): Promise<Meteo | null> {
       ...decrireCiel(current.weather_code),
     };
   } catch (erreur) {
+    // Échec passager (le service renvoie parfois 503) : on réessaie vite
+    // plutôt que de garder l'absence de météo en cache 30 minutes.
+    cacheLife({ stale: 60, revalidate: 120, expire: 300 });
     console.error("Météo indisponible", erreur);
     return null;
   }

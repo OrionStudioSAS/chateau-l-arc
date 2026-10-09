@@ -1,3 +1,4 @@
+import { AnimationsDefilement } from "@/components/layout/animations-defilement";
 import { AnnouncementBar } from "@/components/layout/announcement-bar";
 import { EnTeteSite } from "@/components/layout/en-tete-site";
 import { PopupMarketing } from "@/components/layout/popup-marketing";
@@ -24,6 +25,7 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
       </main>
       <SiteFooter />
       <PopupMarketing popup={popup} />
+        <AnimationsDefilement />
     </div>
   );
 }

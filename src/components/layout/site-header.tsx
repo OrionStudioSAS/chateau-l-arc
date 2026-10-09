@@ -150,7 +150,7 @@ export function SiteHeader({
             // col-start explicite : la nav masquée sort de la grille en mobile.
             className="col-start-2 justify-self-center"
           >
-            <Logo />
+            <Logo sombre={!transparent} />
           </Link>
 
           <div className="col-start-3 flex items-center justify-self-end lg:gap-2.5">

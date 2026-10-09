@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { FormulaireConnexion } from "@/components/admin/formulaire-connexion";
+import { Blason } from "@/components/ui/blason";
 import { site } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -23,6 +24,9 @@ export default async function Page({ searchParams }: PageProps<"/admin/connexion
     <div className="flex min-h-screen items-center justify-center px-5 py-16">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
+          <span className="mx-auto mb-4 flex size-12 items-center justify-center rounded-xl bg-club-950">
+            <Blason className="h-6" priorite />
+          </span>
           <p className="font-butler text-xl text-club-950">{site.shortName}</p>
           <p className="mt-1 text-sm text-neutral-500">Back-office</p>
         </div>

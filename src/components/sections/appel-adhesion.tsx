@@ -23,6 +23,8 @@ export function AppelAdhesion() {
           sizes="100vw"
           className="object-cover"
           style={{ objectPosition: "50% 70%" }}
+          data-parallax="0.08"
+          data-parallax-echelle="1.3"
         />
         <div aria-hidden="true" className="absolute inset-0 bg-club-950/75" />
         <div

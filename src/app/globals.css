@@ -97,3 +97,44 @@ body {
     display: none;
   }
 }
+
+:root {
+  /* Décélération longue et douce, commune aux animations d'apparition. */
+  --ease-douce: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Arrivée de la bannière : textes en cascade, photo en fondu depuis le vert. */
+@keyframes entree-texte {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+  }
+  to {
+    opacity: 1;
+    translate: none;
+  }
+}
+
+@keyframes entree-image {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.entree-texte {
+  animation: entree-texte 1.1s var(--ease-douce) var(--delai, 0ms) both;
+}
+
+.entree-image {
+  animation: entree-image 1.6s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entree-texte,
+  .entree-image {
+    animation: none;
+  }
+}

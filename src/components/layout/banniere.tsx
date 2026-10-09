@@ -9,6 +9,9 @@ import { cn } from "@/lib/cn";
  * page concernée doit donc figurer dans `routesHeroSombre` (src/config/site.ts),
  * sinon l'en-tête resterait blanc par-dessus la photo.
  */
+/** Décalage de l'animation d'arrivée, pour enchaîner les textes en cascade. */
+const delaiEntree = (ms: number) => ({ "--delai": `${ms}ms` }) as React.CSSProperties;
+
 export function Banniere({
   image,
   accroche,
@@ -43,14 +46,23 @@ export function Banniere({
   actions?: React.ReactNode;
 }) {
   return (
-    <section className={cn("relative -mt-20 flex flex-col justify-end bg-club-950 text-white", hauteur)}>
+    <section
+      className={cn(
+        "relative -mt-20 flex flex-col justify-end overflow-hidden bg-club-950 text-white",
+        hauteur,
+      )}
+    >
+      {/* Parallaxe (cf. AnimationsDefilement) : la photo glisse plus lentement
+          que la page ; légèrement agrandie pour couvrir son déplacement. */}
       <Image
         src={image}
         alt=""
         fill
         loading="eager"
         sizes="100vw"
-        className="object-cover"
+        className="entree-image object-cover"
+        data-parallax="0.25"
+        data-parallax-echelle="1.1"
       />
       {/* Voile uniforme, puis dégradé plus dense en bas pour détacher le titre. */}
       <div aria-hidden="true" className="absolute inset-0 bg-black/30" />
@@ -60,7 +72,10 @@ export function Banniere({
       />
 
       <div className="@container relative w-full px-5 pb-4 sm:px-6">
-        <p className="max-w-3xl text-[14px] font-medium uppercase lg:max-w-none tracking-[-0.14px] text-white/70 sm:text-[17px] lg:text-[20px] lg:tracking-[-0.2px]">
+        <p
+          className="entree-texte max-w-3xl text-[14px] font-medium uppercase lg:max-w-none tracking-[-0.14px] text-white/70 sm:text-[17px] lg:text-[20px] lg:tracking-[-0.2px]"
+          style={delaiEntree(150)}
+        >
           {accroche}
         </p>
 
@@ -76,24 +91,33 @@ export function Banniere({
         <h1
           className={cn(
             tailleTitre,
-            "mt-2 font-butler sm:mt-3 font-bold uppercase tracking-[2px] text-white/70",
+            "entree-texte mt-2 font-butler sm:mt-3 font-bold uppercase tracking-[2px] text-white/70",
             retourLigne ? "whitespace-pre-line" : "whitespace-nowrap",
             // En dernier : tailwind-merge laisserait sinon la classe de taille
             // écraser l'interligne (voir le commentaire ci-dessus).
             interligneTitre,
           )}
+          style={delaiEntree(300)}
         >
           {titre}
         </h1>
 
         {texte ? (
-          <p className="mt-5 max-w-xl text-[16px] font-normal leading-relaxed text-white/90 sm:text-[18px]">
+          <p
+            className="entree-texte mt-5 max-w-xl text-[16px] font-normal leading-relaxed text-white/90 sm:text-[18px]"
+            style={delaiEntree(450)}
+          >
             {texte}
           </p>
         ) : null}
 
         {actions ? (
-          <div className="mt-6 flex flex-wrap items-center gap-3 sm:mt-7">{actions}</div>
+          <div
+            className="entree-texte mt-6 flex flex-wrap items-center gap-3 sm:mt-7"
+            style={delaiEntree(600)}
+          >
+            {actions}
+          </div>
         ) : null}
       </div>
     </section>

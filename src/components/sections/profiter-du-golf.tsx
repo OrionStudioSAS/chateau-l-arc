@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/container";
 import { LienFleche } from "@/components/ui/lien-fleche";
 import { Surtitre } from "@/components/ui/surtitre";
 import { headerActions } from "@/config/site";
+import { estPagePubliqueVisible } from "@/config/visibilite";
 
 type Picto = "drapeau" | "membres" | "academie";
 
@@ -116,11 +117,13 @@ export function ProfiterDuGolf() {
                   {carte.texte}
                 </p>
                 <p className="mt-5 font-butler text-[18px] text-encre/85">{carte.prix}</p>
-                <p className="mt-4">
-                  <LienFleche href={carte.lien.href} className="text-[14px]">
-                    {carte.lien.label}
-                  </LienFleche>
-                </p>
+                {estPagePubliqueVisible(carte.lien.href) && (
+                  <p className="mt-4">
+                    <LienFleche href={carte.lien.href} className="text-[14px]">
+                      {carte.lien.label}
+                    </LienFleche>
+                  </p>
+                )}
               </div>
             </li>
           ))}

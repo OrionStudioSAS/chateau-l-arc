@@ -1,17 +1,18 @@
 import type { MetadataRoute } from "next";
 
 import { routesPubliques, site } from "@/config/site";
+import { estPagePubliqueVisible } from "@/config/visibilite";
 import { getActualites, getCompetitions } from "@/lib/api/content";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [actualites, competitions] = await Promise.all([
     getActualites(),
-    getCompetitions(),
+    estPagePubliqueVisible("/competitions") ? getCompetitions() : [],
   ]);
 
   return [
     { url: site.url, changeFrequency: "weekly", priority: 1 },
-    ...routesPubliques.map((item) => ({
+    ...routesPubliques.filter((item) => estPagePubliqueVisible(item.href)).map((item) => ({
       url: `${site.url}${item.href}`,
       changeFrequency: "monthly" as const,
       priority: 0.8,

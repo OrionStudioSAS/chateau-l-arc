@@ -12,6 +12,7 @@ import { Presentation } from "@/components/sections/presentation";
 import { ProfiterDuGolf } from "@/components/sections/profiter-du-golf";
 import { TarifsApercu } from "@/components/sections/tarifs-apercu";
 import { headerActions } from "@/config/site";
+import { estPagePubliqueVisible } from "@/config/visibilite";
 
 export default function Page() {
   return (
@@ -50,7 +51,7 @@ export default function Page() {
 
       <TarifsApercu />
 
-      <CompetitionsApercu />
+      {estPagePubliqueVisible("/competitions") && <CompetitionsApercu />}
 
       <ArtDeVivre />
 

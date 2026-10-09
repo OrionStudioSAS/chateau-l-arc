@@ -4,6 +4,7 @@ import type { Route } from "next";
 
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
+import { estPagePubliqueVisible } from "@/config/visibilite";
 import { cn } from "@/lib/cn";
 
 type Carte = {
@@ -126,7 +127,7 @@ export function ArtDeVivre() {
               carte.grille,
             );
 
-            return carte.href ? (
+            return carte.href && estPagePubliqueVisible(carte.href) ? (
               <Link key={carte.titre} href={carte.href} className={classes}>
                 <ContenuCarte carte={carte} />
               </Link>

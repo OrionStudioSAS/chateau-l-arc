@@ -4,9 +4,10 @@ import type { Route } from "next";
 import { BoutonOr } from "@/components/ui/bouton-or";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
+import { estPagePubliqueVisible } from "@/config/visibilite";
 
 /** Pages vers lesquelles on relance le visiteur égaré. */
-const departs: { href: Route; titre: string; texte: string }[] = [
+const departs = ([
   {
     href: "/le-parcours",
     titre: "Le parcours",
@@ -27,7 +28,9 @@ const departs: { href: Route; titre: string; texte: string }[] = [
     titre: "L'académie",
     texte: "Cours, stages et école de golf.",
   },
-];
+] satisfies { href: Route; titre: string; texte: string }[]).filter((depart) =>
+  estPagePubliqueVisible(depart.href),
+);
 
 export function NotFoundContent() {
   return (
@@ -63,7 +66,7 @@ export function NotFoundContent() {
           </div>
         </div>
 
-        <ul className="mt-20 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-20 grid gap-4 sm:grid-cols-2">
           {departs.map((depart, index) => (
             <li key={depart.href}>
               <Link

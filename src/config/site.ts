@@ -122,16 +122,16 @@ export const servicesContact = [
 
 /**
  * Partenaires du club.
- * TODO : `logo` pointe vers un visuel d'attente commun, à remplacer par les
- * fichiers fournis ; `url` reste vide tant que les liens ne sont pas connus.
+ * Les liens restent vides tant que les adresses des partenaires ne sont pas connues.
  */
 export const partenaires: { nom: string; logo: string; url?: string }[] = [
-  { nom: "Golf d'Aix-en-Provence", logo: "/images/partenaire-logo.svg" },
-  { nom: "Le Cabre d'Or", logo: "/images/partenaire-logo.svg" },
-  { nom: "Le Club Golf", logo: "/images/partenaire-logo.svg" },
-  { nom: "Les Masques", logo: "/images/partenaire-logo.svg" },
-  { nom: "Les Alchimistes", logo: "/images/partenaire-logo.svg" },
-  { nom: "Golf des Marques", logo: "/images/partenaire-logo.svg" },
+  { nom: "Les Masques", logo: "/images/logo1.png" },
+  { nom: "Golf d'Aix-en-Provence — Set Club", logo: "/images/logo2.png" },
+  { nom: "La Cabre d'Or Golf", logo: "/images/logo3.png" },
+  { nom: "Le Club Golf", logo: "/images/logo4.png" },
+  { nom: "Les Alchimistes", logo: "/images/logo5.png" },
+  { nom: "Golf des Marques", logo: "/images/logo6.png" },
+  { nom: "Autosprinter Toyota Aix-en-Provence", logo: "/images/logo7.png" },
 ];
 
 /** Toutes les pages publiques, pour le plan du site. */

@@ -12,25 +12,23 @@ export function Partenaires() {
           Ils accompagnent le club
         </h2>
 
-        <ul className="mt-8 grid grid-cols-3 items-center gap-x-6 gap-y-6 sm:gap-x-8 lg:grid-cols-6">
-          {partenaires.map((partenaire, index) => {
+        <ul className="mt-8 grid grid-cols-3 items-center gap-x-6 gap-y-6 sm:gap-x-8 lg:grid-cols-7">
+          {partenaires.map((partenaire) => {
             const logo = (
               <Image
                 src={partenaire.logo}
                 alt={partenaire.nom}
-                width={160}
-                height={60}
-                // Le visuel d'attente est un SVG : l'optimiseur d'images ne le
-                // traite pas, on le sert tel quel.
-                unoptimized
-                className="h-[44px] w-auto object-contain lg:h-[52px]"
+                width={200}
+                height={200}
+                sizes="(min-width: 1024px) 112px, 96px"
+                className="h-24 w-24 max-w-full object-contain lg:h-28 lg:w-28"
               />
             );
 
             return (
               <li
-                key={`${partenaire.nom}-${index}`}
-                className="flex items-center justify-center"
+                key={partenaire.logo}
+                className="flex items-center justify-center last:col-start-2 lg:last:col-start-auto"
               >
                 {partenaire.url ? (
                   <a

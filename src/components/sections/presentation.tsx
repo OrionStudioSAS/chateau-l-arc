@@ -4,11 +4,10 @@ import { Container, ContainerEtroit } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 
 /**
- * Identifiant de la vidéo YouTube de présentation.
- * Tant qu'il est vide, une image tient la place du lecteur.
- * TODO : renseigner dès que la vidéo est fournie.
+ * Identifiant de la vidéo YouTube de présentation
+ * (youtube.com/watch?v=hbJSMWfHjAI). Vide : une image tient la place du lecteur.
  */
-const VIDEO_YOUTUBE_ID = "";
+const VIDEO_YOUTUBE_ID = "hbJSMWfHjAI";
 
 /** TODO : image temporaire, à remplacer par les six photos définitives. */
 const IMAGE_PROVISOIRE = "/images/banner.jpg";

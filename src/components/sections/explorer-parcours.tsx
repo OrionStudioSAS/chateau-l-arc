@@ -115,21 +115,17 @@ export function ExplorerParcours() {
           <div className="overflow-hidden rounded-lg">
             {/* key : le remontage relance l'animation à chaque changement de trou. */}
             <div key={trou.numero} className="animation-trou">
-              {/* Vidéo du trou, en boucle et sans son ; cadre noir tant
-                  qu'elle n'est pas fournie (cf. lib/parcours). */}
-              <div className="relative aspect-video w-full bg-black">
-                {trou.video ? (
-                  <video
-                    src={trou.video}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    aria-label={`Vidéo du trou n°${trou.numero}`}
-                    className="absolute inset-0 h-full w-full object-cover"
-                  />
-                ) : null}
+              {/* Un seul lecteur est monté : changer de trou arrête la vidéo précédente. */}
+              <div className="relative aspect-video min-h-[200px] w-full bg-black">
+                <iframe
+                  src={`https://www.youtube-nocookie.com/embed/${trou.videoYoutubeId}?autoplay=1&mute=1&loop=1&playlist=${trou.videoYoutubeId}&playsinline=1&rel=0`}
+                  title={`Vidéo du trou n°${trou.numero}`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  className="absolute inset-0 h-full w-full border-0"
+                />
               </div>
 
               <div className="bg-sable-100 px-5 py-6 sm:px-8">

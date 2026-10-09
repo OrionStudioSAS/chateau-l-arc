@@ -6,9 +6,6 @@ import { useEffect, useRef } from "react";
 import { ContainerEtroit } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 
-/** TODO : image temporaire, à remplacer par les six photos définitives. */
-const IMAGE_PROVISOIRE = "/images/banner.jpg";
-
 /**
  * Vignettes décoratives réparties autour du texte, par rangées de deux.
  * Positions en pourcentage du bloc de texte ; masquées sous 1024 px, où elles
@@ -16,12 +13,12 @@ const IMAGE_PROVISOIRE = "/images/banner.jpg";
  * chacune, pour donner de la profondeur pendant le défilement.
  */
 const vignettes = [
-  { cote: "gauche", rangee: 0, x: "11%", y: "-4%", cadrage: "50% 30%", derive: -50 },
-  { cote: "gauche", rangee: 1, x: "5%", y: "38%", cadrage: "20% 60%", derive: 30 },
-  { cote: "gauche", rangee: 2, x: "13.5%", y: "80%", cadrage: "80% 40%", derive: -25 },
-  { cote: "droite", rangee: 0, x: "11%", y: "-6%", cadrage: "35% 70%", derive: 35 },
-  { cote: "droite", rangee: 1, x: "5%", y: "39%", cadrage: "65% 25%", derive: -40 },
-  { cote: "droite", rangee: 2, x: "13.5%", y: "84%", cadrage: "10% 50%", derive: 20 },
+  { cote: "gauche", rangee: 0, x: "11%", y: "-4%", image: "/images/hp-haut-gauche.png", derive: -50 },
+  { cote: "gauche", rangee: 1, x: "5%", y: "38%", image: "/images/hp-milieu-gauche.png", derive: 30 },
+  { cote: "gauche", rangee: 2, x: "13.5%", y: "80%", image: "/images/hp-bas-gauche.png", derive: -25 },
+  { cote: "droite", rangee: 0, x: "11%", y: "-6%", image: "/images/hp-haut-droite.png", derive: 35 },
+  { cote: "droite", rangee: 1, x: "5%", y: "39%", image: "/images/hp-milieu-droite.png", derive: -40 },
+  { cote: "droite", rangee: 2, x: "13.5%", y: "84%", image: "/images/hp-bas-droite.png", derive: 20 },
 ] as const;
 
 /** Texte de présentation, découpé en mots pour l'animation ligne par ligne. */
@@ -150,13 +147,12 @@ export function PresentationIntro() {
             }}
           >
             <Image
-              src={IMAGE_PROVISOIRE}
+              src={vignette.image}
               alt=""
               width={135}
               height={70}
               sizes="135px"
               className="h-[70px] w-[135px] object-cover"
-              style={{ objectPosition: vignette.cadrage }}
             />
           </span>
         ))}

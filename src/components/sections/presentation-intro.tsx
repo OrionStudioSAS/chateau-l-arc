@@ -24,19 +24,9 @@ const vignettes = [
   { cote: "droite", rangee: 2, x: "13.5%", y: "84%", cadrage: "10% 50%", derive: 20 },
 ] as const;
 
-/** Le texte, découpé en segments pour garder la partie en gras. */
-const segments = [
-  {
-    gras: true,
-    texte:
-      "Le Château l'Arc Golf Club fait indéniablement partie des plus beaux lieux golfiques de la région Provence Alpes Côte d'Azur. Le parcours, créé en 1985 et dessiné par Robert Trent Jones II, est idéalement situé aux portes d'Aix-En-Provence et Marseille.",
-  },
-  {
-    gras: false,
-    texte:
-      "Ce par 70 de 5817 mètres propose une expérience golfique variée grâce à son dessin qui serpente entre pins et garrigue dans un environnement d'exception puisqu'il donne une vue fantastique sur la montagne Sainte-Victoire.",
-  },
-];
+/** Texte de présentation, découpé en mots pour l'animation ligne par ligne. */
+const TEXTE =
+  "Le Château l'Arc Golf Club fait indéniablement partie des plus beaux lieux golfiques de la région Provence Alpes Côte d'Azur. Le parcours, créé en 1985 et dessiné par Robert Trent Jones II, est idéalement situé aux portes d'Aix-En-Provence et Marseille. Ce par 70 de 5817 mètres propose une expérience golfique variée grâce à son dessin qui serpente entre pins et garrigue dans un environnement d'exception puisqu'il donne une vue fantastique sur la montagne Sainte-Victoire.";
 
 const borner = (valeur: number) => Math.min(Math.max(valeur, 0), 1);
 const adoucir = (t: number) => 1 - (1 - t) ** 3;
@@ -180,22 +170,13 @@ export function PresentationIntro() {
           ref={paragraphe}
           className="mt-10 text-[20px] font-normal leading-[1.6] tracking-[-0.2px] text-encre/85"
         >
-          {segments.map((segment, indexSegment) => {
-            const mots = segment.texte.split(" ").map((mot, index) => (
-              <span key={index}>
-                <span data-mot className="inline-block">
-                  {mot}
-                </span>{" "}
-              </span>
-            ));
-            return segment.gras ? (
-              <strong key={indexSegment} className="font-bold text-encre">
-                {mots}
-              </strong>
-            ) : (
-              <span key={indexSegment}>{mots}</span>
-            );
-          })}
+          {TEXTE.split(" ").map((mot, index) => (
+            <span key={index}>
+              <span data-mot className="inline-block">
+                {mot}
+              </span>{" "}
+            </span>
+          ))}
         </p>
       </ContainerEtroit>
     </div>

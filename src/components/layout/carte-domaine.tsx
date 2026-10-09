@@ -5,6 +5,7 @@ import type { LayerSpecification, StyleSpecification } from "maplibre-gl";
 import { useEffect, useRef, useState } from "react";
 
 import { site } from "@/config/site";
+import { cn } from "@/lib/cn";
 
 /** Style vectoriel OpenFreeMap (gratuit, sans clé, usage commercial autorisé). */
 const STYLE = "https://tiles.openfreemap.org/styles/positron";
@@ -131,7 +132,7 @@ function recolorer(style: StyleSpecification): StyleSpecification {
  *
  * La bibliothèque (MapLibre) n'est chargée qu'à l'approche du pied de page.
  */
-export function CarteDomaine() {
+export function CarteDomaine({ className }: { className?: string }) {
   const conteneur = useRef<HTMLDivElement>(null);
   const [prete, setPrete] = useState(false);
 
@@ -194,7 +195,12 @@ export function CarteDomaine() {
   }, []);
 
   return (
-    <div className="relative mt-8 h-[180px] max-w-[375px] overflow-hidden rounded-sm border border-sable-50/20 bg-[#183526] sm:h-[225px]">
+    <div
+      className={cn(
+        "relative overflow-hidden rounded-sm border border-sable-50/20 bg-[#183526]",
+        className,
+      )}
+    >
       {/* Le fondu est porté par l'enveloppe : MapLibre ajoute ses propres
           classes au conteneur, que React écraserait en changeant les siennes. */}
       <div

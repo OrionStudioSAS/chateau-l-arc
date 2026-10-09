@@ -95,6 +95,9 @@ export function AnimationsDefilement() {
         if (!element.closest("li")) unites.add(element);
       });
 
+    // Blocs qui gèrent leur propre animation (cf. PresentationIntro).
+    const animationPropre = (element: Element) => element.closest("[data-sans-revele]") !== null;
+
     const contenuDansUneUnite = (element: HTMLElement) => {
       for (let parent = element.parentElement; parent && parent !== main; parent = parent.parentElement) {
         if (unites.has(parent)) return true;
@@ -103,12 +106,14 @@ export function AnimationsDefilement() {
     };
 
     const textes = [...unites].filter(
-      (element) => !contenuDansUneUnite(element) && sousLaLigne(element),
+      (element) =>
+        !contenuDansUneUnite(element) && !animationPropre(element) && sousLaLigne(element),
     );
 
     const images = [...main.querySelectorAll<HTMLImageElement>("section img")].filter(
       (image) =>
         !image.hasAttribute("data-parallax") &&
+        !animationPropre(image) &&
         !image.classList.contains("object-contain") &&
         image.getBoundingClientRect().width > 80 &&
         sousLaLigne(image),

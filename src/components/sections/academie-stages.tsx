@@ -64,10 +64,10 @@ export function AcademieStages() {
               <p className="text-[15px] text-encre/70">
                 ou{" "}
                 <a
-                  href={`tel:${site.contact.telephone.replace(/[^+\d]/g, "")}`}
+                  href={site.contact.telephoneLien}
                   className="underline-offset-4 hover:underline"
                 >
-                  04 42 29 83 41
+                  {site.contact.telephone}
                 </a>
               </p>
             </div>

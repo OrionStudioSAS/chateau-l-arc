@@ -1,6 +1,8 @@
 import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
+import { headerActions } from "@/config/site";
+import { proprietesLien } from "@/lib/liens";
 
 export function AppelSaison() {
   return (
@@ -19,7 +21,8 @@ export function AppelSaison() {
               Rejoindre l&apos;Association Sportive
             </Link>
             <Link
-              href="/reserver"
+              href={headerActions.reservation.href}
+              {...proprietesLien(headerActions.reservation.href)}
               className="rounded-lg border border-sable-50/40 px-7 py-4 text-[16px] font-medium text-sable-50 transition-colors hover:bg-sable-50/10"
             >
               Réserver un départ

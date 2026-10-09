@@ -27,7 +27,7 @@ export default function Page() {
               {site.contact.codePostalVille}
             </p>
             <p>
-              <a className="text-club-800 underline-offset-4 hover:underline" href={`tel:${site.contact.telephone.replace(/[^+\d]/g, "")}`}>
+              <a className="text-club-800 underline-offset-4 hover:underline" href={site.contact.telephoneLien}>
                 {site.contact.telephone}
               </a>
             </p>

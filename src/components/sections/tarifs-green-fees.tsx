@@ -2,6 +2,8 @@ import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
+import { headerActions } from "@/config/site";
+import { proprietesLien } from "@/lib/liens";
 import { carnets, greenFees } from "@/lib/tarifs";
 import { cn } from "@/lib/cn";
 
@@ -48,7 +50,8 @@ export function TarifsGreenFees() {
               </p>
 
               <Link
-                href="/reserver"
+                href={headerActions.reservation.href}
+                {...proprietesLien(headerActions.reservation.href)}
                 className={cn(
                   "mt-6 inline-block rounded-lg px-6 py-3 text-[15px] font-medium transition-colors",
                   formule.miseEnAvant

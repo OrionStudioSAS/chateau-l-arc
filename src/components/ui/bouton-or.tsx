@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Route } from "next";
 
 import { cn } from "@/lib/cn";
+import { proprietesLien } from "@/lib/liens";
 
 /**
  * Bouton doré de l'en-tête (« Réserver un départ »), partagé avec les sections
@@ -19,6 +20,7 @@ export function BoutonOr({
   return (
     <Link
       href={href}
+      {...proprietesLien(href)}
       className={cn(
         "inline-flex items-center gap-2 whitespace-nowrap rounded-sm bg-or-500 px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-white transition-colors hover:bg-or-600 xl:px-5",
         className,

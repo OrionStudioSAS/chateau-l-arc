@@ -7,7 +7,9 @@ import { useState } from "react";
 import { Container } from "@/components/ui/container";
 import { LienFleche } from "@/components/ui/lien-fleche";
 import { Surtitre } from "@/components/ui/surtitre";
+import { headerActions } from "@/config/site";
 import { cn } from "@/lib/cn";
+import { proprietesLien } from "@/lib/liens";
 
 type Saison = "haute" | "basse";
 
@@ -36,7 +38,7 @@ const formules: Formule[] = [
       haute: ["7 j/7, toute la journée", "Basse saison : 45 €"],
       basse: ["7 j/7, toute la journée", "Haute saison : 55 €"],
     },
-    action: { label: "Réserver", href: "/reserver" },
+    action: { label: "Réserver", href: headerActions.reservation.href },
   },
   {
     libelle: "18 trous",
@@ -47,7 +49,7 @@ const formules: Formule[] = [
       haute: ["Même tarif toute l'année", "Réservation en ligne", "Voiturette 40 € en option"],
       basse: ["Même tarif toute l'année", "Réservation en ligne", "Voiturette 40 € en option"],
     },
-    action: { label: "Réserver un départ", href: "/reserver" },
+    action: { label: "Réserver un départ", href: headerActions.reservation.href },
     miseEnAvant: "Le plus joué",
   },
   {
@@ -165,6 +167,7 @@ export function TarifsApercu() {
 
                 <Link
                   href={formule.action.href}
+                  {...proprietesLien(formule.action.href)}
                   className={cn(
                     "mt-8 flex items-center justify-center gap-2 rounded-sm px-5 py-3.5 text-[13px] font-semibold transition-colors",
                     fonce

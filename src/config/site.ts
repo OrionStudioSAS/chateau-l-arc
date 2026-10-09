@@ -51,11 +51,16 @@ export const site = {
   contact: {
     adresse: "Domaine Château l'Arc",
     codePostalVille: "13710 Fuveau",
-    telephone: "+33 (0)4 42 298 341",
+    telephone: "04 42 29 83 41",
+    /** Format international pour les liens `tel:` (sans le 0 après +33). */
+    telephoneLien: "tel:+33442298341",
     // TODO : orthographe du domaine à confirmer.
     email: "golf@chateaularcgolfclub.com",
   },
 } as const;
+
+/** Réservation des départs en ligne (Prima Golf), ouverte dans un nouvel onglet. */
+export const urlReservation = "https://prima.golf/sainte-victoire/home";
 
 export type NavItem = {
   label: string;
@@ -78,7 +83,7 @@ export const headerNav: NavItem[] = [
 export const headerActions = {
   info: { label: "Informations sur le parcours", href: "/informations-parcours" as Route },
   membre: { label: "Devenir membre", href: "/devenir-membre" as Route },
-  reservation: { label: "Réserver un départ", href: "/reserver" as Route },
+  reservation: { label: "Réserver un départ", href: urlReservation as Route },
 };
 
 /** Réseaux sociaux du club. TODO : renseigner les URL, sinon le libellé reste inerte. */
@@ -133,7 +138,6 @@ export const routesPubliques: NavItem[] = [
   { label: "Nous contacter", href: "/contact" },
   { label: "Actualités", href: "/actualites" },
   { label: "Devenir membre", href: "/devenir-membre" },
-  { label: "Réserver un départ", href: "/reserver" },
   { label: "La table du golf", href: "/restaurant" },
   { label: "Pro-shop", href: "/proshop" },
   { label: "Informations sur le parcours", href: "/informations-parcours" },

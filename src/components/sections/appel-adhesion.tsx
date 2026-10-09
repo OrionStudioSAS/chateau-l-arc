@@ -6,8 +6,6 @@ import { site } from "@/config/site";
 /** TODO : photo temporaire, à remplacer par la vue définitive (pins au couchant). */
 const IMAGE_PROVISOIRE = "/images/parcours.png";
 
-const telephone = `tel:${site.contact.telephone.replace(/[^+\d]/g, "")}`;
-
 /**
  * Dernier appel de l'accueil, juste avant le pied de page : encart photo en
  * retrait des bords de l'écran, comme sur la maquette.
@@ -54,7 +52,7 @@ export function AppelAdhesion() {
               Voir les abonnements <span aria-hidden="true">→</span>
             </Link>
             <a
-              href={telephone}
+              href={site.contact.telephoneLien}
               className="inline-flex items-center justify-center gap-2 rounded-sm border border-white/35 px-6 py-4 text-[12px] font-semibold uppercase tracking-[0.1em] text-white transition-colors hover:bg-white/10"
             >
               <svg

@@ -115,7 +115,7 @@ export function SiteFooter() {
                   e-mail, longue, ne se coupe plus au milieu de la ligne. */}
               <p className="mt-6 flex flex-col gap-2 text-[15px] text-club-950/80 sm:flex-row sm:flex-wrap sm:gap-x-2">
                 <a
-                  href={`tel:${telSansEspaces(site.contact.telephone)}`}
+                  href={site.contact.telephoneLien}
                   className="self-start underline underline-offset-4"
                 >
                   {site.contact.telephone}
@@ -133,7 +133,7 @@ export function SiteFooter() {
 
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <a
-                  href={`tel:${telSansEspaces(site.contact.telephone)}`}
+                  href={site.contact.telephoneLien}
                   className="rounded-sm bg-club-950 px-5 py-3 text-[12px] font-medium uppercase tracking-[0.06em] text-sable-50 transition-colors hover:bg-club-800"
                 >
                   Nous appeler

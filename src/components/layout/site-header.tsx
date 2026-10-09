@@ -23,7 +23,7 @@ const boutonEnTete = "px-3 py-2.5 text-[12px] font-medium tracking-[-0.12px] xl:
 const lienNav =
   "whitespace-nowrap text-[12px] font-normal uppercase tracking-[-0.12px] transition-colors";
 
-const telephone = `tel:${site.contact.telephone.replace(/[^+\d]/g, "")}`;
+const telephone = site.contact.telephoneLien;
 
 export function SiteHeader({
   statut,

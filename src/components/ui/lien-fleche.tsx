@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Route } from "next";
 
 import { cn } from "@/lib/cn";
+import { proprietesLien } from "@/lib/liens";
 
 /**
  * Lien d'action fléché, partagé par les sections de l'accueil.
@@ -20,6 +21,7 @@ export function LienFleche<T extends string>({
   return (
     <Link
       href={href}
+      {...proprietesLien(href)}
       className={cn(
         "text-[16px] font-semibold text-club-950 underline-offset-4 hover:underline",
         className,

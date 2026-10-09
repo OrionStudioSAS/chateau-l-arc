@@ -4,6 +4,7 @@ import type { Route } from "next";
 import { Container } from "@/components/ui/container";
 import { LienFleche } from "@/components/ui/lien-fleche";
 import { Surtitre } from "@/components/ui/surtitre";
+import { headerActions } from "@/config/site";
 
 type Picto = "drapeau" | "membres" | "academie";
 
@@ -20,7 +21,7 @@ const parcours: {
     titre: "Jouer une partie",
     texte: "18 trous ou 9 trous, réservation en ligne en deux minutes. Voiturette sur demande.",
     prix: "Dès 45 €",
-    lien: { label: "Réserver un départ", href: "/reserver" },
+    lien: { label: "Réserver un départ", href: headerActions.reservation.href },
     image: "/images/banner.jpg",
     picto: "drapeau",
   },

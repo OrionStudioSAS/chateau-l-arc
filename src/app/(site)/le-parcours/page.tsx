@@ -8,6 +8,7 @@ import { ReperesDepart } from "@/components/sections/reperes-depart";
 import { ZoneEntrainement } from "@/components/sections/zone-entrainement";
 import { BoutonClair } from "@/components/ui/bouton-clair";
 import { BoutonOr } from "@/components/ui/bouton-or";
+import { headerActions } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "Le parcours",
@@ -26,7 +27,7 @@ export default function Page() {
         tailleTitre="text-[16.25cqw]"
         actions={
           <>
-            <BoutonOr href="/reserver">Réserver ce parcours</BoutonOr>
+            <BoutonOr href={headerActions.reservation.href}>Réserver ce parcours</BoutonOr>
             <BoutonClair href="/le-parcours/scorecard">Voir la scorecard</BoutonClair>
           </>
         }

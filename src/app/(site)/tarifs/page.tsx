@@ -7,6 +7,7 @@ import { TarifsGreenFees } from "@/components/sections/tarifs-green-fees";
 import { TarifsSurPlace } from "@/components/sections/tarifs-sur-place";
 import { BoutonClair } from "@/components/ui/bouton-clair";
 import { BoutonOr } from "@/components/ui/bouton-or";
+import { headerActions } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "Tarifs",
@@ -28,7 +29,7 @@ export default function Page() {
         tailleTitre="text-[24.7cqw]"
         actions={
           <>
-            <BoutonOr href="/reserver">Réserver un départ</BoutonOr>
+            <BoutonOr href={headerActions.reservation.href}>Réserver un départ</BoutonOr>
             <BoutonClair href="/contact">Nous appeler</BoutonClair>
           </>
         }

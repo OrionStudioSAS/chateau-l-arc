@@ -8,7 +8,6 @@ import { headerActions } from "@/config/site";
 
 type Picto = "drapeau" | "membres" | "academie";
 
-/** TODO : photos temporaires, reprises des bannières en attendant les définitives. */
 const parcours: {
   titre: string;
   texte: string;
@@ -22,7 +21,7 @@ const parcours: {
     texte: "18 trous ou 9 trous, réservation en ligne en deux minutes. Voiturette sur demande.",
     prix: "Dès 45 €",
     lien: { label: "Réserver un départ", href: headerActions.reservation.href },
-    image: "/images/banner.jpg",
+    image: "/images/hp-jouer.png",
     picto: "drapeau",
   },
   {
@@ -30,7 +29,7 @@ const parcours: {
     texte: "Accès illimité au parcours, compétitions, practice et vie du club toute l'année.",
     prix: "Dès 540 € / an",
     lien: { label: "Voir les abonnements", href: "/tarifs" },
-    image: "/images/competitions.png",
+    image: "/images/hp-join.png",
     picto: "membres",
   },
   {
@@ -38,7 +37,7 @@ const parcours: {
     texte: "Cours individuels, stages enfants et adultes, préparation à la carte verte.",
     prix: "Cours & stages toute l'année",
     lien: { label: "Découvrir l'Académie", href: "/academie" },
-    image: "/images/academie.png",
+    image: "/images/hp-academie.png",
     picto: "academie",
   },
 ];

@@ -156,7 +156,9 @@ export function SiteHeader({
           <div className="col-start-3 flex items-center justify-self-end lg:gap-2.5">
             {/* Panneau déroulant (motif « disclosure ») : il présente un état,
                 pas des actions, d'où un bouton + région plutôt qu'un role="menu". */}
-            <div ref={zoneInfos} className="relative mr-3.5 hidden wide:block">
+            {/* h-20 : la zone occupe toute la hauteur de l'en-tête, pour que le
+                panneau (top-full) parte exactement de son bord inférieur. */}
+            <div ref={zoneInfos} className="relative mr-3.5 hidden h-20 items-center wide:flex">
               <button
                 type="button"
                 aria-expanded={infosOuvertes}
@@ -197,7 +199,13 @@ export function SiteHeader({
                   id="infos-parcours"
                   role="region"
                   aria-label="Aujourd'hui au golf"
-                  className="absolute left-0 top-full mt-3 w-[360px] rounded-lg border border-white/10 bg-club-950/90 text-white shadow-[0_18px_40px_rgba(16,24,40,0.3)] backdrop-blur-md"
+                  // Verre dépoli : la photo reste visible à travers. Sur l'en-tête
+                  // blanc (page défilée), voile plus sombre pour garder le texte
+                  // blanc lisible au-dessus d'un contenu clair.
+                  className={cn(
+                    "absolute left-0 top-full w-[360px] rounded-b-lg border border-t-0 border-white/15 text-white shadow-[0_18px_40px_rgba(16,24,40,0.25)] backdrop-blur-xl",
+                    transparent ? "bg-black/20" : "bg-encre/70",
+                  )}
                 >
                   <PanneauStatut installations={statut} meteo={meteo} />
                 </div>

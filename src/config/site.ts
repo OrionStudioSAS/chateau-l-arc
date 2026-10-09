@@ -54,6 +54,8 @@ export const site = {
     telephone: "04 42 29 83 41",
     /** Format international pour les liens `tel:` (sans le 0 après +33). */
     telephoneLien: "tel:+33442298341",
+    /** Club-house de Château l'Arc Golf Club (OpenStreetMap). */
+    coordonnees: { latitude: 43.4627, longitude: 5.5971 },
     // TODO : orthographe du domaine à confirmer.
     email: "golf@chateaularcgolfclub.com",
   },

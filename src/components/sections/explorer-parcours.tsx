@@ -9,9 +9,6 @@ import { Surtitre } from "@/components/ui/surtitre";
 import { TROUS } from "@/lib/parcours";
 import { REPERES } from "@/lib/reperes";
 
-/** TODO : image temporaire, à remplacer par la vidéo ou la photo de chaque trou. */
-const IMAGE_PROVISOIRE = "/images/banner.jpg";
-
 export function ExplorerParcours() {
   const [numero, setNumero] = useState(1);
   const trou = TROUS.find((candidat) => candidat.numero === numero) ?? TROUS[0];
@@ -36,7 +33,7 @@ export function ExplorerParcours() {
     <section className="bg-white py-14 lg:py-20">
       <Container>
         <div className="text-center">
-          <Surtitre filet="gris" className="text-encre/60">
+          <Surtitre className="text-or-600">
             Trou par trou
           </Surtitre>
 
@@ -118,14 +115,21 @@ export function ExplorerParcours() {
           <div className="overflow-hidden rounded-lg">
             {/* key : le remontage relance l'animation à chaque changement de trou. */}
             <div key={trou.numero} className="animation-trou">
-              <div className="relative aspect-video w-full bg-club-950">
-                <Image
-                  src={IMAGE_PROVISOIRE}
-                  alt=""
-                  fill
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-cover"
-                />
+              {/* Vidéo du trou, en boucle et sans son ; cadre noir tant
+                  qu'elle n'est pas fournie (cf. lib/parcours). */}
+              <div className="relative aspect-video w-full bg-black">
+                {trou.video ? (
+                  <video
+                    src={trou.video}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-label={`Vidéo du trou n°${trou.numero}`}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                ) : null}
               </div>
 
               <div className="bg-sable-100 px-5 py-6 sm:px-8">

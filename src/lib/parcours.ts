@@ -10,6 +10,12 @@ export type Trou = {
   conseilDuPro?: string;
   /** Position de la pastille sur map.png, en % de l'image. */
   position: { x: number; y: number };
+  /**
+   * Vidéo du trou (fichier dans public/videos, ou URL), lue en boucle et sans
+   * son au-dessus de la fiche. TODO : à renseigner trou par trou quand le club
+   * les fournit ; en attendant, un cadre noir tient la place.
+   */
+  video?: string;
 };
 
 /**

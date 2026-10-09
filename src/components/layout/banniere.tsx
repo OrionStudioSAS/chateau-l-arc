@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import type { Route } from "next";
 
 import { cn } from "@/lib/cn";
 
@@ -31,6 +33,7 @@ export function Banniere({
   retourLigne = false,
   texte,
   hauteur = "min-h-[80svh]",
+  filAriane,
   actions,
 }: {
   image: string;
@@ -43,6 +46,8 @@ export function Banniere({
   texte?: string;
   /** Hauteur minimale : plein écran sur l'accueil, 80 % ailleurs. */
   hauteur?: string;
+  /** Fil d'Ariane sous l'en-tête ; le dernier élément est la page courante. */
+  filAriane?: { label: string; href?: Route }[];
   actions?: React.ReactNode;
 }) {
   return (
@@ -70,6 +75,30 @@ export function Banniere({
         aria-hidden="true"
         className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
       />
+
+      {filAriane ? (
+        <nav
+          aria-label="Fil d'Ariane"
+          className="absolute inset-x-0 top-[88px] px-5 text-[13px] text-white/70 sm:px-8 xl:px-10"
+        >
+          <ol className="flex flex-wrap items-center gap-2">
+            {filAriane.map((etape, index) => (
+              <li key={etape.label} className="flex items-center gap-2">
+                {index > 0 ? <span aria-hidden="true">/</span> : null}
+                {etape.href ? (
+                  <Link href={etape.href} className="transition-colors hover:text-white">
+                    {etape.label}
+                  </Link>
+                ) : (
+                  <span aria-current="page" className="font-medium text-white">
+                    {etape.label}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </nav>
+      ) : null}
 
       <div className="@container relative w-full px-5 pb-4 sm:px-6">
         <p

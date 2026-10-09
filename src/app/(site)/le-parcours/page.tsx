@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 
 import { Banniere } from "@/components/layout/banniere";
+import { AppelAdhesion } from "@/components/sections/appel-adhesion";
 import { ChiffresCles } from "@/components/sections/chiffres-cles";
 import { ExplorerParcours } from "@/components/sections/explorer-parcours";
+import { InfosPratiques } from "@/components/sections/infos-pratiques";
 import { ParcoursDescription } from "@/components/sections/parcours-description";
 import { ReperesDepart } from "@/components/sections/reperes-depart";
 import { ZoneEntrainement } from "@/components/sections/zone-entrainement";
-import { BoutonClair } from "@/components/ui/bouton-clair";
-import { BoutonOr } from "@/components/ui/bouton-or";
-import { headerActions } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "Le parcours",
@@ -21,24 +20,23 @@ export default function Page() {
     <>
       <Banniere
         image="/images/parcours.png"
+        filAriane={[{ label: "Accueil", href: "/" }, { label: "Parcours" }]}
         accroche="18 trous entre pins et garrigue, face à la montagne Sainte-Victoire."
         titre="Parcours"
         // Titre court : la taille est recalibrée pour occuper la largeur.
         tailleTitre="text-[16.25cqw]"
-        actions={
-          <>
-            <BoutonOr href={headerActions.reservation.href}>Réserver ce parcours</BoutonOr>
-            <BoutonClair href="/le-parcours/scorecard">Voir la scorecard</BoutonClair>
-          </>
-        }
+        texte="18 trous · par 70 · 5 817 m, dessinés par Robert Trent Jones II entre pins, garrigue et Sainte-Victoire."
       />
 
       <ChiffresCles
+        variante="bande"
         chiffres={[
           { valeur: "18", ligne1: "Trous" },
-          { valeur: "5817", ligne1: "Mètres" },
           { valeur: "70", ligne1: "Par" },
-          { valeur: "128", ligne1: "Slope" },
+          { valeur: "5\u00a0817 m", ligne1: "Blancs" },
+          { valeur: "15 min", ligne1: "D'Aix-en-Provence" },
+          { valeur: "1985", ligne1: "Création" },
+          { valeur: "R. T. Jones II", ligne1: "Architecte" },
         ]}
       />
 
@@ -49,6 +47,12 @@ export default function Page() {
       <ExplorerParcours />
 
       <ZoneEntrainement />
+
+      <InfosPratiques />
+
+      {/* Emplacement du widget Instagram (intégré par Orion). */}
+
+      <AppelAdhesion />
     </>
   );
 }

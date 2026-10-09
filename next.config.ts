@@ -6,8 +6,10 @@ const nextConfig: NextConfig = {
   // Liens internes vérifiés à la compilation.
   typedRoutes: true,
   images: {
-    // À compléter avec le domaine du CMS / de l'API quand il sera connu.
-    remotePatterns: [],
+    // Versions WebP générées à la compilation (scripts/optimiser-images.mjs) :
+    // le service d'optimisation de Vercel est soumis à un quota mensuel.
+    loader: "custom",
+    loaderFile: "./src/lib/chargeur-images.ts",
   },
 };
 

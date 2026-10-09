@@ -46,3 +46,6 @@ next-env.d.ts
 
 # Worker MapLibre, copié depuis node_modules avant dev et build
 /public/vendor/
+
+# Versions WebP générées avant dev et build (scripts/optimiser-images.mjs)
+/public/optimise/

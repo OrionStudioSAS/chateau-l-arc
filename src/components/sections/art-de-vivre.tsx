@@ -6,14 +6,11 @@ import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 import { cn } from "@/lib/cn";
 
-/** TODO : image temporaire, à remplacer par les cinq photos définitives. */
-const IMAGE_PROVISOIRE = "/images/banner.jpg";
-
 type Carte = {
   label: string;
   titre: string;
   href?: Route;
-  cadrage: string;
+  image: string;
   /** Position dans la mosaïque, à partir de 1024 px. */
   grille: string;
   /** Titre agrandi sur la carte principale. */
@@ -25,7 +22,7 @@ const cartes: Carte[] = [
     label: "La table du golf",
     titre: "Déjeuner face au parcours",
     href: "/restaurant",
-    cadrage: "50% 60%",
+    image: "/images/hp-dejeuner.png",
     grille: "lg:col-span-7 lg:row-span-2",
     large: true,
   },
@@ -33,28 +30,28 @@ const cartes: Carte[] = [
     label: "Practice & Académie",
     titre: "Travailler le swing et le reste",
     href: "/academie",
-    cadrage: "70% 30%",
+    image: "/images/hp-swing.png",
     grille: "lg:col-span-5",
   },
   {
     // TODO : destination à fournir (site de l'école, probablement externe).
     label: "Grandir au cœur du domaine",
     titre: "SVIS - École internationale",
-    cadrage: "30% 40%",
+    image: "/images/hp-svis.png",
     grille: "lg:col-span-5",
   },
   {
     label: "Proshop",
     titre: "S'équiper au club",
     href: "/proshop",
-    cadrage: "40% 50%",
+    image: "/images/hp-sequipe.png",
     grille: "lg:col-span-6",
   },
   {
     label: "Compétitions & association",
     titre: "Se retrouver entre amis",
     href: "/competitions",
-    cadrage: "60% 45%",
+    image: "/images/hp-amis.png",
     grille: "lg:col-span-6",
   },
 ];
@@ -63,12 +60,11 @@ function ContenuCarte({ carte }: { carte: Carte }) {
   return (
     <>
       <Image
-        src={IMAGE_PROVISOIRE}
+        src={carte.image}
         alt=""
         fill
         sizes="(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 85vw"
         className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-        style={{ objectPosition: carte.cadrage }}
       />
       {/* Dégradé bas : le texte reste lisible quelle que soit la photo, y
           compris sur les petites cartes où le bloc de texte remonte haut. */}

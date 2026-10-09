@@ -65,13 +65,16 @@ export type NavItem = {
 /** Liens de gauche dans l'en-tête, dans l'ordre de la maquette. */
 export const headerNav: NavItem[] = [
   { label: "Parcours", href: "/le-parcours" },
-  { label: "Compétitions", href: "/competitions" },
   { label: "Tarifs", href: "/tarifs" },
+  { label: "Compétitions", href: "/competitions" },
   { label: "Histoire", href: "/histoire" },
-  { label: "Nous appeler", href: "/contact" },
+  { label: "Vie académie", href: "/academie" },
 ];
 
-/** Bloc de droite dans l'en-tête : un lien texte puis deux boutons. */
+/**
+ * Bloc de droite dans l'en-tête : état du parcours, téléphone, deux boutons.
+ * `info` reste la page complète de l'état des installations (menu mobile).
+ */
 export const headerActions = {
   info: { label: "Informations sur le parcours", href: "/informations-parcours" as Route },
   membre: { label: "Devenir membre", href: "/devenir-membre" as Route },
@@ -127,7 +130,7 @@ export const partenaires: { nom: string; logo: string; url?: string }[] = [
 /** Toutes les pages publiques, pour le plan du site. */
 export const routesPubliques: NavItem[] = [
   ...headerNav,
-  { label: "Académie", href: "/academie" },
+  { label: "Nous contacter", href: "/contact" },
   { label: "Actualités", href: "/actualites" },
   { label: "Devenir membre", href: "/devenir-membre" },
   { label: "Réserver un départ", href: "/reserver" },

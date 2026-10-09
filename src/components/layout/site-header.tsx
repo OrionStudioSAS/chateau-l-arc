@@ -4,18 +4,34 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import { ListeStatut } from "@/components/layout/liste-statut";
 import { Logo } from "@/components/layout/logo";
+import {
+  PanneauStatut,
+  PastilleStatut,
+  libelleBoutonStatut,
+} from "@/components/layout/panneau-statut";
 import { BoutonClair } from "@/components/ui/bouton-clair";
 import { BoutonOr } from "@/components/ui/bouton-or";
-import { headerActions, headerNav, routesHeroSombre } from "@/config/site";
+import { headerActions, headerNav, routesHeroSombre, site } from "@/config/site";
 import { cn } from "@/lib/cn";
 import type { Installation } from "@/lib/api/types";
+import type { Meteo } from "@/lib/meteo";
+
+/** Boutons de l'en-tête, plus compacts que ceux des sections (maquette). */
+const boutonEnTete = "px-3 py-2.5 text-[12px] font-medium tracking-[-0.12px] xl:px-3.5";
 
 const lienNav =
   "whitespace-nowrap text-[12px] font-normal uppercase tracking-[-0.12px] transition-colors";
 
-export function SiteHeader({ statut }: { statut: Installation[] }) {
+const telephone = `tel:${site.contact.telephone.replace(/[^+\d]/g, "")}`;
+
+export function SiteHeader({
+  statut,
+  meteo,
+}: {
+  statut: Installation[];
+  meteo: Meteo | null;
+}) {
   const pathname = usePathname();
   const [defile, setDefile] = useState(false);
   const [menuOuvert, setMenuOuvert] = useState(false);
@@ -85,6 +101,8 @@ export function SiteHeader({ statut }: { statut: Installation[] }) {
     return () => window.removeEventListener("scroll", surDefilement);
   }, []);
 
+  const boutonStatut = libelleBoutonStatut(statut);
+
   // Transparent uniquement en haut d'une page à hero sombre, menu mobile fermé.
   const transparent =
     !defile && !menuOuvert && routesHeroSombre.includes(pathname);
@@ -101,7 +119,7 @@ export function SiteHeader({ statut }: { statut: Installation[] }) {
       >
         {/* Grille en trois colonnes : le logo reste centré sans recouvrir les
             liens, quelle que soit la largeur des blocs latéraux. */}
-        <div className="mx-auto grid h-20 w-full max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 sm:px-8">
+        <div className="mx-auto grid h-20 w-full max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 sm:px-8 xl:px-10">
           <nav aria-label="Navigation principale" className="hidden lg:block">
             <ul className="flex items-center gap-4 xl:gap-8">
               {headerNav.map((item) => {
@@ -135,24 +153,26 @@ export function SiteHeader({ statut }: { statut: Installation[] }) {
             <Logo />
           </Link>
 
-          <div className="col-start-3 flex items-center justify-self-end lg:gap-4 xl:gap-5">
+          <div className="col-start-3 flex items-center justify-self-end lg:gap-2.5">
             {/* Panneau déroulant (motif « disclosure ») : il présente un état,
                 pas des actions, d'où un bouton + région plutôt qu'un role="menu". */}
-            {/* h-20 : la zone occupe toute la hauteur de l'en-tête, pour que le
-                panneau (top-full) parte exactement de son bord inférieur. */}
-            <div ref={zoneInfos} className="relative mr-4 hidden h-20 items-center wide:flex">
+            <div ref={zoneInfos} className="relative mr-3.5 hidden wide:block">
               <button
                 type="button"
                 aria-expanded={infosOuvertes}
                 aria-controls="infos-parcours"
                 onClick={() => setInfosOuvertes((ouvert) => !ouvert)}
                 className={cn(
-                  lienNav,
-                  "flex items-center gap-2",
-                  transparent ? "text-white" : "text-encre",
+                  "flex items-center gap-2.5 whitespace-nowrap rounded-full border py-2 pl-4 pr-3.5 text-[14px] font-medium transition-colors",
+                  transparent
+                    ? "border-white/25 bg-club-950/30 text-white backdrop-blur-sm hover:bg-club-950/45"
+                    : "border-club-950/15 bg-white text-encre hover:bg-sable-50",
                 )}
               >
-                {headerActions.info.label}
+                {boutonStatut.ouvert !== null ? (
+                  <PastilleStatut actif={boutonStatut.ouvert} />
+                ) : null}
+                {boutonStatut.texte}
                 <svg
                   aria-hidden="true"
                   viewBox="0 0 12 12"
@@ -176,22 +196,51 @@ export function SiteHeader({ statut }: { statut: Installation[] }) {
                 <div
                   id="infos-parcours"
                   role="region"
-                  aria-label="État des installations"
-                  className="absolute left-1/2 top-full w-[420px] -translate-x-1/2 rounded-b-xl bg-white text-encre shadow-[0_18px_40px_rgba(16,24,40,0.18)]"
+                  aria-label="Aujourd'hui au golf"
+                  className="absolute left-0 top-full mt-3 w-[360px] rounded-lg border border-white/10 bg-club-950/90 text-white shadow-[0_18px_40px_rgba(16,24,40,0.3)] backdrop-blur-md"
                 >
-                  <ListeStatut installations={statut} />
+                  <PanneauStatut installations={statut} meteo={meteo} />
                 </div>
               ) : null}
             </div>
+
+            <a
+              href={telephone}
+              aria-label={`Appeler le golf au ${site.contact.telephone}`}
+              className={cn(
+                "mr-3.5 hidden size-9 items-center justify-center rounded-full border transition-colors xl:flex",
+                transparent
+                  ? "border-white/40 text-white hover:bg-white/10"
+                  : "border-club-950/20 text-encre hover:bg-sable-50",
+              )}
+            >
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="size-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinejoin="round"
+              >
+                <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" />
+              </svg>
+            </a>
+
             <BoutonClair
               href={headerActions.membre.href}
-              className="hidden lg:inline-flex"
+              // Blanc sur la photo, sable sur l'en-tête blanc pour rester visible.
+              className={cn(
+                boutonEnTete,
+                "hidden lg:inline-flex",
+                transparent ? "bg-white hover:bg-sable-100" : "bg-sable-100 hover:bg-sable-50",
+              )}
             >
               {headerActions.membre.label}
             </BoutonClair>
             <BoutonOr
               href={headerActions.reservation.href}
-              className="hidden lg:inline-flex"
+              className={cn(boutonEnTete, "hidden lg:inline-flex")}
             >
               {headerActions.reservation.label}
             </BoutonOr>
@@ -231,6 +280,14 @@ export function SiteHeader({ statut }: { statut: Installation[] }) {
                     </Link>
                   </li>
                 ))}
+                <li>
+                  <a
+                    href={telephone}
+                    className="block border-b border-club-950/10 py-4 text-[14px] uppercase tracking-[0.14em] text-encre"
+                  >
+                    Nous appeler
+                  </a>
+                </li>
                 <li>
                   <Link
                     href={headerActions.info.href}

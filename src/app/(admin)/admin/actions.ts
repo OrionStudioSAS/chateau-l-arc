@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { tags } from "@/lib/api/content";
 import { LONGUEUR_MAX_BANDEAU, type EtatBandeau } from "@/lib/bandeau";
 import type { EtatConnexion } from "@/lib/auth-etats";
+import { LONGUEUR_MAX_PRECISION } from "@/lib/statut";
 import { creerClientServeur } from "@/lib/supabase/server";
 
 /** Connexion par e-mail et mot de passe (comptes créés dans Supabase). */
@@ -97,24 +98,34 @@ export async function publierStatutEtBandeau(
   }
 
   const cles = installations.map((installation) => installation.cle as string);
-  const actives = cles.filter((cle) => formData.get(`statut-${cle}`) === "on");
-  const inactives = cles.filter((cle) => !actives.includes(cle));
+  const precisions = new Map(
+    cles.map((cle) => [
+      cle,
+      String(formData.get(`precision-${cle}`) ?? "").trim() || null,
+    ]),
+  );
+
+  if ([...precisions.values()].some((p) => p && p.length > LONGUEUR_MAX_PRECISION)) {
+    return {
+      statut: "erreur",
+      message: `Une précision dépasse ${LONGUEUR_MAX_PRECISION} caractères.`,
+    };
+  }
+
   const maintenant = new Date().toISOString();
 
-  // Deux requêtes plutôt qu'une par installation.
+  // Une requête par installation : chacune porte sa propre précision.
   const resultats = await Promise.all([
-    actives.length
-      ? supabase
-          .from("statut_installations")
-          .update({ actif: true, maj_le: maintenant })
-          .in("cle", actives)
-      : null,
-    inactives.length
-      ? supabase
-          .from("statut_installations")
-          .update({ actif: false, maj_le: maintenant })
-          .in("cle", inactives)
-      : null,
+    ...cles.map((cle) =>
+      supabase
+        .from("statut_installations")
+        .update({
+          actif: formData.get(`statut-${cle}`) === "on",
+          precision: precisions.get(cle),
+          maj_le: maintenant,
+        })
+        .eq("cle", cle),
+    ),
     supabase
       .from("bandeau")
       .update({

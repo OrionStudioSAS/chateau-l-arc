@@ -1,11 +1,11 @@
 import type { Installation } from "@/lib/api/types";
-import { libelleEtat, parGroupe } from "@/lib/statut";
+import { parGroupe, valeurStatut } from "@/lib/statut";
 import { cn } from "@/lib/cn";
 
 /**
- * Liste de l'état des installations, groupée et séparée par des filets.
- * Utilisée dans le menu de l'en-tête et sur la page « Informations sur le
- * parcours » (seul accès en mobile, où le menu n'existe pas).
+ * Liste complète de l'état des installations, groupée et séparée par des
+ * filets, sur la page « Informations sur le parcours ». Le menu de l'en-tête
+ * n'en reprend que l'essentiel (cf. PanneauStatut).
  */
 export function ListeStatut({
   installations,
@@ -44,7 +44,7 @@ export function ListeStatut({
                     : "text-encre/80",
                 )}
               >
-                {libelleEtat(installation)}
+                {valeurStatut(installation)}
                 {/* Les états d'ouverture portent une pastille, comme sur la maquette. */}
                 {installation.type === "ouverture" ? (
                   <span

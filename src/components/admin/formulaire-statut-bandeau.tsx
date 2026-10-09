@@ -7,7 +7,7 @@ import { AdminCard } from "@/components/admin/admin-card";
 import type { Installation } from "@/lib/api/types";
 import { LONGUEUR_MAX_BANDEAU, type EtatBandeau } from "@/lib/bandeau";
 import { cn } from "@/lib/cn";
-import { libelleEtat } from "@/lib/statut";
+import { LONGUEUR_MAX_PRECISION, valeurStatut } from "@/lib/statut";
 
 /** Pictogrammes du back-office uniquement : le site public n'en affiche pas. */
 const icones: Record<string, string> = {
@@ -41,6 +41,9 @@ export function FormulaireStatutBandeau({
   const [actifs, setActifs] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(installations.map((i) => [i.cle, i.actif])),
   );
+  const [precisions, setPrecisions] = useState<Record<string, string>>(() =>
+    Object.fromEntries(installations.map((i) => [i.cle, i.precision ?? ""])),
+  );
 
   return (
     <form action={action} className="max-w-3xl space-y-5">
@@ -53,20 +56,43 @@ export function FormulaireStatutBandeau({
           <ul className="divide-y divide-neutral-200">
             {installations.map((installation) => {
               const actif = actifs[installation.cle];
-              const libelle = libelleEtat({ ...installation, actif });
+              const libelle = valeurStatut({
+                ...installation,
+                actif,
+                precision: precisions[installation.cle].trim() || null,
+              });
 
               return (
                 <li
                   key={installation.cle}
-                  className="flex items-center justify-between gap-3 py-3 sm:gap-4"
+                  className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 py-3 sm:gap-x-4"
                 >
                   <label
                     htmlFor={`statut-${installation.cle}`}
-                    className="flex min-w-0 items-center gap-2 text-[14px] font-medium text-neutral-900 sm:gap-3 sm:text-[15px]"
+                    className="flex min-w-0 flex-1 items-center gap-2 text-[14px] font-medium text-neutral-900 sm:gap-3 sm:text-[15px]"
                   >
                     <span aria-hidden="true">{icones[installation.cle] ?? "•"}</span>
                     {installation.libelle}
                   </label>
+
+                  {/* Précision facultative (horaires…), affichée sur le site à la
+                      place de « Ouvert ». Passe sous la ligne en mobile. */}
+                  {installation.type === "ouverture" ? (
+                    <input
+                      name={`precision-${installation.cle}`}
+                      aria-label={`Précision pour ${installation.libelle}`}
+                      value={precisions[installation.cle]}
+                      onChange={(evenement) =>
+                        setPrecisions((precedent) => ({
+                          ...precedent,
+                          [installation.cle]: evenement.target.value,
+                        }))
+                      }
+                      maxLength={LONGUEUR_MAX_PRECISION}
+                      placeholder="Précision (ex. 8h – 19h)"
+                      className="order-last w-full rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-1.5 text-[13px] text-neutral-900 outline-none placeholder:text-neutral-400 focus:border-club-600 focus:bg-white sm:order-none sm:w-48"
+                    />
+                  ) : null}
 
                   <div className="flex shrink-0 items-center gap-2 sm:gap-3">
                     <span

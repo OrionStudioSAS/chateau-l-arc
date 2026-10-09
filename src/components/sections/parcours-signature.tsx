@@ -1,81 +1,111 @@
 import Image from "next/image";
+import Link from "next/link";
 
-import { BoutonOr } from "@/components/ui/bouton-or";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 
-/** TODO : image temporaire, à remplacer par la photo du parcours. */
-const IMAGE_PROVISOIRE = "/images/banner.jpg";
+/** TODO : photo temporaire, à remplacer par la vue aérienne du parcours. */
+const IMAGE_PROVISOIRE = "/images/parcours.png";
 
-const statistiques = [
-  { label: "Longueur", valeur: "5 817 m" },
-  { label: "Par", valeur: "70" },
-  { label: "Trous", valeur: "18" },
-  { label: "Année de création", valeur: "1985" },
+type Picto = "compas" | "montagne" | "drapeau";
+
+const atouts: { titre: string; texte: string; picto: Picto }[] = [
+  {
+    titre: "Dessiné par Robert Trent Jones II",
+    texte: "L'un des plus grands architectes de golf au monde, en 1985.",
+    picto: "compas",
+  },
+  {
+    titre: "Face à la montagne Sainte-Victoire",
+    texte: "La montagne chère à Cézanne accompagne la partie, trou après trou.",
+    picto: "montagne",
+  },
+  {
+    titre: "Par 70 · 5 817 m",
+    texte: "Un parcours technique et varié, exigeant pour les bons joueurs, accessible à tous.",
+    picto: "drapeau",
+  },
 ];
+
+function Pictogramme({ nom }: { nom: Picto }) {
+  const chemins: Record<Picto, React.ReactNode> = {
+    compas: (
+      <>
+        <circle cx="12" cy="5" r="2" />
+        <path d="M11 7 6 20m7-13 5 13M8 15h8" />
+      </>
+    ),
+    montagne: <path d="M3 19 9 9l3 5 3-3 6 8H3Z" />,
+    drapeau: <path d="M6 21V4m0 0h11l-2 4 2 4H6" />,
+  };
+
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="mt-0.5 size-5 shrink-0 text-or-600"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {chemins[nom]}
+    </svg>
+  );
+}
 
 export function ParcoursSignature() {
   return (
-    <section className="py-14 lg:py-20">
-      <Container>
-        <div className="text-center">
-          <Surtitre className="text-encre/60">Golf</Surtitre>
-
-          <h2 className="mt-6 font-butler text-[40px] font-medium leading-[1.1] text-encre sm:text-[64px]">
-            Un parcours signé
-            <br />
-            Robert Trent Jones II
-          </h2>
-
-          <p className="mx-auto mt-6 max-w-2xl text-[18px] font-normal leading-relaxed text-encre/70">
-            Dessiné en 1985 par l&apos;un des plus grands architectes de golf au monde, ce
-            par 70 de 5&nbsp;817 mètres propose une expérience variée dans les valeurs du
-            style américain.
-          </p>
-        </div>
-
-        <div className="relative mt-14 overflow-hidden">
+    <section className="bg-sable-100 py-14 lg:py-20">
+      <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-20">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-sm lg:aspect-[5/4]">
           <Image
             src={IMAGE_PROVISOIRE}
-            alt=""
+            alt="Le parcours entre pins et garrigue, la Sainte-Victoire en toile de fond"
             fill
-            sizes="(min-width: 1152px) 1088px, 100vw"
+            sizes="(min-width: 1024px) 50vw, 100vw"
             className="object-cover"
           />
-          {/* Voile uniforme + dégradé latéral : le texte occupe la moitié gauche. */}
-          <div aria-hidden="true" className="absolute inset-0 bg-black/35" />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-transparent"
-          />
+        </div>
 
-          <div className="relative flex min-h-[600px] flex-col justify-end p-8 text-white sm:p-12">
-            <h3 className="max-w-lg font-butler text-[32px] font-medium leading-[1.15] tracking-[-0.5px] sm:text-[48px]">
-              Entre pins et garrigue, face à la Sainte-Victoire
-            </h3>
+        <div>
+          <Surtitre aligne="gauche" className="text-or-600">
+            Le parcours
+          </Surtitre>
+          <h2 className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+            Entre pins et garrigue, un tracé de caractère
+          </h2>
+          <p className="mt-5 max-w-lg text-[16px] leading-relaxed text-encre/70">
+            Le parcours serpente dans un environnement préservé, entre pins parasols,
+            garrigue et vignes, avec la Sainte-Victoire en toile de fond.
+          </p>
 
-            <dl className="mt-8 flex w-fit flex-wrap gap-x-8 gap-y-4 border-y border-white/30 py-4">
-              {statistiques.map((statistique) => (
-                <div key={statistique.label}>
-                  <dt className="text-[12px] font-normal uppercase tracking-[0.12em] text-white/75">
-                    {statistique.label}
-                  </dt>
-                  <dd className="mt-1 font-butler text-[28px] font-normal">
-                    {statistique.valeur}
-                  </dd>
+          <ul className="mt-8 divide-y divide-encre/10 border-y border-encre/10">
+            {atouts.map((atout) => (
+              <li key={atout.titre} className="flex gap-4 py-4">
+                <Pictogramme nom={atout.picto} />
+                <div>
+                  <p className="text-[15px] font-semibold text-club-950">{atout.titre}</p>
+                  <p className="mt-1 text-[14px] leading-relaxed text-encre/60">{atout.texte}</p>
                 </div>
-              ))}
-            </dl>
+              </li>
+            ))}
+          </ul>
 
-            <p className="mt-8 max-w-md text-[18px] font-normal leading-relaxed text-white/85">
-              Créé en 1985, le parcours serpente entre pins et garrigue dans un
-              environnement d&apos;exception, avec une vue fantastique sur la montagne
-              Sainte-Victoire chère à Cézanne.
-            </p>
-
-            <BoutonOr href="/le-parcours" className="mt-8 w-fit">
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/le-parcours"
+              className="inline-flex items-center gap-2 rounded-sm bg-club-950 px-5 py-3.5 text-[12px] font-semibold uppercase tracking-[0.1em] text-sable-50 transition-colors hover:bg-club-800"
+            >
               Explorer le parcours <span aria-hidden="true">→</span>
-            </BoutonOr>
+            </Link>
+            <Link
+              href="/le-parcours/scorecard"
+              className="inline-flex items-center gap-2 rounded-sm border border-club-950/25 px-5 py-3.5 text-[12px] font-semibold uppercase tracking-[0.1em] text-club-950 transition-colors hover:bg-white"
+            >
+              Carte de score (PDF)
+            </Link>
           </div>
         </div>
       </Container>

@@ -100,12 +100,12 @@ export function SiteFooter() {
               ))}
             </div>
 
-            <div className="rounded-sm border border-sable-50/25 px-6 py-6">
+            <div className="rounded-sm bg-sauge-200 px-6 py-6 text-club-950">
               <p className="text-[20px] font-bold uppercase tracking-[0.02em]">
                 Devenir membre
               </p>
 
-              <address className="mt-6 text-[15px] not-italic leading-relaxed text-sable-50/85">
+              <address className="mt-6 text-[15px] not-italic leading-relaxed text-club-950/80">
                 {site.contact.adresse}
                 <br />
                 {site.contact.codePostalVille}
@@ -113,7 +113,7 @@ export function SiteFooter() {
 
               {/* Téléphone et e-mail l'un sous l'autre en mobile : l'adresse
                   e-mail, longue, ne se coupe plus au milieu de la ligne. */}
-              <p className="mt-6 flex flex-col gap-2 text-[15px] text-sable-50/85 sm:flex-row sm:flex-wrap sm:gap-x-2">
+              <p className="mt-6 flex flex-col gap-2 text-[15px] text-club-950/80 sm:flex-row sm:flex-wrap sm:gap-x-2">
                 <a
                   href={`tel:${telSansEspaces(site.contact.telephone)}`}
                   className="self-start underline underline-offset-4"
@@ -134,13 +134,13 @@ export function SiteFooter() {
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <a
                   href={`tel:${telSansEspaces(site.contact.telephone)}`}
-                  className="rounded-sm bg-club-950 px-5 py-3 text-[12px] font-medium uppercase tracking-[0.06em] text-sable-50 transition-colors hover:bg-club-600"
+                  className="rounded-sm bg-club-950 px-5 py-3 text-[12px] font-medium uppercase tracking-[0.06em] text-sable-50 transition-colors hover:bg-club-800"
                 >
                   Nous appeler
                 </a>
                 <Link
                   href="/devenir-membre"
-                  className="rounded-sm border border-sable-50/30 px-5 py-3 text-[12px] font-medium uppercase tracking-[0.06em] text-sable-50 underline underline-offset-4 transition-colors hover:bg-sable-50/10"
+                  className="rounded-sm bg-white px-5 py-3 text-[12px] font-medium uppercase tracking-[0.06em] text-club-950 transition-colors hover:bg-sable-50"
                 >
                   En savoir plus
                 </Link>
@@ -149,7 +149,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <p className="mt-12 max-w-3xl text-[14px] font-medium uppercase tracking-[-0.14px] text-sable-50/70 sm:text-[17px] lg:text-[20px] lg:tracking-[-0.2px]">
+        <p className="mt-12 max-w-3xl lg:max-w-none text-[14px] font-medium uppercase tracking-[-0.14px] text-sable-50/70 sm:text-[17px] lg:text-[20px] lg:tracking-[-0.2px]">
           {site.heroAccroche}
         </p>
 

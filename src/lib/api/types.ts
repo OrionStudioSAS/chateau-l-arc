@@ -117,6 +117,10 @@ export type Installation = {
   type: "ouverture" | "autorisation";
   feminin: boolean;
   actif: boolean;
+  /** Remplace « Ouvert » quand l'installation l'est (« 8h – 19h », « Ouvert midi »). */
+  precision: string | null;
+  /** Dernière publication par l'accueil (ISO). */
+  majLe: string;
 };
 
 /** Pop-up marketing (une seule à la fois). `version` change à chaque publication. */

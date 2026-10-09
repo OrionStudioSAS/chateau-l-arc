@@ -19,7 +19,7 @@ export async function AnnouncementBar() {
         {bandeau.lien ? (
           <a
             href={bandeau.lien.href}
-            className="font-semibold text-sable-50 underline-offset-4 hover:underline"
+            className="font-semibold text-or-400 underline-offset-4 hover:underline"
           >
             {bandeau.lien.label} <span aria-hidden="true">→</span>
           </a>

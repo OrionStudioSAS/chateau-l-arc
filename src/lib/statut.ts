@@ -13,6 +13,19 @@ export function libelleEtat(installation: Installation): string {
   return installation.actif ? `Autorisé${e}` : `Interdit${e}`;
 }
 
+/** Longueur maximale d'une précision (contrainte aussi en base). */
+export const LONGUEUR_MAX_PRECISION = 30;
+
+/**
+ * Valeur affichée en face de l'installation : la précision saisie par
+ * l'accueil si l'installation est ouverte (« 8h – 19h »), sinon l'état.
+ */
+export function valeurStatut(installation: Installation): string {
+  return installation.actif && installation.precision
+    ? installation.precision
+    : libelleEtat(installation);
+}
+
 /** Regroupe les installations en conservant l'ordre reçu. */
 export function parGroupe(installations: Installation[]): Installation[][] {
   const groupes = new Map<number, Installation[]>();

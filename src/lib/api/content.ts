@@ -220,7 +220,7 @@ export async function getStatutInstallations(): Promise<Installation[]> {
   const supabase = creerClientPublic();
   const { data, error } = await supabase
     .from("statut_installations")
-    .select("cle, libelle, groupe, type, feminin, actif")
+    .select("cle, libelle, groupe, type, feminin, actif, precision, maj_le")
     .order("groupe", { ascending: true })
     .order("ordre", { ascending: true });
 
@@ -229,7 +229,10 @@ export async function getStatutInstallations(): Promise<Installation[]> {
     return [];
   }
 
-  return data as Installation[];
+  return data.map(({ maj_le, ...installation }) => ({
+    ...installation,
+    majLe: maj_le,
+  })) as Installation[];
 }
 
 /**

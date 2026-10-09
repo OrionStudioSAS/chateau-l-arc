@@ -16,17 +16,48 @@ export type ChiffreCle = {
  * TODO : basculer sur la couche contenu si le club doit pouvoir les éditer.
  */
 const chiffresAccueil: ChiffreCle[] = [
-  { valeur: "1985", ligne1: "Création du", ligne2: "parcours" },
-  { valeur: "18 trous", ligne1: "Parcours signés", ligne2: "Robert Trent Jones" },
-  { valeur: "15 min", ligne1: "Depuis", ligne2: "Aix-en-Provence" },
-  { valeur: "5 817 m", ligne1: "Longueur", ligne2: "de jeu" },
+  { valeur: "18 trous", ligne1: "Par 70" },
+  { valeur: "5 817 m", ligne1: "Longueur" },
+  { valeur: "R. T. Jones II", ligne1: "Architecte" },
+  { valeur: "1985", ligne1: "Création" },
+  { valeur: "15 min", ligne1: "D'Aix-en-Provence" },
 ];
 
 export function ChiffresCles({
   chiffres = chiffresAccueil,
+  variante = "colonnes",
 }: {
   chiffres?: ChiffreCle[];
+  /**
+   * « colonnes » : grands chiffres alignés à gauche, avec filet doré (page
+   * Parcours). « bande » : bandeau sable compact, chiffres centrés (accueil).
+   */
+  variante?: "colonnes" | "bande";
 }) {
+  if (variante === "bande") {
+    return (
+      <section className="bg-sable-100">
+        <Container className="grid grid-cols-2 gap-x-6 gap-y-8 py-10 text-center sm:grid-cols-3 lg:flex lg:justify-between lg:py-9">
+          {chiffres.map((chiffre, index) => (
+            <div
+              key={chiffre.valeur}
+              // Cinquième chiffre seul sur sa rangée en mobile : centré sur deux colonnes.
+              className={index === chiffres.length - 1 && chiffres.length % 2 ? "col-span-2 sm:col-span-1" : undefined}
+            >
+              <p className="whitespace-nowrap font-butler text-[24px] font-medium leading-none tracking-[-0.5px] text-encre min-[400px]:text-[28px] sm:text-[34px]">
+                {chiffre.valeur}
+              </p>
+              <p className="mt-2.5 text-[11px] font-normal uppercase tracking-[0.14em] text-encre/50">
+                {chiffre.ligne1}
+                {chiffre.ligne2 ? ` ${chiffre.ligne2}` : null}
+              </p>
+            </div>
+          ))}
+        </Container>
+      </section>
+    );
+  }
+
   return (
     <section>
       {/*

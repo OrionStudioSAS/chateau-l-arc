@@ -1,24 +1,18 @@
 import Image from "next/image";
 
 import { Container } from "@/components/ui/container";
-import { Surtitre } from "@/components/ui/surtitre";
 import { partenaires } from "@/config/site";
 
 export function Partenaires() {
   return (
-    <section className="py-14 lg:py-20">
+    <section className="border-t border-encre/10 bg-white py-12 lg:py-14">
       <Container>
-        <div className="text-center">
-          <Surtitre filet="gris" className="text-encre/60">
-            Ils nous accompagnent
-          </Surtitre>
+        {/* Bandeau discret : un simple intitulé au-dessus d'une rangée de logos. */}
+        <h2 className="text-center text-[11px] font-normal uppercase tracking-[0.2em] text-encre/50">
+          Ils accompagnent le club
+        </h2>
 
-          <h2 className="mt-6 font-butler text-[40px] font-medium leading-[1.1] text-club-950 sm:text-[64px]">
-            Nos partenaires
-          </h2>
-        </div>
-
-        <ul className="mt-10 grid grid-cols-2 items-center gap-x-6 gap-y-6 sm:grid-cols-3 sm:gap-x-8 sm:gap-y-10 lg:mt-14 lg:grid-cols-6">
+        <ul className="mt-8 grid grid-cols-3 items-center gap-x-6 gap-y-6 sm:gap-x-8 lg:grid-cols-6">
           {partenaires.map((partenaire, index) => {
             const logo = (
               <Image
@@ -29,7 +23,7 @@ export function Partenaires() {
                 // Le visuel d'attente est un SVG : l'optimiseur d'images ne le
                 // traite pas, on le sert tel quel.
                 unoptimized
-                className="h-[60px] w-auto object-contain"
+                className="h-[44px] w-auto object-contain lg:h-[52px]"
               />
             );
 

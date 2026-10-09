@@ -26,6 +26,8 @@ export function Banniere({
   interligneTitre = "leading-[0.72]",
   /** Titre réparti sur plusieurs lignes : les `\n` du texte sont respectés. */
   retourLigne = false,
+  texte,
+  hauteur = "min-h-[80svh]",
   actions,
 }: {
   image: string;
@@ -34,10 +36,14 @@ export function Banniere({
   tailleTitre?: string;
   interligneTitre?: string;
   retourLigne?: boolean;
+  /** Phrase de présentation sous le titre (accueil). */
+  texte?: string;
+  /** Hauteur minimale : plein écran sur l'accueil, 80 % ailleurs. */
+  hauteur?: string;
   actions?: React.ReactNode;
 }) {
   return (
-    <section className="relative -mt-20 flex min-h-[80svh] flex-col justify-end bg-club-950 text-white">
+    <section className={cn("relative -mt-20 flex flex-col justify-end bg-club-950 text-white", hauteur)}>
       <Image
         src={image}
         alt=""
@@ -54,7 +60,7 @@ export function Banniere({
       />
 
       <div className="@container relative w-full px-5 pb-4 sm:px-6">
-        <p className="max-w-3xl text-[14px] font-medium uppercase tracking-[-0.14px] text-white/70 sm:text-[17px] lg:text-[20px] lg:tracking-[-0.2px]">
+        <p className="max-w-3xl text-[14px] font-medium uppercase lg:max-w-none tracking-[-0.14px] text-white/70 sm:text-[17px] lg:text-[20px] lg:tracking-[-0.2px]">
           {accroche}
         </p>
 
@@ -80,8 +86,14 @@ export function Banniere({
           {titre}
         </h1>
 
+        {texte ? (
+          <p className="mt-5 max-w-xl text-[16px] font-normal leading-relaxed text-white/90 sm:text-[18px]">
+            {texte}
+          </p>
+        ) : null}
+
         {actions ? (
-          <div className="mt-5 flex flex-wrap items-center gap-3">{actions}</div>
+          <div className="mt-6 flex flex-wrap items-center gap-3 sm:mt-7">{actions}</div>
         ) : null}
       </div>
     </section>

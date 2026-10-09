@@ -12,7 +12,7 @@ const IMAGE_PROVISOIRE = "/images/parcours.png";
  */
 export function AppelAdhesion() {
   return (
-    <section className="bg-white px-3 pb-3 pt-14 sm:px-4 sm:pb-4 lg:pt-20">
+    <section className="bg-white px-3 pt-14 sm:px-4 lg:pt-20">
       <div className="relative overflow-hidden bg-club-950 text-white">
         <Image
           src={IMAGE_PROVISOIRE}

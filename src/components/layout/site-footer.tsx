@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { CarteDomaine } from "@/components/layout/carte-domaine";
 import {
   liensInstitutionnels,
   liensLegaux,
@@ -12,31 +13,6 @@ const lienPied =
   "text-[15px] text-sable-50/85 underline-offset-4 transition-colors hover:text-sable-50 hover:underline";
 
 const telSansEspaces = (numero: string) => numero.replace(/[^+\d]/g, "");
-
-const { latitude, longitude } = site.contact.coordonnees;
-
-/**
- * Vue d'environ 2 km de large, repère sur le club-house. L'iframe déborde de
- * son cadre en haut à gauche pour masquer les boutons de zoom (la carte est
- * figée) : le centre de la vue est décalé d'autant pour garder le repère au
- * milieu du cadre. Le crédit OpenStreetMap, en bas à droite, reste visible.
- */
-const centre = { latitude: latitude + 0.0015, longitude: longitude - 0.0014 };
-const carte = `https://www.openstreetmap.org/export/embed.html?${new URLSearchParams({
-  bbox: [
-    centre.longitude - 0.012,
-    centre.latitude - 0.006,
-    centre.longitude + 0.012,
-    centre.latitude + 0.006,
-  ].join(","),
-  layer: "mapnik",
-  marker: `${latitude},${longitude}`,
-})}`;
-
-const itineraire = `https://www.google.com/maps/dir/?${new URLSearchParams({
-  api: "1",
-  destination: "Château l'Arc Golf Club, 13710 Fuveau",
-})}`;
 
 export function SiteFooter() {
   return (
@@ -92,28 +68,7 @@ export function SiteFooter() {
                 </ul>
               </div>
 
-              {/* Carte OpenStreetMap (sans cookie publicitaire, donc sans
-                  bandeau de consentement), figée : elle ne capte pas la
-                  molette pendant le défilement. Un clic ouvre l'itinéraire
-                  dans Google Maps. */}
-              <a
-                href={itineraire}
-                rel="noopener"
-                target="_blank"
-                className="group relative mt-8 block h-[180px] max-w-[375px] overflow-hidden rounded-sm border border-sable-50/20 sm:h-[225px]"
-              >
-                <iframe
-                  src={carte}
-                  title={`Plan d'accès : ${site.contact.adresse}, ${site.contact.codePostalVille}`}
-                  loading="lazy"
-                  tabIndex={-1}
-                  className="pointer-events-none absolute -left-12 -top-[72px] h-[calc(100%+72px)] w-[calc(100%+48px)] saturate-[0.8] transition-[filter] duration-300 group-hover:saturate-100"
-                />
-                <span className="absolute left-3 top-3 rounded-sm bg-club-950/90 px-3 py-1.5 text-[12px] font-medium text-sable-50 shadow-sm">
-                  {site.contact.adresse}, {site.contact.codePostalVille} · Itinéraire{" "}
-                  <span aria-hidden="true">↗</span>
-                </span>
-              </a>
+              <CarteDomaine />
             </div>
 
             <div className="space-y-4">

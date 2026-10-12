@@ -61,6 +61,12 @@ export const site = {
   },
 } as const;
 
+/** Itinéraire vers le golf dans Google Maps (pied de page, page Histoire). */
+export const urlItineraire = `https://www.google.com/maps/dir/?${new URLSearchParams({
+  api: "1",
+  destination: "Château l'Arc Golf Club, 13710 Fuveau",
+})}`;
+
 /** Réservation des départs en ligne (Prima Golf), ouverte dans un nouvel onglet. */
 export const urlReservation = "https://prima.golf/sainte-victoire/home";
 

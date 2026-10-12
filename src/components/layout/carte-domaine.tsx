@@ -4,7 +4,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import type { LayerSpecification, StyleSpecification } from "maplibre-gl";
 import { useEffect, useRef, useState } from "react";
 
-import { site } from "@/config/site";
+import { site, urlItineraire } from "@/config/site";
 import { cn } from "@/lib/cn";
 
 /** Style vectoriel OpenFreeMap (gratuit, sans clé, usage commercial autorisé). */
@@ -12,10 +12,6 @@ const STYLE = "https://tiles.openfreemap.org/styles/positron";
 
 const { latitude, longitude } = site.contact.coordonnees;
 
-const itineraire = `https://www.google.com/maps/dir/?${new URLSearchParams({
-  api: "1",
-  destination: "Château l'Arc Golf Club, 13710 Fuveau",
-})}`;
 
 /** Palette de la carte, accordée au vert du pied de page. */
 const couleurs = {
@@ -212,7 +208,7 @@ export function CarteDomaine({ className }: { className?: string }) {
 
       {/* Toute la carte mène à l'itinéraire ; le crédit reste à part, cliquable. */}
       <a
-        href={itineraire}
+        href={urlItineraire}
         target="_blank"
         rel="noopener"
         className="group absolute inset-0 flex items-start p-3"

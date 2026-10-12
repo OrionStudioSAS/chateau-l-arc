@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 
 import { Banniere } from "@/components/layout/banniere";
+import { AcademieEnseignants } from "@/components/sections/academie-enseignants";
+import { AcademieIntro } from "@/components/sections/academie-intro";
 import { AcademieJuniors } from "@/components/sections/academie-juniors";
 import { AcademiePrestige } from "@/components/sections/academie-prestige";
 import { AcademieStages } from "@/components/sections/academie-stages";
-import { SuivezNous } from "@/components/sections/suivez-nous";
-import { BoutonClair } from "@/components/ui/bouton-clair";
-import { BoutonOr } from "@/components/ui/bouton-or";
+import { AppelAdhesion } from "@/components/sections/appel-adhesion";
 
 export const metadata: Metadata = {
   title: "L'Académie",
   description:
-    "École de golf juniors et adultes, stages et initiations au Golf Château l'Arc, encadrés par des enseignants diplômés d'État.",
+    "École de golf juniors dès 4 ans, formules Prestige pour adultes, stages et initiations au Golf Château l'Arc, avec des enseignants diplômés d'État.",
 };
 
 export default function Page() {
@@ -19,19 +19,13 @@ export default function Page() {
     <>
       <Banniere
         image="/images/academie.png"
-        // TODO : accroche reprise de la maquette, identique à celle du parcours —
-        // à remplacer par une phrase propre à l'académie.
-        accroche="18 trous entre pins et garrigue, face à la montagne Sainte-Victoire."
+        filAriane={[{ label: "Accueil", href: "/" }, { label: "L'Académie" }]}
         titre="L’Académie"
-        // Titre de 10 signes : taille calée pour occuper la largeur.
-        tailleTitre="text-[13.4cqw]"
-        actions={
-          <>
-            <BoutonOr href="/reserver">Réserver un cours ou un stage</BoutonOr>
-            <BoutonClair href="/contact">Nous appeler</BoutonClair>
-          </>
-        }
+        texte="Débutant ou confirmé, dès 4 ans : apprenez et progressez avec nos enseignants diplômés d'État, face à la Sainte-Victoire."
+        hauteur="min-h-[70svh]"
       />
+
+      <AcademieIntro />
 
       <AcademieJuniors />
 
@@ -39,7 +33,9 @@ export default function Page() {
 
       <AcademieStages />
 
-      <SuivezNous image="/images/academie.png" />
+      <AcademieEnseignants />
+
+      <AppelAdhesion />
     </>
   );
 }

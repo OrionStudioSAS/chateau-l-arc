@@ -1,57 +1,79 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
-import { formulesJuniors, noteJuniors } from "@/lib/academie";
+import { atoutsJuniors, formulesJuniors, noteJuniors } from "@/lib/academie";
+import { euros } from "@/lib/tarifs";
+
+import { PictoAcademie } from "@/components/sections/academie-pictos";
 
 export function AcademieJuniors() {
   return (
-    <section className="py-14 lg:py-20">
-      <Container>
-        <div className="text-center">
-          <Surtitre className="text-or-600">École de golf juniors</Surtitre>
-
-          <h2 className="mt-6 font-butler text-[36px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+    <section id="juniors" className="scroll-mt-28 bg-sable-100 py-14 lg:py-20">
+      <Container className="grid gap-10 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:gap-16">
+        <div>
+          <Surtitre aligne="gauche" className="text-or-600">
+            École de golf juniors
+          </Surtitre>
+          <h2 className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
             Le golf dès 4 ans
           </h2>
 
-          <p className="mx-auto mt-4 max-w-3xl text-[15px] text-gris-500">
-            Le mercredi et le samedi · Groupes de 8 élèves maximum · Polo du club
-            inclus · 30 séances par an
+          <ul className="mt-6 flex max-w-md flex-wrap gap-2.5">
+            {atoutsJuniors.map((atout) => (
+              <li
+                key={atout.libelle}
+                className="flex items-center gap-2 rounded-full bg-white px-3.5 py-2 text-[12px] font-medium text-club-950"
+              >
+                <PictoAcademie nom={atout.picto} className="size-3.5 text-encre/60" />
+                {atout.libelle}
+              </li>
+            ))}
+          </ul>
+
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2">
+            {formulesJuniors.map((formule) => (
+              <li key={formule.titre} className="flex flex-col rounded-sm bg-white p-6 lg:p-7">
+                <h3 className="font-butler text-[24px] font-medium text-club-950">{formule.titre}</h3>
+                <p className="mt-3 flex items-baseline gap-2">
+                  <span className="font-butler text-[40px] font-medium leading-none text-club-950">
+                    {euros(formule.prix)}
+                  </span>
+                  <span className="text-[13px] text-encre/50">/ an</span>
+                </p>
+                <p className="mt-3 flex items-center gap-2 text-[13px] font-semibold text-club-950">
+                  <PictoAcademie nom="horloge" className="size-3.5 text-or-600" />
+                  {formule.rythme}
+                </p>
+                <p className="mt-3 flex-1 text-[14px] leading-relaxed text-encre/60">
+                  {formule.description}
+                </p>
+                <Link
+                  href="/contact"
+                  className="mt-6 flex items-center justify-center gap-2 rounded-sm bg-club-950 px-5 py-3 text-[13px] font-semibold text-sable-50 transition-colors hover:bg-club-800"
+                >
+                  Inscrire mon enfant <span aria-hidden="true">→</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <p className="mt-5 flex items-start gap-2 text-[12px] text-encre/55">
+            <PictoAcademie nom="info" className="mt-px size-3.5 text-or-600" />
+            {noteJuniors}
           </p>
         </div>
 
-        <ul className="mx-auto mt-12 grid max-w-3xl gap-5 md:grid-cols-2">
-          {formulesJuniors.map((formule) => (
-            <li
-              key={formule.titre}
-              className="rounded-lg bg-white px-8 py-8 text-center"
-            >
-              <p className="text-[15px] font-medium text-encre">{formule.titre}</p>
-
-              <p className="mt-4 font-butler text-[34px] font-bold leading-none text-or-500">
-                {formule.prix}
-              </p>
-
-              <p className="mt-3 text-[14px] font-medium text-encre">
-                {formule.rythme}
-              </p>
-
-              <p className="mt-3 text-[13px] leading-relaxed text-gris-500">
-                {formule.description}
-              </p>
-
-              <Link
-                href="/contact"
-                className="mt-6 inline-block rounded-lg bg-club-950 px-6 py-3 text-[15px] font-medium text-sable-50 transition-colors hover:bg-club-800"
-              >
-                Inscrire mon enfant
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <p className="mt-8 text-center text-[13px] text-gris-500">{noteJuniors}</p>
+        <div className="relative min-h-[320px] overflow-hidden rounded-sm lg:min-h-0">
+          <Image
+            src="/images/hp-bas-droite.png"
+            alt="Seau de balles au practice, face à la Sainte-Victoire"
+            fill
+            sizes="(min-width: 1024px) 40vw, 100vw"
+            className="object-cover"
+          />
+        </div>
       </Container>
     </section>
   );

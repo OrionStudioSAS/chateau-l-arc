@@ -1,77 +1,62 @@
 import Image from "next/image";
-import Link from "next/link";
 
+import { PictoAcademie } from "@/components/sections/academie-pictos";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
-import { enseignants } from "@/lib/academie";
 import { site } from "@/config/site";
-
-/** TODO : image temporaire, à remplacer par les portraits des enseignants. */
-const IMAGE_PROVISOIRE = "/images/academie.png";
+import { stages } from "@/lib/academie";
 
 export function AcademieStages() {
   return (
-    <section className="py-14 lg:py-20">
-      <Container>
-        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-          <ul className="grid gap-5 sm:grid-cols-2">
-            {enseignants.map((enseignant) => (
-              <li
-                key={enseignant.nom}
-                className="rounded-lg bg-white px-6 py-8 text-center"
-              >
-                <span className="relative mx-auto block size-20 overflow-hidden rounded-full bg-club-600/20">
-                  <Image
-                    src={IMAGE_PROVISOIRE}
-                    alt=""
-                    fill
-                    sizes="80px"
-                    className="object-cover"
-                    style={{ objectPosition: enseignant.cadrage }}
-                  />
-                </span>
+    <section id="stages" className="scroll-mt-28 bg-sable-100 py-14 lg:py-20">
+      <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-20">
+        <div className="relative aspect-[5/4] overflow-hidden rounded-sm">
+          <Image
+            src="/images/hp-milieu-droite.png"
+            alt="Vue aérienne du domaine et du practice"
+            fill
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="object-cover"
+            data-parallax="0.07"
+          />
+        </div>
 
-                <p className="mt-5 font-butler text-[19px] font-bold text-club-950">
-                  {enseignant.nom}
-                </p>
-                <p className="mt-1 text-[13px] text-gris-500">{enseignant.titre}</p>
+        <div>
+          <Surtitre aligne="gauche" className="text-or-600">
+            Stages &amp; initiations
+          </Surtitre>
+          <h2 className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+            De 2 à 30 personnes
+          </h2>
+          <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-encre/65">
+            Toute l&apos;année, entre amis, en famille ou entre collègues : réservez en
+            ligne ou par téléphone.
+          </p>
+
+          <ul className="mt-6 space-y-4">
+            {stages.map((stage) => (
+              <li key={stage.titre} className="flex gap-3">
+                <span
+                  aria-hidden="true"
+                  className="flex size-7 shrink-0 items-center justify-center rounded-full bg-white text-[12px] text-club-950"
+                >
+                  ✓
+                </span>
+                <div>
+                  <p className="text-[14px] font-semibold text-club-950">{stage.titre}</p>
+                  <p className="mt-0.5 text-[13px] text-encre/60">{stage.texte}</p>
+                </div>
               </li>
             ))}
           </ul>
 
-          <div>
-            <Surtitre aligne="gauche" className="text-or-600">
-              Stages &amp; initiations
-            </Surtitre>
-
-            <h2 className="mt-5 font-butler text-[32px] font-medium leading-[1.1] text-club-950 sm:text-[40px]">
-              De 2 à 30 personnes
-            </h2>
-
-            <p className="mt-4 max-w-md text-[16px] leading-relaxed text-encre/70">
-              Initiations découvertes, ateliers thématiques et stages tous niveaux,
-              toute l&apos;année. Réservation en ligne ou par téléphone.
-            </p>
-
-            <div className="mt-6 flex flex-wrap items-center gap-4">
-              <Link
-                href="/reserver"
-                className="rounded-lg bg-or-500 px-6 py-3 text-[15px] font-medium text-white transition-colors hover:bg-or-600"
-              >
-                Réserver en ligne
-              </Link>
-
-              <p className="text-[15px] text-encre/70">
-                ou{" "}
-                <a
-                  href={site.contact.telephoneLien}
-                  className="underline-offset-4 hover:underline"
-                >
-                  {site.contact.telephone}
-                </a>
-              </p>
-            </div>
-          </div>
+          <a
+            href={site.contact.telephoneLien}
+            className="mt-8 inline-flex items-center gap-2 rounded-sm border border-club-950/25 bg-white px-5 py-3.5 text-[13px] font-semibold text-club-950 transition-colors hover:bg-sable-50"
+          >
+            <PictoAcademie nom="telephone" />
+            Nous appeler
+          </a>
         </div>
       </Container>
     </section>

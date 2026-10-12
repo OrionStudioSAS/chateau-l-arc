@@ -4,9 +4,11 @@ import Link from "next/link";
 import type { Route } from "next";
 import { useState } from "react";
 
+import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { LienFleche } from "@/components/ui/lien-fleche";
 import { Surtitre } from "@/components/ui/surtitre";
+import { TARIFS_TITRE, TARIFS_DESCRIPTION } from "@/constants";
 import { headerActions } from "@/config/site";
 import { cn } from "@/lib/cn";
 import { proprietesLien } from "@/lib/liens";
@@ -80,14 +82,13 @@ export function TarifsApercu() {
         <div className="text-center">
           <Surtitre className="text-or-600">Tarifs</Surtitre>
 
-          <h2 className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
-            Des tarifs simples, toute l&apos;année
-          </h2>
+          <Editable path="Tarifs.TARIFS_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+            {TARIFS_TITRE}
+          </Editable>
 
-          <p className="mx-auto mt-4 max-w-2xl text-[14px] text-encre/55">
-            Haute saison du 16 avril au 14 novembre · basse saison du 15 novembre au 15
-            avril.
-          </p>
+          <Editable path="Tarifs.TARIFS_DESCRIPTION" as="p" className="mx-auto mt-4 max-w-2xl text-[14px] text-encre/55">
+            {TARIFS_DESCRIPTION}
+          </Editable>
 
           <div
             role="group"

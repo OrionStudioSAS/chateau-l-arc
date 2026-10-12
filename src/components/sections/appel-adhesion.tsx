@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { Editable } from "@/components/cms/editable";
+import { ADHESION_SAISON, ADHESION_TITRE, ADHESION_DESCRIPTION } from "@/constants";
 import { site } from "@/config/site";
 
 /** TODO : photo temporaire, à remplacer par la vue définitive (pins au couchant). */
@@ -32,16 +34,15 @@ export function AppelAdhesion() {
 
         <div className="relative mx-auto grid w-full max-w-[1600px] gap-8 px-5 py-14 sm:px-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-16 lg:px-[100px] lg:py-20">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-or-400">
-              Saison 2027
-            </p>
-            <h2 className="mt-4 max-w-2xl font-butler text-[32px] font-medium leading-[1.12] sm:text-[44px]">
-              Rejoignez le club et jouez toute l&apos;année face à la Sainte-Victoire.
-            </h2>
-            <p className="mt-4 max-w-xl text-[14px] leading-relaxed text-white/70">
-              Abonnements individuels, couple, famille et jeunes · −5&nbsp;% en paiement
-              comptant jusqu&apos;au 31 décembre.
-            </p>
+            <Editable path="Adhésion.ADHESION_SAISON" as="p" className="text-[11px] font-semibold uppercase tracking-[0.2em] text-or-400">
+              {ADHESION_SAISON}
+            </Editable>
+            <Editable path="Adhésion.ADHESION_TITRE" as="h2" className="mt-4 max-w-2xl font-butler text-[32px] font-medium leading-[1.12] sm:text-[44px]">
+              {ADHESION_TITRE}
+            </Editable>
+            <Editable path="Adhésion.ADHESION_DESCRIPTION" as="p" className="mt-4 max-w-xl text-[14px] leading-relaxed text-white/70">
+              {ADHESION_DESCRIPTION}
+            </Editable>
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">

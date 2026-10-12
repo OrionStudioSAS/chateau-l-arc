@@ -1,8 +1,10 @@
 import Link from "next/link";
 
+import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { LienFleche } from "@/components/ui/lien-fleche";
 import { Surtitre } from "@/components/ui/surtitre";
+import { COMPETITIONS_SURTITRE, COMPETITIONS_TITRE } from "@/constants";
 import { getProchainesCompetitions } from "@/lib/api/content";
 import { cn } from "@/lib/cn";
 import { tonsPastille } from "@/lib/competitions";
@@ -16,12 +18,14 @@ export async function CompetitionsApercu() {
       <Container>
         <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
           <div>
-            <Surtitre aligne="gauche" className="text-or-600">
-              Agenda du club
-            </Surtitre>
-            <h2 className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
-              La saison au club
-            </h2>
+            <Editable path="Compétitions.COMPETITIONS_SURTITRE" as="div">
+              <Surtitre aligne="gauche" className="text-or-600">
+                {COMPETITIONS_SURTITRE}
+              </Surtitre>
+            </Editable>
+            <Editable path="Compétitions.COMPETITIONS_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+              {COMPETITIONS_TITRE}
+            </Editable>
           </div>
           <LienFleche href="/competitions" className="text-[14px]">
             Voir tout le calendrier

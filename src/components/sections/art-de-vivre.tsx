@@ -2,8 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Route } from "next";
 
+import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
+import { ART_DE_VIVRE_SURTITRE, ART_DE_VIVRE_TITRE, ART_DE_VIVRE_DESCRIPTION } from "@/constants";
 import { estPagePubliqueVisible } from "@/config/visibilite";
 import { cn } from "@/lib/cn";
 
@@ -99,19 +101,20 @@ export function ArtDeVivre() {
       <Container>
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:items-end lg:gap-16">
           <div>
-            <Surtitre aligne="gauche" className="text-or-600">
-              L&apos;art de vivre
-            </Surtitre>
+            <Editable path="Art de vivre.ART_DE_VIVRE_SURTITRE" as="div">
+              <Surtitre aligne="gauche" className="text-or-600">
+                {ART_DE_VIVRE_SURTITRE}
+              </Surtitre>
+            </Editable>
 
-            <h2 className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
-              Bien plus qu&apos;un golf
-            </h2>
+            <Editable path="Art de vivre.ART_DE_VIVRE_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+              {ART_DE_VIVRE_TITRE}
+            </Editable>
           </div>
 
-          <p className="text-[15px] leading-relaxed text-encre/65">
-            Restaurant, Académie, proshop et salons de réception : le domaine vit toute
-            l&apos;année, au rythme du club.
-          </p>
+          <Editable path="Art de vivre.ART_DE_VIVRE_DESCRIPTION" as="p" className="text-[15px] leading-relaxed text-encre/65">
+            {ART_DE_VIVRE_DESCRIPTION}
+          </Editable>
         </div>
 
         {/* Mobile : carrousel horizontal qui déborde jusqu'aux bords de l'écran.

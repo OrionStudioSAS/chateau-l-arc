@@ -2,14 +2,8 @@ import Image from "next/image";
 
 import { PresentationIntro } from "@/components/sections/presentation-intro";
 import { Container } from "@/components/ui/container";
+import { VIDEO_YOUTUBE_ID } from "@/constants";
 
-/**
- * Identifiant de la vidéo YouTube de présentation
- * (youtube.com/watch?v=hbJSMWfHjAI). Vide : une image tient la place du lecteur.
- */
-const VIDEO_YOUTUBE_ID = "hbJSMWfHjAI";
-
-/** TODO : image temporaire (lecteur vidéo de repli), à remplacer. */
 const IMAGE_PROVISOIRE = "/images/banner.jpg";
 
 export function Presentation() {

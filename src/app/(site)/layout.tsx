@@ -1,5 +1,6 @@
 import { AnimationsDefilement } from "@/components/layout/animations-defilement";
 import { AnnouncementBar } from "@/components/layout/announcement-bar";
+import { CmsBridge } from "@/components/cms/bridge";
 import { EnTeteSite } from "@/components/layout/en-tete-site";
 import { PopupMarketing } from "@/components/layout/popup-marketing";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -26,6 +27,7 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
       <SiteFooter />
       <PopupMarketing popup={popup} />
         <AnimationsDefilement />
+        <CmsBridge />
     </div>
   );
 }

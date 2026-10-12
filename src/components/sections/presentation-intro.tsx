@@ -3,8 +3,10 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
+import { Editable } from "@/components/cms/editable";
 import { ContainerEtroit } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
+import { PRESENTATION_SURTITRE, PRESENTATION_TEXTE } from "@/constants";
 
 /**
  * Vignettes décoratives réparties autour du texte, par rangées de deux.
@@ -21,9 +23,7 @@ const vignettes = [
   { cote: "droite", rangee: 2, x: "13.5%", y: "84%", image: "/images/hp-bas-droite.png", derive: 20 },
 ] as const;
 
-/** Texte de présentation, découpé en mots pour l'animation ligne par ligne. */
-const TEXTE =
-  "Le Château l'Arc Golf Club fait indéniablement partie des plus beaux lieux golfiques de la région Provence Alpes Côte d'Azur. Le parcours, créé en 1985 et dessiné par Robert Trent Jones II, est idéalement situé aux portes d'Aix-En-Provence et Marseille. Ce par 70 de 5817 mètres propose une expérience golfique variée grâce à son dessin qui serpente entre pins et garrigue dans un environnement d'exception puisqu'il donne une vue fantastique sur la montagne Sainte-Victoire.";
+const TEXTE = PRESENTATION_TEXTE;
 
 const borner = (valeur: number) => Math.min(Math.max(valeur, 0), 1);
 const adoucir = (t: number) => 1 - (1 - t) ** 3;
@@ -159,21 +159,25 @@ export function PresentationIntro() {
       </div>
 
       <ContainerEtroit className="relative max-w-xl text-center">
-        <Surtitre className="text-encre/70">Le plus beau golf entre Aix et Marseille</Surtitre>
+        <Editable path="Présentation.PRESENTATION_SURTITRE" as="div">
+          <Surtitre className="text-encre/70">{PRESENTATION_SURTITRE}</Surtitre>
+        </Editable>
 
         {/* Un <span> par mot : c'est leur position qui donne les lignes. */}
-        <p
-          ref={paragraphe}
-          className="mt-10 text-[20px] font-normal leading-[1.6] tracking-[-0.2px] text-encre/85"
-        >
-          {TEXTE.split(" ").map((mot, index) => (
-            <span key={index}>
-              <span data-mot className="inline-block">
-                {mot}
-              </span>{" "}
-            </span>
-          ))}
-        </p>
+        <Editable path="Présentation.PRESENTATION_TEXTE" as="div">
+          <p
+            ref={paragraphe}
+            className="mt-10 text-[20px] font-normal leading-[1.6] tracking-[-0.2px] text-encre/85"
+          >
+            {TEXTE.split(" ").map((mot, index) => (
+              <span key={index}>
+                <span data-mot className="inline-block">
+                  {mot}
+                </span>{" "}
+              </span>
+            ))}
+          </p>
+        </Editable>
       </ContainerEtroit>
     </div>
   );

@@ -1,9 +1,11 @@
 import Image from "next/image";
 import type { Route } from "next";
 
+import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { LienFleche } from "@/components/ui/lien-fleche";
 import { Surtitre } from "@/components/ui/surtitre";
+import { PROFITER_SURTITRE, PROFITER_TITRE, PROFITER_DESCRIPTION } from "@/constants";
 import { headerActions } from "@/config/site";
 import { estPagePubliqueVisible } from "@/config/visibilite";
 
@@ -77,17 +79,18 @@ export function ProfiterDuGolf() {
       <Container>
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:items-end lg:gap-16">
           <div>
-            <Surtitre aligne="gauche" className="text-or-600">
-              Bienvenue
-            </Surtitre>
-            <h2 className="mt-5 max-w-xl font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
-              Comment souhaitez-vous profiter du golf&nbsp;?
-            </h2>
+            <Editable path="Profiter du golf.PROFITER_SURTITRE" as="div">
+              <Surtitre aligne="gauche" className="text-or-600">
+                {PROFITER_SURTITRE}
+              </Surtitre>
+            </Editable>
+            <Editable path="Profiter du golf.PROFITER_TITRE" as="h2" className="mt-5 max-w-xl font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+              {PROFITER_TITRE}
+            </Editable>
           </div>
-          <p className="text-[15px] leading-relaxed text-encre/65">
-            Joueur de passage, futur membre ou débutant : chaque golfeur trouve sa place au
-            golf de Château l&apos;Arc.
-          </p>
+          <Editable path="Profiter du golf.PROFITER_DESCRIPTION" as="p" className="text-[15px] leading-relaxed text-encre/65">
+            {PROFITER_DESCRIPTION}
+          </Editable>
         </div>
 
         <ul className="mt-10 grid gap-5 md:grid-cols-3 lg:mt-12">

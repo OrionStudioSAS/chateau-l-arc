@@ -1,6 +1,8 @@
 import Image from "next/image";
 
+import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
+import { PARTENAIRES_TITRE } from "@/constants";
 import { partenaires } from "@/config/site";
 
 export function Partenaires() {
@@ -8,9 +10,9 @@ export function Partenaires() {
     <section className="border-t border-encre/10 bg-white py-12 lg:py-14">
       <Container>
         {/* Bandeau discret : un simple intitulé au-dessus d'une rangée de logos. */}
-        <h2 className="text-center text-[11px] font-normal uppercase tracking-[0.2em] text-encre/50">
-          Ils accompagnent le club
-        </h2>
+        <Editable path="Partenaires.PARTENAIRES_TITRE" as="h2" className="text-center text-[11px] font-normal uppercase tracking-[0.2em] text-encre/50">
+          {PARTENAIRES_TITRE}
+        </Editable>
 
         <ul className="mt-8 grid grid-cols-3 items-center gap-x-6 gap-y-6 sm:gap-x-8 lg:grid-cols-7">
           {partenaires.map((partenaire) => {

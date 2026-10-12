@@ -11,6 +11,7 @@ import { ParcoursSignature } from "@/components/sections/parcours-signature";
 import { Presentation } from "@/components/sections/presentation";
 import { ProfiterDuGolf } from "@/components/sections/profiter-du-golf";
 import { TarifsApercu } from "@/components/sections/tarifs-apercu";
+import { BANNER_ACCROCHE, BANNER_TITRE, BANNER_TEXTE } from "@/constants";
 import { headerActions } from "@/config/site";
 import { estPagePubliqueVisible } from "@/config/visibilite";
 
@@ -19,10 +20,15 @@ export default function Page() {
     <>
       <Banniere
         image="/images/banner.jpg"
-        accroche="Golf 18 trous · Fuveau, aux portes d'Aix-en-Provence"
-        titre="Chateau l’Arc"
-        texte="Un parcours signé Robert Trent Jones II, entre pins et garrigue, à quinze minutes d'Aix. Ouvert à tous, toute l'année."
+        accroche={BANNER_ACCROCHE}
+        titre={BANNER_TITRE}
+        texte={BANNER_TEXTE}
         hauteur="min-h-[calc(100svh-2.5rem)]"
+        cmsPaths={{
+          accroche: "Bannière.BANNER_ACCROCHE",
+          titre: "Bannière.BANNER_TITRE",
+          texte: "Bannière.BANNER_TEXTE",
+        }}
         actions={
           <>
             <BoutonOr

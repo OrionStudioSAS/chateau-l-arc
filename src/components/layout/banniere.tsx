@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Route } from "next";
 
+import { Editable } from "@/components/cms/editable";
 import { cn } from "@/lib/cn";
 
 /**
@@ -36,6 +37,7 @@ export function Banniere({
   filAriane,
   actions,
   pied,
+  cmsPaths,
 }: {
   image: string;
   /** Ligne au-dessus du titre (facultative). */
@@ -53,6 +55,7 @@ export function Banniere({
   actions?: React.ReactNode;
   /** Rangée pleine largeur sous le texte (onglets de la page Tarifs…). */
   pied?: React.ReactNode;
+  cmsPaths?: { accroche?: string; titre?: string; texte?: string };
 }) {
   return (
     <section
@@ -106,12 +109,12 @@ export function Banniere({
 
       <div className="@container relative w-full px-5 pb-4 sm:px-6">
         {accroche ? (
-          <p
+          <Editable path={cmsPaths?.accroche ?? ""} as="p"
             className="entree-texte max-w-3xl text-[14px] font-medium uppercase lg:max-w-none tracking-[-0.14px] text-white/70 sm:text-[17px] lg:text-[20px] lg:tracking-[-0.2px]"
             style={delaiEntree(150)}
           >
             {accroche}
-          </p>
+          </Editable>
         ) : null}
 
         {/*
@@ -123,7 +126,7 @@ export function Banniere({
           supprime donc tout `leading-*` qui la précède. La taille passe en
           premier, l'interligne en dernier.
         */}
-        <h1
+        <Editable path={cmsPaths?.titre ?? ""} as="h1"
           className={cn(
             tailleTitre,
             "entree-texte mt-2 font-butler sm:mt-3 font-bold uppercase tracking-[2px] text-white/70",
@@ -135,15 +138,15 @@ export function Banniere({
           style={delaiEntree(300)}
         >
           {titre}
-        </h1>
+        </Editable>
 
         {texte ? (
-          <p
+          <Editable path={cmsPaths?.texte ?? ""} as="p"
             className="entree-texte mt-5 max-w-xl text-[16px] font-normal leading-relaxed text-white/90 sm:text-[18px]"
             style={delaiEntree(450)}
           >
             {texte}
-          </p>
+          </Editable>
         ) : null}
 
         {actions ? (

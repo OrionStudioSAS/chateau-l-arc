@@ -1,11 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
+import { PARCOURS_SURTITRE, PARCOURS_TITRE, PARCOURS_DESCRIPTION, PARCOURS_IMAGE } from "@/constants";
 
-/** TODO : photo temporaire, à remplacer par la vue aérienne du parcours. */
-const IMAGE_PROVISOIRE = "/images/parcours.png";
+const IMAGE_PROVISOIRE = PARCOURS_IMAGE;
 
 type Picto = "compas" | "montagne" | "drapeau";
 
@@ -71,16 +72,17 @@ export function ParcoursSignature() {
         </div>
 
         <div>
-          <Surtitre aligne="gauche" className="text-or-600">
-            Le parcours
-          </Surtitre>
-          <h2 className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
-            Entre pins et garrigue, un tracé de caractère
-          </h2>
-          <p className="mt-5 max-w-lg text-[16px] leading-relaxed text-encre/70">
-            Le parcours serpente dans un environnement préservé, entre pins parasols,
-            garrigue et vignes, avec la Sainte-Victoire en toile de fond.
-          </p>
+          <Editable path="Parcours signature.PARCOURS_SURTITRE" as="div">
+            <Surtitre aligne="gauche" className="text-or-600">
+              {PARCOURS_SURTITRE}
+            </Surtitre>
+          </Editable>
+          <Editable path="Parcours signature.PARCOURS_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+            {PARCOURS_TITRE}
+          </Editable>
+          <Editable path="Parcours signature.PARCOURS_DESCRIPTION" as="p" className="mt-5 max-w-lg text-[16px] leading-relaxed text-encre/70">
+            {PARCOURS_DESCRIPTION}
+          </Editable>
 
           <ul className="mt-8 divide-y divide-encre/10 border-y border-encre/10">
             {atouts.map((atout) => (

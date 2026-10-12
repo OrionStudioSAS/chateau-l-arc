@@ -138,6 +138,7 @@ export const partenaires: { nom: string; logo: string; url?: string }[] = [
 export const routesPubliques: NavItem[] = [
   ...headerNav,
   { label: "Nous contacter", href: "/contact" },
+  { label: "Résultats des compétitions", href: "/competitions/resultats" },
   { label: "Actualités", href: "/actualites" },
   { label: "Devenir membre", href: "/devenir-membre" },
   { label: "La table du golf", href: "/restaurant" },

@@ -14,7 +14,7 @@ import type {
   EtatResultats,
 } from "@/lib/admin/formulaire-competition";
 import type { CompetitionAvecEtat } from "@/lib/api/types";
-import { tonsPastille } from "@/lib/competitions";
+import { libellesCategorie, tonsPastille } from "@/lib/competitions";
 import { cn } from "@/lib/cn";
 
 const moisCourt = new Intl.DateTimeFormat("fr-FR", {
@@ -376,6 +376,32 @@ function ModaleCompetition({
                 className={champ}
               />
             </div>
+            <div className="lg:col-span-2">
+              <label className={etiquette} htmlFor="categorie">
+                Type (filtre sur le site)
+              </label>
+              <select
+                id="categorie"
+                name="categorie"
+                defaultValue={competition?.categorie ?? "club"}
+                className={champ}
+              >
+                {Object.entries(libellesCategorie).map(([cle, libelle]) => (
+                  <option key={cle} value={cle}>
+                    {libelle}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <label className="flex items-center gap-3 self-end pb-2.5 text-sm text-neutral-800 sm:col-span-2 lg:col-span-4">
+              <input
+                type="checkbox"
+                name="ouverteVisiteurs"
+                defaultChecked={competition?.ouverteVisiteurs ?? false}
+                className="size-4 accent-club-800"
+              />
+              Ouverte aux visiteurs (badge « Ouvert à tous »)
+            </label>
           </div>
 
           <p className={cn(titreSection, "mt-8")}>Inscriptions</p>
@@ -592,6 +618,18 @@ function ModaleResultats({
             10 Mo maximum. Le document sera téléchargeable depuis la page
             compétitions.
           </p>
+
+          <label className={cn(etiquette, "mt-5 block")} htmlFor="vainqueurs">
+            Vainqueurs (facultatif)
+          </label>
+          <input
+            id="vainqueurs"
+            name="vainqueurs"
+            maxLength={120}
+            defaultValue={competition.vainqueurs}
+            placeholder="Équipe Mercier · 54,8 net"
+            className="mt-2 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2.5 text-sm"
+          />
 
           {competition.resultatsPublies && competition.resultatsUrl ? (
             <p className="mt-4 text-xs text-neutral-500">

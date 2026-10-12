@@ -23,7 +23,7 @@ export type Article = {
 
 export type StatutCompetition = "brouillon" | "publie";
 
-export type CategorieCompetition = "club" | "grand-prix" | "sponsorisee" | "loisir";
+export type CategorieCompetition = "club" | "grand-prix" | "seniors";
 
 /** Compétition du club, telle que saisie dans le back-office. */
 export type Competition = {
@@ -49,6 +49,10 @@ export type Competition = {
   description?: string;
   afficheUrl?: string;
   categorie: CategorieCompetition;
+  /** Ouverte aux visiteurs (badge « Ouvert à tous »). */
+  ouverteVisiteurs: boolean;
+  /** Vainqueurs, affichés avec les résultats. */
+  vainqueurs?: string;
   statut: StatutCompetition;
   resultatsUrl?: string;
   resultatsPublies: boolean;

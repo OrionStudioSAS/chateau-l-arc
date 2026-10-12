@@ -9,6 +9,7 @@ import {
   type EtatCompetitionFormulaire,
   type EtatResultats,
 } from "@/lib/admin/formulaire-competition";
+import { libellesCategorie } from "@/lib/competitions";
 import { creerClientServeur } from "@/lib/supabase/server";
 
 type ClientServeur = Awaited<ReturnType<typeof creerClientServeur>>;
@@ -83,6 +84,11 @@ export async function enregistrerCompetition(
   if (!nom) return { statut: "erreur", message: "Le nom est obligatoire." };
   if (!dateDebut) return { statut: "erreur", message: "La date est obligatoire." };
 
+  const categorie = texte(formData, "categorie");
+  if (!Object.hasOwn(libellesCategorie, categorie)) {
+    return { statut: "erreur", message: "Choisissez le type de compétition." };
+  }
+
   const supabase = await creerClientServeur();
   const { data: session } = await supabase.auth.getClaims();
 
@@ -111,6 +117,8 @@ export async function enregistrerCompetition(
     droit_jeu_visiteurs: texteOuNull(formData, "droitJeuVisiteurs"),
     inclus: texteOuNull(formData, "inclus"),
     description: texteOuNull(formData, "description"),
+    categorie,
+    ouverte_visiteurs: formData.get("ouverteVisiteurs") === "on",
     statut,
     maj_le: new Date().toISOString(),
   };
@@ -152,6 +160,11 @@ export async function publierResultats(
   const id = String(formData.get("id") ?? "");
   const slug = String(formData.get("slug") ?? "");
   const fichier = formData.get("fichier");
+  const vainqueurs = String(formData.get("vainqueurs") ?? "").trim() || null;
+
+  if (vainqueurs && vainqueurs.length > 120) {
+    return { statut: "erreur", message: "Les vainqueurs dépassent 120 caractères." };
+  }
 
   if (!id || !(fichier instanceof File) || fichier.size === 0) {
     return { statut: "erreur", message: "Choisissez un fichier PDF." };
@@ -192,6 +205,7 @@ export async function publierResultats(
     .update({
       resultats_url: url.publicUrl,
       resultats_publies: true,
+      vainqueurs,
       maj_le: new Date().toISOString(),
     })
     .eq("id", id);

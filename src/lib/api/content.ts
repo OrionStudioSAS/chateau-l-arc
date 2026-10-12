@@ -68,7 +68,7 @@ export async function getActualite(slug: string): Promise<Article | null> {
 }
 
 const COLONNES_COMPETITION =
-  "id, slug, nom, date_debut, date_fin, formule, depart, trous, index_maximum, categories, sponsor, inscription_ouverture, inscription_cloture, places, inscrits, mode_inscription, droit_jeu_membres, droit_jeu_visiteurs, inclus, description, affiche_url, categorie, statut, resultats_url, resultats_publies";
+  "id, slug, nom, date_debut, date_fin, formule, depart, trous, index_maximum, categories, sponsor, inscription_ouverture, inscription_cloture, places, inscrits, mode_inscription, droit_jeu_membres, droit_jeu_visiteurs, inclus, description, affiche_url, categorie, ouverte_visiteurs, vainqueurs, statut, resultats_url, resultats_publies";
 
 /**
  * Compétitions publiées, de la plus proche à la plus lointaine.

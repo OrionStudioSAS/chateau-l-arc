@@ -1,4 +1,5 @@
 import type {
+  CategorieCompetition,
   Competition,
   CompetitionAvecEtat,
   EtatCompetition,
@@ -27,7 +28,9 @@ export type LigneCompetition = {
   inclus: string | null;
   description: string | null;
   affiche_url: string | null;
-  categorie: "club" | "grand-prix" | "sponsorisee" | "loisir";
+  categorie: CategorieCompetition;
+  ouverte_visiteurs: boolean;
+  vainqueurs: string | null;
   statut: "brouillon" | "publie";
   resultats_url: string | null;
   resultats_publies: boolean;
@@ -59,6 +62,8 @@ export function mapperCompetition(ligne: LigneCompetition): Competition {
     description: sansNull(ligne.description),
     afficheUrl: sansNull(ligne.affiche_url),
     categorie: ligne.categorie,
+    ouverteVisiteurs: ligne.ouverte_visiteurs,
+    vainqueurs: sansNull(ligne.vainqueurs),
     statut: ligne.statut,
     resultatsUrl: sansNull(ligne.resultats_url),
     resultatsPublies: ligne.resultats_publies,
@@ -123,6 +128,13 @@ export function avecEtat(
 ): CompetitionAvecEtat {
   return { ...competition, etat: etatCompetition(competition, maintenant) };
 }
+
+/** Libellés des catégories (filtres, étiquettes, back-office). */
+export const libellesCategorie: Record<CategorieCompetition, string> = {
+  club: "Club",
+  "grand-prix": "Grand Prix",
+  seniors: "Seniors",
+};
 
 /** Classes des pastilles d'état, partagées par le site public et le back-office. */
 export const tonsPastille: Record<EtatCompetition["ton"], string> = {

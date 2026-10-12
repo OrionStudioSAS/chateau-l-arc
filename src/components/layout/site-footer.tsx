@@ -163,7 +163,15 @@ export function SiteFooter() {
               <span aria-hidden="true" className="text-or-500">
                 ♥
               </span>{" "}
-              Design &amp; Made by Orion
+              Design &amp; Made by{" "}
+              <a
+                href="https://orion-studio.io"
+                target="_blank"
+                rel="noopener"
+                className="underline-offset-4 transition-colors hover:text-sable-50 hover:underline"
+              >
+                Orion
+              </a>
             </p>
           </div>
         </div>

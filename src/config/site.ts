@@ -165,4 +165,5 @@ export const routesHeroSombre: string[] = [
   "/competitions",
   "/tarifs",
   "/academie",
+  "/faq",
 ];

@@ -1,18 +1,38 @@
 import type { Metadata } from "next";
 
-import { PageHero } from "@/components/layout/page-hero";
-import { EnConstruction } from "@/components/sections/en-construction";
+import { CentreAide } from "@/components/sections/centre-aide";
+import { FaqContact } from "@/components/sections/faq-contact";
+import { themesFaq } from "@/lib/faq";
 
 export const metadata: Metadata = {
-  title: "FAQ",
-  description: "Accès, réservation, conditions de jeu : les réponses aux questions courantes.",
+  title: "Questions fréquentes",
+  description:
+    "Parcours, réservations, tarifs, abonnements, académie, compétitions, accès : toutes les réponses aux questions courantes sur le Golf Château l'Arc.",
+};
+
+/** Données structurées FAQPage : les questions peuvent apparaître dans Google. */
+const donneesStructurees = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: themesFaq.flatMap((theme) =>
+    theme.questions.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.reponse },
+    })),
+  ),
 };
 
 export default function Page() {
   return (
     <>
-      <PageHero surtitre="Questions fréquentes" titre="FAQ" chapo="Accès, réservation, conditions de jeu : les réponses aux questions courantes." />
-      <EnConstruction />
+      <script
+        type="application/ld+json"
+        // Contenu statique, issu de lib/faq : aucune donnée saisie par un visiteur.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(donneesStructurees).replace(/</g, "\\u003c") }}
+      />
+      <CentreAide />
+      <FaqContact />
     </>
   );
 }

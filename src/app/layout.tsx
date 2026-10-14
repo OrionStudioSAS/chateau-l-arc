@@ -45,6 +45,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${bricolage.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        {process.env.NODE_ENV === "production" && (
+          <script
+            defer
+            src={process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL || "https://cloud.umami.is/script.js"}
+            data-website-id={
+              process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID || "5ca3707e-ce24-47a0-bf4b-00828e439a49"
+            }
+            data-domains={process.env.NEXT_PUBLIC_UMAMI_DOMAINS || undefined}
+          />
+        )}
+      </head>
       <body className="min-h-full font-sans" suppressHydrationWarning>
         {children}
       </body>

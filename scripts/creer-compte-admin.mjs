@@ -29,8 +29,8 @@ if (!/^[^\s@:,]+@[^\s@:,]+\.[^\s@:,]+$/.test(email)) {
   process.exit(1);
 }
 
-const motDePasse = await demander("Mot de passe (12 caractères min.) : ", true);
-if (motDePasse.length < 12) {
+const motDePasse = await demander("Mot de passe (8 caractères min.) : ", true);
+if (motDePasse.length < 8) {
   console.error("Mot de passe trop court.");
   process.exit(1);
 }

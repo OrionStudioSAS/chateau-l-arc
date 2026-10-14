@@ -1,16 +1,19 @@
 import { cn } from "@/lib/cn";
 
 export function AdminCard({
+  id,
   className,
   children,
 }: {
+  id?: string;
   className?: string;
   children: React.ReactNode;
 }) {
   return (
     <section
+      id={id}
       className={cn(
-        "rounded-2xl border border-neutral-200 bg-white p-4 sm:p-6 shadow-[0_1px_2px_rgba(16,24,40,0.04)]",
+        "scroll-mt-6 rounded-2xl border border-neutral-200 bg-white p-4 sm:p-6 shadow-[0_1px_2px_rgba(16,24,40,0.04)]",
         className,
       )}
     >

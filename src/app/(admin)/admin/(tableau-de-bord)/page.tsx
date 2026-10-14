@@ -1,33 +1,168 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 
-import { AdminPageHeader } from "@/components/admin/admin-page-header";
-import { FormulaireStatutBandeau } from "@/components/admin/formulaire-statut-bandeau";
+import {
+  Evolution,
+  formatNombre,
+  LienBouton,
+  Panneau,
+  Pastille,
+  Recapitulatif,
+} from "@/components/admin/accueil/blocs";
+import { IconeAdmin } from "@/components/admin/icone-admin";
+import { equipeOrion } from "@/config/admin";
+import { site } from "@/config/site";
+import { dateLongue, estPeriode, periodes } from "@/lib/analytics/periodes";
+import { getStatistiques } from "@/lib/analytics/umami";
 import { lireContenu } from "@/lib/contenu/stockage";
-import { formatDateHeure } from "@/lib/format";
+import { cn } from "@/lib/cn";
+import { formatDate } from "@/lib/format";
+import { valeurStatut } from "@/lib/statut";
 
-export const metadata: Metadata = {
-  title: { absolute: "Statut & bandeau · Back-office" },
-};
-
-// Lecture directe du dépôt, sans cache : l'accueil voit sa dernière publication.
+export const metadata: Metadata = { title: { absolute: "Accueil · Back-office" } };
 export const instant = false;
 
-export default async function Page() {
-  const { bandeau, installations } = await lireContenu("statut");
+/** Accueil du back-office (maquette « Accueil »). TODO : performance du site et recommandations. */
+export default async function Page({ searchParams }: PageProps<"/admin">) {
+  const { periode: brut } = await searchParams;
+  const periode = estPeriode(brut) ? brut : "7j";
+  const [statut, popup] = await Promise.all([lireContenu("statut"), lireContenu("popup")]);
+  const stats = await getStatistiques(periode, popup.actif ? popup.version : null);
+  const tiret = "—";
 
   return (
     <>
-      <AdminPageHeader
-        titre="Statut du golf & bandeau d'information"
-        description="Ce que voient vos visiteurs en haut du site — mise à jour immédiate."
-      />
-      <FormulaireStatutBandeau
-        installations={installations}
-        messageInitial={bandeau.message}
-        dernierePublication={
-          bandeau.publieLe ? formatDateHeure(bandeau.publieLe) : undefined
-        }
-      />
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-[26px] font-semibold tracking-tight text-neutral-900">
+            Bonjour {site.shortName} Golf Club
+          </h1>
+          <p className="mt-1 text-[14px] text-neutral-500">
+            {dateLongue(new Date())} · {periodes[periode].resume}
+          </p>
+        </div>
+        <nav aria-label="Période" className="flex rounded-lg bg-neutral-100 p-1">
+          {Object.entries(periodes).map(([cle, p]) => (
+            <Link
+              key={cle}
+              href={`/admin?periode=${cle}`}
+              aria-current={cle === periode ? "page" : undefined}
+              className={cn(
+                "rounded-md px-3 py-1.5 text-[13px] text-neutral-600",
+                cle === periode && "bg-white font-medium text-neutral-900 shadow-sm",
+              )}
+            >
+              {p.libelle}
+            </Link>
+          ))}
+        </nav>
+      </div>
+
+      {stats ? null : (
+        <p className="mt-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] text-amber-900">
+          Statistiques non configurées : ajoutez UMAMI_API_KEY et NEXT_PUBLIC_UMAMI_WEBSITE_ID.
+        </p>
+      )}
+
+      <div className="mt-6 grid divide-y divide-neutral-200 overflow-hidden rounded-xl border border-neutral-200 sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4 lg:divide-x">
+        <Recapitulatif
+          libelle="Visiteurs sur le site"
+          valeur={stats ? formatNombre(stats.visiteurs.valeur) : tiret}
+          badge={stats ? <Evolution {...stats.visiteurs} mode="pourcent" /> : null}
+          pied={periodes[periode].resume}
+          serie={stats?.visiteurs.serie}
+        />
+        <Recapitulatif
+          libelle="Clics sur les Inscriptions"
+          valeur={stats ? formatNombre(stats.inscriptions.valeur) : tiret}
+          badge={stats ? <Evolution {...stats.inscriptions} mode="absolu" /> : null}
+          pied="Toutes compétitions"
+          serie={stats?.inscriptions.serie}
+        />
+        <Recapitulatif
+          libelle="Clics sur la pop-up"
+          valeur={stats ? formatNombre(stats.popupClics.valeur) : tiret}
+          pied={popup.actif ? popup.titre : "Aucune pop-up active"}
+          serie={stats?.popupClics.serie}
+          tonSerie="gris"
+        />
+        <Recapitulatif
+          libelle="Appels depuis le site"
+          valeur={stats ? formatNombre(stats.appels.valeur) : tiret}
+          badge={stats ? <Evolution {...stats.appels} mode="absolu" /> : null}
+          pied="Bouton « Nous appeler »"
+          serie={stats?.appels.serie}
+        />
+      </div>
+
+      <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div />
+        <div className="space-y-6">
+          <Panneau
+            titre="Le site en ce moment"
+            sousTitre="Ce que voient vos visiteurs"
+            action={
+              <Link href="/admin/statut" className="flex items-center gap-1.5 text-[14px] text-neutral-700">
+                <IconeAdmin nom="crayon" className="size-4" /> Modifier
+              </Link>
+            }
+          >
+            <ul className="space-y-3 px-5 py-4 sm:px-6">
+              {statut.installations.map((i) => (
+                <li key={i.cle} className="flex justify-between text-[14px]">
+                  <span className="text-neutral-600">{i.libelle}</span>
+                  <span className="flex items-center gap-2 text-neutral-900">
+                    <span className={cn("size-1.5 rounded-full", i.actif ? "bg-emerald-500" : "bg-red-500")} />
+                    {valeurStatut(i)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <div className="border-t border-neutral-200 px-5 py-4 text-[14px] sm:px-6">
+              <p className="flex items-center gap-2 text-[13px] text-neutral-600">
+                Bandeau{" "}
+                <Pastille ton={statut.bandeau.actif ? "vert" : "gris"} point>
+                  {statut.bandeau.actif ? "Affiché" : "Masqué"}
+                </Pastille>
+              </p>
+              <p className="mt-2 text-neutral-900">{statut.bandeau.message || "Aucun message"}</p>
+            </div>
+            <div className="border-t border-neutral-200 px-5 py-4 text-[14px] sm:px-6">
+              <p className="flex items-center gap-2 text-[13px] text-neutral-600">
+                Pop-up{" "}
+                <Pastille ton={popup.actif ? "vert" : "gris"} point>
+                  {popup.actif ? "Active" : "Désactivée"}
+                </Pastille>
+              </p>
+              <p className="mt-2 text-neutral-900">{popup.titre}</p>
+              <p className="mt-1 text-[13px] text-neutral-500">
+                {popup.debut && popup.fin ? `Du ${formatDate(popup.debut)} au ${formatDate(popup.fin)}` : null}
+                {stats ? ` · ${formatNombre(stats.popupAffichages)} affichages` : null}
+              </p>
+            </div>
+          </Panneau>
+
+          <Panneau titre="Votre équipe Orion Studio">
+            {equipeOrion.map((membre) => (
+              <div key={membre.nom} className="border-b border-neutral-200 px-5 py-4 last:border-0 sm:px-6">
+                <p className="flex items-center gap-3">
+                  <span className="flex size-10 items-center justify-center rounded-full bg-club-800 text-[13px] font-semibold text-white">
+                    {membre.initiales}
+                  </span>
+                  <span>
+                    <span className="block text-[14px] font-semibold">{membre.nom} · Orion Studio</span>
+                    <span className="block text-[13px] text-neutral-500">Une question, une nouvelle page, une idée ?</span>
+                  </span>
+                </p>
+                <div className="mt-3 grid grid-cols-[1fr_auto] gap-2">
+                  <LienBouton href={membre.visio} icone="camera" externe>Demander une visio</LienBouton>
+                  <LienBouton href={membre.ecrire} icone="courrier" externe>Écrire</LienBouton>
+                </div>
+              </div>
+            ))}
+          </Panneau>
+        </div>
+      </div>
     </>
   );
 }

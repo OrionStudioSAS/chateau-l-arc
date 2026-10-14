@@ -173,3 +173,19 @@ export async function commiter(
     }
   }
 }
+
+/** Date (ISO) du dernier commit touchant un chemin du dépôt, ou null. */
+export async function derniereModification(chemin: string): Promise<string | null> {
+  if (!depotConfigure()) return null;
+  try {
+    const commits = await (
+      await github(
+        `/commits?path=${encodeURIComponent(chemin)}&sha=${encodeURIComponent(BRANCHE)}&per_page=1`,
+      )
+    ).json();
+    return commits?.[0]?.commit?.committer?.date ?? null;
+  } catch (erreur) {
+    console.error(`Historique de ${chemin} illisible`, erreur);
+    return null;
+  }
+}

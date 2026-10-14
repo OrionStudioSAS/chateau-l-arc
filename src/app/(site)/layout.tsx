@@ -4,6 +4,7 @@ import { CmsBridge } from "@/components/cms/bridge";
 import { EnTeteSite } from "@/components/layout/en-tete-site";
 import { PopupMarketing } from "@/components/layout/popup-marketing";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { SuiviAnalytics } from "@/components/layout/suivi-analytics";
 import { getPopupActive } from "@/lib/api/content";
 
 export default async function SiteLayout({ children }: LayoutProps<"/">) {
@@ -26,8 +27,9 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
       </main>
       <SiteFooter />
       <PopupMarketing popup={popup} />
-        <AnimationsDefilement />
-        <CmsBridge />
+      <AnimationsDefilement />
+      <CmsBridge />
+      <SuiviAnalytics />
     </div>
   );
 }

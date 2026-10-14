@@ -76,6 +76,7 @@ export async function CompetitionsApercu() {
 
                 <Link
                   href={`/competitions/${competition.slug}`}
+                  data-suivi={competition.etat.cle === "ouverte" ? "inscription" : undefined}
                   className={cn(
                     "mt-5 flex items-center justify-center gap-2 rounded-sm px-5 py-3 text-[13px] font-semibold transition-colors",
                     competition.etat.cle === "ouverte"

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { CartePopup } from "@/components/layout/carte-popup";
+import { evenements, suivre } from "@/lib/analytics/evenements";
 import type { Popup } from "@/lib/api/types";
 import { aujourdhuiAParis } from "@/lib/format";
 
@@ -35,6 +36,7 @@ export function PopupMarketing({ popup }: { popup: Popup | null }) {
     const minuteur = window.setTimeout(() => {
       focusPrecedent.current = document.activeElement as HTMLElement | null;
       setOuverte(true);
+      suivre(evenements.popupAffichage, { titre: popup.titre });
       // « Une fois par visiteur » : marquée vue dès l'affichage, qu'elle soit
       // fermée ou simplement ignorée, pour ne pas revenir à chaque page.
       try {
@@ -86,7 +88,10 @@ export function PopupMarketing({ popup }: { popup: Popup | null }) {
           boutonLien={popup.boutonLien}
           afficheUrl={popup.afficheUrl}
           onFermer={fermer}
-          onAction={fermer}
+          onAction={() => {
+            suivre(evenements.popupClic, { titre: popup.titre });
+            fermer();
+          }}
           idTitre="popup-titre"
         />
       </div>

@@ -141,7 +141,7 @@ function LigneCompetition({ competition }: { competition: CompetitionAvecEtat })
 
         {competition.etat.cle === "ouverte" ? (
           <>
-            <Link href={lien} className={boutonFonce}>
+            <Link href={lien} className={boutonFonce} data-suivi="inscription">
               S&apos;inscrire <span aria-hidden="true">→</span>
             </Link>
             <a href={site.contact.telephoneLien} className={boutonClair}>

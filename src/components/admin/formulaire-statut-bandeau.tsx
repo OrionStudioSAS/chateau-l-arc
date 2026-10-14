@@ -139,7 +139,7 @@ export function FormulaireStatutBandeau({
         )}
       </AdminCard>
 
-      <AdminCard>
+      <AdminCard id="bandeau">
         <label htmlFor="message" className="block text-sm font-semibold text-neutral-900">
           Message du bandeau (facultatif)
         </label>

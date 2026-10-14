@@ -615,7 +615,7 @@ function ModaleResultats({
             className="mt-2 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2.5 text-sm file:mr-4 file:rounded-md file:border-0 file:bg-neutral-100 file:px-3 file:py-1.5 file:text-sm"
           />
           <p className="mt-2 text-xs text-neutral-500">
-            10 Mo maximum. Le document sera téléchargeable depuis la page
+            4 Mo maximum. Le document sera téléchargeable depuis la page
             compétitions.
           </p>
 

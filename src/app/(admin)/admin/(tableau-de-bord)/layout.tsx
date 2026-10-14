@@ -5,7 +5,7 @@ import { BarreAdminMobile } from "@/components/admin/barre-admin-mobile";
 import { DeconnexionBouton } from "@/components/admin/deconnexion-bouton";
 import { Blason } from "@/components/ui/blason";
 import { site } from "@/config/site";
-import { exigerUtilisateur } from "@/lib/supabase/session";
+import { exigerUtilisateur } from "@/lib/admin/session";
 
 /**
  * La lecture de session se fait ici : `instant` ne se propage pas depuis le

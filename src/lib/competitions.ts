@@ -4,70 +4,15 @@ import type {
   CompetitionAvecEtat,
   EtatCompetition,
 } from "@/lib/api/types";
-
-/** Ligne de la table `competitions` telle que renvoyée par Supabase. */
-export type LigneCompetition = {
-  id: string;
-  slug: string;
-  nom: string;
-  date_debut: string;
-  date_fin: string | null;
-  formule: string;
-  depart: string;
-  trous: string;
-  index_maximum: string | null;
-  categories: string | null;
-  sponsor: string | null;
-  inscription_ouverture: string | null;
-  inscription_cloture: string | null;
-  places: number | null;
-  inscrits: number;
-  mode_inscription: string | null;
-  droit_jeu_membres: string | null;
-  droit_jeu_visiteurs: string | null;
-  inclus: string | null;
-  description: string | null;
-  affiche_url: string | null;
-  categorie: CategorieCompetition;
-  ouverte_visiteurs: boolean;
-  vainqueurs: string | null;
-  statut: "brouillon" | "publie";
-  resultats_url: string | null;
-  resultats_publies: boolean;
-};
+import type { FicheCompetition } from "@/lib/contenu/stockage";
 
 const sansNull = <T,>(valeur: T | null): T | undefined => valeur ?? undefined;
 
-export function mapperCompetition(ligne: LigneCompetition): Competition {
-  return {
-    id: ligne.id,
-    slug: ligne.slug,
-    nom: ligne.nom,
-    dateDebut: ligne.date_debut,
-    dateFin: sansNull(ligne.date_fin),
-    formule: ligne.formule,
-    depart: ligne.depart,
-    trous: ligne.trous,
-    indexMaximum: sansNull(ligne.index_maximum),
-    categories: sansNull(ligne.categories),
-    sponsor: sansNull(ligne.sponsor),
-    inscriptionOuverture: sansNull(ligne.inscription_ouverture),
-    inscriptionCloture: sansNull(ligne.inscription_cloture),
-    places: sansNull(ligne.places),
-    inscrits: ligne.inscrits,
-    modeInscription: sansNull(ligne.mode_inscription),
-    droitJeuMembres: sansNull(ligne.droit_jeu_membres),
-    droitJeuVisiteurs: sansNull(ligne.droit_jeu_visiteurs),
-    inclus: sansNull(ligne.inclus),
-    description: sansNull(ligne.description),
-    afficheUrl: sansNull(ligne.affiche_url),
-    categorie: ligne.categorie,
-    ouverteVisiteurs: ligne.ouverte_visiteurs,
-    vainqueurs: sansNull(ligne.vainqueurs),
-    statut: ligne.statut,
-    resultatsUrl: sansNull(ligne.resultats_url),
-    resultatsPublies: ligne.resultats_publies,
-  };
+/** Fiche de `contenu/competitions.json` → objet du site (null → undefined). */
+export function mapperCompetition(fiche: FicheCompetition): Competition {
+  return Object.fromEntries(
+    Object.entries(fiche).map(([cle, valeur]) => [cle, sansNull(valeur)]),
+  ) as Competition;
 }
 
 const jourMois = new Intl.DateTimeFormat("fr-FR", {

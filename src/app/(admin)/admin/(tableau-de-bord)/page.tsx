@@ -2,18 +2,18 @@ import type { Metadata } from "next";
 
 import { AdminPageHeader } from "@/components/admin/admin-page-header";
 import { FormulaireStatutBandeau } from "@/components/admin/formulaire-statut-bandeau";
-import { getBandeau, getStatutInstallations } from "@/lib/api/content";
+import { lireContenu } from "@/lib/contenu/stockage";
 import { formatDateHeure } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: { absolute: "Statut & bandeau · Back-office" },
 };
 
+// Lecture directe du dépôt, sans cache : l'accueil voit sa dernière publication.
+export const instant = false;
+
 export default async function Page() {
-  const [bandeau, installations] = await Promise.all([
-    getBandeau(),
-    getStatutInstallations(),
-  ]);
+  const { bandeau, installations } = await lireContenu("statut");
 
   return (
     <>

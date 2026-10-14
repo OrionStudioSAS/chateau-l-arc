@@ -9,10 +9,16 @@ import {
   type EtatCompetitionFormulaire,
   type EtatResultats,
 } from "@/lib/admin/formulaire-competition";
+import { exigerUtilisateur } from "@/lib/admin/session";
 import { libellesCategorie } from "@/lib/competitions";
-import { creerClientServeur } from "@/lib/supabase/server";
-
-type ClientServeur = Awaited<ReturnType<typeof creerClientServeur>>;
+import { commiter } from "@/lib/contenu/depot";
+import {
+  cheminsContenu,
+  DOSSIER_FICHIERS,
+  lireDans,
+  versJson,
+  type FicheCompetition,
+} from "@/lib/contenu/stockage";
 
 const texte = (formData: FormData, champ: string): string =>
   String(formData.get(champ) ?? "").trim();
@@ -47,25 +53,15 @@ const nombreOuNull = (formData: FormData, champ: string): number | null => {
 };
 
 /** Ajoute un suffixe tant que l'identifiant d'URL est déjà pris. */
-async function slugDisponible(
-  supabase: ClientServeur,
+function slugDisponible(
+  fiches: FicheCompetition[],
   base: string,
   idActuel: string | null,
-): Promise<string> {
+): string {
+  const pris = new Set(fiches.filter((f) => f.id !== idActuel).map((f) => f.slug));
   let candidat = base;
-
-  for (let suffixe = 2; suffixe < 50; suffixe += 1) {
-    const { data } = await supabase
-      .from("competitions")
-      .select("id")
-      .eq("slug", candidat)
-      .maybeSingle();
-
-    if (!data || data.id === idActuel) return candidat;
-    candidat = `${base}-${suffixe}`;
-  }
-
-  return `${base}-${Date.now()}`;
+  for (let suffixe = 2; pris.has(candidat); suffixe += 1) candidat = `${base}-${suffixe}`;
+  return candidat;
 }
 
 /**
@@ -89,52 +85,77 @@ export async function enregistrerCompetition(
     return { statut: "erreur", message: "Choisissez le type de compétition." };
   }
 
-  const supabase = await creerClientServeur();
-  const { data: session } = await supabase.auth.getClaims();
-
-  if (!session?.claims?.sub) {
-    return { statut: "erreur", message: "Session expirée. Reconnectez-vous." };
-  }
+  await exigerUtilisateur();
 
   const valeurs = {
     nom,
-    date_debut: dateDebut,
-    date_fin: texteOuNull(formData, "dateFin"),
+    dateDebut,
+    dateFin: texteOuNull(formData, "dateFin"),
     formule: texte(formData, "formule") || "À préciser",
     depart: texte(formData, "depart") || "À préciser",
     trous: texte(formData, "trous") || "18 trous",
-    index_maximum: texteOuNull(formData, "indexMaximum"),
+    indexMaximum: texteOuNull(formData, "indexMaximum"),
     categories: texteOuNull(formData, "categories"),
     sponsor: texteOuNull(formData, "sponsor"),
-    inscription_ouverture: texteOuNull(formData, "inscriptionOuverture"),
-    inscription_cloture: (() => {
+    inscriptionOuverture: texteOuNull(formData, "inscriptionOuverture"),
+    inscriptionCloture: (() => {
       const valeur = texteOuNull(formData, "inscriptionCloture");
       return valeur ? isoDepuisParis(valeur) : null;
     })(),
     places: nombreOuNull(formData, "places"),
-    mode_inscription: texteOuNull(formData, "modeInscription"),
-    droit_jeu_membres: texteOuNull(formData, "droitJeuMembres"),
-    droit_jeu_visiteurs: texteOuNull(formData, "droitJeuVisiteurs"),
+    modeInscription: texteOuNull(formData, "modeInscription"),
+    droitJeuMembres: texteOuNull(formData, "droitJeuMembres"),
+    droitJeuVisiteurs: texteOuNull(formData, "droitJeuVisiteurs"),
     inclus: texteOuNull(formData, "inclus"),
     description: texteOuNull(formData, "description"),
-    categorie,
-    ouverte_visiteurs: formData.get("ouverteVisiteurs") === "on",
+    categorie: categorie as FicheCompetition["categorie"],
+    ouverteVisiteurs: formData.get("ouverteVisiteurs") === "on",
     statut,
-    maj_le: new Date().toISOString(),
-  };
+  } satisfies Partial<FicheCompetition>;
 
-  const slug = await slugDisponible(supabase, slugifier(nom), id);
+  let introuvable = false as boolean;
 
-  const { error } = id
-    ? await supabase.from("competitions").update({ ...valeurs, slug }).eq("id", id)
-    : await supabase.from("competitions").insert({ ...valeurs, slug });
+  try {
+    await commiter(`Back-office : compétition « ${nom} »`, async (lire) => {
+      const fiches = await lireDans(lire, "competitions");
+      const slug = slugDisponible(fiches, slugifier(nom), id);
+      const existante = id ? fiches.find((fiche) => fiche.id === id) : undefined;
 
-  if (error) {
-    console.error("Enregistrement de la compétition impossible", error);
+      if (id && !existante) {
+        introuvable = true;
+        return null;
+      }
+
+      const fiche: FicheCompetition = existante
+        ? { ...existante, ...valeurs, slug }
+        : {
+            id: crypto.randomUUID(),
+            ...valeurs,
+            slug,
+            inscrits: 0,
+            afficheUrl: null,
+            vainqueurs: null,
+            resultatsUrl: null,
+            resultatsPublies: false,
+          };
+
+      const suivantes = existante
+        ? fiches.map((f) => (f.id === fiche.id ? fiche : f))
+        : [...fiches, fiche];
+      suivantes.sort((a, b) => a.dateDebut.localeCompare(b.dateDebut));
+
+      return [{ chemin: cheminsContenu.competitions, contenu: versJson(suivantes) }];
+    });
+  } catch (erreur) {
+    console.error("Enregistrement de la compétition impossible", erreur);
     return {
       statut: "erreur",
       message: "L'enregistrement a échoué. Réessayez dans un instant.",
     };
+  }
+
+  if (introuvable) {
+    return { statut: "erreur", message: "Cette compétition n'existe plus. Rechargez la page." };
   }
 
   updateTag(tags.competitions);
@@ -150,8 +171,8 @@ export async function enregistrerCompetition(
 
 /**
  * Dépose le PDF des résultats d'une compétition terminée, puis le publie sur
- * le site. Le fichier va dans le bucket « resultats », en lecture publique ;
- * l'écriture y est réservée aux administrateurs par les politiques RLS.
+ * le site : le fichier et la fiche partent dans le même commit, le PDF dans
+ * contenu/fichiers/resultats/ (servi par /fichiers/…).
  */
 export async function publierResultats(
   _etat: EtatResultats,
@@ -175,44 +196,51 @@ export async function publierResultats(
   }
 
   if (fichier.size > TAILLE_MAX_RESULTATS) {
-    return { statut: "erreur", message: "Le fichier dépasse 10 Mo." };
+    return { statut: "erreur", message: "Le fichier dépasse 4 Mo." };
   }
 
-  const supabase = await creerClientServeur();
-  const { data: session } = await supabase.auth.getClaims();
-
-  if (!session?.claims?.sub) {
-    return { statut: "erreur", message: "Session expirée. Reconnectez-vous." };
-  }
+  await exigerUtilisateur();
 
   // Horodatage dans le nom : un nouveau dépôt ne heurte pas le cache du CDN
   // sur l'ancienne URL.
-  const chemin = `${slug || id}-${Date.now()}.pdf`;
+  const nomFichier = `resultats/${slug || id}-${Date.now()}.pdf`;
+  const contenuPdf = new Uint8Array(await fichier.arrayBuffer());
+  let introuvable = false as boolean;
 
-  const { error: erreurDepot } = await supabase.storage
-    .from("resultats")
-    .upload(chemin, fichier, { contentType: "application/pdf", upsert: false });
+  try {
+    await commiter("Back-office : résultats de compétition", async (lire) => {
+      const fiches = await lireDans(lire, "competitions");
+      const fiche = fiches.find((f) => f.id === id);
 
-  if (erreurDepot) {
-    console.error("Dépôt du PDF de résultats impossible", erreurDepot);
-    return { statut: "erreur", message: "L'envoi du fichier a échoué." };
+      if (!fiche) {
+        introuvable = true;
+        return null;
+      }
+
+      const ancien = fiche.resultatsUrl?.startsWith("/fichiers/")
+        ? `${DOSSIER_FICHIERS}/${fiche.resultatsUrl.slice("/fichiers/".length)}`
+        : null;
+
+      const suivantes = fiches.map((f) =>
+        f.id === id
+          ? { ...f, resultatsUrl: `/fichiers/${nomFichier}`, resultatsPublies: true, vainqueurs }
+          : f,
+      );
+
+      return [
+        { chemin: `${DOSSIER_FICHIERS}/${nomFichier}`, contenu: contenuPdf },
+        { chemin: cheminsContenu.competitions, contenu: versJson(suivantes) },
+        // L'ancien PDF, remplacé, quitte le dépôt (il reste dans l'historique).
+        ...(ancien ? [{ chemin: ancien, contenu: null }] : []),
+      ];
+    });
+  } catch (erreur) {
+    console.error("Publication des résultats impossible", erreur);
+    return { statut: "erreur", message: "L'envoi a échoué. Réessayez dans un instant." };
   }
 
-  const { data: url } = supabase.storage.from("resultats").getPublicUrl(chemin);
-
-  const { error } = await supabase
-    .from("competitions")
-    .update({
-      resultats_url: url.publicUrl,
-      resultats_publies: true,
-      vainqueurs,
-      maj_le: new Date().toISOString(),
-    })
-    .eq("id", id);
-
-  if (error) {
-    console.error("Publication des résultats impossible", error);
-    return { statut: "erreur", message: "L'enregistrement a échoué." };
+  if (introuvable) {
+    return { statut: "erreur", message: "Cette compétition n'existe plus. Rechargez la page." };
   }
 
   updateTag(tags.competitions);

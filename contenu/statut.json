@@ -1,0 +1,113 @@
+{
+  "bandeau": {
+    "actif": true,
+    "message": "Abonnements 2027 ouverts : -5% paiement comptant",
+    "lien": {
+      "label": "Devenir membre",
+      "href": "/devenir-membre"
+    },
+    "publieLe": "2026-10-09T11:52:19.193Z"
+  },
+  "installations": [
+    {
+      "cle": "parcours",
+      "libelle": "Parcours",
+      "groupe": 1,
+      "type": "ouverture",
+      "feminin": false,
+      "actif": true,
+      "precision": null,
+      "majLe": "2026-10-09T11:52:19.193Z"
+    },
+    {
+      "cle": "practice",
+      "libelle": "Practice",
+      "groupe": 1,
+      "type": "ouverture",
+      "feminin": false,
+      "actif": true,
+      "precision": "8h – 19h",
+      "majLe": "2026-10-09T11:52:19.193Z"
+    },
+    {
+      "cle": "voiturette",
+      "libelle": "Voiturette",
+      "groupe": 2,
+      "type": "autorisation",
+      "feminin": true,
+      "actif": true,
+      "precision": null,
+      "majLe": "2026-10-09T11:52:19.193Z"
+    },
+    {
+      "cle": "chariot-manuel",
+      "libelle": "Chariot manuel",
+      "groupe": 2,
+      "type": "autorisation",
+      "feminin": false,
+      "actif": true,
+      "precision": null,
+      "majLe": "2026-10-09T11:52:19.193Z"
+    },
+    {
+      "cle": "chariot-electrique",
+      "libelle": "Chariot électrique",
+      "groupe": 2,
+      "type": "autorisation",
+      "feminin": false,
+      "actif": true,
+      "precision": null,
+      "majLe": "2026-10-09T11:52:19.193Z"
+    },
+    {
+      "cle": "club-house",
+      "libelle": "Club-house",
+      "groupe": 3,
+      "type": "ouverture",
+      "feminin": false,
+      "actif": true,
+      "precision": null,
+      "majLe": "2026-10-09T11:52:19.193Z"
+    },
+    {
+      "cle": "proshop",
+      "libelle": "Proshop",
+      "groupe": 3,
+      "type": "ouverture",
+      "feminin": false,
+      "actif": true,
+      "precision": null,
+      "majLe": "2026-10-09T11:52:19.193Z"
+    },
+    {
+      "cle": "restaurant",
+      "libelle": "Restaurant",
+      "groupe": 3,
+      "type": "ouverture",
+      "feminin": false,
+      "actif": true,
+      "precision": "Ouvert midi",
+      "majLe": "2026-10-09T11:52:19.193Z"
+    },
+    {
+      "cle": "piscine",
+      "libelle": "Piscine",
+      "groupe": 3,
+      "type": "ouverture",
+      "feminin": true,
+      "actif": false,
+      "precision": null,
+      "majLe": "2026-10-09T11:52:19.193Z"
+    },
+    {
+      "cle": "tennis",
+      "libelle": "Tennis",
+      "groupe": 3,
+      "type": "ouverture",
+      "feminin": false,
+      "actif": true,
+      "precision": null,
+      "majLe": "2026-10-09T11:52:19.193Z"
+    }
+  ]
+}

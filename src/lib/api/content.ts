@@ -1,16 +1,11 @@
 import { cacheLife, cacheTag } from "next/cache";
 
 import { ApiError, apiFetch, apiIsConfigured } from "@/lib/api/client";
-import { creerClientPublic, supabaseConfigure } from "@/lib/supabase/public";
 import { actualitesMock } from "@/lib/api/mock/actualites";
-import { bandeauMock } from "@/lib/api/mock/bandeau";
 import { formulesMock } from "@/lib/api/mock/formules";
 import { tarifsMock } from "@/lib/api/mock/tarifs";
-import {
-  avecEtat,
-  mapperCompetition,
-  type LigneCompetition,
-} from "@/lib/competitions";
+import { avecEtat, mapperCompetition } from "@/lib/competitions";
+import { lireContenu, type FichierPopup } from "@/lib/contenu/stockage";
 import type {
   Article,
   Bandeau,
@@ -23,8 +18,9 @@ import type {
 
 /**
  * Point d'entrée unique du contenu éditorial.
- * Chaque lecture est mise en cache (« use cache ») et étiquetée : l'API pourra
- * invalider une ressource précise via POST /api/revalidate (cf. app/api/revalidate).
+ * Chaque lecture est mise en cache (« use cache ») et étiquetée : le back-office
+ * invalide l'étiquette après chaque commit dans `contenu/` (cf. lib/contenu), et
+ * une source externe peut le faire via POST /api/revalidate.
  */
 export const tags = {
   bandeau: "bandeau",
@@ -67,9 +63,6 @@ export async function getActualite(slug: string): Promise<Article | null> {
   return notFoundToNull(apiFetch<Article>(`/actualites/${slug}`));
 }
 
-const COLONNES_COMPETITION =
-  "id, slug, nom, date_debut, date_fin, formule, depart, trous, index_maximum, categories, sponsor, inscription_ouverture, inscription_cloture, places, inscrits, mode_inscription, droit_jeu_membres, droit_jeu_visiteurs, inclus, description, affiche_url, categorie, ouverte_visiteurs, vainqueurs, statut, resultats_url, resultats_publies";
-
 /**
  * Compétitions publiées, de la plus proche à la plus lointaine.
  * L'état est calculé ici, dans le scope mis en cache : les composants n'ont
@@ -80,28 +73,12 @@ export async function getCompetitions(): Promise<CompetitionAvecEtat[]> {
   cacheTag(tags.competitions);
   cacheLife("hours");
 
-  if (!supabaseConfigure) {
-    console.error(
-      "Compétitions indisponibles : variables d'environnement Supabase manquantes.",
-    );
-    return [];
-  }
-
-  const supabase = creerClientPublic();
-  const { data, error } = await supabase
-    .from("competitions")
-    .select(COLONNES_COMPETITION)
-    .eq("statut", "publie")
-    .order("date_debut", { ascending: true });
-
-  if (error || !data) {
-    console.error("Lecture des compétitions impossible", error);
-    return [];
-  }
-
+  const fiches = await lireContenu("competitions");
   const maintenant = new Date();
-  return (data as LigneCompetition[])
-    .map((ligne) => avecEtat(mapperCompetition(ligne), maintenant))
+
+  return fiches
+    .filter((fiche) => fiche.statut === "publie")
+    .map((fiche) => avecEtat(mapperCompetition(fiche), maintenant))
     .sort((a, b) => a.dateDebut.localeCompare(b.dateDebut));
 }
 
@@ -128,19 +105,8 @@ export async function getCompetition(
   cacheTag(tags.competitions, `competition:${slug}`);
   cacheLife("hours");
 
-  if (!supabaseConfigure) return null;
-
-  const supabase = creerClientPublic();
-  const { data, error } = await supabase
-    .from("competitions")
-    .select(COLONNES_COMPETITION)
-    .eq("statut", "publie")
-    .eq("slug", slug)
-    .maybeSingle();
-
-  if (error || !data) return null;
-
-  return avecEtat(mapperCompetition(data as LigneCompetition), new Date());
+  const competitions = await getCompetitions();
+  return competitions.find((competition) => competition.slug === slug) ?? null;
 }
 
 export async function getTarifs(): Promise<Tarif[]> {
@@ -157,30 +123,13 @@ export async function getBandeau(): Promise<Bandeau> {
   cacheTag(tags.bandeau);
   cacheLife("days");
 
-  // Sans Supabase configuré (tests, environnement vierge), on sert le mock.
-  if (!supabaseConfigure) return bandeauMock;
-
-  const supabase = creerClientPublic();
-  const { data, error } = await supabase
-    .from("bandeau")
-    .select("message, actif, lien_label, lien_href, publie_le")
-    .eq("id", "principal")
-    .maybeSingle();
-
-  if (error || !data) {
-    console.error("Lecture du bandeau impossible", error);
-    // Plutôt qu'une page en erreur, le bandeau disparaît.
-    return { actif: false, message: "" };
-  }
+  const { bandeau } = await lireContenu("statut");
 
   return {
-    actif: data.actif,
-    message: data.message,
-    lien:
-      data.lien_label && data.lien_href
-        ? { label: data.lien_label, href: data.lien_href }
-        : undefined,
-    publieLe: data.publie_le,
+    actif: bandeau.actif,
+    message: bandeau.message,
+    lien: bandeau.lien ?? undefined,
+    publieLe: bandeau.publieLe ?? undefined,
   };
 }
 
@@ -215,24 +164,8 @@ export async function getStatutInstallations(): Promise<Installation[]> {
   cacheTag(tags.statut);
   cacheLife("days");
 
-  if (!supabaseConfigure) return [];
-
-  const supabase = creerClientPublic();
-  const { data, error } = await supabase
-    .from("statut_installations")
-    .select("cle, libelle, groupe, type, feminin, actif, precision, maj_le")
-    .order("groupe", { ascending: true })
-    .order("ordre", { ascending: true });
-
-  if (error || !data) {
-    console.error("Lecture du statut des installations impossible", error);
-    return [];
-  }
-
-  return data.map(({ maj_le, ...installation }) => ({
-    ...installation,
-    majLe: maj_le,
-  })) as Installation[];
+  const { installations } = await lireContenu("statut");
+  return installations;
 }
 
 /**
@@ -245,44 +178,20 @@ export async function getPopupActive(): Promise<Popup | null> {
   cacheTag(tags.popup);
   cacheLife("hours");
 
-  if (!supabaseConfigure) return null;
-
-  const supabase = creerClientPublic();
-  // RLS : le public ne voit la ligne que si elle est active.
-  const { data, error } = await supabase
-    .from("popup")
-    .select("actif, titre, texte, bouton_libelle, bouton_lien, debut, fin, affiche_url, maj_le")
-    .eq("id", "principal")
-    .maybeSingle();
-
-  if (error) console.error("Lecture de la pop-up impossible", error);
-  if (!data || !data.actif) return null;
-
-  return mapperPopup(data);
+  const popup = await lireContenu("popup");
+  return popup.actif ? mapperPopup(popup) : null;
 }
 
-type LignePopup = {
-  actif: boolean;
-  titre: string;
-  texte: string;
-  bouton_libelle: string | null;
-  bouton_lien: string | null;
-  debut: string | null;
-  fin: string | null;
-  affiche_url: string | null;
-  maj_le: string;
-};
-
-export function mapperPopup(ligne: LignePopup): Popup {
+export function mapperPopup(fichier: FichierPopup): Popup {
   return {
-    actif: ligne.actif,
-    titre: ligne.titre,
-    texte: ligne.texte,
-    boutonLibelle: ligne.bouton_libelle ?? undefined,
-    boutonLien: ligne.bouton_lien ?? undefined,
-    debut: ligne.debut ?? undefined,
-    fin: ligne.fin ?? undefined,
-    afficheUrl: ligne.affiche_url ?? undefined,
-    version: ligne.maj_le,
+    actif: fichier.actif,
+    titre: fichier.titre,
+    texte: fichier.texte,
+    boutonLibelle: fichier.boutonLibelle ?? undefined,
+    boutonLien: fichier.boutonLien ?? undefined,
+    debut: fichier.debut ?? undefined,
+    fin: fichier.fin ?? undefined,
+    afficheUrl: fichier.afficheUrl ?? undefined,
+    version: fichier.version,
   };
 }

@@ -20,5 +20,8 @@ export type EtatResultats =
   | { statut: "succes"; message: string }
   | { statut: "erreur"; message: string };
 
-/** Les résultats sont publiés en PDF ; 10 Mo couvrent largement un classement. */
-export const TAILLE_MAX_RESULTATS = 10 * 1024 * 1024;
+/**
+ * Les résultats sont publiés en PDF ; 4 Mo couvrent largement un classement.
+ * Plafond imposé par Vercel : 4,5 Mo par requête, formulaire compris.
+ */
+export const TAILLE_MAX_RESULTATS = 4 * 1024 * 1024;

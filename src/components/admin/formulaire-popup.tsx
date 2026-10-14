@@ -185,7 +185,7 @@ export function FormulairePopup({ popup }: { popup: Popup | null }) {
               }}
               className="mt-2 w-full rounded-lg border border-dashed border-neutral-300 px-3 py-3 text-sm text-neutral-600 file:mr-4 file:rounded-md file:border-0 file:bg-neutral-100 file:px-3 file:py-1.5 file:text-sm"
             />
-            <p className="mt-1.5 text-xs text-neutral-500">JPEG, PNG ou WebP, 5 Mo maximum.</p>
+            <p className="mt-1.5 text-xs text-neutral-500">JPEG, PNG ou WebP, 4 Mo maximum.</p>
 
             {popup?.afficheUrl && !apercuAffiche ? (
               <label className="mt-2 flex items-center gap-2 text-xs text-neutral-600">

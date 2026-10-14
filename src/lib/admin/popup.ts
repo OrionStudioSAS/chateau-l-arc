@@ -4,7 +4,8 @@ export type EtatPopup =
   | { statut: "succes"; message: string }
   | { statut: "erreur"; message: string };
 
-export const TAILLE_MAX_AFFICHE = 5 * 1024 * 1024;
+/** Plafond imposé par Vercel : 4,5 Mo par requête, formulaire compris. */
+export const TAILLE_MAX_AFFICHE = 4 * 1024 * 1024;
 export const TYPES_AFFICHE = ["image/jpeg", "image/png", "image/webp"];
 
 /**

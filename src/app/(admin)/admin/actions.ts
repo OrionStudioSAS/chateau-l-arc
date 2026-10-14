@@ -8,9 +8,16 @@ import { tags } from "@/lib/api/content";
 import { LONGUEUR_MAX_BANDEAU, type EtatBandeau } from "@/lib/bandeau";
 import type { EtatConnexion } from "@/lib/auth-etats";
 import { LONGUEUR_MAX_PRECISION } from "@/lib/statut";
-import { creerClientServeur } from "@/lib/supabase/server";
+import {
+  exigerUtilisateur,
+  fermerSession,
+  ouvrirSession,
+  verifierIdentifiants,
+} from "@/lib/admin/session";
+import { commiter } from "@/lib/contenu/depot";
+import { cheminsContenu, lireDans, versJson } from "@/lib/contenu/stockage";
 
-/** Connexion par e-mail et mot de passe (comptes créés dans Supabase). */
+/** Connexion par e-mail et mot de passe (comptes déclarés dans ADMIN_COMPTES). */
 export async function seConnecter(
   _etat: EtatConnexion,
   formData: FormData,
@@ -23,30 +30,18 @@ export async function seConnecter(
     return { statut: "erreur", message: "Renseignez votre e-mail et votre mot de passe." };
   }
 
-  const supabase = await creerClientServeur();
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password: motDePasse,
-  });
+  const compte = await verifierIdentifiants(email, motDePasse);
 
-  if (error) {
+  if (!compte) {
     // Message volontairement générique : ne pas révéler si le compte existe.
     return { statut: "erreur", message: "E-mail ou mot de passe incorrect." };
   }
 
-  // Un compte peut exister sans être administrateur (l'inscription publique
-  // reste possible côté Supabase) : on referme la session dans ce cas.
-  const { data: fiche } = await supabase
-    .from("administrateurs")
-    .select("id")
-    .maybeSingle();
-
-  if (!fiche) {
-    await supabase.auth.signOut();
-    return {
-      statut: "erreur",
-      message: "Ce compte n'a pas accès au back-office.",
-    };
+  try {
+    await ouvrirSession(compte);
+  } catch (erreur) {
+    console.error("Ouverture de session impossible", erreur);
+    return { statut: "erreur", message: "Back-office mal configuré : contactez Orion." };
   }
 
   // `suite` vient de l'URL : on n'autorise que les chemins internes du back-office.
@@ -55,8 +50,7 @@ export async function seConnecter(
 }
 
 export async function seDeconnecter(): Promise<void> {
-  const supabase = await creerClientServeur();
-  await supabase.auth.signOut();
+  await fermerSession();
   redirect("/admin/connexion");
 }
 
@@ -77,76 +71,47 @@ export async function publierStatutEtBandeau(
     };
   }
 
-  const supabase = await creerClientServeur();
-  const { data } = await supabase.auth.getClaims();
-  const identifiant = data?.claims?.sub;
-
-  if (!identifiant) {
-    return {
-      statut: "erreur",
-      message: "Votre session a expiré. Reconnectez-vous pour publier.",
-    };
-  }
-
-  // La liste des installations fait foi : on ne touche qu'aux clés connues.
-  const { data: installations, error: erreurLecture } = await supabase
-    .from("statut_installations")
-    .select("cle");
-
-  if (erreurLecture || !installations) {
-    return { statut: "erreur", message: "Lecture du statut impossible." };
-  }
-
-  const cles = installations.map((installation) => installation.cle as string);
-  const precisions = new Map(
-    cles.map((cle) => [
-      cle,
-      String(formData.get(`precision-${cle}`) ?? "").trim() || null,
-    ]),
-  );
-
-  if ([...precisions.values()].some((p) => p && p.length > LONGUEUR_MAX_PRECISION)) {
-    return {
-      statut: "erreur",
-      message: `Une précision dépasse ${LONGUEUR_MAX_PRECISION} caractères.`,
-    };
-  }
+  await exigerUtilisateur();
 
   const maintenant = new Date().toISOString();
+  let erreurSaisie = null as string | null;
 
-  // Une requête par installation : chacune porte sa propre précision.
-  const resultats = await Promise.all([
-    ...cles.map((cle) =>
-      supabase
-        .from("statut_installations")
-        .update({
-          actif: formData.get(`statut-${cle}`) === "on",
-          precision: precisions.get(cle),
-          maj_le: maintenant,
-        })
-        .eq("cle", cle),
-    ),
-    supabase
-      .from("bandeau")
-      .update({
-        message,
-        actif: message !== "",
-        publie_le: maintenant,
-        publie_par: identifiant,
-      })
-      .eq("id", "principal"),
-  ]);
+  try {
+    await commiter("Back-office : statut du golf et bandeau", async (lire) => {
+      const statut = await lireDans(lire, "statut");
 
-  if (resultats.some((resultat) => resultat?.error)) {
-    console.error(
-      "Publication du statut ou du bandeau impossible",
-      resultats.map((resultat) => resultat?.error).filter(Boolean),
-    );
+      // La liste des installations fait foi : on ne touche qu'aux clés connues.
+      const installations = statut.installations.map((installation) => ({
+        ...installation,
+        actif: formData.get(`statut-${installation.cle}`) === "on",
+        precision: String(formData.get(`precision-${installation.cle}`) ?? "").trim() || null,
+        majLe: maintenant,
+      }));
+
+      if (installations.some((i) => i.precision && i.precision.length > LONGUEUR_MAX_PRECISION)) {
+        erreurSaisie = `Une précision dépasse ${LONGUEUR_MAX_PRECISION} caractères.`;
+        return null;
+      }
+
+      return [
+        {
+          chemin: cheminsContenu.statut,
+          contenu: versJson({
+            bandeau: { ...statut.bandeau, message, actif: message !== "", publieLe: maintenant },
+            installations,
+          }),
+        },
+      ];
+    });
+  } catch (erreur) {
+    console.error("Publication du statut ou du bandeau impossible", erreur);
     return {
       statut: "erreur",
       message: "La publication a échoué. Réessayez dans un instant.",
     };
   }
+
+  if (erreurSaisie) return { statut: "erreur", message: erreurSaisie };
 
   updateTag(tags.statut);
   updateTag(tags.bandeau);

@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Route } from "next";
+import { redirect } from "next/navigation";
 
 import { FormulaireConnexion } from "@/components/admin/formulaire-connexion";
 import { Blason } from "@/components/ui/blason";
 import { site } from "@/config/site";
+import { getUtilisateur } from "@/lib/admin/session";
 
 export const metadata: Metadata = {
   title: { absolute: "Connexion · Back-office" },
@@ -18,7 +20,10 @@ export const instant = false;
 
 export default async function Page({ searchParams }: PageProps<"/admin/connexion">) {
   const { suite } = await searchParams;
-  const destination = typeof suite === "string" ? suite : "/admin";
+  const destination =
+    typeof suite === "string" && suite.startsWith("/admin") ? suite : "/admin";
+
+  if (await getUtilisateur()) redirect(destination as Route);
 
   return (
     <div className="flex min-h-screen items-center justify-center px-5 py-16">

@@ -2,7 +2,7 @@
  * Grille tarifaire du club (page Tarifs & abonnements).
  *
  * TODO : relevée sur la maquette — à faire valider ligne par ligne par le
- * club, puis à basculer dans Supabase pour que l'accueil la tienne à jour
+ * club, puis à basculer dans contenu/ pour que l'accueil la tienne à jour
  * depuis le back-office (la bannière l'annonce déjà aux visiteurs).
  */
 

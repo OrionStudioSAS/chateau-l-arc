@@ -1,13 +1,10 @@
 import "server-only";
 
-import { avecEtat, mapperCompetition, type LigneCompetition } from "@/lib/competitions";
+import { avecEtat, mapperCompetition } from "@/lib/competitions";
 import type { CompetitionAvecEtat } from "@/lib/api/types";
-import { creerClientServeur } from "@/lib/supabase/server";
+import { lireContenu } from "@/lib/contenu/stockage";
 
 export const COMPETITIONS_PAR_PAGE = 6;
-
-const COLONNES =
-  "id, slug, nom, date_debut, date_fin, formule, depart, trous, index_maximum, categories, sponsor, inscription_ouverture, inscription_cloture, places, inscrits, mode_inscription, droit_jeu_membres, droit_jeu_visiteurs, inclus, description, affiche_url, categorie, ouverte_visiteurs, vainqueurs, statut, resultats_url, resultats_publies";
 
 /**
  * Liste du back-office : brouillons compris, de la plus récente à la plus
@@ -20,29 +17,17 @@ export async function listerCompetitions(page: number): Promise<{
   pages: number;
   page: number;
 }> {
-  const supabase = await creerClientServeur();
+  const fiches = await lireContenu("competitions");
   const debut = (page - 1) * COMPETITIONS_PAR_PAGE;
-
-  const { data, error, count } = await supabase
-    .from("competitions")
-    .select(COLONNES, { count: "exact" })
-    .order("date_debut", { ascending: false })
-    .range(debut, debut + COMPETITIONS_PAR_PAGE - 1);
-
-  if (error || !data) {
-    console.error("Lecture des compétitions (admin) impossible", error);
-    return { competitions: [], total: 0, pages: 1, page };
-  }
-
   const maintenant = new Date();
-  const total = count ?? data.length;
 
   return {
-    competitions: (data as LigneCompetition[]).map((ligne) =>
-      avecEtat(mapperCompetition(ligne), maintenant),
-    ),
-    total,
-    pages: Math.max(1, Math.ceil(total / COMPETITIONS_PAR_PAGE)),
+    competitions: [...fiches]
+      .sort((a, b) => b.dateDebut.localeCompare(a.dateDebut))
+      .slice(debut, debut + COMPETITIONS_PAR_PAGE)
+      .map((fiche) => avecEtat(mapperCompetition(fiche), maintenant)),
+    total: fiches.length,
+    pages: Math.max(1, Math.ceil(fiches.length / COMPETITIONS_PAR_PAGE)),
     page,
   };
 }

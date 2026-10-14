@@ -16,6 +16,12 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   // Liens internes vérifiés à la compilation.
   typedRoutes: true,
+  experimental: {
+    serverActions: {
+      // PDF de résultats et affiches (4 Mo max, cf. lib/admin) + marge du formulaire.
+      bodySizeLimit: "4.5mb",
+    },
+  },
   images: {
     // Versions WebP générées à la compilation (scripts/optimiser-images.mjs) :
     // le service d'optimisation de Vercel est soumis à un quota mensuel.

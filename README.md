@@ -107,59 +107,71 @@ haut ; en changer la hauteur suppose d'ajuster les deux.
 
 ## Back-office (`/admin`)
 
-Squelette du mini back-office : barre latérale, sections et écran « Statut & bandeau ».
-Seul le champ **Message du bandeau** est fonctionnel aujourd'hui — il alimente la barre
-d'information en haut du site public (`AnnouncementBar`).
+Mini back-office pour l'équipe du club : statut du golf et bandeau, compétitions
+(avec PDF de résultats), pop-up marketing. **Il n'y a pas de base de données** : comme
+pour Orion admin, le dépôt GitHub fait office de stockage.
 
-L'écriture passe par l'action serveur `publierBandeau` : elle vérifie la session, met à
-jour la ligne dans Supabase puis invalide l'étiquette de cache `bandeau`, ce qui
-rafraîchit le site public immédiatement.
+### Contenu stocké dans le dépôt
+
+| Fichier | Contenu |
+| --- | --- |
+| `contenu/statut.json` | Bandeau d'information + état des installations (menu « Parcours ouvert ») |
+| `contenu/competitions.json` | Calendrier des compétitions, brouillons compris |
+| `contenu/popup.json` | Pop-up marketing (une seule) |
+| `contenu/fichiers/` | PDF de résultats et affiches déposés, servis par `/fichiers/…` |
+
+Chaque publication du back-office est **un commit** sur `main`, fait par l'API REST de
+GitHub (`src/lib/contenu/depot.ts`) : plusieurs fichiers partent dans le même commit, et
+une publication concurrente est rejouée sur la nouvelle version. L'action invalide
+ensuite l'étiquette de cache concernée.
+
+Le site lit ces fichiers **sur GitHub** (`lireContenu`, `src/lib/contenu/stockage.ts`),
+dans des scopes `use cache` : une publication est donc visible tout de suite, sans
+attendre de redéploiement. Les fichiers déposés le sont aussi, via la route
+`src/app/fichiers/[...chemin]`. Si GitHub ne répond pas, le site sert la copie
+embarquée au dernier build. `vercel.json` évite un build Vercel pour un commit qui ne
+touche que `contenu/`.
+
+Le dépôt étant public, tout ce qui est saisi dans le back-office (brouillons compris)
+y est lisible.
 
 ### Accès et authentification
 
-Les routes `/admin` sont protégées par Supabase Auth (e-mail + mot de passe) :
+Les comptes sont déclarés dans la variable d'environnement `ADMIN_COMPTES` : une
+entrée par compte, séparées par des virgules, au format `email:scrypt:<sel>:<empreinte>`.
+Le mot de passe n'est jamais stocké, seulement son empreinte scrypt. Pour créer
+une entrée :
 
-- `src/proxy.ts` (l'équivalent Next 16 de l'ancien middleware) rafraîchit la session et
-  renvoie vers `/admin/connexion` tout visiteur non connecté ;
-- le layout du tableau de bord revérifie la session côté serveur, car un contrôle dans le
-  proxy seul ne protège pas les données ;
-- la vérification repose sur `supabase.auth.getClaims()`, qui valide la signature du JWT —
-  `getSession()` ne revalide pas le jeton et ne doit pas servir à autoriser.
-
-**Être authentifié ne suffit pas.** L'inscription reste ouverte via la clé publishable,
-donc l'accès dépend d'une liste blanche : la table `administrateurs`. Un compte absent de
-cette table est déconnecté à la volée et ne peut rien écrire (les politiques RLS
-l'exigent aussi côté base).
-
-Pour ouvrir un accès :
-
-1. créer l'utilisateur dans le tableau de bord Supabase
-   (*Authentication → Users → Add user*) ;
-2. l'inscrire dans la liste blanche :
-
-```sql
-insert into public.administrateurs (id, email)
-select id, email from auth.users where email = 'adresse@du-club.fr';
+```bash
+node scripts/creer-compte-admin.mjs
 ```
 
-### Base de données
+La session est un cookie signé (HMAC-SHA256, 7 jours) avec `ADMIN_SECRET_SESSION`.
+Retirer une entrée d'`ADMIN_COMPTES` coupe l'accès, y compris aux sessions ouvertes ;
+changer `ADMIN_SECRET_SESSION` déconnecte tout le monde.
 
-Projet Supabase « chateau l'arc ». Tables :
+- `src/proxy.ts` renvoie vers `/admin/connexion` tout visiteur sans session valide ;
+- le layout du tableau de bord et chaque action serveur revérifient la session et
+  l'existence du compte, car un contrôle dans le proxy seul ne protège pas les données.
 
-| Table | Rôle | RLS |
-| --- | --- | --- |
-| `bandeau` | Ligne unique (`id = 'principal'`) : message, activation, lien, date de publication | Lecture publique, écriture réservée aux administrateurs |
-| `administrateurs` | Comptes autorisés sur le back-office | Chaque compte ne voit que sa propre fiche |
-| `competitions` | Calendrier des compétitions, brouillons compris | Le public ne voit que `statut = 'publie'` ; création, modification et suppression réservées aux administrateurs |
+### Variables d'environnement (Vercel → Settings → Environment Variables)
+
+| Variable | Rôle |
+| --- | --- |
+| `GITHUB_TOKEN` | Jeton *fine-grained* limité au dépôt, permission **Contents : Read and write** |
+| `ADMIN_COMPTES` | Comptes du back-office (cf. ci-dessus) |
+| `ADMIN_SECRET_SESSION` | Clé aléatoire d'au moins 32 caractères (`openssl rand -base64 32`) |
+| `GITHUB_DEPOT`, `GITHUB_BRANCHE` | Facultatives : `OrionStudioSAS/chateau-l-arc` et `main` par défaut |
+
+En local, sans `GITHUB_TOKEN`, le jeton de la GitHub CLI (`gh auth token`) est utilisé,
+et une clé de session de développement remplace `ADMIN_SECRET_SESSION`. Attention :
+même en local, une publication écrit sur la branche du dépôt (`GITHUB_BRANCHE` pour
+travailler sur une autre).
 
 L'état affiché sur une compétition (« Inscriptions ouvertes », « Ouverture le 15/10 »,
 « Résultats en attente »…) n'est pas stocké : il est déduit des dates par
 `etatCompetition()` (`src/lib/competitions.ts`), appelé côté serveur avec une date
 passée explicitement pour rester déterministe dans les scopes `use cache`.
-
-Le site public lit le bandeau avec un client **sans cookies**
-(`src/lib/supabase/public.ts`), seul compatible avec un scope `use cache` ; le
-back-office utilise le client lié à la session (`src/lib/supabase/server.ts`).
 
 ## À faire
 
@@ -171,9 +183,5 @@ back-office utilise le client lié à la session (`src/lib/supabase/server.ts`).
   Bricolage Grotesque, chargée dans `src/app/layout.tsx`).
 - Assainir le HTML éditorial (`dangerouslySetInnerHTML`) ou le recevoir déjà nettoyé.
 - Définir l'endpoint d'envoi du formulaire de contact.
-- Désactiver l'inscription publique dans Supabase (*Authentication → Sign In / Providers*)
-  en complément de la liste blanche.
-- Compléter le back-office : statut du golf, pop-up marketing, aide.
-- Compétitions : dépôt de l'affiche et publication des résultats (PDF) — les deux
-  supposent un bucket Supabase Storage.
+- Compétitions : dépôt de l'affiche depuis le back-office.
 - Mentions légales et politique de confidentialité.

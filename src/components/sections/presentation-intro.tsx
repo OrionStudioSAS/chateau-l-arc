@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 import { Editable } from "@/components/cms/editable";
 import { ContainerEtroit } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
-import { PRESENTATION_SURTITRE, PRESENTATION_TEXTE } from "@/constants";
+import { PRESENTATION_SURTITRE, PRESENTATION_TEXTE, PRESENTATION_VIGNETTES } from "@/constants";
 
 /**
  * Vignettes décoratives réparties autour du texte, par rangées de deux.
@@ -136,8 +136,11 @@ export function PresentationIntro() {
   return (
     <div ref={bloc} data-sans-revele className="relative">
       <div aria-hidden="true" className="absolute inset-0 hidden lg:block">
-        {vignettes.map((vignette) => (
-          <span
+        {vignettes.map((vignette, index) => (
+          <Editable
+            as="span"
+            path={`Accueil · Présentation.PRESENTATION_VIGNETTES.${index}`}
+            image
             key={`${vignette.cote}-${vignette.y}`}
             data-vignette
             className="absolute block overflow-hidden rounded-md shadow-[0_6px_18px_rgba(16,24,40,0.12)] will-change-transform"
@@ -147,24 +150,24 @@ export function PresentationIntro() {
             }}
           >
             <Image
-              src={vignette.image}
+              src={PRESENTATION_VIGNETTES[index] ?? vignette.image}
               alt=""
               width={135}
               height={70}
               sizes="135px"
               className="h-[70px] w-[135px] object-cover"
             />
-          </span>
+          </Editable>
         ))}
       </div>
 
       <ContainerEtroit className="relative max-w-xl text-center">
-        <Editable path="Présentation.PRESENTATION_SURTITRE" as="div">
+        <Editable path="Accueil · Présentation.PRESENTATION_SURTITRE" as="div">
           <Surtitre className="text-encre/70">{PRESENTATION_SURTITRE}</Surtitre>
         </Editable>
 
         {/* Un <span> par mot : c'est leur position qui donne les lignes. */}
-        <Editable path="Présentation.PRESENTATION_TEXTE" as="div">
+        <Editable path="Accueil · Présentation.PRESENTATION_TEXTE" as="div">
           <p
             ref={paragraphe}
             className="mt-10 text-[20px] font-normal leading-[1.6] tracking-[-0.2px] text-encre/85"

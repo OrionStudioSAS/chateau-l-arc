@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { Container } from "@/components/ui/container";
+import { Editable } from "@/components/cms/editable";
 import { Surtitre } from "@/components/ui/surtitre";
 import { cn } from "@/lib/cn";
 
@@ -20,11 +21,14 @@ export function TexteEtGalerie({
   titre,
   photos,
   classeTexte,
+  cms,
   children,
 }: {
   surtitre: string;
   titre: string;
   photos: PhotoGalerie[];
+  /** Chemins dans constants.ts (éditeur visuel) ; `photos` : la liste des images. */
+  cms?: { surtitre?: string; titre?: string; photos?: string };
   /** Espacement des paragraphes, propre à chaque section. */
   classeTexte?: string;
   children: React.ReactNode;
@@ -48,13 +52,15 @@ export function TexteEtGalerie({
           {/* Le titre reste visible pendant le défilement du texte. `top-28`
               le place sous l'en-tête collant (h-20), avec un peu d'air. */}
           <div className="lg:sticky lg:top-28 lg:self-start">
-            <Surtitre aligne="gauche" className="text-encre/60">
-              {surtitre}
-            </Surtitre>
+            <Editable path={cms?.surtitre ?? ""} as="div">
+              <Surtitre aligne="gauche" className="text-encre/60">
+                {surtitre}
+              </Surtitre>
+            </Editable>
 
-            <h2 className="mt-6 font-butler text-[40px] font-medium leading-[1.05] text-club-950 sm:text-[64px]">
+            <Editable path={cms?.titre ?? ""} as="h2" className="mt-6 font-butler text-[40px] font-medium leading-[1.05] text-club-950 sm:text-[64px]">
               {titre}
-            </h2>
+            </Editable>
           </div>
 
           <div
@@ -69,8 +75,11 @@ export function TexteEtGalerie({
 
         <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 lg:mt-14 lg:grid-cols-3 lg:grid-rows-[292px_292px]">
           {photos.slice(0, 5).map((photo, index) => (
-            <div
-              key={`${photo.src}-${photo.cadrage}`}
+            <Editable
+              as="div"
+              image
+              path={cms?.photos ? `${cms.photos}.${index}` : ""}
+              key={index}
               className={cn(
                 "relative overflow-hidden rounded-sm",
                 formats[index],
@@ -87,7 +96,7 @@ export function TexteEtGalerie({
                 className="object-cover"
                 style={{ objectPosition: photo.cadrage }}
               />
-            </div>
+            </Editable>
           ))}
         </div>
       </Container>

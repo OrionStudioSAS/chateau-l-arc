@@ -4,33 +4,35 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 import { site } from "@/config/site";
-import { avantagesMembres } from "@/lib/tarifs";
+import { Editable } from "@/components/cms/editable";
+import { AVANTAGES_IMAGE, AVANTAGES_LISTE, AVANTAGES_SURTITRE, AVANTAGES_TITRE } from "@/constants";
 
-/** TODO : photo temporaire, à remplacer (vue sur la Sainte-Victoire depuis le parcours). */
-const IMAGE_PROVISOIRE = "/images/parcours.png";
+const SECTION = "Tarifs · Avantages membres";
 
 export function AvantagesMembres() {
   return (
     <section id="avantages" className="scroll-mt-28 bg-white py-14 lg:py-20">
       <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-20">
         <div>
-          <Surtitre aligne="gauche" className="text-or-600">
-            Avantages membres
-          </Surtitre>
-          <h2 className="mt-5 max-w-lg font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
-            Bien plus qu&apos;un accès au parcours
-          </h2>
+          <Editable path={`${SECTION}.AVANTAGES_SURTITRE`} as="div">
+            <Surtitre aligne="gauche" className="text-or-600">
+              {AVANTAGES_SURTITRE}
+            </Surtitre>
+          </Editable>
+          <Editable path={`${SECTION}.AVANTAGES_TITRE`} as="h2" className="mt-5 max-w-lg font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+            {AVANTAGES_TITRE}
+          </Editable>
 
           <ul className="mt-8 space-y-4">
-            {avantagesMembres.map((avantage) => (
-              <li key={avantage} className="flex items-center gap-4 text-[15px] text-encre/80">
+            {AVANTAGES_LISTE.map((avantage, index) => (
+              <li key={index} className="flex items-center gap-4 text-[15px] text-encre/80">
                 <span
                   aria-hidden="true"
                   className="flex size-7 shrink-0 items-center justify-center rounded-full bg-sable-100 text-[12px] text-club-950"
                 >
                   ✓
                 </span>
-                {avantage}
+                <Editable path={`${SECTION}.AVANTAGES_LISTE.${index}`}>{avantage}</Editable>
               </li>
             ))}
           </ul>
@@ -62,16 +64,16 @@ export function AvantagesMembres() {
           </div>
         </div>
 
-        <div className="relative aspect-[4/3] overflow-hidden rounded-sm">
+        <Editable path={`${SECTION}.AVANTAGES_IMAGE`} image as="div" className="relative aspect-[4/3] overflow-hidden rounded-sm">
           <Image
-            src={IMAGE_PROVISOIRE}
+            src={AVANTAGES_IMAGE}
             alt="Le parcours entre les pins, face à la montagne Sainte-Victoire"
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
             className="object-cover"
             data-parallax="0.07"
           />
-        </div>
+        </Editable>
       </Container>
     </section>
   );

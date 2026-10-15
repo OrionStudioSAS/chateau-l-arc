@@ -10,7 +10,7 @@ export function Partenaires() {
     <section className="border-t border-encre/10 bg-white py-12 lg:py-14">
       <Container>
         {/* Bandeau discret : un simple intitulé au-dessus d'une rangée de logos. */}
-        <Editable path="Partenaires.PARTENAIRES_TITRE" as="h2" className="text-center text-[11px] font-normal uppercase tracking-[0.2em] text-encre/50">
+        <Editable path="Accueil · Partenaires.PARTENAIRES_TITRE" as="h2" className="text-center text-[11px] font-normal uppercase tracking-[0.2em] text-encre/50">
           {PARTENAIRES_TITRE}
         </Editable>
 

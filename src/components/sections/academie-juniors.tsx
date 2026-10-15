@@ -3,6 +3,8 @@ import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
+import { Editable } from "@/components/cms/editable";
+import { ACADEMIE_JUNIORS_IMAGE, ACADEMIE_JUNIORS_SURTITRE, ACADEMIE_JUNIORS_TITRE } from "@/constants";
 import { atoutsJuniors, formulesJuniors, noteJuniors } from "@/lib/academie";
 import { euros } from "@/lib/tarifs";
 
@@ -13,12 +15,14 @@ export function AcademieJuniors() {
     <section id="juniors" className="scroll-mt-28 bg-sable-100 py-14 lg:py-20">
       <Container className="grid gap-10 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:gap-16">
         <div>
-          <Surtitre aligne="gauche" className="text-or-600">
-            École de golf juniors
-          </Surtitre>
-          <h2 className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
-            Le golf dès 4 ans
-          </h2>
+          <Editable path="L'Académie · École juniors.ACADEMIE_JUNIORS_SURTITRE" as="div">
+            <Surtitre aligne="gauche" className="text-or-600">
+              {ACADEMIE_JUNIORS_SURTITRE}
+            </Surtitre>
+          </Editable>
+          <Editable path="L'Académie · École juniors.ACADEMIE_JUNIORS_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+            {ACADEMIE_JUNIORS_TITRE}
+          </Editable>
 
           <ul className="mt-6 flex max-w-md flex-wrap gap-2.5">
             {atoutsJuniors.map((atout) => (
@@ -65,15 +69,15 @@ export function AcademieJuniors() {
           </p>
         </div>
 
-        <div className="relative min-h-[320px] overflow-hidden rounded-sm lg:min-h-0">
+        <Editable path="L'Académie · École juniors.ACADEMIE_JUNIORS_IMAGE" image as="div" className="relative min-h-[320px] overflow-hidden rounded-sm lg:min-h-0">
           <Image
-            src="/images/hp-bas-droite.png"
+            src={ACADEMIE_JUNIORS_IMAGE}
             alt="Seau de balles au practice, face à la Sainte-Victoire"
             fill
             sizes="(min-width: 1024px) 40vw, 100vw"
             className="object-cover"
           />
-        </div>
+        </Editable>
       </Container>
     </section>
   );

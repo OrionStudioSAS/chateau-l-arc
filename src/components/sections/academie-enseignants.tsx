@@ -1,6 +1,8 @@
 import { PictoAcademie } from "@/components/sections/academie-pictos";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
+import { Editable } from "@/components/cms/editable";
+import { ACADEMIE_ENSEIGNANTS_SURTITRE, ACADEMIE_ENSEIGNANTS_TITRE } from "@/constants";
 import { site } from "@/config/site";
 import { enseignants } from "@/lib/academie";
 
@@ -16,12 +18,14 @@ export function AcademieEnseignants() {
   return (
     <section className="bg-white py-14 lg:py-20">
       <Container>
-        <Surtitre aligne="gauche" className="text-or-600">
-          Nos enseignants
-        </Surtitre>
-        <h2 className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
-          Une équipe pour vous accompagner
-        </h2>
+        <Editable path="L'Académie · Enseignants.ACADEMIE_ENSEIGNANTS_SURTITRE" as="div">
+          <Surtitre aligne="gauche" className="text-or-600">
+            {ACADEMIE_ENSEIGNANTS_SURTITRE}
+          </Surtitre>
+        </Editable>
+        <Editable path="L'Académie · Enseignants.ACADEMIE_ENSEIGNANTS_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+          {ACADEMIE_ENSEIGNANTS_TITRE}
+        </Editable>
 
         <ul className="mt-10 grid gap-5 md:grid-cols-2">
           {enseignants.map((enseignant) => (

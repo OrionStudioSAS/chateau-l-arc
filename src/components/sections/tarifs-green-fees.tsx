@@ -2,6 +2,8 @@ import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
+import { Editable } from "@/components/cms/editable";
+import { TARIFS_CARNETS_SURTITRE, TARIFS_GREENFEES_SURTITRE, TARIFS_LOCATIONS_SURTITRE } from "@/constants";
 import { headerActions } from "@/config/site";
 import { cn } from "@/lib/cn";
 import { proprietesLien } from "@/lib/liens";
@@ -66,9 +68,11 @@ export function TarifsGreenFees() {
     <section className="bg-white py-14 lg:py-20">
       <Container>
         <div id="green-fees" className={ancre}>
-          <Surtitre aligne="gauche" className="text-or-600">
-            Green fees
-          </Surtitre>
+          <Editable path="Tarifs · Green fees.TARIFS_GREENFEES_SURTITRE" as="div">
+            <Surtitre aligne="gauche" className="text-or-600">
+              {TARIFS_GREENFEES_SURTITRE}
+            </Surtitre>
+          </Editable>
 
           <ul className="mt-8 grid gap-5 md:grid-cols-3">
             {greenFees.map((formule) => {
@@ -119,9 +123,11 @@ export function TarifsGreenFees() {
         </div>
 
         <div id="carnets" className={cn("mt-16 lg:mt-20", ancre)}>
-          <Surtitre aligne="gauche" className="text-or-600">
-            Carnets · valables 12 mois
-          </Surtitre>
+          <Editable path="Tarifs · Green fees.TARIFS_CARNETS_SURTITRE" as="div">
+            <Surtitre aligne="gauche" className="text-or-600">
+              {TARIFS_CARNETS_SURTITRE}
+            </Surtitre>
+          </Editable>
 
           <ul className="mt-8 divide-y divide-encre/10 rounded-sm border border-encre/10 px-6 sm:px-8">
             {carnets.map((carnet) => (
@@ -149,9 +155,11 @@ export function TarifsGreenFees() {
         </div>
 
         <div id="locations" className={cn("mt-16 lg:mt-20", ancre)}>
-          <Surtitre aligne="gauche" className="text-or-600">
-            Locations &amp; practice
-          </Surtitre>
+          <Editable path="Tarifs · Green fees.TARIFS_LOCATIONS_SURTITRE" as="div">
+            <Surtitre aligne="gauche" className="text-or-600">
+              {TARIFS_LOCATIONS_SURTITRE}
+            </Surtitre>
+          </Editable>
 
           <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-20">
             <TableauTarifs lignes={locations} legende="Locations : voiturettes, chariot et matériel" />

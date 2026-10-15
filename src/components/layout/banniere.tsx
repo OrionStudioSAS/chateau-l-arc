@@ -55,7 +55,7 @@ export function Banniere({
   actions?: React.ReactNode;
   /** Rangée pleine largeur sous le texte (onglets de la page Tarifs…). */
   pied?: React.ReactNode;
-  cmsPaths?: { accroche?: string; titre?: string; texte?: string };
+  cmsPaths?: { accroche?: string; titre?: string; texte?: string; image?: string };
 }) {
   return (
     <section
@@ -66,21 +66,24 @@ export function Banniere({
     >
       {/* Parallaxe (cf. AnimationsDefilement) : la photo glisse plus lentement
           que la page ; légèrement agrandie pour couvrir son déplacement. */}
-      <Image
-        src={image}
-        alt=""
-        fill
-        loading="eager"
-        sizes="100vw"
-        className="entree-image object-cover"
-        data-parallax="0.25"
-        data-parallax-echelle="1.1"
-      />
-      {/* Voile uniforme, puis dégradé plus dense en bas pour détacher le titre. */}
-      <div aria-hidden="true" className="absolute inset-0 bg-black/30" />
+      <Editable path={cmsPaths?.image ?? ""} image as="div" className="absolute inset-0">
+        <Image
+          src={image}
+          alt=""
+          fill
+          loading="eager"
+          sizes="100vw"
+          className="entree-image object-cover"
+          data-parallax="0.25"
+          data-parallax-echelle="1.1"
+        />
+      </Editable>
+      {/* Voile uniforme, puis dégradé plus dense en bas pour détacher le titre.
+          Sans clic : dans l'éditeur visuel, un clic sur le fond vise la photo. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-black/30" />
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
       />
 
       {filAriane ? (

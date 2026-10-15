@@ -3,6 +3,8 @@ import Image from "next/image";
 import { PictoAcademie } from "@/components/sections/academie-pictos";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
+import { Editable } from "@/components/cms/editable";
+import { ACADEMIE_STAGES_IMAGE, ACADEMIE_STAGES_SURTITRE, ACADEMIE_STAGES_TEXTE, ACADEMIE_STAGES_TITRE } from "@/constants";
 import { site } from "@/config/site";
 import { stages } from "@/lib/academie";
 
@@ -10,28 +12,29 @@ export function AcademieStages() {
   return (
     <section id="stages" className="scroll-mt-28 bg-sable-100 py-14 lg:py-20">
       <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-20">
-        <div className="relative aspect-[5/4] overflow-hidden rounded-sm">
+        <Editable path="L'Académie · Stages & initiations.ACADEMIE_STAGES_IMAGE" image as="div" className="relative aspect-[5/4] overflow-hidden rounded-sm">
           <Image
-            src="/images/hp-milieu-droite.png"
+            src={ACADEMIE_STAGES_IMAGE}
             alt="Vue aérienne du domaine et du practice"
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
             className="object-cover"
             data-parallax="0.07"
           />
-        </div>
+        </Editable>
 
         <div>
-          <Surtitre aligne="gauche" className="text-or-600">
-            Stages &amp; initiations
-          </Surtitre>
-          <h2 className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
-            De 2 à 30 personnes
-          </h2>
-          <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-encre/65">
-            Toute l&apos;année, entre amis, en famille ou entre collègues : réservez en
-            ligne ou par téléphone.
-          </p>
+          <Editable path="L'Académie · Stages & initiations.ACADEMIE_STAGES_SURTITRE" as="div">
+            <Surtitre aligne="gauche" className="text-or-600">
+              {ACADEMIE_STAGES_SURTITRE}
+            </Surtitre>
+          </Editable>
+          <Editable path="L'Académie · Stages & initiations.ACADEMIE_STAGES_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+            {ACADEMIE_STAGES_TITRE}
+          </Editable>
+          <Editable path="L'Académie · Stages & initiations.ACADEMIE_STAGES_TEXTE" as="p" className="mt-5 max-w-lg text-[15px] leading-relaxed text-encre/65">
+            {ACADEMIE_STAGES_TEXTE}
+          </Editable>
 
           <ul className="mt-6 space-y-4">
             {stages.map((stage) => (

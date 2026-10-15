@@ -3,16 +3,17 @@ import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
+import { Editable } from "@/components/cms/editable";
+import { VENIR_ACCES, VENIR_IMAGE, VENIR_SURTITRE, VENIR_TITRE_1, VENIR_TITRE_2 } from "@/constants";
 import { site, urlItineraire } from "@/config/site";
 
 type Picto = "avion" | "train" | "route";
 
-/** TODO : temps de trajet repris de la maquette, à faire confirmer par le club. */
-const acces: { libelle: string; duree: string; picto: Picto }[] = [
-  { libelle: "Aéroport Marseille Provence", duree: "25 min", picto: "avion" },
-  { libelle: "Gare TGV Aix-en-Provence", duree: "25 min", picto: "train" },
-  { libelle: "Autoroute A8", duree: "5 min", picto: "route" },
-];
+const SECTION = "Histoire · Venir au domaine";
+
+/** Textes dans constants.ts (éditeur visuel) ; pictogrammes ici, dans le même ordre. */
+const pictos: Picto[] = ["avion", "train", "route"];
+const acces = VENIR_ACCES.map((item, index) => ({ ...item, picto: pictos[index] ?? "route" }));
 
 function Pictogramme({ nom }: { nom: Picto | "itineraire" | "repere" }) {
   const chemins = {
@@ -54,22 +55,25 @@ export function VenirAuDomaine() {
     <section className="bg-white py-14 lg:py-20">
       <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
         <div>
-          <Surtitre aligne="gauche" className="text-or-600">
-            Venir au domaine
-          </Surtitre>
+          <Editable path={`${SECTION}.VENIR_SURTITRE`} as="div">
+            <Surtitre aligne="gauche" className="text-or-600">
+              {VENIR_SURTITRE}
+            </Surtitre>
+          </Editable>
           <h2 className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
-            Aux portes d&apos;Aix,
-            <br />à deux pas de Marseille
+            <Editable path={`${SECTION}.VENIR_TITRE_1`}>{VENIR_TITRE_1}</Editable>
+            <br />
+            <Editable path={`${SECTION}.VENIR_TITRE_2`}>{VENIR_TITRE_2}</Editable>
           </h2>
 
           <ul className="mt-8 max-w-md divide-y divide-encre/10 border-t border-encre/10">
-            {acces.map((item) => (
-              <li key={item.libelle} className="flex items-center gap-4 py-4">
+            {acces.map((item, index) => (
+              <li key={index} className="flex items-center gap-4 py-4">
                 <span className="flex size-9 items-center justify-center rounded-full bg-sable-100 text-or-600">
                   <Pictogramme nom={item.picto} />
                 </span>
-                <span className="flex-1 text-[14px] text-encre/80">{item.libelle}</span>
-                <span className="font-butler text-[20px] text-club-950">{item.duree}</span>
+                <Editable path={`${SECTION}.VENIR_ACCES.${index}.libelle`} className="flex-1 text-[14px] text-encre/80">{item.libelle}</Editable>
+                <Editable path={`${SECTION}.VENIR_ACCES.${index}.duree`} className="font-butler text-[20px] text-club-950">{item.duree}</Editable>
               </li>
             ))}
           </ul>
@@ -93,9 +97,9 @@ export function VenirAuDomaine() {
           </div>
         </div>
 
-        <div className="relative aspect-[4/3] overflow-hidden rounded-sm">
+        <Editable path={`${SECTION}.VENIR_IMAGE`} image as="div" className="relative aspect-[4/3] overflow-hidden rounded-sm">
           <Image
-            src="/images/hp-bas-gauche.png"
+            src={VENIR_IMAGE}
             alt="Le Château l'Arc entre les pins parasols"
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
@@ -106,7 +110,7 @@ export function VenirAuDomaine() {
             <Pictogramme nom="repere" />
             {site.contact.adresse} · {site.contact.codePostalVille}
           </p>
-        </div>
+        </Editable>
       </Container>
     </section>
   );

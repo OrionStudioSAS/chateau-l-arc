@@ -82,11 +82,11 @@ export function TarifsApercu() {
         <div className="text-center">
           <Surtitre className="text-or-600">Tarifs</Surtitre>
 
-          <Editable path="Tarifs.TARIFS_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+          <Editable path="Accueil · Tarifs.TARIFS_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
             {TARIFS_TITRE}
           </Editable>
 
-          <Editable path="Tarifs.TARIFS_DESCRIPTION" as="p" className="mx-auto mt-4 max-w-2xl text-[14px] text-encre/55">
+          <Editable path="Accueil · Tarifs.TARIFS_DESCRIPTION" as="p" className="mx-auto mt-4 max-w-2xl text-[14px] text-encre/55">
             {TARIFS_DESCRIPTION}
           </Editable>
 

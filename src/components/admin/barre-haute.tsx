@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { IconeAdmin } from "@/components/admin/icone-admin";
-import { libelleRubrique } from "@/config/admin";
+import { filAriane } from "@/config/admin";
 import { site } from "@/config/site";
 
 /**
@@ -62,9 +62,18 @@ export function BarreHaute({
             <li aria-hidden="true" className="hidden text-neutral-300 sm:block">
               <IconeAdmin nom="chevronDroite" className="size-3.5" />
             </li>
-            <li aria-current="page" className="truncate font-medium text-neutral-900">
-              {libelleRubrique(chemin)}
-            </li>
+            {filAriane(chemin).map((libelle, i, liste) =>
+              i < liste.length - 1 ? (
+                <li key={libelle} className="hidden items-center gap-2 text-neutral-500 sm:flex">
+                  {libelle}
+                  <IconeAdmin nom="chevronDroite" className="size-3.5 text-neutral-300" />
+                </li>
+              ) : (
+                <li key={libelle} aria-current="page" className="truncate font-medium text-neutral-900">
+                  {libelle}
+                </li>
+              ),
+            )}
           </ol>
         </nav>
 

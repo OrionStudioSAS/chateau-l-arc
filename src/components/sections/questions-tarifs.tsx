@@ -1,5 +1,7 @@
 import { ContainerEtroit } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
+import { Editable } from "@/components/cms/editable";
+import { TARIFS_QUESTIONS_SURTITRE, TARIFS_QUESTIONS_TITRE } from "@/constants";
 import { questionsTarifs } from "@/lib/tarifs";
 
 /**
@@ -11,12 +13,14 @@ export function QuestionsTarifs() {
   return (
     <section id="questions" className="scroll-mt-28 bg-white py-14 lg:py-20">
       <ContainerEtroit className="max-w-4xl">
-        <Surtitre aligne="gauche" className="text-or-600">
-          Questions fréquentes
-        </Surtitre>
-        <h2 className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
-          Vos questions
-        </h2>
+        <Editable path="Tarifs · Questions.TARIFS_QUESTIONS_SURTITRE" as="div">
+          <Surtitre aligne="gauche" className="text-or-600">
+            {TARIFS_QUESTIONS_SURTITRE}
+          </Surtitre>
+        </Editable>
+        <Editable path="Tarifs · Questions.TARIFS_QUESTIONS_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+          {TARIFS_QUESTIONS_TITRE}
+        </Editable>
 
         <div className="mt-10 divide-y divide-encre/10 border-b border-encre/10">
           {questionsTarifs.map((item, index) => (

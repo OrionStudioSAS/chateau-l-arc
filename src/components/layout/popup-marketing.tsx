@@ -34,7 +34,8 @@ export function PopupMarketing({ popup }: { popup: Popup | null }) {
   const focusPrecedent = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    if (!popup) return;
+    // Pas de pop-up dans l'aperçu de l'éditeur visuel du back-office.
+    if (!popup || new URLSearchParams(window.location.search).has("edit")) return;
 
     const jour = aujourdhuiAParis();
     if (popup.debut && jour < popup.debut) return;

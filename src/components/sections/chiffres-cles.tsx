@@ -1,3 +1,4 @@
+import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 
 /**
@@ -26,8 +27,11 @@ const chiffresAccueil: ChiffreCle[] = [
 export function ChiffresCles({
   chiffres = chiffresAccueil,
   variante = "colonnes",
+  cms,
 }: {
   chiffres?: ChiffreCle[];
+  /** Chemin de la liste dans constants.ts (éditeur visuel), ex. « Accueil · Chiffres clés.ACCUEIL_CHIFFRES ». */
+  cms?: string;
   /**
    * « colonnes » : grands chiffres alignés à gauche, avec filet doré (page
    * Parcours). « bande » : bandeau sable compact, chiffres centrés (accueil).
@@ -40,15 +44,15 @@ export function ChiffresCles({
         <Container className="grid grid-cols-2 gap-x-6 gap-y-8 py-10 text-center sm:grid-cols-3 lg:flex lg:justify-between lg:py-9">
           {chiffres.map((chiffre, index) => (
             <div
-              key={chiffre.valeur}
+              key={index}
               // Cinquième chiffre seul sur sa rangée en mobile : centré sur deux colonnes.
               className={index === chiffres.length - 1 && chiffres.length % 2 ? "col-span-2 sm:col-span-1" : undefined}
             >
-              <p className="whitespace-nowrap font-butler text-[24px] font-medium leading-none tracking-[-0.5px] text-encre min-[400px]:text-[28px] sm:text-[34px]">
+              <Editable path={cms ? `${cms}.${index}.valeur` : ""} as="p" className="whitespace-nowrap font-butler text-[24px] font-medium leading-none tracking-[-0.5px] text-encre min-[400px]:text-[28px] sm:text-[34px]">
                 {chiffre.valeur}
-              </p>
+              </Editable>
               <p className="mt-2.5 text-[11px] font-normal uppercase tracking-[0.14em] text-encre/50">
-                {chiffre.ligne1}
+                <Editable path={cms ? `${cms}.${index}.ligne1` : ""}>{chiffre.ligne1}</Editable>
                 {chiffre.ligne2 ? ` ${chiffre.ligne2}` : null}
               </p>
             </div>
@@ -66,14 +70,14 @@ export function ChiffresCles({
         dernière laissait un vide à droite et l'ensemble paraissait décalé.
       */}
       <Container className="grid grid-cols-2 gap-x-6 gap-y-10 py-14 sm:gap-x-8 sm:gap-y-12 lg:flex lg:justify-between lg:py-20">
-        {chiffres.map((chiffre) => (
-          <div key={chiffre.valeur}>
-            <p className="font-butler text-[36px] font-medium leading-none tracking-[-1px] text-encre min-[400px]:text-[42px] sm:text-[56px]">
+        {chiffres.map((chiffre, index) => (
+          <div key={index}>
+            <Editable path={cms ? `${cms}.${index}.valeur` : ""} as="p" className="font-butler text-[36px] font-medium leading-none tracking-[-1px] text-encre min-[400px]:text-[42px] sm:text-[56px]">
               {chiffre.valeur}
-            </p>
+            </Editable>
             <span aria-hidden="true" className="mt-4 block h-0.5 w-7 bg-or-500 sm:mt-5" />
             <p className="mt-3 text-[12px] font-normal uppercase leading-[1.7] text-encre/55 sm:mt-4 sm:text-[13px]">
-              <span className="block">{chiffre.ligne1}</span>
+              <Editable path={cms ? `${cms}.${index}.ligne1` : ""} className="block">{chiffre.ligne1}</Editable>
               {chiffre.ligne2 ? <span className="block">{chiffre.ligne2}</span> : null}
             </p>
           </div>

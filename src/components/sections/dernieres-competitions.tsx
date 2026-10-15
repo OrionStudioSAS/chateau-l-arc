@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { LienFleche } from "@/components/ui/lien-fleche";
 import { Surtitre } from "@/components/ui/surtitre";
+import { Editable } from "@/components/cms/editable";
+import { RESULTATS_SURTITRE, RESULTATS_TITRE } from "@/constants";
 import { getCompetitionsAvecResultats } from "@/lib/api/content";
 import { formatDateCourte } from "@/lib/format";
 
@@ -39,12 +41,14 @@ export async function DernieresCompetitions({
         {complet ? null : (
           <div className="mb-10 flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
             <div>
-              <Surtitre aligne="gauche" className="text-or-600">
-                Résultats
-              </Surtitre>
-              <h2 className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
-                Derniers résultats
-              </h2>
+              <Editable path="Compétitions · Derniers résultats.RESULTATS_SURTITRE" as="div">
+                <Surtitre aligne="gauche" className="text-or-600">
+                  {RESULTATS_SURTITRE}
+                </Surtitre>
+              </Editable>
+              <Editable path="Compétitions · Derniers résultats.RESULTATS_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+                {RESULTATS_TITRE}
+              </Editable>
             </div>
             <LienFleche href="/competitions/resultats" className="text-[14px]">
               Tous les résultats {saison}

@@ -5,6 +5,7 @@ import { AppelAdhesion } from "@/components/sections/appel-adhesion";
 import { CompetitionsListe } from "@/components/sections/competitions-liste";
 import { DernieresCompetitions } from "@/components/sections/dernieres-competitions";
 import { getCompetitions } from "@/lib/api/content";
+import { COMPETITIONS_PAGE_BANNIERE_IMAGE, COMPETITIONS_PAGE_BANNIERE_TEXTE, COMPETITIONS_PAGE_BANNIERE_TITRE } from "@/constants";
 
 export const metadata: Metadata = {
   title: "Compétitions",
@@ -21,10 +22,15 @@ export default async function Page() {
   return (
     <>
       <Banniere
-        image="/images/competitions.png"
+        image={COMPETITIONS_PAGE_BANNIERE_IMAGE}
         filAriane={[{ label: "Accueil", href: "/" }, { label: "Compétitions" }]}
-        titre="Compétitions"
-        texte="Du scramble convivial au Grand Prix, une saison pour tous les niveaux. Inscription en ligne, résultats publiés dès le lendemain."
+        titre={COMPETITIONS_PAGE_BANNIERE_TITRE}
+        texte={COMPETITIONS_PAGE_BANNIERE_TEXTE}
+        cmsPaths={{
+          titre: "Compétitions · Bannière.COMPETITIONS_PAGE_BANNIERE_TITRE",
+          texte: "Compétitions · Bannière.COMPETITIONS_PAGE_BANNIERE_TEXTE",
+          image: "Compétitions · Bannière.COMPETITIONS_PAGE_BANNIERE_IMAGE",
+        }}
         hauteur="min-h-[70svh]"
       />
 

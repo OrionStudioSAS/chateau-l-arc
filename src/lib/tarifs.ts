@@ -79,14 +79,6 @@ export const abonnements: { titre: string; prix: number; miseEnAvant?: boolean }
 ];
 
 /** TODO : liste reprise de la maquette, à valider avec le club. */
-export const avantagesMembres = [
-  "Accès illimité au parcours 18 trous",
-  "Compétitions et vie de l'association sportive",
-  "Tarifs membres sur les voiturettes et le practice",
-  "Réservation prioritaire des départs",
-  "Accès au club-house et aux événements du club",
-];
-
 /**
  * TODO : questions de la maquette ; réponses provisoires, rédigées pour ne
  * rien promettre, à remplacer par celles du club.

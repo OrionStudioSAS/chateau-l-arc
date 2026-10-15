@@ -83,7 +83,6 @@ export const rubriquesAVenir: Record<string, { titre: string; description: strin
     titre: "Tarifs",
     description: "Grille des green fees, carnets et abonnements de la saison.",
   },
-  pages: { titre: "Pages", description: "Les textes et images des pages du site." },
   blog: { titre: "Blog", description: "Actualités et articles du club." },
   mediatheque: { titre: "Médiathèque", description: "Photos, vidéos et documents du site." },
   integrations: {
@@ -107,12 +106,22 @@ export const rubriquesAVenir: Record<string, { titre: string; description: strin
 
 /** Libellé d'une rubrique à partir de son chemin (fil d'Ariane). */
 export function libelleRubrique(chemin: string): string {
-  for (const item of [...adminNav.flatMap((g) => g.items), ...adminNavPied]) {
-    if (!item.href || item.href.startsWith("https://")) continue;
-    const base = item.href.split("#")[0];
-    if (base === "/admin" ? chemin === "/admin" : chemin.startsWith(base)) return item.label;
+  return filAriane(chemin).at(-1) ?? "Back-office";
+}
+
+/** Fil d'Ariane d'une rubrique : son groupe (« CMS ») puis son nom (« Pages »). */
+export function filAriane(chemin: string): string[] {
+  const groupes = [...adminNav, { titre: null, items: adminNavPied }];
+  for (const groupe of groupes) {
+    for (const item of groupe.items) {
+      if (!item.href || item.href.startsWith("https://")) continue;
+      const base = item.href.split("#")[0];
+      if (base === "/admin" ? chemin === "/admin" : chemin.startsWith(base)) {
+        return groupe.titre === "CMS" ? [groupe.titre, item.label] : [item.label];
+      }
+    }
   }
-  return "Back-office";
+  return ["Back-office"];
 }
 
 /**

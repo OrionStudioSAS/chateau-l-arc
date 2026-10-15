@@ -168,6 +168,25 @@ et une clé de session de développement remplace `ADMIN_SECRET_SESSION`. Attent
 même en local, une publication écrit sur la branche du dépôt (`GITHUB_BRANCHE` pour
 travailler sur une autre).
 
+### Pages (éditeur visuel)
+
+La rubrique « Pages » ouvre chaque page du site dans un aperçu (`/<page>?edit`, dans une
+iframe). Un clic sur un texte ou une image ouvre le champ correspondant ; la saisie
+s'applique en direct dans l'aperçu (protocole `postMessage`, cf. `src/components/cms/`).
+Le design n'est jamais modifiable : seuls les textes et les images le sont.
+
+Le contenu vit dans `src/constants.ts`, au format d'Orion admin : des sections
+`// ─── Page · Bloc ───` et des constantes (texte, liste de textes ou d'images, liste
+d'objets à valeurs textuelles). Le commentaire `/** … */` au-dessus d'une constante est
+son libellé. Dans les composants, `<Editable path="Page · Bloc.CONSTANTE">` (ou
+`…CONSTANTE.0.cle` pour un élément de liste) rend la zone cliquable dans l'aperçu.
+
+« Publier » modifie `src/constants.ts` par un commit (et range les nouvelles images dans
+`public/images/`) : Vercel reconstruit le site, la page est à jour en ligne une à deux
+minutes plus tard. Pour rendre un nouveau texte modifiable : l'ajouter à `constants.ts`
+dans la bonne section, puis l'entourer d'un `Editable` — l'éditeur le propose
+automatiquement sur la page où il apparaît.
+
 ### Statistiques de l'accueil
 
 Mesure d'audience maison, sans service payant ni cookie : le composant

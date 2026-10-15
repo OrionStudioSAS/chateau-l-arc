@@ -4,7 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
+import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
+import { EXPLORER_SURTITRE, EXPLORER_TEXTE, EXPLORER_TITRE } from "@/constants";
 import { Surtitre } from "@/components/ui/surtitre";
 import { TROUS } from "@/lib/parcours";
 import { REPERES } from "@/lib/reperes";
@@ -33,18 +35,19 @@ export function ExplorerParcours() {
     <section className="bg-white py-14 lg:py-20">
       <Container>
         <div className="text-center">
-          <Surtitre className="text-or-600">
-            Trou par trou
-          </Surtitre>
+          <Editable path="Le parcours · Trou par trou.EXPLORER_SURTITRE" as="div">
+            <Surtitre className="text-or-600">
+              {EXPLORER_SURTITRE}
+            </Surtitre>
+          </Editable>
 
-          <h2 className="mt-6 font-butler text-[40px] font-medium leading-[1.1] text-club-950 sm:text-[64px]">
-            Explorez le parcours
-          </h2>
+          <Editable path="Le parcours · Trou par trou.EXPLORER_TITRE" as="h2" className="mt-6 font-butler text-[40px] font-medium leading-[1.1] text-club-950 sm:text-[64px]">
+            {EXPLORER_TITRE}
+          </Editable>
 
-          <p className="mx-auto mt-5 max-w-2xl text-[18px] font-normal text-encre/70">
-            Choisissez un trou pour découvrir sa vidéo, son infographie et le conseil
-            du pro.
-          </p>
+          <Editable path="Le parcours · Trou par trou.EXPLORER_TEXTE" as="p" className="mx-auto mt-5 max-w-2xl text-[18px] font-normal text-encre/70">
+            {EXPLORER_TEXTE}
+          </Editable>
         </div>
 
         {/* grid-cols-1 (minmax(0, 1fr)) : sans lui, la colonne prendrait la

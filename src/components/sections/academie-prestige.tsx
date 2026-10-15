@@ -3,39 +3,40 @@ import Image from "next/image";
 import { PictoAcademie } from "@/components/sections/academie-pictos";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
+import { Editable } from "@/components/cms/editable";
+import { ACADEMIE_PRESTIGE_IMAGE, ACADEMIE_PRESTIGE_SURTITRE, ACADEMIE_PRESTIGE_TEXTE, ACADEMIE_PRESTIGE_TITRE } from "@/constants";
 import { atoutsPrestige, formulesPrestige, notePrestige } from "@/lib/academie";
 import { cn } from "@/lib/cn";
 import { euros } from "@/lib/tarifs";
 
-/** TODO : photo temporaire, à remplacer par un élève en plein swing au practice. */
-const IMAGE_PROVISOIRE = "/images/hp-join.png";
 
 export function AcademiePrestige() {
   return (
     <section id="prestige" className="scroll-mt-28 bg-white py-14 lg:py-20">
       <Container>
         <div className="grid gap-10 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:items-center lg:gap-20">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-sm lg:aspect-[3/4]">
+          <Editable path="L'Académie · Formules Prestige.ACADEMIE_PRESTIGE_IMAGE" image as="div" className="relative aspect-[4/5] overflow-hidden rounded-sm lg:aspect-[3/4]">
             <Image
-              src={IMAGE_PROVISOIRE}
+              src={ACADEMIE_PRESTIGE_IMAGE}
               alt=""
               fill
               sizes="(min-width: 1024px) 26rem, 100vw"
               className="object-cover"
             />
-          </div>
+          </Editable>
 
           <div>
-            <Surtitre aligne="gauche" className="text-or-600">
-              École de golf adultes
-            </Surtitre>
-            <h2 className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
-              Les formules Prestige
-            </h2>
-            <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-encre/65">
-              Des cours collectifs en petit comité pour progresser vite et durablement,
-              encadrés par nos enseignants diplômés d&apos;État.
-            </p>
+            <Editable path="L'Académie · Formules Prestige.ACADEMIE_PRESTIGE_SURTITRE" as="div">
+              <Surtitre aligne="gauche" className="text-or-600">
+                {ACADEMIE_PRESTIGE_SURTITRE}
+              </Surtitre>
+            </Editable>
+            <Editable path="L'Académie · Formules Prestige.ACADEMIE_PRESTIGE_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+              {ACADEMIE_PRESTIGE_TITRE}
+            </Editable>
+            <Editable path="L'Académie · Formules Prestige.ACADEMIE_PRESTIGE_TEXTE" as="p" className="mt-5 max-w-lg text-[15px] leading-relaxed text-encre/65">
+              {ACADEMIE_PRESTIGE_TEXTE}
+            </Editable>
             <ul className="mt-6 space-y-3">
               {atoutsPrestige.map((atout) => (
                 <li key={atout.libelle} className="flex items-center gap-3 text-[14px] text-encre/80">

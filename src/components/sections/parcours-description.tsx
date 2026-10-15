@@ -1,35 +1,45 @@
+import { Editable } from "@/components/cms/editable";
 import { TexteEtGalerie, type PhotoGalerie } from "@/components/sections/texte-et-galerie";
+import {
+  PARCOURS_PRESENTATION_PARAGRAPHES,
+  PARCOURS_PRESENTATION_PHOTOS,
+  PARCOURS_PRESENTATION_SURTITRE,
+  PARCOURS_PRESENTATION_TITRE,
+} from "@/constants";
 
-/** TODO : images temporaires, à remplacer par les photos du parcours. */
-const photos: PhotoGalerie[] = [
-  { src: "/images/parcours.png", cadrage: "50% 40%" },
-  { src: "/images/parcours.png", cadrage: "20% 30%" },
-  { src: "/images/parcours.png", cadrage: "80% 35%" },
-  { src: "/images/parcours.png", cadrage: "35% 70%" },
-  { src: "/images/parcours.png", cadrage: "65% 60%" },
-];
+const SECTION = "Le parcours · Présentation";
+
+/** Cadrage de chaque photo de la galerie (les images sont dans constants.ts). */
+const cadrages = ["50% 40%", "20% 30%", "80% 35%", "35% 70%", "65% 60%"];
+
+const photos: PhotoGalerie[] = PARCOURS_PRESENTATION_PHOTOS.map((src, index) => ({
+  src,
+  cadrage: cadrages[index] ?? "50% 50%",
+}));
 
 export function ParcoursDescription() {
   return (
     <TexteEtGalerie
-      surtitre="Le parcours"
-      titre="Un parcours qui récompense la précision"
+      surtitre={PARCOURS_PRESENTATION_SURTITRE}
+      titre={PARCOURS_PRESENTATION_TITRE}
       photos={photos}
       classeTexte="space-y-6"
+      cms={{
+        surtitre: `${SECTION}.PARCOURS_PRESENTATION_SURTITRE`,
+        titre: `${SECTION}.PARCOURS_PRESENTATION_TITRE`,
+        photos: `${SECTION}.PARCOURS_PRESENTATION_PHOTOS`,
+      }}
     >
-      <p className="font-bold text-encre">
-        Dessiné en 1985 par Robert Trent Jones II, l&apos;un des plus grands
-        architectes de golf au monde, le parcours du Château l&apos;Arc serpente entre
-        pins, chênes et garrigue sur le domaine du château. Fairways travaillés,
-        bunkers stratégiques et greens défendus, dans la pure tradition du golf
-        américain.
-      </p>
-
-      <p>
-        Du haut des départs, la vue s&apos;ouvre sur la montagne Sainte-Victoire, chère
-        à Cézanne. Un parcours technique mais accessible, où chaque niveau de jeu
-        trouve son plaisir grâce à six repères de départ.
-      </p>
+      {PARCOURS_PRESENTATION_PARAGRAPHES.map((paragraphe, index) => (
+        <Editable
+          key={index}
+          path={`${SECTION}.PARCOURS_PRESENTATION_PARAGRAPHES.${index}`}
+          as="p"
+          className={index === 0 ? "font-bold text-encre" : undefined}
+        >
+          {paragraphe}
+        </Editable>
+      ))}
     </TexteEtGalerie>
   );
 }

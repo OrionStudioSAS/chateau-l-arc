@@ -7,6 +7,7 @@ import { DomaineAujourdhui } from "@/components/sections/domaine-aujourdhui";
 import { FriseHistoire } from "@/components/sections/frise-histoire";
 import { HistoireIntro } from "@/components/sections/histoire-intro";
 import { VenirAuDomaine } from "@/components/sections/venir-au-domaine";
+import { HISTOIRE_BANNIERE_IMAGE, HISTOIRE_BANNIERE_TEXTE, HISTOIRE_BANNIERE_TITRE, HISTOIRE_CHIFFRES } from "@/constants";
 
 export const metadata: Metadata = {
   title: "Notre histoire",
@@ -18,21 +19,22 @@ export default function Page() {
   return (
     <>
       <Banniere
-        image="/images/hp-haut-gauche.png"
+        image={HISTOIRE_BANNIERE_IMAGE}
         filAriane={[{ label: "Accueil", href: "/" }, { label: "Notre histoire" }]}
-        titre="Histoire"
-        texte="Quatre siècles d'histoire au pied de la Sainte-Victoire : une demeure de famille, un atelier d'artistes, un décor de cinéma et aujourd'hui un golf."
+        titre={HISTOIRE_BANNIERE_TITRE}
+        texte={HISTOIRE_BANNIERE_TEXTE}
+        cmsPaths={{
+          titre: "Histoire · Bannière.HISTOIRE_BANNIERE_TITRE",
+          texte: "Histoire · Bannière.HISTOIRE_BANNIERE_TEXTE",
+          image: "Histoire · Bannière.HISTOIRE_BANNIERE_IMAGE",
+        }}
         hauteur="min-h-[70svh]"
       />
 
       <ChiffresCles
         variante="bande"
-        chiffres={[
-          { valeur: "1620", ligne1: "Construction du château" },
-          { valeur: "100 ha", ligne1: "Superficie du domaine" },
-          { valeur: "1985", ligne1: "Création du golf" },
-          { valeur: "25 min", ligne1: "Aéroport & gare TGV" },
-        ]}
+        chiffres={HISTOIRE_CHIFFRES}
+        cms="Histoire · Chiffres clés.HISTOIRE_CHIFFRES"
       />
 
       <HistoireIntro />

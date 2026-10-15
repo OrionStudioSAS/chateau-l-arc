@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { ChampVideo } from "@/components/cms/champ-video";
 import { PresentationIntro } from "@/components/sections/presentation-intro";
 import { Container } from "@/components/ui/container";
 import { VIDEO_YOUTUBE_ID } from "@/constants";
@@ -32,6 +33,7 @@ export function Presentation() {
             />
           )}
         </div>
+        <ChampVideo path="Accueil · Présentation.VIDEO_YOUTUBE_ID" identifiant={VIDEO_YOUTUBE_ID} />
       </Container>
     </section>
   );

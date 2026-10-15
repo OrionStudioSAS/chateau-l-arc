@@ -18,12 +18,12 @@ export async function CompetitionsApercu() {
       <Container>
         <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
           <div>
-            <Editable path="Compétitions.COMPETITIONS_SURTITRE" as="div">
+            <Editable path="Accueil · Compétitions.COMPETITIONS_SURTITRE" as="div">
               <Surtitre aligne="gauche" className="text-or-600">
                 {COMPETITIONS_SURTITRE}
               </Surtitre>
             </Editable>
-            <Editable path="Compétitions.COMPETITIONS_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+            <Editable path="Accueil · Compétitions.COMPETITIONS_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
               {COMPETITIONS_TITRE}
             </Editable>
           </div>

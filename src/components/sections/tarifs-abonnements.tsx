@@ -1,5 +1,7 @@
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
+import { Editable } from "@/components/cms/editable";
+import { TARIFS_ABONNEMENTS_TITRE } from "@/constants";
 import { site } from "@/config/site";
 import { cn } from "@/lib/cn";
 import { abonnements, euros, remiseComptant } from "@/lib/tarifs";
@@ -16,9 +18,9 @@ export function TarifsAbonnements({ annee }: { annee: number }) {
         </Surtitre>
 
         <div className="mt-5 flex flex-wrap items-end justify-between gap-x-8 gap-y-5">
-          <h2 className="font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
-            Devenez membre du club
-          </h2>
+          <Editable path="Tarifs · Abonnements.TARIFS_ABONNEMENTS_TITRE" as="h2" className="font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+            {TARIFS_ABONNEMENTS_TITRE}
+          </Editable>
 
           <div className="flex flex-wrap items-center gap-3">
             <p className="rounded-sm bg-or-500 px-4 py-2.5 text-[13px] font-medium text-white">

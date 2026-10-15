@@ -11,7 +11,7 @@ import { ParcoursSignature } from "@/components/sections/parcours-signature";
 import { Presentation } from "@/components/sections/presentation";
 import { ProfiterDuGolf } from "@/components/sections/profiter-du-golf";
 import { TarifsApercu } from "@/components/sections/tarifs-apercu";
-import { BANNER_ACCROCHE, BANNER_TITRE, BANNER_TEXTE } from "@/constants";
+import { ACCUEIL_CHIFFRES, BANNER_ACCROCHE, BANNER_IMAGE, BANNER_TITRE, BANNER_TEXTE } from "@/constants";
 import { headerActions } from "@/config/site";
 import { estPagePubliqueVisible } from "@/config/visibilite";
 
@@ -19,15 +19,16 @@ export default function Page() {
   return (
     <>
       <Banniere
-        image="/images/banner.jpg"
+        image={BANNER_IMAGE}
         accroche={BANNER_ACCROCHE}
         titre={BANNER_TITRE}
         texte={BANNER_TEXTE}
         hauteur="min-h-[calc(100svh-2.5rem)]"
         cmsPaths={{
-          accroche: "Bannière.BANNER_ACCROCHE",
-          titre: "Bannière.BANNER_TITRE",
-          texte: "Bannière.BANNER_TEXTE",
+          accroche: "Accueil · Bannière.BANNER_ACCROCHE",
+          titre: "Accueil · Bannière.BANNER_TITRE",
+          texte: "Accueil · Bannière.BANNER_TEXTE",
+          image: "Accueil · Bannière.BANNER_IMAGE",
         }}
         actions={
           <>
@@ -47,7 +48,7 @@ export default function Page() {
         }
       />
 
-      <ChiffresCles variante="bande" />
+      <ChiffresCles variante="bande" chiffres={ACCUEIL_CHIFFRES} cms="Accueil · Chiffres clés.ACCUEIL_CHIFFRES" />
 
       <Presentation />
 

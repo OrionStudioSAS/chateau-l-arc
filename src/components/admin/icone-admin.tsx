@@ -174,6 +174,13 @@ const traces = {
       <path d="M11 18h2" />
     </>
   ),
+  globe: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+    </>
+  ),
+  retour: <path d="M15 6l-6 6 6 6" />,
   swingcall: <path d="M4 4l16 16M4 12l8 8M12 4l8 8" />,
   fidzly: (
     <>

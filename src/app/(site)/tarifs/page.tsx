@@ -6,6 +6,7 @@ import { QuestionsTarifs } from "@/components/sections/questions-tarifs";
 import { TarifsAbonnements } from "@/components/sections/tarifs-abonnements";
 import { TarifsGreenFees } from "@/components/sections/tarifs-green-fees";
 import { TarifsNavigation } from "@/components/sections/tarifs-navigation";
+import { TARIFS_PAGE_BANNIERE_IMAGE, TARIFS_PAGE_BANNIERE_TEXTE, TARIFS_PAGE_BANNIERE_TITRE } from "@/constants";
 
 export const metadata: Metadata = {
   title: "Tarifs & abonnements",
@@ -20,11 +21,16 @@ export default function Page() {
   return (
     <>
       <Banniere
-        image="/images/tarifs.png"
+        image={TARIFS_PAGE_BANNIERE_IMAGE}
         filAriane={[{ label: "Accueil", href: "/" }, { label: "Tarifs & abonnements" }]}
-        titre="Tarifs"
+        titre={TARIFS_PAGE_BANNIERE_TITRE}
         // TODO : vrai une fois la grille gérée depuis le back-office (cf. lib/tarifs).
-        texte="Les prix affichés sont toujours à jour : ils sont gérés directement par l'accueil du club."
+        texte={TARIFS_PAGE_BANNIERE_TEXTE}
+        cmsPaths={{
+          titre: "Tarifs · Bannière.TARIFS_PAGE_BANNIERE_TITRE",
+          texte: "Tarifs · Bannière.TARIFS_PAGE_BANNIERE_TEXTE",
+          image: "Tarifs · Bannière.TARIFS_PAGE_BANNIERE_IMAGE",
+        }}
         hauteur="min-h-[70svh]"
         pied={<TarifsNavigation />}
       />

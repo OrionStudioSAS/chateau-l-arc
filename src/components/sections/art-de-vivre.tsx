@@ -5,7 +5,7 @@ import type { Route } from "next";
 import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
-import { ART_DE_VIVRE_SURTITRE, ART_DE_VIVRE_TITRE, ART_DE_VIVRE_DESCRIPTION } from "@/constants";
+import { ART_DE_VIVRE_CARTES, ART_DE_VIVRE_SURTITRE, ART_DE_VIVRE_TITRE, ART_DE_VIVRE_DESCRIPTION } from "@/constants";
 import { estPagePubliqueVisible } from "@/config/visibilite";
 import { cn } from "@/lib/cn";
 
@@ -20,48 +20,27 @@ type Carte = {
   large?: boolean;
 };
 
-const cartes: Carte[] = [
-  {
-    label: "La table du golf",
-    titre: "Déjeuner face au parcours",
-    href: "/restaurant",
-    image: "/images/hp-dejeuner.png",
-    grille: "lg:col-span-7 lg:row-span-2",
-    large: true,
-  },
-  {
-    label: "Practice & Académie",
-    titre: "Travailler le swing et le reste",
-    href: "/academie",
-    image: "/images/hp-swing.png",
-    grille: "lg:col-span-5",
-  },
-  {
-    // TODO : destination à fournir (site de l'école, probablement externe).
-    label: "Grandir au cœur du domaine",
-    titre: "SVIS - École internationale",
-    image: "/images/hp-svis.png",
-    grille: "lg:col-span-5",
-  },
-  {
-    label: "Proshop",
-    titre: "S'équiper au club",
-    href: "/proshop",
-    image: "/images/hp-sequipe.png",
-    grille: "lg:col-span-6",
-  },
-  {
-    label: "Compétitions & association",
-    titre: "Se retrouver entre amis",
-    href: "/competitions",
-    image: "/images/hp-amis.png",
-    grille: "lg:col-span-6",
-  },
+/** Textes et images dans constants.ts (éditeur visuel) ; liens et mise en page ici, dans le même ordre. */
+const dispositions: Omit<Carte, "label" | "titre" | "image">[] = [
+  { href: "/restaurant", grille: "lg:col-span-7 lg:row-span-2", large: true },
+  { href: "/academie", grille: "lg:col-span-5" },
+  // TODO : destination à fournir (site de l'école, probablement externe).
+  { grille: "lg:col-span-5" },
+  { href: "/proshop", grille: "lg:col-span-6" },
+  { href: "/competitions", grille: "lg:col-span-6" },
 ];
 
-function ContenuCarte({ carte }: { carte: Carte }) {
+const cartes: Carte[] = ART_DE_VIVRE_CARTES.map((carte, index) => ({
+  ...carte,
+  ...(dispositions[index] ?? { grille: "lg:col-span-6" }),
+}));
+
+const CHEMIN = "Accueil · Art de vivre.ART_DE_VIVRE_CARTES";
+
+function ContenuCarte({ carte, index }: { carte: Carte; index: number }) {
   return (
     <>
+      <Editable path={`${CHEMIN}.${index}.image`} image as="div" className="absolute inset-0">
       <Image
         src={carte.image}
         alt=""
@@ -69,18 +48,21 @@ function ContenuCarte({ carte }: { carte: Carte }) {
         sizes="(min-width: 1024px) 50vw, (min-width: 768px) 50vw, 85vw"
         className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
       />
+      </Editable>
       {/* Dégradé bas : le texte reste lisible quelle que soit la photo, y
           compris sur les petites cartes où le bloc de texte remonte haut. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/5"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/5"
       />
 
       <div className="relative mt-auto p-5 sm:p-8">
-        <p className="text-[12px] font-normal uppercase tracking-[0.2em] text-white/90">
+        <Editable path={`${CHEMIN}.${index}.label`} as="p" className="text-[12px] font-normal uppercase tracking-[0.2em] text-white/90">
           {carte.label}
-        </p>
-        <p
+        </Editable>
+        <Editable
+          path={`${CHEMIN}.${index}.titre`}
+          as="p"
           className={cn(
             // Taille d'abord : un `leading-*` placé avant serait supprimé par
             // tailwind-merge, qui traite les deux comme concurrents.
@@ -89,7 +71,7 @@ function ContenuCarte({ carte }: { carte: Carte }) {
           )}
         >
           {carte.titre}
-        </p>
+        </Editable>
       </div>
     </>
   );
@@ -101,18 +83,18 @@ export function ArtDeVivre() {
       <Container>
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:items-end lg:gap-16">
           <div>
-            <Editable path="Art de vivre.ART_DE_VIVRE_SURTITRE" as="div">
+            <Editable path="Accueil · Art de vivre.ART_DE_VIVRE_SURTITRE" as="div">
               <Surtitre aligne="gauche" className="text-or-600">
                 {ART_DE_VIVRE_SURTITRE}
               </Surtitre>
             </Editable>
 
-            <Editable path="Art de vivre.ART_DE_VIVRE_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+            <Editable path="Accueil · Art de vivre.ART_DE_VIVRE_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
               {ART_DE_VIVRE_TITRE}
             </Editable>
           </div>
 
-          <Editable path="Art de vivre.ART_DE_VIVRE_DESCRIPTION" as="p" className="text-[15px] leading-relaxed text-encre/65">
+          <Editable path="Accueil · Art de vivre.ART_DE_VIVRE_DESCRIPTION" as="p" className="text-[15px] leading-relaxed text-encre/65">
             {ART_DE_VIVRE_DESCRIPTION}
           </Editable>
         </div>
@@ -132,11 +114,11 @@ export function ArtDeVivre() {
 
             return carte.href && estPagePubliqueVisible(carte.href) ? (
               <Link key={carte.titre} href={carte.href} className={classes}>
-                <ContenuCarte carte={carte} />
+                <ContenuCarte carte={carte} index={index} />
               </Link>
             ) : (
               <div key={carte.titre} className={classes}>
-                <ContenuCarte carte={carte} />
+                <ContenuCarte carte={carte} index={index} />
               </div>
             );
           })}

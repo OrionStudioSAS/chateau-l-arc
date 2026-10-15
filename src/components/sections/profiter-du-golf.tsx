@@ -5,45 +5,26 @@ import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { LienFleche } from "@/components/ui/lien-fleche";
 import { Surtitre } from "@/components/ui/surtitre";
-import { PROFITER_SURTITRE, PROFITER_TITRE, PROFITER_DESCRIPTION } from "@/constants";
+import { PROFITER_CARTES, PROFITER_SURTITRE, PROFITER_TITRE, PROFITER_DESCRIPTION } from "@/constants";
 import { headerActions } from "@/config/site";
 import { estPagePubliqueVisible } from "@/config/visibilite";
 
 type Picto = "drapeau" | "membres" | "academie";
 
-const parcours: {
-  titre: string;
-  texte: string;
-  prix: string;
-  lien: { label: string; href: Route };
-  image: string;
-  picto: Picto;
-}[] = [
-  {
-    titre: "Jouer une partie",
-    texte: "18 trous ou 9 trous, réservation en ligne en deux minutes. Voiturette sur demande.",
-    prix: "Dès 45 €",
-    lien: { label: "Réserver un départ", href: headerActions.reservation.href },
-    image: "/images/hp-jouer.png",
-    picto: "drapeau",
-  },
-  {
-    titre: "Rejoindre le club",
-    texte: "Accès illimité au parcours, compétitions, practice et vie du club toute l'année.",
-    prix: "Dès 540 € / an",
-    lien: { label: "Voir les abonnements", href: "/tarifs" },
-    image: "/images/hp-join.png",
-    picto: "membres",
-  },
-  {
-    titre: "L'Académie",
-    texte: "Cours individuels, stages enfants et adultes, préparation à la carte verte.",
-    prix: "Cours & stages toute l'année",
-    lien: { label: "Découvrir l'Académie", href: "/academie" },
-    image: "/images/hp-academie.png",
-    picto: "academie",
-  },
+/** Textes et images dans constants.ts (éditeur visuel) ; liens et pictos ici, dans le même ordre. */
+const destinations: { href: Route; picto: Picto }[] = [
+  { href: headerActions.reservation.href, picto: "drapeau" },
+  { href: "/tarifs", picto: "membres" },
+  { href: "/academie", picto: "academie" },
 ];
+
+const parcours = PROFITER_CARTES.map((carte, index) => ({
+  ...carte,
+  ...destinations[index],
+  lien: { label: carte.lien, href: destinations[index]?.href ?? "/" },
+}));
+
+const CHEMIN = "Accueil · Bienvenue.PROFITER_CARTES";
 
 function Pictogramme({ nom }: { nom: Picto }) {
   const chemins: Record<Picto, React.ReactNode> = {
@@ -79,27 +60,27 @@ export function ProfiterDuGolf() {
       <Container>
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:items-end lg:gap-16">
           <div>
-            <Editable path="Profiter du golf.PROFITER_SURTITRE" as="div">
+            <Editable path="Accueil · Bienvenue.PROFITER_SURTITRE" as="div">
               <Surtitre aligne="gauche" className="text-or-600">
                 {PROFITER_SURTITRE}
               </Surtitre>
             </Editable>
-            <Editable path="Profiter du golf.PROFITER_TITRE" as="h2" className="mt-5 max-w-xl font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+            <Editable path="Accueil · Bienvenue.PROFITER_TITRE" as="h2" className="mt-5 max-w-xl font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
               {PROFITER_TITRE}
             </Editable>
           </div>
-          <Editable path="Profiter du golf.PROFITER_DESCRIPTION" as="p" className="text-[15px] leading-relaxed text-encre/65">
+          <Editable path="Accueil · Bienvenue.PROFITER_DESCRIPTION" as="p" className="text-[15px] leading-relaxed text-encre/65">
             {PROFITER_DESCRIPTION}
           </Editable>
         </div>
 
         <ul className="mt-10 grid gap-5 md:grid-cols-3 lg:mt-12">
-          {parcours.map((carte) => (
+          {parcours.map((carte, index) => (
             <li
               key={carte.titre}
               className="flex flex-col overflow-hidden rounded-sm border border-encre/10 bg-white"
             >
-              <div className="relative aspect-[16/10]">
+              <Editable path={`${CHEMIN}.${index}.image`} image as="div" className="relative aspect-[16/10]">
                 <Image
                   src={carte.image}
                   alt=""
@@ -110,20 +91,20 @@ export function ProfiterDuGolf() {
                 <span className="absolute left-4 top-4 flex size-10 items-center justify-center rounded-full bg-white text-club-950 shadow-sm">
                   <Pictogramme nom={carte.picto} />
                 </span>
-              </div>
+              </Editable>
 
               <div className="flex flex-1 flex-col p-6">
-                <h3 className="font-butler text-[24px] font-medium leading-tight text-club-950">
+                <Editable path={`${CHEMIN}.${index}.titre`} as="h3" className="font-butler text-[24px] font-medium leading-tight text-club-950">
                   {carte.titre}
-                </h3>
-                <p className="mt-3 flex-1 text-[14px] leading-relaxed text-encre/60">
+                </Editable>
+                <Editable path={`${CHEMIN}.${index}.texte`} as="p" className="mt-3 flex-1 text-[14px] leading-relaxed text-encre/60">
                   {carte.texte}
-                </p>
-                <p className="mt-5 font-butler text-[18px] text-encre/85">{carte.prix}</p>
+                </Editable>
+                <Editable path={`${CHEMIN}.${index}.prix`} as="p" className="mt-5 font-butler text-[18px] text-encre/85">{carte.prix}</Editable>
                 {estPagePubliqueVisible(carte.lien.href) && (
                   <p className="mt-4">
                     <LienFleche href={carte.lien.href} className="text-[14px]">
-                      {carte.lien.label}
+                      <Editable path={`${CHEMIN}.${index}.lien`}>{carte.lien.label}</Editable>
                     </LienFleche>
                   </p>
                 )}

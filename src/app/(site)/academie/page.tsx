@@ -7,6 +7,7 @@ import { AcademieJuniors } from "@/components/sections/academie-juniors";
 import { AcademiePrestige } from "@/components/sections/academie-prestige";
 import { AcademieStages } from "@/components/sections/academie-stages";
 import { AppelAdhesion } from "@/components/sections/appel-adhesion";
+import { ACADEMIE_BANNIERE_IMAGE, ACADEMIE_BANNIERE_TEXTE, ACADEMIE_BANNIERE_TITRE } from "@/constants";
 
 export const metadata: Metadata = {
   title: "L'Académie",
@@ -18,10 +19,15 @@ export default function Page() {
   return (
     <>
       <Banniere
-        image="/images/academie.png"
+        image={ACADEMIE_BANNIERE_IMAGE}
         filAriane={[{ label: "Accueil", href: "/" }, { label: "L'Académie" }]}
-        titre="L’Académie"
-        texte="Débutant ou confirmé, dès 4 ans : apprenez et progressez avec nos enseignants diplômés d'État, face à la Sainte-Victoire."
+        titre={ACADEMIE_BANNIERE_TITRE}
+        texte={ACADEMIE_BANNIERE_TEXTE}
+        cmsPaths={{
+          titre: "L'Académie · Bannière.ACADEMIE_BANNIERE_TITRE",
+          texte: "L'Académie · Bannière.ACADEMIE_BANNIERE_TEXTE",
+          image: "L'Académie · Bannière.ACADEMIE_BANNIERE_IMAGE",
+        }}
         hauteur="min-h-[70svh]"
       />
 

@@ -4,29 +4,14 @@ import Link from "next/link";
 import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
-import { PARCOURS_SURTITRE, PARCOURS_TITRE, PARCOURS_DESCRIPTION, PARCOURS_IMAGE } from "@/constants";
+import { PARCOURS_ATOUTS, PARCOURS_SURTITRE, PARCOURS_TITRE, PARCOURS_DESCRIPTION, PARCOURS_IMAGE } from "@/constants";
 
-const IMAGE_PROVISOIRE = PARCOURS_IMAGE;
 
 type Picto = "compas" | "montagne" | "drapeau";
 
-const atouts: { titre: string; texte: string; picto: Picto }[] = [
-  {
-    titre: "Dessiné par Robert Trent Jones II",
-    texte: "L'un des plus grands architectes de golf au monde, en 1985.",
-    picto: "compas",
-  },
-  {
-    titre: "Face à la montagne Sainte-Victoire",
-    texte: "La montagne chère à Cézanne accompagne la partie, trou après trou.",
-    picto: "montagne",
-  },
-  {
-    titre: "Par 70 · 5 817 m",
-    texte: "Un parcours technique et varié, exigeant pour les bons joueurs, accessible à tous.",
-    picto: "drapeau",
-  },
-];
+/** Textes dans constants.ts (éditeur visuel) ; pictogrammes ici, dans le même ordre. */
+const pictos: Picto[] = ["compas", "montagne", "drapeau"];
+const atouts = PARCOURS_ATOUTS.map((atout, index) => ({ ...atout, picto: pictos[index] ?? "drapeau" }));
 
 function Pictogramme({ nom }: { nom: Picto }) {
   const chemins: Record<Picto, React.ReactNode> = {
@@ -60,37 +45,37 @@ export function ParcoursSignature() {
   return (
     <section className="bg-sable-100 py-14 lg:py-20">
       <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-20">
-        <div className="relative aspect-[4/3] overflow-hidden rounded-sm lg:aspect-[5/4]">
+        <Editable path="Accueil · Le parcours.PARCOURS_IMAGE" image as="div" className="relative aspect-[4/3] overflow-hidden rounded-sm lg:aspect-[5/4]">
           <Image
-            src={IMAGE_PROVISOIRE}
+            src={PARCOURS_IMAGE}
             alt="Le parcours entre pins et garrigue, la Sainte-Victoire en toile de fond"
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
             className="object-cover"
             data-parallax="0.07"
           />
-        </div>
+        </Editable>
 
         <div>
-          <Editable path="Parcours signature.PARCOURS_SURTITRE" as="div">
+          <Editable path="Accueil · Le parcours.PARCOURS_SURTITRE" as="div">
             <Surtitre aligne="gauche" className="text-or-600">
               {PARCOURS_SURTITRE}
             </Surtitre>
           </Editable>
-          <Editable path="Parcours signature.PARCOURS_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+          <Editable path="Accueil · Le parcours.PARCOURS_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
             {PARCOURS_TITRE}
           </Editable>
-          <Editable path="Parcours signature.PARCOURS_DESCRIPTION" as="p" className="mt-5 max-w-lg text-[16px] leading-relaxed text-encre/70">
+          <Editable path="Accueil · Le parcours.PARCOURS_DESCRIPTION" as="p" className="mt-5 max-w-lg text-[16px] leading-relaxed text-encre/70">
             {PARCOURS_DESCRIPTION}
           </Editable>
 
           <ul className="mt-8 divide-y divide-encre/10 border-y border-encre/10">
-            {atouts.map((atout) => (
-              <li key={atout.titre} className="flex gap-4 py-4">
+            {atouts.map((atout, index) => (
+              <li key={index} className="flex gap-4 py-4">
                 <Pictogramme nom={atout.picto} />
                 <div>
-                  <p className="text-[15px] font-semibold text-club-950">{atout.titre}</p>
-                  <p className="mt-1 text-[14px] leading-relaxed text-encre/60">{atout.texte}</p>
+                  <Editable path={`Accueil · Le parcours.PARCOURS_ATOUTS.${index}.titre`} as="p" className="text-[15px] font-semibold text-club-950">{atout.titre}</Editable>
+                  <Editable path={`Accueil · Le parcours.PARCOURS_ATOUTS.${index}.texte`} as="p" className="mt-1 text-[14px] leading-relaxed text-encre/60">{atout.texte}</Editable>
                 </div>
               </li>
             ))}

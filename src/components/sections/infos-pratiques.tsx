@@ -1,6 +1,8 @@
 import Link from "next/link";
 
+import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
+import { INFOS_CARTES, INFOS_NOTE, INFOS_SURTITRE, INFOS_TITRE } from "@/constants";
 import { Surtitre } from "@/components/ui/surtitre";
 import { headerActions } from "@/config/site";
 import { getStatutInstallations } from "@/lib/api/content";
@@ -9,32 +11,11 @@ import { cn } from "@/lib/cn";
 
 type Picto = "carte" | "horloge" | "voiturette" | "tenue";
 
-/**
- * TODO : textes repris de la maquette, à faire valider par le club
- * (niveau exigé et horaires notamment).
- */
-const infos: { titre: string; texte: string; picto: Picto }[] = [
-  {
-    titre: "Niveau requis",
-    texte: "Carte verte ou index à présenter à l'accueil.",
-    picto: "carte",
-  },
-  {
-    titre: "Horaires",
-    texte: "Horaires d'été et d'hiver : renseignez-vous auprès de l'accueil avant votre venue.",
-    picto: "horloge",
-  },
-  {
-    titre: "Voiturettes",
-    texte: "40 € les 18 trous, sur réservation. Circulation selon l'état du terrain.",
-    picto: "voiturette",
-  },
-  {
-    titre: "Tenue",
-    texte: "Tenue de golf correcte exigée sur le parcours et au practice.",
-    picto: "tenue",
-  },
-];
+const SECTION = "Le parcours · Infos pratiques";
+
+/** Textes dans constants.ts (éditeur visuel) ; pictogrammes ici, dans le même ordre. */
+const pictos: Picto[] = ["carte", "horloge", "voiturette", "tenue"];
+const infos = INFOS_CARTES.map((info, index) => ({ ...info, picto: pictos[index] ?? "carte" }));
 
 function Pictogramme({ nom }: { nom: Picto }) {
   const chemins: Record<Picto, React.ReactNode> = {
@@ -92,21 +73,23 @@ export async function InfosPratiques() {
   return (
     <section className="bg-white py-14 lg:py-20">
       <Container>
-        <Surtitre aligne="gauche" className="text-or-600">
-          Avant de jouer
-        </Surtitre>
-        <h2 className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
-          Infos pratiques
-        </h2>
+        <Editable path={`${SECTION}.INFOS_SURTITRE`} as="div">
+          <Surtitre aligne="gauche" className="text-or-600">
+            {INFOS_SURTITRE}
+          </Surtitre>
+        </Editable>
+        <Editable path={`${SECTION}.INFOS_TITRE`} as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
+          {INFOS_TITRE}
+        </Editable>
 
         <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {infos.map((info) => (
-            <li key={info.titre} className="rounded-sm border border-encre/10 bg-white p-6">
+          {infos.map((info, index) => (
+            <li key={index} className="rounded-sm border border-encre/10 bg-white p-6">
               <span className="flex size-10 items-center justify-center rounded-full bg-sable-100 text-or-600">
                 <Pictogramme nom={info.picto} />
               </span>
-              <h3 className="mt-5 text-[15px] font-semibold text-club-950">{info.titre}</h3>
-              <p className="mt-2 text-[14px] leading-relaxed text-encre/60">{info.texte}</p>
+              <Editable path={`${SECTION}.INFOS_CARTES.${index}.titre`} as="h3" className="mt-5 text-[15px] font-semibold text-club-950">{info.titre}</Editable>
+              <Editable path={`${SECTION}.INFOS_CARTES.${index}.texte`} as="p" className="mt-2 text-[14px] leading-relaxed text-encre/60">{info.texte}</Editable>
             </li>
           ))}
         </ul>
@@ -124,8 +107,7 @@ export async function InfosPratiques() {
               <circle cx="12" cy="12" r="9" />
               <path d="M12 11v5M12 8h.01" strokeLinecap="round" />
             </svg>
-            L&apos;état du parcours est mis à jour chaque matin par l&apos;accueil : consultez-le
-            avant de venir.
+            <Editable path={`${SECTION}.INFOS_NOTE`}>{INFOS_NOTE}</Editable>
           </p>
 
           {etat ? (

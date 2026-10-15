@@ -35,10 +35,12 @@ function Chiffre({
 /** Bloc « Performance du site » de l'accueil. */
 export function PerformanceSite({
   stats,
+  indisponible,
   intervalle,
   libelleGraphique,
 }: {
   stats: Statistiques | null;
+  indisponible: string;
   intervalle: string;
   libelleGraphique: string;
 }) {
@@ -157,9 +159,7 @@ export function PerformanceSite({
           </div>
         </div>
       ) : (
-        <p className="px-5 py-6 text-[14px] text-neutral-500 sm:px-6">
-          Le suivi des visites n&apos;est pas encore activé sur ce site.
-        </p>
+        <p className="px-5 py-6 text-[14px] text-neutral-500 sm:px-6">{indisponible}</p>
       )}
     </Panneau>
   );

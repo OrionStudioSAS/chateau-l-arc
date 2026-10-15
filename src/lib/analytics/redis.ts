@@ -8,8 +8,29 @@ import "server-only";
  * En développement, sans ces variables, un stockage en mémoire (perdu au
  * redémarrage) permet de tester le suivi et l'accueil du back-office.
  */
-const URL_REDIS = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-const JETON = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+/**
+ * L'intégration Vercel nomme les variables selon le préfixe choisi à la
+ * création (KV_REST_API_URL par défaut, STORAGE_REST_API_URL…) : on prend la
+ * première paire URL + jeton trouvée.
+ */
+function identifiants(): { url?: string; jeton?: string } {
+  const env = process.env;
+  if (env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN) {
+    return { url: env.UPSTASH_REDIS_REST_URL, jeton: env.UPSTASH_REDIS_REST_TOKEN };
+  }
+  for (const cle of Object.keys(env)) {
+    const prefixe = cle.match(/^(.*)REST_API_URL$/)?.[1];
+    if (prefixe !== undefined && env[cle] && env[`${prefixe}REST_API_TOKEN`]) {
+      return { url: env[cle], jeton: env[`${prefixe}REST_API_TOKEN`] };
+    }
+  }
+  return {};
+}
+
+const { url: URL_REDIS, jeton: JETON } = identifiants();
+
+/** Vrai si une base Redis est reliée (hors stockage en mémoire de développement). */
+export const redisRelie = Boolean(URL_REDIS && JETON);
 
 export type Commande = (string | number)[];
 

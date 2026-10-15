@@ -17,6 +17,9 @@ import { redis, stockageConfigure, type Commande } from "@/lib/analytics/redis";
 
 export const analyticsConfigure = stockageConfigure;
 
+/** Dernière erreur de lecture, pour l'expliquer dans le back-office. */
+export type EtatStatistiques = "ok" | "non-configure" | "erreur";
+
 export type Indicateur = { valeur: number; precedent: number; serie: number[] };
 
 export type Statistiques = {
@@ -73,11 +76,11 @@ const FAMILLES: [string, string][] = [
 export async function getStatistiques(
   periode: Periode,
   versionPopup: string | null,
-): Promise<Statistiques | null> {
+): Promise<{ stats: Statistiques | null; etat: EtatStatistiques; detail?: string }> {
   "use cache";
   cacheLife({ stale: 30, revalidate: 60, expire: 600 });
 
-  if (!stockageConfigure) return null;
+  if (!stockageConfigure) return { stats: null, etat: "non-configure" };
 
   const maintenant = new Date();
   const { debut, fin, precedent, unite, graduations } = bornes(periode, maintenant);
@@ -100,7 +103,13 @@ export async function getStatistiques(
     resultats = await redis(commandes);
   } catch (erreur) {
     console.error("Statistiques indisponibles", erreur);
-    return null;
+    // Erreur passagère : on retentera vite plutôt que de la garder en cache.
+    cacheLife({ stale: 0, revalidate: 10, expire: 60 });
+    return {
+      stats: null,
+      etat: "erreur",
+      detail: erreur instanceof Error ? erreur.message : String(erreur),
+    };
   }
 
   const n = jours.length;
@@ -154,7 +163,7 @@ export async function getStatistiques(
 
   const visites = serie("visites");
 
-  return {
+  const stats: Statistiques = {
     visiteurs: {
       valeur: visiteurs || 0,
       // Les visiteurs uniques d'hier ne se découpent pas par heure : pas
@@ -180,4 +189,5 @@ export async function getStatistiques(
       .slice(0, 5)
       .map(([chemin, vues]) => ({ chemin, vues })),
   };
+  return { stats, etat: "ok" };
 }

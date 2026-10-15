@@ -50,7 +50,10 @@ export default async function Page({ searchParams }: PageProps<"/admin">) {
     lireContenu("competitions"),
     derniereModification("src/lib/tarifs.ts"),
   ]);
-  const stats = await getStatistiques(periode, popup.actif ? popup.version : null);
+  const { stats, etat: etatStats, detail: detailStats } = await getStatistiques(
+    periode,
+    popup.actif ? popup.version : null,
+  );
   const maintenant = new Date();
   const aujourdhui = ymd(maintenant);
   const tiret = "—";
@@ -183,6 +186,11 @@ export default async function Page({ searchParams }: PageProps<"/admin">) {
         <div className="min-w-0 space-y-6">
           <PerformanceSite
             stats={stats}
+            indisponible={
+              etatStats === "erreur"
+                ? `Les statistiques sont momentanément illisibles (${detailStats}).`
+                : "Le suivi des visites n'est pas encore activé : aucune base Redis n'est reliée à ce déploiement."
+            }
             intervalle={libelleIntervalle(periode, bornes(periode, maintenant))}
             libelleGraphique={libellesGraphique[periodes[periode].unite]}
           />

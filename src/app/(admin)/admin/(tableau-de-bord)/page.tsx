@@ -116,7 +116,7 @@ export default async function Page({ searchParams }: PageProps<"/admin">) {
         />
       </div>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+      <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
         <div className="min-w-0 space-y-6">
           <PerformanceSite
             stats={stats}

@@ -3,16 +3,30 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { CartePopup } from "@/components/layout/carte-popup";
+import { JOURS_AVANT_RETOUR, surtitrePopup } from "@/lib/admin/popup";
 import { evenements, suivre } from "@/lib/analytics/evenements";
 import type { Popup } from "@/lib/api/types";
 import { aujourdhuiAParis } from "@/lib/format";
 
 /**
- * Mémorise la dernière version vue. Une seule clé, dont la valeur est la
- * version : une nouvelle publication (version différente) se réaffiche, sans
- * accumuler une entrée par pop-up dans le navigateur.
+ * Mémorise la version fermée et la date de fermeture. Une seule clé : une
+ * nouvelle publication (version différente) se réaffiche aussitôt ; la même
+ * revient après JOURS_AVANT_RETOUR jours.
  */
-const CLE_STOCKAGE = "chateau-larc:popup-vue";
+const CLE_STOCKAGE = "chateau-larc:popup-fermee";
+
+function dejaFermee(version: string): boolean {
+  try {
+    const memo = JSON.parse(window.localStorage.getItem(CLE_STOCKAGE) ?? "null");
+    return (
+      memo?.version === version &&
+      Date.now() - Number(memo.le) < JOURS_AVANT_RETOUR * 86_400_000
+    );
+  } catch {
+    // Stockage indisponible (navigation privée stricte) : on affiche quand même.
+    return false;
+  }
+}
 
 export function PopupMarketing({ popup }: { popup: Popup | null }) {
   const [ouverte, setOuverte] = useState(false);
@@ -26,33 +40,30 @@ export function PopupMarketing({ popup }: { popup: Popup | null }) {
     if (popup.debut && jour < popup.debut) return;
     if (popup.fin && jour > popup.fin) return;
 
-    try {
-      if (window.localStorage.getItem(CLE_STOCKAGE) === popup.version) return;
-    } catch {
-      // Stockage indisponible (navigation privée stricte) : on affiche quand même.
-    }
+    if (dejaFermee(popup.version)) return;
 
     // Léger délai : la pop-up n'arrive pas en même temps que la page.
     const minuteur = window.setTimeout(() => {
       focusPrecedent.current = document.activeElement as HTMLElement | null;
       setOuverte(true);
       suivre(evenements.popupAffichage, popup.version);
-      // « Une fois par visiteur » : marquée vue dès l'affichage, qu'elle soit
-      // fermée ou simplement ignorée, pour ne pas revenir à chaque page.
-      try {
-        window.localStorage.setItem(CLE_STOCKAGE, popup.version);
-      } catch {
-        // Voir plus haut.
-      }
     }, 800);
 
     return () => window.clearTimeout(minuteur);
   }, [popup]);
 
   const fermer = useCallback(() => {
+    // Fermée (ou bouton cliqué) : elle ne revient pas avant 30 jours.
+    if (popup) {
+      try {
+        window.localStorage.setItem(CLE_STOCKAGE, JSON.stringify({ version: popup.version, le: Date.now() }));
+      } catch {
+        // Voir plus haut.
+      }
+    }
     setOuverte(false);
     focusPrecedent.current?.focus?.();
-  }, []);
+  }, [popup]);
 
   useEffect(() => {
     if (!ouverte) return;
@@ -82,6 +93,7 @@ export function PopupMarketing({ popup }: { popup: Popup | null }) {
         className="max-h-full w-full max-w-sm overflow-y-auto rounded-xl outline-none"
       >
         <CartePopup
+          surtitre={surtitrePopup(popup.boutonLien, popup.debut)}
           titre={popup.titre}
           texte={popup.texte}
           boutonLibelle={popup.boutonLibelle}

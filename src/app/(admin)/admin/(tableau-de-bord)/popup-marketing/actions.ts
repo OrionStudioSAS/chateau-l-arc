@@ -5,17 +5,27 @@ import { updateTag } from "next/cache";
 import { tags } from "@/lib/api/content";
 import {
   lienAutorise,
+  LONGUEUR_MAX_TEXTE,
+  LONGUEUR_MAX_TITRE,
   TAILLE_MAX_AFFICHE,
   TYPES_AFFICHE,
-  type EtatPopup,
 } from "@/lib/admin/popup";
 import { exigerUtilisateur } from "@/lib/admin/session";
 import { commiter, type Changement } from "@/lib/contenu/depot";
 import { cheminsContenu, DOSSIER_FICHIERS, lireDans, versJson } from "@/lib/contenu/stockage";
 import { aujourdhuiAParis, formatDate } from "@/lib/format";
 
-const texte = (formData: FormData, champ: string) =>
-  String(formData.get(champ) ?? "").trim();
+export type BrouillonPopup = {
+  actif: boolean;
+  titre: string;
+  texte: string;
+  boutonLibelle: string;
+  boutonLien: string;
+  debut: string;
+  fin: string;
+  /** Vrai pour retirer l'image publiée (sans en envoyer une nouvelle). */
+  retirerAffiche: boolean;
+};
 
 /** Chemin dans le dépôt d'un fichier servi par /fichiers/…, ou null. */
 function cheminDansDepot(url: string | null): string | null {
@@ -24,57 +34,50 @@ function cheminDansDepot(url: string | null): string | null {
     : null;
 }
 
-export async function enregistrerPopup(
-  _etat: EtatPopup,
-  formData: FormData,
-): Promise<EtatPopup> {
-  const actif = formData.get("actif") === "on";
-  const titre = texte(formData, "titre");
-  const corps = texte(formData, "texte");
-  const boutonLibelle = texte(formData, "boutonLibelle");
-  const boutonLien = texte(formData, "boutonLien");
-  const debut = texte(formData, "debut") || null;
-  const fin = texte(formData, "fin") || null;
-  const retirerAffiche = formData.get("retirerAffiche") === "on";
-  const affiche = formData.get("affiche");
-
-  if (actif && !titre) {
-    return { statut: "erreur", message: "Un titre est nécessaire pour activer la pop-up." };
-  }
-  if (boutonLibelle && !boutonLien) {
-    return { statut: "erreur", message: "Le bouton a besoin d'un lien." };
-  }
-  if (boutonLien && !lienAutorise(boutonLien)) {
-    return {
-      statut: "erreur",
-      message: "Lien invalide : utilisez /une-page, https://…, tel:… ou mailto:…",
-    };
-  }
-  if (debut && fin && debut > fin) {
-    return { statut: "erreur", message: "La date de fin précède la date de début." };
-  }
-  if (actif && fin && fin < aujourdhuiAParis()) {
-    return {
-      statut: "erreur",
-      message: `La période d'affichage s'est terminée le ${formatDate(fin)} : changez les dates pour publier.`,
-    };
-  }
-
+/**
+ * Publie la pop-up (contenu, période, image) en un seul commit, puis rafraîchit
+ * le site. Chaque publication change la version : les visiteurs qui avaient
+ * fermé l'ancienne voient la nouvelle.
+ */
+export async function publierPopup(formData: FormData): Promise<{ ok: boolean; message: string }> {
   await exigerUtilisateur();
 
-  // Nouvelle affiche : validation avant tout envoi.
-  let nouvelleAffiche: { chemin: string; contenu: Uint8Array } | null = null;
+  let b: BrouillonPopup;
+  try {
+    b = JSON.parse(String(formData.get("donnees") ?? "")) as BrouillonPopup;
+  } catch {
+    return { ok: false, message: "Données illisibles. Rechargez la page." };
+  }
 
+  const titre = b.titre.trim();
+  const texte = b.texte.trim();
+  const boutonLibelle = b.boutonLibelle.trim();
+  const boutonLien = b.boutonLien.trim();
+  const debut = b.debut || null;
+  const fin = b.fin || null;
+  const affiche = formData.get("affiche");
+
+  if (b.actif && !titre) return { ok: false, message: "Un titre est nécessaire pour activer la pop-up." };
+  if (titre.length > LONGUEUR_MAX_TITRE) return { ok: false, message: `Titre : ${LONGUEUR_MAX_TITRE} caractères maximum.` };
+  if (texte.length > LONGUEUR_MAX_TEXTE) return { ok: false, message: `Texte : ${LONGUEUR_MAX_TEXTE} caractères maximum.` };
+  if (boutonLibelle && !boutonLien) return { ok: false, message: "Le bouton a besoin d'un lien." };
+  if (boutonLien && !lienAutorise(boutonLien)) {
+    return { ok: false, message: "Lien invalide : utilisez /une-page, https://…, tel:… ou mailto:…" };
+  }
+  if (debut && fin && debut > fin) return { ok: false, message: "La date de fin précède la date de début." };
+  if (b.actif && fin && fin < aujourdhuiAParis()) {
+    return {
+      ok: false,
+      message: `La période s'est terminée le ${formatDate(fin)} : changez les dates pour publier.`,
+    };
+  }
+
+  let nouvelle: { chemin: string; contenu: Uint8Array } | null = null;
   if (affiche instanceof File && affiche.size > 0) {
-    if (!TYPES_AFFICHE.includes(affiche.type)) {
-      return { statut: "erreur", message: "L'affiche doit être en JPEG, PNG ou WebP." };
-    }
-    if (affiche.size > TAILLE_MAX_AFFICHE) {
-      return { statut: "erreur", message: "L'affiche dépasse 4 Mo." };
-    }
-
+    if (!TYPES_AFFICHE.includes(affiche.type)) return { ok: false, message: "L'image doit être en JPEG, PNG ou WebP." };
+    if (affiche.size > TAILLE_MAX_AFFICHE) return { ok: false, message: "L'image dépasse 2 Mo." };
     const extension = affiche.type.split("/")[1].replace("jpeg", "jpg");
-    nouvelleAffiche = {
+    nouvelle = {
       chemin: `affiches/popup-${Date.now()}.${extension}`,
       contenu: new Uint8Array(await affiche.arrayBuffer()),
     };
@@ -83,9 +86,9 @@ export async function enregistrerPopup(
   try {
     await commiter("Back-office : pop-up marketing", async (lire) => {
       const actuelle = await lireDans(lire, "popup");
-      const afficheUrl = nouvelleAffiche
-        ? `/fichiers/${nouvelleAffiche.chemin}`
-        : retirerAffiche
+      const afficheUrl = nouvelle
+        ? `/fichiers/${nouvelle.chemin}`
+        : b.retirerAffiche
           ? null
           : actuelle.afficheUrl;
 
@@ -93,48 +96,39 @@ export async function enregistrerPopup(
         {
           chemin: cheminsContenu.popup,
           contenu: versJson({
-            actif,
+            actif: b.actif,
             titre,
-            texte: corps,
+            texte,
             boutonLibelle: boutonLibelle || null,
             boutonLien: boutonLien || null,
             debut,
             fin,
             afficheUrl,
-            // Nouvelle version : les visiteurs qui avaient vu l'ancienne la reverront.
             version: new Date().toISOString(),
           }),
         },
       ];
-
-      if (nouvelleAffiche) {
-        changements.push({
-          chemin: `${DOSSIER_FICHIERS}/${nouvelleAffiche.chemin}`,
-          contenu: nouvelleAffiche.contenu,
-        });
+      if (nouvelle) {
+        changements.push({ chemin: `${DOSSIER_FICHIERS}/${nouvelle.chemin}`, contenu: nouvelle.contenu });
       }
-
-      // Affiche remplacée ou retirée : elle quitte le dépôt (reste dans l'historique).
+      // Image remplacée ou retirée : elle quitte le dépôt (reste dans l'historique).
       const ancienne = cheminDansDepot(actuelle.afficheUrl);
-      if (ancienne && afficheUrl !== actuelle.afficheUrl) {
-        changements.push({ chemin: ancienne, contenu: null });
-      }
-
+      if (ancienne && afficheUrl !== actuelle.afficheUrl) changements.push({ chemin: ancienne, contenu: null });
       return changements;
     });
   } catch (erreur) {
-    console.error("Enregistrement de la pop-up impossible", erreur);
-    return { statut: "erreur", message: "L'enregistrement a échoué." };
+    console.error("Publication de la pop-up impossible", erreur);
+    return { ok: false, message: "La publication a échoué. Réessayez dans un instant." };
   }
 
   updateTag(tags.popup);
 
   return {
-    statut: "succes",
-    message: !actif
-      ? "Pop-up enregistrée, mais désactivée : elle ne s'affiche pas sur le site."
+    ok: true,
+    message: !b.actif
+      ? "Pop-up désactivée : elle ne s'affiche plus sur le site."
       : debut && debut > aujourdhuiAParis()
-        ? `Pop-up programmée : elle s'affichera à partir du ${formatDate(debut)}.`
-        : "Pop-up publiée : elle s'affiche sur le site.",
+        ? `Pop-up programmée : visible à partir du ${formatDate(debut)}.`
+        : "Pop-up publiée sur le site.",
   };
 }

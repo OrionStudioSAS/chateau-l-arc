@@ -162,6 +162,18 @@ const traces = {
       <path d="M12 7v5l3 2" />
     </>
   ),
+  ordinateur: (
+    <>
+      <rect x="3" y="4" width="18" height="12" rx="1.5" />
+      <path d="M8 20h8m-4-4v4" />
+    </>
+  ),
+  mobile: (
+    <>
+      <rect x="7" y="3" width="10" height="18" rx="2" />
+      <path d="M11 18h2" />
+    </>
+  ),
   swingcall: <path d="M4 4l16 16M4 12l8 8M12 4l8 8" />,
   fidzly: (
     <>

@@ -15,8 +15,6 @@ import { evenements } from "@/lib/analytics/evenements";
 import { ajouterJours, bornes, ymd, type Periode } from "@/lib/analytics/periodes";
 import { redis, stockageConfigure, type Commande } from "@/lib/analytics/redis";
 
-export const analyticsConfigure = stockageConfigure;
-
 /** Dernière erreur de lecture, pour l'expliquer dans le back-office. */
 export type EtatStatistiques = "ok" | "non-configure" | "erreur";
 

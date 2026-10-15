@@ -10,7 +10,6 @@ import {
   Recapitulatif,
 } from "@/components/admin/accueil/blocs";
 import { PerformanceSite } from "@/components/admin/accueil/performance";
-import { Recommandations, type Recommandation } from "@/components/admin/accueil/recommandations";
 import { IconeAdmin } from "@/components/admin/icone-admin";
 import { equipeOrion } from "@/config/admin";
 import { site } from "@/config/site";
@@ -20,10 +19,8 @@ import {
   estPeriode,
   libelleIntervalle,
   periodes,
-  ymd,
 } from "@/lib/analytics/periodes";
-import { analyticsConfigure, getStatistiques } from "@/lib/analytics/statistiques";
-import { derniereModification } from "@/lib/contenu/depot";
+import { getStatistiques } from "@/lib/analytics/statistiques";
 import { lireContenu } from "@/lib/contenu/stockage";
 import { cn } from "@/lib/cn";
 import { formatDate } from "@/lib/format";
@@ -31,8 +28,6 @@ import { valeurStatut } from "@/lib/statut";
 
 export const metadata: Metadata = { title: { absolute: "Accueil · Back-office" } };
 export const instant = false;
-
-const SIX_MOIS_MS = 182 * 86_400_000;
 
 const libellesGraphique = {
   hour: "Visites par heure",
@@ -44,79 +39,18 @@ const libellesGraphique = {
 export default async function Page({ searchParams }: PageProps<"/admin">) {
   const { periode: brut } = await searchParams;
   const periode = estPeriode(brut) ? brut : "7j";
-  const [statut, popup, competitions, majTarifs] = await Promise.all([
-    lireContenu("statut"),
-    lireContenu("popup"),
-    lireContenu("competitions"),
-    derniereModification("src/lib/tarifs.ts"),
-  ]);
+  const [statut, popup] = await Promise.all([lireContenu("statut"), lireContenu("popup")]);
   const { stats, etat: etatStats, detail: detailStats } = await getStatistiques(
     periode,
     popup.actif ? popup.version : null,
   );
   const maintenant = new Date();
-  const aujourdhui = ymd(maintenant);
   const tiret = "—";
 
   const tauxPopup =
     stats && stats.popupAffichagesPeriode > 0
       ? (stats.popupClics.valeur / stats.popupAffichagesPeriode) * 100
       : null;
-
-  const sansResultats = competitions.filter(
-    (c) => c.statut === "publie" && (c.dateFin ?? c.dateDebut) < aujourdhui && !c.resultatsPublies,
-  );
-
-  const recommandations: Recommandation[] = [
-    ...(analyticsConfigure
-      ? []
-      : [
-          {
-            id: "suivi",
-            icone: "prise" as const,
-            titre: "Activez le suivi des visites",
-            texte: "Visiteurs, appels et inscriptions s'afficheront ici dès que le stockage est branché.",
-            action: { libelle: "Voir les intégrations", href: "/admin/integrations" },
-          },
-        ]),
-    ...(majTarifs && maintenant.getTime() - new Date(majTarifs).getTime() > SIX_MOIS_MS
-      ? [
-          {
-            id: `tarifs-${majTarifs.slice(0, 10)}`,
-            icone: "etiquette" as const,
-            titre: "Votre page Tarifs n'a pas été mise à jour depuis 6 mois",
-            texte: "Vérifiez les tarifs de la saison avant l'ouverture des abonnements.",
-            action: { libelle: "Mettre à jour", href: "/admin/tarifs" },
-          },
-        ]
-      : []),
-    ...sansResultats.slice(0, 2).map((c) => ({
-      id: `resultats-${c.id}`,
-      icone: "trophee" as const,
-      titre: `Publiez les résultats de « ${c.nom} »`,
-      texte: "La compétition est terminée : les joueurs attendent le classement.",
-      action: { libelle: "Publier les résultats", href: "/admin/competitions" },
-    })),
-    ...(popup.actif && popup.fin && popup.fin < aujourdhui
-      ? [
-          {
-            id: `popup-${popup.version}`,
-            icone: "megaphone" as const,
-            titre: "Votre pop-up n'est plus affichée",
-            texte: `Sa période s'est terminée le ${formatDate(popup.fin)}. Prolongez-la ou préparez la suivante.`,
-            action: { libelle: "Modifier la pop-up", href: "/admin/popup-marketing" },
-          },
-        ]
-      : []),
-    {
-      id: "orion-forms",
-      icone: "formulaire",
-      titre: "Recevez les demandes de séminaires directement ici",
-      texte: "Orion Forms remplace l'e-mail par un formulaire suivi dans Demandes.",
-      action: { libelle: "Découvrir Orion Forms", href: "/admin/orion-forms" },
-      promotion: true,
-    },
-  ];
 
   return (
     <>
@@ -194,7 +128,33 @@ export default async function Page({ searchParams }: PageProps<"/admin">) {
             intervalle={libelleIntervalle(periode, bornes(periode, maintenant))}
             libelleGraphique={libellesGraphique[periodes[periode].unite]}
           />
-          <Recommandations liste={recommandations} />
+          <Panneau titre="Votre équipe Orion Studio">
+            <div className="grid divide-y divide-neutral-200 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+              {equipeOrion.map((membre) => (
+                <div key={membre.nom} className="px-5 py-4 sm:px-6">
+                  <p className="flex items-center gap-3">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-club-800 text-[13px] font-semibold text-white">
+                      {membre.initiales}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-[14px] font-semibold">{membre.nom} · Orion Studio</span>
+                      <span className="block text-[13px] text-neutral-500">
+                        Une question, une nouvelle page, une idée ?
+                      </span>
+                    </span>
+                  </p>
+                  <div className="mt-3 grid grid-cols-[1fr_auto] gap-2">
+                    <LienBouton href={membre.visio} icone="camera" externe>
+                      Demander une visio
+                    </LienBouton>
+                    <LienBouton href={membre.ecrire} icone="courrier" externe>
+                      Écrire
+                    </LienBouton>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Panneau>
         </div>
         <div className="space-y-6">
           <Panneau
@@ -241,26 +201,6 @@ export default async function Page({ searchParams }: PageProps<"/admin">) {
                   : null}
               </p>
             </div>
-          </Panneau>
-
-          <Panneau titre="Votre équipe Orion Studio">
-            {equipeOrion.map((membre) => (
-              <div key={membre.nom} className="border-b border-neutral-200 px-5 py-4 last:border-0 sm:px-6">
-                <p className="flex items-center gap-3">
-                  <span className="flex size-10 items-center justify-center rounded-full bg-club-800 text-[13px] font-semibold text-white">
-                    {membre.initiales}
-                  </span>
-                  <span>
-                    <span className="block text-[14px] font-semibold">{membre.nom} · Orion Studio</span>
-                    <span className="block text-[13px] text-neutral-500">Une question, une nouvelle page, une idée ?</span>
-                  </span>
-                </p>
-                <div className="mt-3 grid grid-cols-[1fr_auto] gap-2">
-                  <LienBouton href={membre.visio} icone="camera" externe>Demander une visio</LienBouton>
-                  <LienBouton href={membre.ecrire} icone="courrier" externe>Écrire</LienBouton>
-                </div>
-              </div>
-            ))}
           </Panneau>
         </div>
       </div>

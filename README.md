@@ -168,6 +168,20 @@ et une clé de session de développement remplace `ADMIN_SECRET_SESSION`. Attent
 même en local, une publication écrit sur la branche du dépôt (`GITHUB_BRANCHE` pour
 travailler sur une autre).
 
+### Statistiques de l'accueil
+
+Mesure d'audience maison, sans service payant ni cookie : le composant
+`SuiviAnalytics` envoie chaque page vue et certains clics (inscriptions, pop-up,
+liens `tel:`, réservation, éléments `data-suivi="…"`) à `POST /api/suivi`, qui
+incrémente des compteurs par jour dans Redis (Upstash, offre gratuite). Le visiteur
+n'est identifié que par une empreinte de son IP et de son navigateur, salée par une
+clé qui change chaque jour : rien n'est stocké en clair et personne n'est suivi d'un
+jour à l'autre. Seule la production est comptée (pas les prévisualisations Vercel).
+
+L'accueil du back-office lit ces compteurs (`src/lib/analytics/statistiques.ts`).
+Pour l'activer : Vercel → Storage → Create Database → **Upstash for Redis** (offre
+gratuite), relié au projet ; Vercel ajoute seul `KV_REST_API_URL` et `KV_REST_API_TOKEN`.
+
 L'état affiché sur une compétition (« Inscriptions ouvertes », « Ouverture le 15/10 »,
 « Résultats en attente »…) n'est pas stocké : il est déduit des dates par
 `etatCompetition()` (`src/lib/competitions.ts`), appelé côté serveur avec une date

@@ -36,7 +36,7 @@ export function PopupMarketing({ popup }: { popup: Popup | null }) {
     const minuteur = window.setTimeout(() => {
       focusPrecedent.current = document.activeElement as HTMLElement | null;
       setOuverte(true);
-      suivre(evenements.popupAffichage, { titre: popup.titre });
+      suivre(evenements.popupAffichage, popup.version);
       // « Une fois par visiteur » : marquée vue dès l'affichage, qu'elle soit
       // fermée ou simplement ignorée, pour ne pas revenir à chaque page.
       try {
@@ -89,7 +89,7 @@ export function PopupMarketing({ popup }: { popup: Popup | null }) {
           afficheUrl={popup.afficheUrl}
           onFermer={fermer}
           onAction={() => {
-            suivre(evenements.popupClic, { titre: popup.titre });
+            suivre(evenements.popupClic);
             fermer();
           }}
           idTitre="popup-titre"

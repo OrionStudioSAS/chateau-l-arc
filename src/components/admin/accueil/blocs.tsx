@@ -132,7 +132,7 @@ export function Recapitulatif({
   tonSerie?: "vert" | "gris";
 }) {
   return (
-    <div className="flex min-w-0 flex-col p-5">
+    <div className="flex min-w-0 flex-col bg-white p-5">
       <p className="text-[13px] text-neutral-600">{libelle}</p>
       <p className="mt-2 flex items-center gap-2.5">
         <span className="text-[28px] font-semibold leading-none tracking-tight text-neutral-900">

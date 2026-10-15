@@ -9,11 +9,21 @@ import {
   Pastille,
   Recapitulatif,
 } from "@/components/admin/accueil/blocs";
+import { PerformanceSite } from "@/components/admin/accueil/performance";
+import { Recommandations, type Recommandation } from "@/components/admin/accueil/recommandations";
 import { IconeAdmin } from "@/components/admin/icone-admin";
 import { equipeOrion } from "@/config/admin";
 import { site } from "@/config/site";
-import { dateLongue, estPeriode, periodes } from "@/lib/analytics/periodes";
-import { getStatistiques } from "@/lib/analytics/umami";
+import {
+  bornes,
+  dateLongue,
+  estPeriode,
+  libelleIntervalle,
+  periodes,
+  ymd,
+} from "@/lib/analytics/periodes";
+import { analyticsConfigure, getStatistiques } from "@/lib/analytics/statistiques";
+import { derniereModification } from "@/lib/contenu/depot";
 import { lireContenu } from "@/lib/contenu/stockage";
 import { cn } from "@/lib/cn";
 import { formatDate } from "@/lib/format";
@@ -22,13 +32,88 @@ import { valeurStatut } from "@/lib/statut";
 export const metadata: Metadata = { title: { absolute: "Accueil · Back-office" } };
 export const instant = false;
 
-/** Accueil du back-office (maquette « Accueil »). TODO : performance du site et recommandations. */
+const SIX_MOIS_MS = 182 * 86_400_000;
+
+const libellesGraphique = {
+  hour: "Visites par heure",
+  day: "Visites par jour",
+  month: "Visites par mois",
+} as const;
+
+/** Accueil du back-office (maquette « Accueil »). */
 export default async function Page({ searchParams }: PageProps<"/admin">) {
   const { periode: brut } = await searchParams;
   const periode = estPeriode(brut) ? brut : "7j";
-  const [statut, popup] = await Promise.all([lireContenu("statut"), lireContenu("popup")]);
+  const [statut, popup, competitions, majTarifs] = await Promise.all([
+    lireContenu("statut"),
+    lireContenu("popup"),
+    lireContenu("competitions"),
+    derniereModification("src/lib/tarifs.ts"),
+  ]);
   const stats = await getStatistiques(periode, popup.actif ? popup.version : null);
+  const maintenant = new Date();
+  const aujourdhui = ymd(maintenant);
   const tiret = "—";
+
+  const tauxPopup =
+    stats && stats.popupAffichagesPeriode > 0
+      ? (stats.popupClics.valeur / stats.popupAffichagesPeriode) * 100
+      : null;
+
+  const sansResultats = competitions.filter(
+    (c) => c.statut === "publie" && (c.dateFin ?? c.dateDebut) < aujourdhui && !c.resultatsPublies,
+  );
+
+  const recommandations: Recommandation[] = [
+    ...(analyticsConfigure
+      ? []
+      : [
+          {
+            id: "suivi",
+            icone: "prise" as const,
+            titre: "Activez le suivi des visites",
+            texte: "Visiteurs, appels et inscriptions s'afficheront ici dès que le stockage est branché.",
+            action: { libelle: "Voir les intégrations", href: "/admin/integrations" },
+          },
+        ]),
+    ...(majTarifs && maintenant.getTime() - new Date(majTarifs).getTime() > SIX_MOIS_MS
+      ? [
+          {
+            id: `tarifs-${majTarifs.slice(0, 10)}`,
+            icone: "etiquette" as const,
+            titre: "Votre page Tarifs n'a pas été mise à jour depuis 6 mois",
+            texte: "Vérifiez les tarifs de la saison avant l'ouverture des abonnements.",
+            action: { libelle: "Mettre à jour", href: "/admin/tarifs" },
+          },
+        ]
+      : []),
+    ...sansResultats.slice(0, 2).map((c) => ({
+      id: `resultats-${c.id}`,
+      icone: "trophee" as const,
+      titre: `Publiez les résultats de « ${c.nom} »`,
+      texte: "La compétition est terminée : les joueurs attendent le classement.",
+      action: { libelle: "Publier les résultats", href: "/admin/competitions" },
+    })),
+    ...(popup.actif && popup.fin && popup.fin < aujourdhui
+      ? [
+          {
+            id: `popup-${popup.version}`,
+            icone: "megaphone" as const,
+            titre: "Votre pop-up n'est plus affichée",
+            texte: `Sa période s'est terminée le ${formatDate(popup.fin)}. Prolongez-la ou préparez la suivante.`,
+            action: { libelle: "Modifier la pop-up", href: "/admin/popup-marketing" },
+          },
+        ]
+      : []),
+    {
+      id: "orion-forms",
+      icone: "formulaire",
+      titre: "Recevez les demandes de séminaires directement ici",
+      texte: "Orion Forms remplace l'e-mail par un formulaire suivi dans Demandes.",
+      action: { libelle: "Découvrir Orion Forms", href: "/admin/orion-forms" },
+      promotion: true,
+    },
+  ];
 
   return (
     <>
@@ -38,7 +123,7 @@ export default async function Page({ searchParams }: PageProps<"/admin">) {
             Bonjour {site.shortName} Golf Club
           </h1>
           <p className="mt-1 text-[14px] text-neutral-500">
-            {dateLongue(new Date())} · {periodes[periode].resume}
+            {dateLongue(maintenant)} · {periodes[periode].resume}
           </p>
         </div>
         <nav aria-label="Période" className="flex rounded-lg bg-neutral-100 p-1">
@@ -58,13 +143,7 @@ export default async function Page({ searchParams }: PageProps<"/admin">) {
         </nav>
       </div>
 
-      {stats ? null : (
-        <p className="mt-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] text-amber-900">
-          Statistiques non configurées : ajoutez UMAMI_API_KEY et NEXT_PUBLIC_UMAMI_WEBSITE_ID.
-        </p>
-      )}
-
-      <div className="mt-6 grid divide-y divide-neutral-200 overflow-hidden rounded-xl border border-neutral-200 sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4 lg:divide-x">
+      <div className="mt-6 grid gap-px overflow-hidden rounded-xl border border-neutral-200 bg-neutral-200 sm:grid-cols-2 xl:grid-cols-4">
         <Recapitulatif
           libelle="Visiteurs sur le site"
           valeur={stats ? formatNombre(stats.visiteurs.valeur) : tiret}
@@ -82,6 +161,11 @@ export default async function Page({ searchParams }: PageProps<"/admin">) {
         <Recapitulatif
           libelle="Clics sur la pop-up"
           valeur={stats ? formatNombre(stats.popupClics.valeur) : tiret}
+          badge={
+            tauxPopup !== null ? (
+              <Pastille ton="gris">{tauxPopup.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %</Pastille>
+            ) : null
+          }
           pied={popup.actif ? popup.titre : "Aucune pop-up active"}
           serie={stats?.popupClics.serie}
           tonSerie="gris"
@@ -95,8 +179,15 @@ export default async function Page({ searchParams }: PageProps<"/admin">) {
         />
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
-        <div />
+      <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="min-w-0 space-y-6">
+          <PerformanceSite
+            stats={stats}
+            intervalle={libelleIntervalle(periode, bornes(periode, maintenant))}
+            libelleGraphique={libellesGraphique[periodes[periode].unite]}
+          />
+          <Recommandations liste={recommandations} />
+        </div>
         <div className="space-y-6">
           <Panneau
             titre="Le site en ce moment"
@@ -137,7 +228,9 @@ export default async function Page({ searchParams }: PageProps<"/admin">) {
               <p className="mt-2 text-neutral-900">{popup.titre}</p>
               <p className="mt-1 text-[13px] text-neutral-500">
                 {popup.debut && popup.fin ? `Du ${formatDate(popup.debut)} au ${formatDate(popup.fin)}` : null}
-                {stats ? ` · ${formatNombre(stats.popupAffichages)} affichages` : null}
+                {stats
+                  ? ` · ${formatNombre(stats.popupAffichages)} affichage${stats.popupAffichages > 1 ? "s" : ""}`
+                  : null}
               </p>
             </div>
           </Panneau>

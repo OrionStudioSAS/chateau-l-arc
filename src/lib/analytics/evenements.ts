@@ -1,7 +1,7 @@
 /**
- * Événements suivis sur le site public (Umami), lus par l'accueil du
- * back-office. Un élément porte `data-suivi="<nom>"` pour être compté au clic ;
- * les liens `tel:` et la réservation en ligne le sont automatiquement.
+ * Événements suivis sur le site public, lus par l'accueil du back-office.
+ * Un élément porte `data-suivi="<nom>"` pour être compté au clic ; les liens
+ * `tel:` et la réservation en ligne le sont automatiquement.
  */
 export const evenements = {
   inscription: "inscription",
@@ -15,15 +15,19 @@ export const evenements = {
 
 export type NomEvenement = (typeof evenements)[keyof typeof evenements];
 
-type Umami = { track: (nom: string, donnees?: Record<string, string>) => void };
+/** Mode édition du CMS (iframe d'Orion) : rien n'est compté. */
+const enEdition = () => new URLSearchParams(window.location.search).has("edit");
 
-/**
- * Envoie un événement. Le script de suivi se charge après la page : un
- * événement très précoce (affichage de la pop-up) attend jusqu'à 10 s qu'il
- * soit prêt. Sans script (suivi désactivé), rien n'est envoyé.
- */
-export function suivre(nom: NomEvenement, donnees?: Record<string, string>, essai = 0) {
-  const umami = (window as unknown as { umami?: Umami }).umami;
-  if (umami) return umami.track(nom, donnees);
-  if (essai < 20) window.setTimeout(() => suivre(nom, donnees, essai + 1), 500);
+/** Envoie une mesure à /api/suivi, sans bloquer la navigation (sendBeacon). */
+export function envoyerSuivi(donnees: Record<string, string | number>) {
+  if (enEdition()) return;
+  const corps = JSON.stringify(donnees);
+  if (!navigator.sendBeacon?.("/api/suivi", corps)) {
+    fetch("/api/suivi", { method: "POST", body: corps, keepalive: true }).catch(() => {});
+  }
+}
+
+/** Compte un événement ; `version` sert aux affichages de la pop-up. */
+export function suivre(nom: NomEvenement, version?: string) {
+  envoyerSuivi({ t: "evt", n: nom, p: window.location.pathname, ...(version ? { v: version } : {}) });
 }

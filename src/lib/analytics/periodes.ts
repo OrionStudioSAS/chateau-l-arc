@@ -19,7 +19,7 @@ export const estPeriode = (valeur: unknown): valeur is Periode =>
 const FUSEAU = "Europe/Paris";
 
 /** « 2026-10-14 » à Paris. */
-const ymd = (date: Date) => new Intl.DateTimeFormat("fr-CA", { timeZone: FUSEAU }).format(date);
+export const ymd = (date: Date) => new Intl.DateTimeFormat("fr-CA", { timeZone: FUSEAU }).format(date);
 
 /** Décalage de Paris à cette date, en minutes (120 l'été, 60 l'hiver). */
 function decalageMinutes(date: Date): number {
@@ -39,7 +39,7 @@ function minuit(jour: string): Date {
 }
 
 /** Décale une date « AAAA-MM-JJ » de n jours (calendrier, sans souci d'heure d'été). */
-function ajouterJours(jour: string, n: number): string {
+export function ajouterJours(jour: string, n: number): string {
   const [a, m, j] = jour.split("-").map(Number);
   return new Date(Date.UTC(a, m - 1, j + n)).toISOString().slice(0, 10);
 }
@@ -49,7 +49,7 @@ export type Intervalle = { debut: Date; fin: Date };
 export type Bornes = Intervalle & {
   precedent: Intervalle;
   unite: Unite;
-  /** Graduations du graphique : clé comparable aux dates d'Umami, et libellé. */
+  /** Graduations du graphique : clé (jour, « jour heure » ou mois) et libellé. */
   graduations: { cle: string; libelle: string }[];
 };
 

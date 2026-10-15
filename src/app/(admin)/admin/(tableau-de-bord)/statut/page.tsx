@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 
 import { StatutInstallations } from "@/components/admin/statut-installations";
 import { lireContenu } from "@/lib/contenu/stockage";
@@ -32,6 +33,8 @@ function miseAJour(iso: string): string {
 }
 
 export default async function Page() {
+  // Rendu à la requête : les dates « Mis à jour aujourd'hui » dépendent de l'heure.
+  await connection();
   const { installations } = await lireContenu("statut");
   const normalisees = installations.map(normaliserInstallation);
 

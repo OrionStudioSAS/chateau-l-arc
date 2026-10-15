@@ -11,10 +11,24 @@
   "installations": [
     {
       "cle": "parcours",
-      "libelle": "Parcours",
+      "libelle": "Parcours 18 trous",
+      "description": null,
       "groupe": 1,
       "type": "ouverture",
       "feminin": false,
+      "etat": "ouvert",
+      "actif": true,
+      "precision": null,
+      "majLe": "2026-10-09T11:52:19.193Z"
+    },
+    {
+      "cle": "greens-hiver",
+      "libelle": "Greens d'hiver",
+      "description": "Greens provisoires sur certains trous",
+      "groupe": 1,
+      "type": "autorisation",
+      "feminin": false,
+      "etat": "non",
       "actif": true,
       "precision": null,
       "majLe": "2026-10-09T11:52:19.193Z"
@@ -22,19 +36,23 @@
     {
       "cle": "practice",
       "libelle": "Practice",
+      "description": "Zone d'entraînement",
       "groupe": 1,
       "type": "ouverture",
       "feminin": false,
+      "etat": "ouvert",
       "actif": true,
       "precision": "8h – 19h",
       "majLe": "2026-10-09T11:52:19.193Z"
     },
     {
       "cle": "voiturette",
-      "libelle": "Voiturette",
+      "libelle": "Voiturettes",
+      "description": "Selon l'état du terrain",
       "groupe": 2,
       "type": "autorisation",
       "feminin": true,
+      "etat": "autorisees",
       "actif": true,
       "precision": null,
       "majLe": "2026-10-09T11:52:19.193Z"
@@ -42,9 +60,11 @@
     {
       "cle": "chariot-manuel",
       "libelle": "Chariot manuel",
+      "description": null,
       "groupe": 2,
       "type": "autorisation",
       "feminin": false,
+      "etat": "autorise",
       "actif": true,
       "precision": null,
       "majLe": "2026-10-09T11:52:19.193Z"
@@ -52,9 +72,11 @@
     {
       "cle": "chariot-electrique",
       "libelle": "Chariot électrique",
+      "description": null,
       "groupe": 2,
       "type": "autorisation",
       "feminin": false,
+      "etat": "autorise",
       "actif": true,
       "precision": null,
       "majLe": "2026-10-09T11:52:19.193Z"
@@ -62,9 +84,11 @@
     {
       "cle": "club-house",
       "libelle": "Club-house",
+      "description": null,
       "groupe": 3,
       "type": "ouverture",
       "feminin": false,
+      "etat": "ouvert",
       "actif": true,
       "precision": null,
       "majLe": "2026-10-09T11:52:19.193Z"
@@ -72,9 +96,11 @@
     {
       "cle": "proshop",
       "libelle": "Proshop",
+      "description": null,
       "groupe": 3,
       "type": "ouverture",
       "feminin": false,
+      "etat": "ouvert",
       "actif": true,
       "precision": null,
       "majLe": "2026-10-09T11:52:19.193Z"
@@ -82,9 +108,11 @@
     {
       "cle": "restaurant",
       "libelle": "Restaurant",
+      "description": "Le Club House · terrasse",
       "groupe": 3,
       "type": "ouverture",
       "feminin": false,
+      "etat": "ouvert",
       "actif": true,
       "precision": "Ouvert midi",
       "majLe": "2026-10-09T11:52:19.193Z"
@@ -92,9 +120,11 @@
     {
       "cle": "piscine",
       "libelle": "Piscine",
+      "description": null,
       "groupe": 3,
       "type": "ouverture",
       "feminin": true,
+      "etat": "ferme",
       "actif": false,
       "precision": null,
       "majLe": "2026-10-09T11:52:19.193Z"
@@ -102,9 +132,11 @@
     {
       "cle": "tennis",
       "libelle": "Tennis",
+      "description": "Courts 1 et 2",
       "groupe": 3,
       "type": "ouverture",
       "feminin": false,
+      "etat": "ouvert",
       "actif": true,
       "precision": null,
       "majLe": "2026-10-09T11:52:19.193Z"

@@ -1,5 +1,5 @@
 import type { Installation } from "@/lib/api/types";
-import { parGroupe, valeurStatut } from "@/lib/statut";
+import { optionCourante, parGroupe, valeurStatut } from "@/lib/statut";
 import { cn } from "@/lib/cn";
 
 /**
@@ -26,7 +26,9 @@ export function ListeStatut({
     <div className={cn("divide-y divide-encre/80", className)}>
       {parGroupe(installations).map((groupe) => (
         <dl key={groupe[0].groupe} className="py-2">
-          {groupe.map((installation) => (
+          {groupe.map((installation) => {
+            const ton = optionCourante(installation).ton;
+            return (
             <div
               key={installation.cle}
               className="flex items-center justify-between gap-6 px-6 py-3"
@@ -38,9 +40,11 @@ export function ListeStatut({
                 className={cn(
                   "flex items-center gap-3 text-[13px] uppercase",
                   installation.type === "autorisation"
-                    ? installation.actif
+                    ? ton === "vert"
                       ? "text-club-600"
-                      : "text-red-700"
+                      : ton === "rouge"
+                        ? "text-red-700"
+                        : "text-amber-700"
                     : "text-encre/80",
                 )}
               >
@@ -51,15 +55,18 @@ export function ListeStatut({
                     aria-hidden="true"
                     className={cn(
                       "block size-3 rounded-full ring-2",
-                      installation.actif
+                      ton === "vert"
                         ? "bg-emerald-500 ring-emerald-500/25"
-                        : "bg-red-600 ring-red-600/25",
+                        : ton === "rouge"
+                          ? "bg-red-600 ring-red-600/25"
+                          : "bg-amber-500 ring-amber-500/25",
                     )}
                   />
                 ) : null}
               </dd>
             </div>
-          ))}
+            );
+          })}
         </dl>
       ))}
     </div>

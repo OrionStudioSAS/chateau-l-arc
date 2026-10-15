@@ -171,8 +171,8 @@ export function SiteHeader({
                     : "border-club-950/15 bg-white text-encre hover:bg-sable-50",
                 )}
               >
-                {boutonStatut.ouvert !== null ? (
-                  <PastilleStatut actif={boutonStatut.ouvert} />
+                {boutonStatut.ton !== null ? (
+                  <PastilleStatut ton={boutonStatut.ton} />
                 ) : null}
                 {boutonStatut.texte}
                 <svg

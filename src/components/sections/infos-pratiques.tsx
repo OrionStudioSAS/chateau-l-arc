@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 import { headerActions } from "@/config/site";
 import { getStatutInstallations } from "@/lib/api/content";
+import { libelleEtat, optionCourante } from "@/lib/statut";
 import { cn } from "@/lib/cn";
 
 type Picto = "carte" | "horloge" | "voiturette" | "tenue";
@@ -82,8 +83,8 @@ export async function InfosPratiques() {
   const voiturettes = installations.find((installation) => installation.cle === "voiturette");
 
   const etat = [
-    parcours ? `Parcours ${parcours.actif ? "ouvert" : "fermé"}` : null,
-    voiturettes ? `voiturettes ${voiturettes.actif ? "autorisées" : "interdites"}` : null,
+    parcours ? `Parcours ${libelleEtat(parcours).toLowerCase()}` : null,
+    voiturettes ? `voiturettes ${voiturettes.etat === "chemins" ? "sur les chemins" : libelleEtat(voiturettes).toLowerCase()}` : null,
   ]
     .filter(Boolean)
     .join(" · ");
@@ -136,7 +137,11 @@ export async function InfosPratiques() {
                 aria-hidden="true"
                 className={cn(
                   "block size-2 rounded-full",
-                  parcours?.actif ? "bg-emerald-500" : "bg-red-600",
+                  !parcours || optionCourante(parcours).ton === "vert"
+                    ? "bg-emerald-500"
+                    : optionCourante(parcours).ton === "rouge"
+                      ? "bg-red-600"
+                      : "bg-amber-500",
                 )}
               />
               {etat}

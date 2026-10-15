@@ -6,6 +6,7 @@ import { formulesMock } from "@/lib/api/mock/formules";
 import { tarifsMock } from "@/lib/api/mock/tarifs";
 import { avecEtat, mapperCompetition } from "@/lib/competitions";
 import { lireContenu, type FichierPopup } from "@/lib/contenu/stockage";
+import { normaliserInstallation } from "@/lib/statut";
 import type {
   Article,
   Bandeau,
@@ -165,7 +166,7 @@ export async function getStatutInstallations(): Promise<Installation[]> {
   cacheLife("days");
 
   const { installations } = await lireContenu("statut");
-  return installations;
+  return installations.map(normaliserInstallation);
 }
 
 /**

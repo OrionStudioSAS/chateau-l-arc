@@ -189,3 +189,16 @@ export async function derniereModification(chemin: string): Promise<string | nul
     return null;
   }
 }
+
+/** Derniers commits touchant un chemin (le plus récent d'abord). */
+export async function historique(
+  chemin: string,
+  nombre: number,
+): Promise<{ sha: string; date: string }[]> {
+  const commits = (await (
+    await github(
+      `/commits?path=${encodeURIComponent(chemin)}&sha=${encodeURIComponent(BRANCHE)}&per_page=${nombre}`,
+    )
+  ).json()) as { sha: string; commit: { committer: { date: string } } }[];
+  return commits.map((c) => ({ sha: c.sha, date: c.commit.committer.date }));
+}

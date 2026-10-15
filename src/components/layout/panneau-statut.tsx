@@ -1,6 +1,6 @@
 import type { Installation } from "@/lib/api/types";
 import type { Meteo } from "@/lib/meteo";
-import { valeurStatut } from "@/lib/statut";
+import { optionCourante, valeurStatut, type TonStatut } from "@/lib/statut";
 import { cn } from "@/lib/cn";
 
 type Picto = "drapeau" | "voiturette" | "cible" | "couverts";
@@ -9,9 +9,9 @@ type Picto = "drapeau" | "voiturette" | "cible" | "couverts";
  * L'essentiel pour décider de venir jouer. La liste complète reste sur la
  * page « Informations sur le parcours ».
  */
-const lignes: { cle: string; libelle: string; picto: Picto; pluriel?: boolean }[] = [
+const lignes: { cle: string; libelle: string; picto: Picto }[] = [
   { cle: "parcours", libelle: "Parcours 18 trous", picto: "drapeau" },
-  { cle: "voiturette", libelle: "Voiturettes", picto: "voiturette", pluriel: true },
+  { cle: "voiturette", libelle: "Voiturettes", picto: "voiturette" },
   { cle: "practice", libelle: "Practice", picto: "cible" },
   { cle: "restaurant", libelle: "Restaurant", picto: "couverts" },
 ];
@@ -99,20 +99,22 @@ function libelleMiseAJour(installations: Installation[]): string | null {
 /** Libellé du bouton d'ouverture : l'état du parcours, ou un repli neutre. */
 export function libelleBoutonStatut(installations: Installation[]) {
   const parcours = installations.find((installation) => installation.cle === "parcours");
-  if (!parcours) return { texte: "Infos du jour", ouvert: null };
-  return {
-    texte: parcours.actif ? "Parcours ouvert" : "Parcours fermé",
-    ouvert: parcours.actif,
-  };
+  if (!parcours) return { texte: "Infos du jour", ton: null };
+  const option = optionCourante(parcours);
+  return { texte: `Parcours ${option.libelle.toLowerCase()}`, ton: option.ton };
 }
 
-/** Pastille d'état, verte si ouvert ou autorisé, rouge sinon. */
-export function PastilleStatut({ actif }: { actif: boolean }) {
+const couleursPastille: Record<TonStatut, string> = {
+  vert: "bg-emerald-400",
+  ambre: "bg-amber-400",
+  rouge: "bg-red-500",
+  gris: "bg-white/50",
+};
+
+/** Pastille d'état : verte (normal), ambre (restreint), rouge (fermé), grise (neutre). */
+export function PastilleStatut({ ton }: { ton: TonStatut }) {
   return (
-    <span
-      aria-hidden="true"
-      className={cn("block size-2 shrink-0 rounded-full", actif ? "bg-emerald-400" : "bg-red-500")}
-    />
+    <span aria-hidden="true" className={cn("block size-2 shrink-0 rounded-full", couleursPastille[ton])} />
   );
 }
 
@@ -127,12 +129,7 @@ export function PanneauStatut({
     const installation = installations.find((candidate) => candidate.cle === ligne.cle);
     if (!installation) return [];
 
-    // « Autorisée » → « Autorisées » pour la ligne au pluriel, sauf précision libre.
-    const precisionAffichee = installation.actif && installation.precision;
-    const valeur =
-      valeurStatut(installation) + (ligne.pluriel && !precisionAffichee ? "s" : "");
-
-    return [{ ...ligne, actif: installation.actif, valeur }];
+    return [{ ...ligne, ton: optionCourante(installation).ton, valeur: valeurStatut(installation) }];
   });
   const miseAJour = libelleMiseAJour(installations);
 
@@ -155,7 +152,7 @@ export function PanneauStatut({
                 {ligne.libelle}
               </dt>
               <dd className="flex items-center gap-2.5 text-[14px] font-semibold text-white">
-                <PastilleStatut actif={ligne.actif} />
+                <PastilleStatut ton={ligne.ton} />
                 {ligne.valeur}
               </dd>
             </div>

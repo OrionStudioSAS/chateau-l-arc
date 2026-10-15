@@ -25,7 +25,7 @@ const groupes: AdminNavGroupe[] = [
     ],
   },
   {
-    titre: "Golf",
+    titre: "Module Golf",
     items: [
       { label: "Statut des installations", href: "/admin/statut", icone: "drapeau" },
       {
@@ -42,7 +42,7 @@ const groupes: AdminNavGroupe[] = [
   {
     titre: "CMS",
     items: [
-      { label: "Bandeau d'information", href: "/admin/statut#bandeau", icone: "bandeau" },
+      { label: "Bandeau d'information", href: "/admin/bandeau", icone: "bandeau" },
       { label: "Pop-up marketing", href: "/admin/popup-marketing", icone: "megaphone" },
       { label: "Pages", href: "/admin/pages", icone: "page" },
       { label: "Blog", href: "/admin/blog", icone: "livre" },
@@ -50,16 +50,13 @@ const groupes: AdminNavGroupe[] = [
     ],
   },
   {
-    titre: "Applications",
+    titre: "Extensions",
     items: [
       { label: "Intégrations", href: "/admin/integrations", icone: "prise" },
+      // TODO : lien Swing Call.
+      { label: "Swing Call", href: null, icone: "swingcall" },
       { label: "Orion Translate", href: "/admin/orion-translate", icone: "traduction" },
       { label: "Orion Forms", href: "/admin/orion-forms", icone: "formulaire" },
-      { label: "Orion FAQ", href: "/admin/orion-faq", icone: "aide" },
-      { label: "Orion Reviews", href: "/admin/orion-reviews", icone: "etoile" },
-      // TODO : liens Swing Call et Fidzly.
-      { label: "Swing Call", href: null, icone: "swingcall" },
-      { label: "Fidzly", href: null, icone: "fidzly" },
     ],
   },
 ];

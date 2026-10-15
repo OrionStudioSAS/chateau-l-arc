@@ -24,7 +24,7 @@ import { getStatistiques } from "@/lib/analytics/statistiques";
 import { lireContenu } from "@/lib/contenu/stockage";
 import { cn } from "@/lib/cn";
 import { formatDate } from "@/lib/format";
-import { valeurStatut } from "@/lib/statut";
+import { optionCourante, valeurStatut } from "@/lib/statut";
 
 export const metadata: Metadata = { title: { absolute: "Accueil · Back-office" } };
 export const instant = false;
@@ -171,7 +171,17 @@ export default async function Page({ searchParams }: PageProps<"/admin">) {
                 <li key={i.cle} className="flex justify-between text-[14px]">
                   <span className="text-neutral-600">{i.libelle}</span>
                   <span className="flex items-center gap-2 text-neutral-900">
-                    <span className={cn("size-1.5 rounded-full", i.actif ? "bg-emerald-500" : "bg-red-500")} />
+                    <span
+                      className={cn(
+                        "size-1.5 rounded-full",
+                        {
+                          vert: "bg-emerald-500",
+                          ambre: "bg-amber-500",
+                          rouge: "bg-red-500",
+                          gris: "bg-neutral-400",
+                        }[optionCourante(i).ton],
+                      )}
+                    />
                     {valeurStatut(i)}
                   </span>
                 </li>

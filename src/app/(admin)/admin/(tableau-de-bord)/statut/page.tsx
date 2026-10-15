@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 
-import { AdminPageHeader } from "@/components/admin/admin-page-header";
-import { FormulaireStatutBandeau } from "@/components/admin/formulaire-statut-bandeau";
+import { StatutInstallations } from "@/components/admin/statut-installations";
 import { lireContenu } from "@/lib/contenu/stockage";
-import { formatDateHeure } from "@/lib/format";
+import { normaliserInstallation } from "@/lib/statut";
 
 export const metadata: Metadata = {
   title: { absolute: "Statut des installations · Back-office" },
@@ -12,22 +11,36 @@ export const metadata: Metadata = {
 // Lecture directe du dépôt, sans cache : l'accueil voit sa dernière publication.
 export const instant = false;
 
+const heure = new Intl.DateTimeFormat("fr-FR", {
+  hour: "numeric",
+  minute: "2-digit",
+  timeZone: "Europe/Paris",
+});
+const jour = new Intl.DateTimeFormat("fr-FR", {
+  day: "numeric",
+  month: "short",
+  timeZone: "Europe/Paris",
+});
+const cleJour = new Intl.DateTimeFormat("fr-CA", { timeZone: "Europe/Paris" });
+
+/** « Mis à jour aujourd'hui à 6h42 » ou « Mis à jour le 9 oct. ». */
+function miseAJour(iso: string): string {
+  const date = new Date(iso);
+  return cleJour.format(date) === cleJour.format(new Date())
+    ? `Mis à jour aujourd'hui à ${heure.format(date).replace(":", "h")}`
+    : `Mis à jour le ${jour.format(date)}`;
+}
+
 export default async function Page() {
-  const { bandeau, installations } = await lireContenu("statut");
+  const { installations } = await lireContenu("statut");
+  const normalisees = installations.map(normaliserInstallation);
 
   return (
-    <>
-      <AdminPageHeader
-        titre="Statut du golf & bandeau d'information"
-        description="Ce que voient vos visiteurs en haut du site — mise à jour immédiate."
-      />
-      <FormulaireStatutBandeau
-        installations={installations}
-        messageInitial={bandeau.message}
-        dernierePublication={
-          bandeau.publieLe ? formatDateHeure(bandeau.publieLe) : undefined
-        }
-      />
-    </>
+    <StatutInstallations
+      installations={normalisees}
+      reperes={Object.fromEntries(
+        normalisees.map((i) => [i.cle, i.description || miseAJour(i.majLe)]),
+      )}
+    />
   );
 }

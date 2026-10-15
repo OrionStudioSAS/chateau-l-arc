@@ -120,7 +120,12 @@ export type Installation = {
   groupe: number;
   type: "ouverture" | "autorisation";
   feminin: boolean;
+  /** État courant parmi ceux de `optionsStatut` (lib/statut). */
+  etat?: string;
+  /** Déduit de l'état : vrai sauf fermé ou interdit. */
   actif: boolean;
+  /** Repère affiché sous le nom dans le back-office (« Courts 1 et 2 »). */
+  description?: string | null;
   /** Remplace « Ouvert » quand l'installation l'est (« 8h – 19h », « Ouvert midi »). */
   precision: string | null;
   /** Dernière publication par l'accueil (ISO). */

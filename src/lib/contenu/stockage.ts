@@ -61,6 +61,9 @@ export type FicheCompetition = {
   statut: StatutCompetition;
   resultatsUrl: string | null;
   resultatsPublies: boolean;
+  reglementUrl?: string | null;
+  miseEnAvant?: boolean;
+  annonceBandeau?: boolean;
 };
 
 type Fichiers = {

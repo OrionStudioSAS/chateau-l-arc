@@ -91,7 +91,8 @@ export async function getProchainesCompetitions(
   cacheTag(tags.competitions);
   cacheLife("hours");
 
-  const competitions = await getCompetitions();
+  // Seules les compétitions « mises en avant » dans le back-office (par défaut).
+  const competitions = (await getCompetitions()).filter((c) => c.miseEnAvant !== false);
   const aVenir = competitions.filter(
     (competition) => competition.etat.cle !== "terminee",
   );
@@ -119,12 +120,37 @@ export async function getTarifs(): Promise<Tarif[]> {
   return apiFetch<Tarif[]>("/tarifs");
 }
 
+const jourMoisBandeau = new Intl.DateTimeFormat("fr-FR", {
+  day: "numeric",
+  month: "long",
+  timeZone: "Europe/Paris",
+});
+
+/**
+ * Bandeau d'information. Une compétition « annoncée dans le bandeau » le prend
+ * pendant ses inscriptions (de l'ouverture à la clôture) ; sinon, le message
+ * saisi dans le back-office. Revalidé chaque heure pour suivre ces dates.
+ */
 export async function getBandeau(): Promise<Bandeau> {
   "use cache";
-  cacheTag(tags.bandeau);
-  cacheLife("days");
+  cacheTag(tags.bandeau, tags.competitions);
+  cacheLife("hours");
 
-  const { bandeau } = await lireContenu("statut");
+  const [{ bandeau }, competitions] = await Promise.all([
+    lireContenu("statut"),
+    getCompetitions(),
+  ]);
+
+  const annoncee = competitions.find((c) => c.annonceBandeau && c.etat.cle === "ouverte");
+  if (annoncee) {
+    const limite = annoncee.inscriptionCloture ?? `${annoncee.dateDebut}T12:00:00Z`;
+    return {
+      actif: true,
+      message: `Inscriptions ouvertes : ${annoncee.nom}, jusqu'au ${jourMoisBandeau.format(new Date(limite))}`,
+      lien: { label: "S'inscrire", href: `/competitions/${annoncee.slug}` },
+      publieLe: bandeau.publieLe ?? undefined,
+    };
+  }
 
   return {
     actif: bandeau.actif,

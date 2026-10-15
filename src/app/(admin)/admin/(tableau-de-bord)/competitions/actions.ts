@@ -4,14 +4,19 @@ import { updateTag } from "next/cache";
 
 import { tags } from "@/lib/api/content";
 import {
+  libellesPublics,
+  manquantsPourPublier,
+  type BrouillonCompetition,
+} from "@/lib/admin/brouillon-competition";
+import {
   slugifier,
   TAILLE_MAX_RESULTATS,
-  type EtatCompetitionFormulaire,
   type EtatResultats,
 } from "@/lib/admin/formulaire-competition";
+import { TYPES_AFFICHE } from "@/lib/admin/popup";
 import { exigerUtilisateur } from "@/lib/admin/session";
 import { libellesCategorie } from "@/lib/competitions";
-import { commiter } from "@/lib/contenu/depot";
+import { commiter, type Changement } from "@/lib/contenu/depot";
 import {
   cheminsContenu,
   DOSSIER_FICHIERS,
@@ -20,11 +25,8 @@ import {
   type FicheCompetition,
 } from "@/lib/contenu/stockage";
 
-const texte = (formData: FormData, champ: string): string =>
-  String(formData.get(champ) ?? "").trim();
-
-const texteOuNull = (formData: FormData, champ: string): string | null =>
-  texte(formData, champ) || null;
+/** Affiche (redimensionnée dans le navigateur) et règlement : 2 Mo chacun. */
+const TAILLE_MAX_PIECE = 2 * 1024 * 1024;
 
 /**
  * Un champ `datetime-local` n'a pas de fuseau : sans cela, « 18h00 » serait
@@ -45,128 +47,240 @@ const isoDepuisParis = (valeurLocale: string): string => {
   return `${date}T${heure}:00${decalage}`;
 };
 
-const nombreOuNull = (formData: FormData, champ: string): number | null => {
-  const valeur = texte(formData, champ);
-  if (!valeur) return null;
+const nombreOuNull = (valeur: string): number | null => {
+  if (!valeur.trim()) return null;
   const nombre = Number(valeur);
-  return Number.isFinite(nombre) ? nombre : null;
+  return Number.isFinite(nombre) && nombre >= 0 ? Math.round(nombre) : null;
 };
 
+const ouNull = (valeur: string) => valeur.trim() || null;
+
+/** Chemin dans le dépôt d'un fichier servi par /fichiers/…, ou null. */
+const cheminDansDepot = (url: string | null | undefined) =>
+  url?.startsWith("/fichiers/") ? `${DOSSIER_FICHIERS}/${url.slice("/fichiers/".length)}` : null;
+
 /** Ajoute un suffixe tant que l'identifiant d'URL est déjà pris. */
-function slugDisponible(
-  fiches: FicheCompetition[],
-  base: string,
-  idActuel: string | null,
-): string {
+function slugDisponible(fiches: FicheCompetition[], base: string, idActuel: string | null): string {
   const pris = new Set(fiches.filter((f) => f.id !== idActuel).map((f) => f.slug));
-  let candidat = base;
+  let candidat = base || "competition";
   for (let suffixe = 2; pris.has(candidat); suffixe += 1) candidat = `${base}-${suffixe}`;
   return candidat;
 }
 
+export type ResultatCompetition =
+  | { ok: true; message: string; id: string }
+  | { ok: false; message: string };
+
+async function piece(
+  fichier: FormDataEntryValue | null,
+  types: string[],
+  libelle: string,
+): Promise<{ contenu: Uint8Array; extension: string } | string | null> {
+  if (!(fichier instanceof File) || fichier.size === 0) return null;
+  if (!types.includes(fichier.type)) return `${libelle} : format non accepté.`;
+  if (fichier.size > TAILLE_MAX_PIECE) return `${libelle} : 2 Mo maximum.`;
+  return {
+    contenu: new Uint8Array(await fichier.arrayBuffer()),
+    extension: fichier.type === "application/pdf" ? "pdf" : fichier.type.split("/")[1].replace("jpeg", "jpg"),
+  };
+}
+
 /**
- * Crée ou met à jour une compétition, puis rafraîchit le site public.
- * Le bouton utilisé détermine le statut : publication ou brouillon.
+ * Enregistre une compétition depuis l'assistant (création ou modification),
+ * en brouillon ou publiée, avec son affiche et son règlement : tout part dans
+ * un seul commit, les fichiers remplacés quittent le dépôt.
  */
-export async function enregistrerCompetition(
-  _etat: EtatCompetitionFormulaire,
-  formData: FormData,
-): Promise<EtatCompetitionFormulaire> {
-  const nom = texte(formData, "nom");
-  const dateDebut = texte(formData, "dateDebut");
-  const statut = texte(formData, "statut") === "publie" ? "publie" : "brouillon";
-  const id = texteOuNull(formData, "id");
-
-  if (!nom) return { statut: "erreur", message: "Le nom est obligatoire." };
-  if (!dateDebut) return { statut: "erreur", message: "La date est obligatoire." };
-
-  const categorie = texte(formData, "categorie");
-  if (!Object.hasOwn(libellesCategorie, categorie)) {
-    return { statut: "erreur", message: "Choisissez le type de compétition." };
-  }
-
+export async function sauvegarderCompetition(formData: FormData): Promise<ResultatCompetition> {
   await exigerUtilisateur();
 
-  const valeurs = {
-    nom,
-    dateDebut,
-    dateFin: texteOuNull(formData, "dateFin"),
-    formule: texte(formData, "formule") || "À préciser",
-    depart: texte(formData, "depart") || "À préciser",
-    trous: texte(formData, "trous") || "18 trous",
-    indexMaximum: texteOuNull(formData, "indexMaximum"),
-    categories: texteOuNull(formData, "categories"),
-    sponsor: texteOuNull(formData, "sponsor"),
-    inscriptionOuverture: texteOuNull(formData, "inscriptionOuverture"),
-    inscriptionCloture: (() => {
-      const valeur = texteOuNull(formData, "inscriptionCloture");
-      return valeur ? isoDepuisParis(valeur) : null;
-    })(),
-    places: nombreOuNull(formData, "places"),
-    modeInscription: texteOuNull(formData, "modeInscription"),
-    droitJeuMembres: texteOuNull(formData, "droitJeuMembres"),
-    droitJeuVisiteurs: texteOuNull(formData, "droitJeuVisiteurs"),
-    inclus: texteOuNull(formData, "inclus"),
-    description: texteOuNull(formData, "description"),
-    categorie: categorie as FicheCompetition["categorie"],
-    ouverteVisiteurs: formData.get("ouverteVisiteurs") === "on",
-    statut,
-  } satisfies Partial<FicheCompetition>;
+  let b: BrouillonCompetition;
+  try {
+    b = JSON.parse(String(formData.get("donnees") ?? "")) as BrouillonCompetition;
+  } catch {
+    return { ok: false, message: "Données illisibles. Rechargez la page." };
+  }
+  const statut = formData.get("statut") === "publie" ? "publie" : "brouillon";
 
+  if (!b.nom?.trim()) return { ok: false, message: "Donnez un nom à la compétition." };
+  if (!Object.hasOwn(libellesCategorie, b.categorie)) {
+    return { ok: false, message: "Choisissez le type de compétition." };
+  }
+  const manquants = manquantsPourPublier(b);
+  if (statut === "publie" && manquants.length) {
+    return { ok: false, message: `Pour publier, renseignez ${manquants.join(", ")}.` };
+  }
+  if (statut === "brouillon" && !b.dateDebut) {
+    return { ok: false, message: "Indiquez au moins une date, même provisoire." };
+  }
+  if (b.dateFin && b.dateFin < b.dateDebut) {
+    return { ok: false, message: "La date de fin précède la date de début." };
+  }
+
+  const affiche = await piece(formData.get("affiche"), TYPES_AFFICHE, "Affiche");
+  const reglement = await piece(formData.get("reglement"), ["application/pdf"], "Règlement");
+  if (typeof affiche === "string") return { ok: false, message: affiche };
+  if (typeof reglement === "string") return { ok: false, message: reglement };
+
+  const publics = libellesPublics(b);
+  let id = b.id;
   let introuvable = false as boolean;
 
   try {
-    await commiter(`Back-office : compétition « ${nom} »`, async (lire) => {
+    await commiter(`Back-office : compétition « ${b.nom.trim()} »`, async (lire) => {
       const fiches = await lireDans(lire, "competitions");
-      const slug = slugDisponible(fiches, slugifier(nom), id);
-      const existante = id ? fiches.find((fiche) => fiche.id === id) : undefined;
-
+      const existante = id ? fiches.find((f) => f.id === id) : undefined;
       if (id && !existante) {
         introuvable = true;
         return null;
       }
+      id ??= crypto.randomUUID();
+      const slug = slugDisponible(fiches, slugifier(b.nom), id);
+      const horodatage = Date.now();
+      const changements: Changement[] = [];
 
-      const fiche: FicheCompetition = existante
-        ? { ...existante, ...valeurs, slug }
-        : {
-            id: crypto.randomUUID(),
-            ...valeurs,
-            slug,
-            inscrits: 0,
-            afficheUrl: null,
-            vainqueurs: null,
-            resultatsUrl: null,
-            resultatsPublies: false,
-          };
+      let afficheUrl = b.afficheUrl;
+      if (affiche) {
+        const chemin = `affiches/${slug}-${horodatage}.${affiche.extension}`;
+        changements.push({ chemin: `${DOSSIER_FICHIERS}/${chemin}`, contenu: affiche.contenu });
+        afficheUrl = `/fichiers/${chemin}`;
+      }
+      let reglementUrl = b.reglementUrl;
+      if (reglement) {
+        const chemin = `reglements/${slug}-${horodatage}.pdf`;
+        changements.push({ chemin: `${DOSSIER_FICHIERS}/${chemin}`, contenu: reglement.contenu });
+        reglementUrl = `/fichiers/${chemin}`;
+      }
+      // Fichiers remplacés ou retirés : ils quittent le dépôt (restent dans l'historique).
+      for (const [avant, apres] of [
+        [existante?.afficheUrl, afficheUrl],
+        [existante?.reglementUrl, reglementUrl],
+      ]) {
+        const ancien = cheminDansDepot(avant);
+        if (ancien && avant !== apres) changements.push({ chemin: ancien, contenu: null });
+      }
 
-      const suivantes = existante
-        ? fiches.map((f) => (f.id === fiche.id ? fiche : f))
-        : [...fiches, fiche];
-      suivantes.sort((a, b) => a.dateDebut.localeCompare(b.dateDebut));
+      const fiche: FicheCompetition = {
+        ...(existante ?? {
+          inscrits: 0,
+          vainqueurs: null,
+          resultatsUrl: null,
+          resultatsPublies: false,
+        }),
+        id,
+        slug,
+        nom: b.nom.trim(),
+        dateDebut: b.dateDebut,
+        dateFin: ouNull(b.dateFin ?? ""),
+        formule: b.formule.trim() || "À préciser",
+        depart: publics.depart,
+        trous: publics.trous,
+        indexMaximum: publics.indexMaximum,
+        categories: publics.categories,
+        sponsor: ouNull(b.sponsor),
+        inscriptionOuverture: ouNull(b.inscriptionOuverture),
+        inscriptionCloture: b.inscriptionCloture ? isoDepuisParis(b.inscriptionCloture) : null,
+        places: nombreOuNull(b.places),
+        inscrits: nombreOuNull(b.inscrits) ?? existante?.inscrits ?? 0,
+        modeInscription: ouNull(b.modeInscription),
+        droitJeuMembres: ouNull(b.droitJeuMembres),
+        droitJeuVisiteurs: ouNull(b.droitJeuVisiteurs),
+        inclus: ouNull(b.inclus),
+        description: ouNull(b.description),
+        afficheUrl,
+        reglementUrl,
+        categorie: b.categorie,
+        ouverteVisiteurs: Boolean(b.ouverteVisiteurs),
+        miseEnAvant: Boolean(b.miseEnAvant),
+        annonceBandeau: Boolean(b.annonceBandeau),
+        statut,
+      };
 
-      return [{ chemin: cheminsContenu.competitions, contenu: versJson(suivantes) }];
+      const suivantes = existante ? fiches.map((f) => (f.id === id ? fiche : f)) : [...fiches, fiche];
+      suivantes.sort((a, c) => a.dateDebut.localeCompare(c.dateDebut));
+      changements.push({ chemin: cheminsContenu.competitions, contenu: versJson(suivantes) });
+      return changements;
     });
   } catch (erreur) {
     console.error("Enregistrement de la compétition impossible", erreur);
-    return {
-      statut: "erreur",
-      message: "L'enregistrement a échoué. Réessayez dans un instant.",
-    };
+    return { ok: false, message: "L'enregistrement a échoué. Réessayez dans un instant." };
   }
 
-  if (introuvable) {
-    return { statut: "erreur", message: "Cette compétition n'existe plus. Rechargez la page." };
+  if (introuvable || !id) {
+    return { ok: false, message: "Cette compétition n'existe plus. Rechargez la page." };
   }
 
   updateTag(tags.competitions);
-
+  updateTag(tags.bandeau);
   return {
-    statut: "succes",
-    message:
-      statut === "publie"
-        ? "Compétition publiée sur le site."
-        : "Brouillon enregistré.",
+    ok: true,
+    id,
+    message: statut === "publie" ? "Compétition publiée sur le site." : "Brouillon enregistré.",
   };
+}
+
+/** Publie une compétition ou la repasse en brouillon (retirée du site). */
+export async function changerStatutCompetition(
+  id: string,
+  statut: "publie" | "brouillon",
+): Promise<{ ok: boolean; message: string }> {
+  await exigerUtilisateur();
+  let erreur = null as string | null;
+
+  try {
+    await commiter("Back-office : statut d'une compétition", async (lire) => {
+      const fiches = await lireDans(lire, "competitions");
+      const fiche = fiches.find((f) => f.id === id);
+      if (!fiche) {
+        erreur = "Cette compétition n'existe plus.";
+        return null;
+      }
+      if (fiche.statut === statut) return null;
+      if (statut === "publie" && (!fiche.dateDebut || fiche.formule === "À préciser")) {
+        erreur = "Complétez la date et la formule avant de publier.";
+        return null;
+      }
+      const suivantes = fiches.map((f) => (f.id === id ? { ...f, statut } : f));
+      return [{ chemin: cheminsContenu.competitions, contenu: versJson(suivantes) }];
+    });
+  } catch (e) {
+    console.error("Changement de statut impossible", e);
+    return { ok: false, message: "L'opération a échoué. Réessayez dans un instant." };
+  }
+  if (erreur) return { ok: false, message: erreur };
+
+  updateTag(tags.competitions);
+  updateTag(tags.bandeau);
+  return {
+    ok: true,
+    message: statut === "publie" ? "Compétition publiée sur le site." : "Compétition repassée en brouillon.",
+  };
+}
+
+/** Supprime une compétition et ses fichiers (affiche, règlement, résultats). */
+export async function supprimerCompetition(id: string): Promise<{ ok: boolean; message: string }> {
+  await exigerUtilisateur();
+
+  try {
+    await commiter("Back-office : suppression d'une compétition", async (lire) => {
+      const fiches = await lireDans(lire, "competitions");
+      const fiche = fiches.find((f) => f.id === id);
+      if (!fiche) return null;
+      const fichiers = [fiche.afficheUrl, fiche.reglementUrl, fiche.resultatsUrl]
+        .map(cheminDansDepot)
+        .filter((c): c is string => Boolean(c));
+      return [
+        { chemin: cheminsContenu.competitions, contenu: versJson(fiches.filter((f) => f.id !== id)) },
+        ...fichiers.map((chemin) => ({ chemin, contenu: null })),
+      ];
+    });
+  } catch (e) {
+    console.error("Suppression de la compétition impossible", e);
+    return { ok: false, message: "La suppression a échoué. Réessayez dans un instant." };
+  }
+
+  updateTag(tags.competitions);
+  updateTag(tags.bandeau);
+  return { ok: true, message: "Compétition supprimée." };
 }
 
 /**

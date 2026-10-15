@@ -124,6 +124,44 @@ const traces = {
   piscine: <path d="M3 17c2 0 2-1.5 4.5-1.5S10 17 12 17s2-1.5 4.5-1.5S19 17 21 17M8 14V5a2 2 0 0 1 4 0m4 9V5a2 2 0 0 0-4 0M8 9h8" />,
   historique: <path d="M3 12a9 9 0 1 0 3-6.7L3 8m0-5v5h5m4-1v5l3 2" />,
   coche: <path d="m5 12.5 4.5 4.5L19 7.5" />,
+  liste: <path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01" />,
+  lien: <path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" />,
+  oeil: (
+    <>
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12" />
+      <circle cx="12" cy="12" r="3" />
+    </>
+  ),
+  nuage: <path d="M7 18h10a4 4 0 0 0 .5-8A6 6 0 0 0 6 9.5 4.3 4.3 0 0 0 7 18Z" />,
+  telechargement: <path d="M12 4v11m0 0-4-4m4 4 4-4M4 20h16" />,
+  envoi: <path d="M12 16V5m0 0-4 4m4-4 4 4M4 20h16" />,
+  plus: <path d="M12 5v14M5 12h14" />,
+  filtre: <path d="M4 6h16M7 12h10M10 18h4" />,
+  grille: (
+    <>
+      <rect x="4" y="4" width="7" height="7" rx="1.5" />
+      <path d="M14 6h6M14 9h4M4 15h16M4 19h11" />
+    </>
+  ),
+  corbeille: <path d="M4 7h16M10 11v6m4-6v6M6 7l1 13h10l1-13M9 7V4h6v3" />,
+  copie: (
+    <>
+      <rect x="8" y="8" width="12" height="12" rx="2" />
+      <path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3" />
+    </>
+  ),
+  info: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 11v5m0-8h.01" />
+    </>
+  ),
+  horloge: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </>
+  ),
   swingcall: <path d="M4 4l16 16M4 12l8 8M12 4l8 8" />,
   fidzly: (
     <>

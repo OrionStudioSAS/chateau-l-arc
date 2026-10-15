@@ -56,6 +56,12 @@ export type Competition = {
   statut: StatutCompetition;
   resultatsUrl?: string;
   resultatsPublies: boolean;
+  /** Règlement en PDF (/fichiers/…). */
+  reglementUrl?: string;
+  /** Proposée dans « Prochaines compétitions » de l'accueil (vrai par défaut). */
+  miseEnAvant?: boolean;
+  /** Annoncée dans le bandeau pendant les inscriptions. */
+  annonceBandeau?: boolean;
 };
 
 /** État dérivé des dates, calculé côté serveur pour rester déterministe. */

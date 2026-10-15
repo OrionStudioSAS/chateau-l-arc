@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 
-import { CompetitionsAdmin } from "@/components/admin/competitions-admin";
+import { CompetitionsAdmin } from "@/components/admin/competitions/liste";
 import { listerCompetitions } from "@/lib/admin/competitions";
 
 export const metadata: Metadata = {
@@ -9,18 +10,10 @@ export const metadata: Metadata = {
 
 export const instant = false;
 
-export default async function Page({
-  searchParams,
-}: PageProps<"/admin/competitions">) {
-  const { page } = await searchParams;
-  const numeroPage = Math.max(1, Number(page) || 1);
-  const { competitions, pages } = await listerCompetitions(numeroPage);
+export default async function Page() {
+  // Rendu à la requête : les états (ouverte, close, terminée) dépendent de l'heure.
+  await connection();
+  const { competitions, aujourdhui, maintenant } = await listerCompetitions();
 
-  return (
-    <CompetitionsAdmin
-      competitions={competitions}
-      page={numeroPage}
-      pages={pages}
-    />
-  );
+  return <CompetitionsAdmin competitions={competitions} aujourdhui={aujourdhui} maintenant={maintenant} />;
 }

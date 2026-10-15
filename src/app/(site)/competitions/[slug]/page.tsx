@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { ButtonLink } from "@/components/ui/button";
 import { ContainerEtroit } from "@/components/ui/container";
+import { TexteRiche, texteBrut } from "@/components/ui/texte-riche";
 import { getCompetition } from "@/lib/api/content";
 import { formatDate } from "@/lib/format";
 import { tonsPastille } from "@/lib/competitions";
@@ -25,7 +26,8 @@ export async function generateMetadata({
 
   return {
     title: competition.nom,
-    description: competition.description,
+    description: competition.description ? texteBrut(competition.description).slice(0, 200) : undefined,
+    openGraph: competition.afficheUrl ? { images: [competition.afficheUrl] } : undefined,
     alternates: { canonical: `/competitions/${competition.slug}` },
   };
 }
@@ -71,10 +73,20 @@ export default async function Page({ params }: PageProps<"/competitions/[slug]">
           {competition.etat.libelle}
         </span>
 
+        {competition.afficheUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={competition.afficheUrl}
+            alt={`Affiche — ${competition.nom}`}
+            className="mt-8 w-full max-w-sm rounded-sm"
+          />
+        ) : null}
+
         {competition.description ? (
-          <p className="mt-8 text-[18px] leading-relaxed text-encre/80">
-            {competition.description}
-          </p>
+          <TexteRiche
+            source={competition.description}
+            className="mt-8 text-[18px] leading-relaxed text-encre/80 [&_h3]:font-butler [&_h3]:text-[22px] [&_h3]:text-club-950"
+          />
         ) : null}
 
         <dl className="mt-10 grid gap-x-8 gap-y-5 border-t border-club-950/10 pt-8 sm:grid-cols-2">
@@ -87,6 +99,19 @@ export default async function Page({ params }: PageProps<"/competitions/[slug]">
             </div>
           ))}
         </dl>
+
+        {competition.reglementUrl ? (
+          <p className="mt-10">
+            <a
+              href={competition.reglementUrl}
+              target="_blank"
+              rel="noopener"
+              className="text-[16px] font-semibold text-club-950 underline-offset-4 hover:underline"
+            >
+              Télécharger le règlement (PDF) <span aria-hidden="true">→</span>
+            </a>
+          </p>
+        ) : null}
 
         {competition.resultatsPublies && competition.resultatsUrl ? (
           <p className="mt-10">

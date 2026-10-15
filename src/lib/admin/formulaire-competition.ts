@@ -1,9 +1,4 @@
 /** Constantes et types partagés entre le formulaire de compétition et son action. */
-export type EtatCompetitionFormulaire =
-  | { statut: "vide" }
-  | { statut: "succes"; message: string }
-  | { statut: "erreur"; message: string };
-
 /** Transforme un nom en identifiant d'URL. */
 export function slugifier(valeur: string): string {
   return valeur

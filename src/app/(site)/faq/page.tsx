@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 
 import { CentreAide } from "@/components/sections/centre-aide";
 import { FaqContact } from "@/components/sections/faq-contact";
-import { themesFaq } from "@/lib/faq";
+import { getGrilleTarifs } from "@/lib/api/content";
+import { themesFaq, type ThemeFaq } from "@/lib/faq";
 
 export const metadata: Metadata = {
   title: "Questions fréquentes",
@@ -11,27 +12,29 @@ export const metadata: Metadata = {
 };
 
 /** Données structurées FAQPage : les questions peuvent apparaître dans Google. */
-const donneesStructurees = {
+const donneesStructurees = (themes: ThemeFaq[]) => ({
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: themesFaq.flatMap((theme) =>
+  mainEntity: themes.flatMap((theme) =>
     theme.questions.map((item) => ({
       "@type": "Question",
       name: item.question,
       acceptedAnswer: { "@type": "Answer", text: item.reponse },
     })),
   ),
-};
+});
 
-export default function Page() {
+export default async function Page() {
+  const themes = themesFaq(await getGrilleTarifs());
+
   return (
     <>
       <script
         type="application/ld+json"
-        // Contenu statique, issu de lib/faq : aucune donnée saisie par un visiteur.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(donneesStructurees).replace(/</g, "\\u003c") }}
+        // Contenu issu de lib/faq et de la grille tarifaire : aucune donnée saisie par un visiteur.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(donneesStructurees(themes)).replace(/</g, "\\u003c") }}
       />
-      <CentreAide />
+      <CentreAide themes={themes} />
       <FaqContact />
     </>
   );

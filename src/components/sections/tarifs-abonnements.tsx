@@ -4,10 +4,12 @@ import { Editable } from "@/components/cms/editable";
 import { TARIFS_ABONNEMENTS_TITRE } from "@/constants";
 import { site } from "@/config/site";
 import { cn } from "@/lib/cn";
-import { abonnements, euros, remiseComptant } from "@/lib/tarifs";
+import { getGrilleTarifs } from "@/lib/api/content";
+import { euros } from "@/lib/tarifs";
 
 /** Abonnements annuels, avec le prix remisé en paiement comptant. */
-export function TarifsAbonnements({ annee }: { annee: number }) {
+export async function TarifsAbonnements({ annee }: { annee: number }) {
+  const { abonnements, remiseComptant } = await getGrilleTarifs();
   const pourcentage = Math.round(remiseComptant.taux * 100);
 
   return (
@@ -51,14 +53,14 @@ export function TarifsAbonnements({ annee }: { annee: number }) {
             const fonce = Boolean(abonnement.miseEnAvant);
             return (
               <li
-                key={abonnement.titre}
+                key={abonnement.id}
                 className={cn(
                   "rounded-sm px-6 py-6 lg:px-8",
                   fonce ? "bg-club-950 text-sable-50" : "bg-white",
                 )}
               >
                 <p className={cn("text-[14px] font-semibold", fonce ? "text-sable-50" : "text-club-950")}>
-                  {abonnement.titre}
+                  {abonnement.libelle}
                 </p>
                 <p className="mt-3 flex items-baseline gap-2">
                   <span

@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Container } from "@/components/ui/container";
 import { site } from "@/config/site";
 import { cn } from "@/lib/cn";
-import { recherchesFrequentes, themesFaq, type PictoTheme, type QuestionFaq } from "@/lib/faq";
+import { recherchesFrequentes, type PictoTheme, type QuestionFaq, type ThemeFaq } from "@/lib/faq";
 import { proprietesLien } from "@/lib/liens";
 
 /** TODO : photo temporaire de la bannière (allée de pins au-dessus d'un fairway). */
@@ -146,9 +146,9 @@ function Question({ item, ouverte, groupe }: { item: QuestionFaq; ouverte: boole
  * Centre d'aide : bannière avec recherche, thèmes à gauche (le thème à
  * l'écran est mis en avant), questions en accordéon.
  */
-export function CentreAide() {
+export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
   const [recherche, setRecherche] = useState("");
-  const [themeActif, setThemeActif] = useState(themesFaq[0].id);
+  const [themeActif, setThemeActif] = useState(tousLesThemes[0].id);
 
   // Pluriels simplifiés (« voiturettes » trouve « voiturette ») : on retire
   // le « s » final des mots de plus de trois lettres.
@@ -162,7 +162,7 @@ export function CentreAide() {
   );
   const themes = useMemo(
     () =>
-      themesFaq
+      tousLesThemes
         .map((theme) => ({
           ...theme,
           questions: theme.questions.filter((item) => {
@@ -172,7 +172,7 @@ export function CentreAide() {
           }),
         }))
         .filter((theme) => theme.questions.length > 0),
-    [termes],
+    [termes, tousLesThemes],
   );
 
   // Thème mis en avant dans la colonne : le dernier dont le titre a franchi
@@ -181,7 +181,7 @@ export function CentreAide() {
     let demande = 0;
     const suivre = () => {
       demande = 0;
-      const sections = themesFaq
+      const sections = tousLesThemes
         .map(({ id }) => document.getElementById(`theme-${id}`))
         .filter((section): section is HTMLElement => section !== null);
       const passees = sections.filter((section) => section.getBoundingClientRect().top <= 160);
@@ -196,7 +196,7 @@ export function CentreAide() {
       window.removeEventListener("scroll", surDefilement);
       if (demande) window.cancelAnimationFrame(demande);
     };
-  }, []);
+  }, [tousLesThemes]);
 
   const rechercher = (valeur: string) => {
     setRecherche(valeur);
@@ -293,7 +293,7 @@ export function CentreAide() {
           <aside className="min-w-0 lg:sticky lg:top-28 lg:self-start">
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-encre/45">Thèmes</p>
             <ul className="sans-barre -mx-5 mt-3 flex gap-2 overflow-x-auto px-5 sm:mx-0 sm:flex-wrap sm:px-0 lg:block lg:space-y-1">
-              {themesFaq.map((theme) => (
+              {tousLesThemes.map((theme) => (
                 <li key={theme.id} className="shrink-0">
                   <a
                     href={`#theme-${theme.id}`}

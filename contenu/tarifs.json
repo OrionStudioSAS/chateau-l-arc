@@ -1,0 +1,190 @@
+{
+  "saisons": {
+    "hauteDebut": "04-16",
+    "hauteFin": "11-14"
+  },
+  "remiseComptant": {
+    "taux": 0.05,
+    "jusquau": "31/12"
+  },
+  "greenFees": [
+    {
+      "id": "gf-18",
+      "libelle": "18 trous",
+      "detail": "Toute l'année, réservation en ligne.",
+      "prix": 85,
+      "saison": null,
+      "miseEnAvant": true
+    },
+    {
+      "id": "gf-9-haute",
+      "libelle": "9 trous · haute saison",
+      "detail": null,
+      "prix": 55,
+      "saison": "haute",
+      "miseEnAvant": false
+    },
+    {
+      "id": "gf-9-basse",
+      "libelle": "9 trous · basse saison",
+      "detail": null,
+      "prix": 45,
+      "saison": "basse",
+      "miseEnAvant": false
+    }
+  ],
+  "carnets": [
+    {
+      "id": "carnet-6-18",
+      "libelle": "6 parcours 18 trous",
+      "detail": "5 achetés + 1 offert",
+      "prix": 350,
+      "parties": 6
+    },
+    {
+      "id": "carnet-12-18",
+      "libelle": "12 parcours 18 trous",
+      "detail": "10 achetés + 2 offerts",
+      "prix": 700,
+      "parties": 12
+    },
+    {
+      "id": "carnet-12-9",
+      "libelle": "12 parcours 9 trous",
+      "detail": "10 achetés + 2 offerts",
+      "prix": 450,
+      "parties": 12
+    }
+  ],
+  "locations": [
+    {
+      "id": "voiturette-18",
+      "libelle": "Voiturette 18 trous",
+      "detail": null,
+      "prix": 40,
+      "membres": 28,
+      "groupe": "location"
+    },
+    {
+      "id": "voiturette-9",
+      "libelle": "Voiturette 9 trous",
+      "detail": null,
+      "prix": 33,
+      "membres": 25,
+      "groupe": "location"
+    },
+    {
+      "id": "chariot",
+      "libelle": "Chariot manuel",
+      "detail": null,
+      "prix": 5,
+      "membres": null,
+      "groupe": "location"
+    },
+    {
+      "id": "serie",
+      "libelle": "Série complète (location)",
+      "detail": null,
+      "prix": 40,
+      "membres": null,
+      "groupe": "location"
+    },
+    {
+      "id": "seau-1",
+      "libelle": "1 seau de balles",
+      "detail": null,
+      "prix": 4,
+      "membres": 3,
+      "groupe": "practice"
+    },
+    {
+      "id": "seau-5",
+      "libelle": "5 seaux",
+      "detail": null,
+      "prix": 18,
+      "membres": 12,
+      "groupe": "practice"
+    },
+    {
+      "id": "seau-10",
+      "libelle": "10 seaux",
+      "detail": null,
+      "prix": 34,
+      "membres": 22,
+      "groupe": "practice"
+    },
+    {
+      "id": "seau-25",
+      "libelle": "25 seaux",
+      "detail": null,
+      "prix": 75,
+      "membres": 50,
+      "groupe": "practice"
+    }
+  ],
+  "abonnements": [
+    {
+      "id": "abo-individuel",
+      "libelle": "Individuel",
+      "detail": null,
+      "prix": 2280,
+      "miseEnAvant": true
+    },
+    {
+      "id": "abo-couple",
+      "libelle": "Couple",
+      "detail": null,
+      "prix": 3732,
+      "miseEnAvant": false
+    },
+    {
+      "id": "abo-famille",
+      "libelle": "Famille (2 adultes)",
+      "detail": null,
+      "prix": 3732,
+      "miseEnAvant": false
+    },
+    {
+      "id": "abo-35",
+      "libelle": "Individuel −35 ans",
+      "detail": null,
+      "prix": 1560,
+      "miseEnAvant": false
+    },
+    {
+      "id": "abo-couple-35",
+      "libelle": "Couple −35 ans",
+      "detail": null,
+      "prix": 2748,
+      "miseEnAvant": false
+    },
+    {
+      "id": "abo-25",
+      "libelle": "−25 ans & étudiants",
+      "detail": null,
+      "prix": 984,
+      "miseEnAvant": false
+    },
+    {
+      "id": "abo-15",
+      "libelle": "−15 ans",
+      "detail": null,
+      "prix": 540,
+      "miseEnAvant": false
+    },
+    {
+      "id": "abo-80",
+      "libelle": "Individuel +80 ans",
+      "detail": null,
+      "prix": 2052,
+      "miseEnAvant": false
+    },
+    {
+      "id": "abo-couple-80",
+      "libelle": "Couple +80 ans",
+      "detail": null,
+      "prix": 3300,
+      "miseEnAvant": false
+    }
+  ]
+}

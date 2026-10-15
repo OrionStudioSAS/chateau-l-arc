@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/cn";
-import { saisonDu, saisons, type CleSaison } from "@/lib/tarifs";
+import { saisonDu, type CleSaison, type GrilleTarifs, type Saisons } from "@/lib/tarifs";
 
 /** Ancres des sections de la page, dans l'ordre d'affichage. */
 const rubriquesTarifs = [
@@ -45,13 +45,19 @@ function Pictogramme({ saison }: { saison: CleSaison }) {
  * La saison dépend de la date du visiteur : elle n'est mise en avant qu'une
  * fois la page chargée, pour que le HTML prérendu reste valable toute l'année.
  */
-export function TarifsNavigation() {
+export function TarifsNavigation({
+  saisons,
+  bornes,
+}: {
+  saisons: Saisons;
+  bornes: GrilleTarifs["saisons"];
+}) {
   const [active, setActive] = useState<string>(rubriquesTarifs[0].id);
   const [saison, setSaison] = useState<CleSaison | null>(null);
 
   useEffect(() => {
     // Mise à jour d'état asynchrone (après le premier rendu), pas en cascade.
-    const minuteur = window.setTimeout(() => setSaison(saisonDu(new Date())), 0);
+    const minuteur = window.setTimeout(() => setSaison(saisonDu(new Date(), bornes)), 0);
 
     // Section active : la dernière dont le haut a franchi le tiers de l'écran.
     // Sections relues à chaque fois : la page peut arriver en flux, après
@@ -76,7 +82,7 @@ export function TarifsNavigation() {
       window.removeEventListener("scroll", surDefilement);
       if (demande) window.cancelAnimationFrame(demande);
     };
-  }, []);
+  }, [bornes]);
 
   return (
     <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">

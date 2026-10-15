@@ -12,6 +12,7 @@ import { TARIFS_TITRE, TARIFS_DESCRIPTION } from "@/constants";
 import { headerActions } from "@/config/site";
 import { cn } from "@/lib/cn";
 import { proprietesLien } from "@/lib/liens";
+import { euros, parPartie, type GrilleTarifs } from "@/lib/tarifs";
 
 type Saison = "haute" | "basse";
 
@@ -26,46 +27,58 @@ type Formule = {
   miseEnAvant?: string;
 };
 
-/**
- * TODO : grille reprise de src/lib/tarifs.ts et de la maquette, à faire
- * valider par le club (notamment les mentions sous chaque prix).
- */
-const formules: Formule[] = [
-  {
-    libelle: "9 trous",
-    prix: { haute: "55 €", basse: "45 €" },
-    unite: "/ joueur",
-    texte: "Idéal pour une partie après le travail ou une découverte du parcours.",
-    points: {
-      haute: ["7 j/7, toute la journée", "Basse saison : 45 €"],
-      basse: ["7 j/7, toute la journée", "Haute saison : 55 €"],
+/** Les trois formules de l'accueil, tirées de la grille publiée (back-office, « Tarifs »). */
+function formulesDe(grille: GrilleTarifs): Formule[] {
+  const prix = (id: string, repli: number) =>
+    [...grille.greenFees, ...grille.carnets, ...grille.locations].find((l) => l.id === id)?.prix ?? repli;
+  const neufHaute = grille.greenFees.find((g) => g.saison === "haute")?.prix ?? prix("gf-9-haute", 55);
+  const neufBasse = grille.greenFees.find((g) => g.saison === "basse")?.prix ?? prix("gf-9-basse", 45);
+  const dixHuit = grille.greenFees.find((g) => g.saison === null)?.prix ?? prix("gf-18", 85);
+  const voiturette = prix("voiturette-18", 40);
+  const [carnet, grandCarnet] = grille.carnets;
+
+  const formules: Formule[] = [
+    {
+      libelle: "9 trous",
+      prix: { haute: euros(neufHaute), basse: euros(neufBasse) },
+      unite: "/ joueur",
+      texte: "Idéal pour une partie après le travail ou une découverte du parcours.",
+      points: {
+        haute: ["7 j/7, toute la journée", `Basse saison : ${euros(neufBasse)}`],
+        basse: ["7 j/7, toute la journée", `Haute saison : ${euros(neufHaute)}`],
+      },
+      action: { label: "Réserver", href: headerActions.reservation.href },
     },
-    action: { label: "Réserver", href: headerActions.reservation.href },
-  },
-  {
-    libelle: "18 trous",
-    prix: { haute: "85 €", basse: "85 €" },
-    unite: "/ joueur",
-    texte: "Le parcours complet, à jouer à votre rythme sur la journée.",
-    points: {
-      haute: ["Même tarif toute l'année", "Réservation en ligne", "Voiturette 40 € en option"],
-      basse: ["Même tarif toute l'année", "Réservation en ligne", "Voiturette 40 € en option"],
+    {
+      libelle: "18 trous",
+      prix: { haute: euros(dixHuit), basse: euros(dixHuit) },
+      unite: "/ joueur",
+      texte: "Le parcours complet, à jouer à votre rythme sur la journée.",
+      points: {
+        haute: ["Même tarif toute l'année", "Réservation en ligne", `Voiturette ${euros(voiturette)} en option`],
+        basse: ["Même tarif toute l'année", "Réservation en ligne", `Voiturette ${euros(voiturette)} en option`],
+      },
+      action: { label: "Réserver un départ", href: headerActions.reservation.href },
+      miseEnAvant: "Le plus joué",
     },
-    action: { label: "Réserver un départ", href: headerActions.reservation.href },
-    miseEnAvant: "Le plus joué",
-  },
-  {
-    libelle: "Carnet 5 + 1 · 18 trous",
-    prix: { haute: "350 €", basse: "350 €" },
-    unite: "le carnet",
-    texte: "Six green fees pour le prix de cinq, le sixième est offert.",
-    points: {
-      haute: ["Soit 58 € le green fee", "Carnet 10 + 2 : 700 €"],
-      basse: ["Soit 58 € le green fee", "Carnet 10 + 2 : 700 €"],
-    },
-    action: { label: "Acheter un carnet", href: "/tarifs" },
-  },
-];
+  ];
+
+  if (carnet) {
+    const points = [
+      `Soit ${euros(parPartie(carnet))} le green fee`,
+      ...(grandCarnet ? [`${grandCarnet.libelle} : ${euros(grandCarnet.prix)}`] : []),
+    ];
+    formules.push({
+      libelle: carnet.libelle,
+      prix: { haute: euros(carnet.prix), basse: euros(carnet.prix) },
+      unite: "le carnet",
+      texte: carnet.detail ?? "",
+      points: { haute: points, basse: points },
+      action: { label: "Acheter un carnet", href: "/tarifs" },
+    });
+  }
+  return formules;
+}
 
 const saisons: { cle: Saison; libelle: string }[] = [
   { cle: "haute", libelle: "Haute saison" },
@@ -73,8 +86,15 @@ const saisons: { cle: Saison; libelle: string }[] = [
 ];
 
 /** Bloc tarifs de l'accueil : trois formules et bascule haute / basse saison. */
-export function TarifsApercu() {
+export function TarifsApercu({ grille }: { grille: GrilleTarifs }) {
   const [saison, setSaison] = useState<Saison>("haute");
+  const formules = formulesDe(grille);
+  const prixLocation = (id: string) => grille.locations.find((l) => l.id === id);
+  const extras = [
+    prixLocation("voiturette-18") && `Voiturette ${euros(prixLocation("voiturette-18")!.prix)}`,
+    prixLocation("chariot") && `Chariot manuel ${euros(prixLocation("chariot")!.prix)}`,
+    prixLocation("seau-1") && `Seau de balles ${euros(prixLocation("seau-1")!.prix)}`,
+  ].filter(Boolean);
 
   return (
     <section className="bg-white py-14 lg:py-20">
@@ -184,7 +204,7 @@ export function TarifsApercu() {
         </ul>
 
         <p className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-center text-[13px] text-encre/55">
-          <span>Voiturette 40 € · Chariot manuel 5 € · Seau de balles 4 €</span>
+          <span>{extras.join(" · ")}</span>
           <LienFleche href="/tarifs" className="text-[13px]">
             Tous les tarifs et abonnements
           </LienFleche>

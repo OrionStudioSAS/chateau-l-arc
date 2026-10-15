@@ -79,10 +79,6 @@ export const rubriquesAVenir: Record<string, { titre: string; description: strin
     titre: "Demandes",
     description: "Les demandes reçues depuis les formulaires du site, suivies au même endroit.",
   },
-  tarifs: {
-    titre: "Tarifs",
-    description: "Grille des green fees, carnets et abonnements de la saison.",
-  },
   blog: { titre: "Blog", description: "Actualités et articles du club." },
   mediatheque: { titre: "Médiathèque", description: "Photos, vidéos et documents du site." },
   integrations: {

@@ -2,19 +2,16 @@ import { cacheLife, cacheTag } from "next/cache";
 
 import { ApiError, apiFetch, apiIsConfigured } from "@/lib/api/client";
 import { actualitesMock } from "@/lib/api/mock/actualites";
-import { formulesMock } from "@/lib/api/mock/formules";
-import { tarifsMock } from "@/lib/api/mock/tarifs";
 import { avecEtat, mapperCompetition } from "@/lib/competitions";
 import { lireContenu, type FichierPopup } from "@/lib/contenu/stockage";
 import { normaliserInstallation } from "@/lib/statut";
+import type { GrilleTarifs } from "@/lib/tarifs";
 import type {
   Article,
   Bandeau,
   CompetitionAvecEtat,
-  FormuleAccueil,
   Installation,
   Popup,
-  Tarif,
 } from "@/lib/api/types";
 
 /**
@@ -111,13 +108,13 @@ export async function getCompetition(
   return competitions.find((competition) => competition.slug === slug) ?? null;
 }
 
-export async function getTarifs(): Promise<Tarif[]> {
+/** Grille tarifaire publiée (contenu/tarifs.json), modifiée depuis le back-office. */
+export async function getGrilleTarifs(): Promise<GrilleTarifs> {
   "use cache";
   cacheTag(tags.tarifs);
   cacheLife("days");
 
-  if (!apiIsConfigured) return tarifsMock;
-  return apiFetch<Tarif[]>("/tarifs");
+  return lireContenu("tarifs");
 }
 
 const jourMoisBandeau = new Intl.DateTimeFormat("fr-FR", {
@@ -158,15 +155,6 @@ export async function getBandeau(): Promise<Bandeau> {
     lien: bandeau.lien ?? undefined,
     publieLe: bandeau.publieLe ?? undefined,
   };
-}
-
-export async function getFormulesAccueil(): Promise<FormuleAccueil[]> {
-  "use cache";
-  cacheTag(tags.formules);
-  cacheLife("days");
-
-  if (!apiIsConfigured) return formulesMock;
-  return apiFetch<FormuleAccueil[]>("/formules-accueil");
 }
 
 /** Compétitions dont les résultats sont en ligne, la plus récente d'abord. */

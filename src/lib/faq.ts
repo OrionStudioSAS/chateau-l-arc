@@ -2,7 +2,7 @@ import type { Route } from "next";
 
 import { site, urlItineraire } from "@/config/site";
 import { enseignants, formulesJuniors, formulesPrestige } from "@/lib/academie";
-import { abonnements, carnets, euros, greenFees, locations, practice, remiseComptant } from "@/lib/tarifs";
+import { euros, saisonsDe, type GrilleTarifs, type Location } from "@/lib/tarifs";
 
 /**
  * Questions fréquentes, par thème.
@@ -33,13 +33,23 @@ export type QuestionFaq = {
 
 export type ThemeFaq = { id: string; titre: string; picto: PictoTheme; questions: QuestionFaq[] };
 
-const prix = (ligne: { libelle: string; visiteurs: number; membres: number | null }) =>
-  `${ligne.libelle.toLowerCase()} : ${euros(ligne.visiteurs)}${ligne.membres ? ` (${euros(ligne.membres)} pour les membres)` : ""}`;
+const prix = (ligne: Location) =>
+  `${ligne.libelle.toLowerCase()} : ${euros(ligne.prix)}${ligne.membres ? ` (${euros(ligne.membres)} pour les membres)` : ""}`;
 
-const [gf18, gf9Haute, gf9Basse] = greenFees;
 const telephone = site.contact.telephone;
 
-export const themesFaq: ThemeFaq[] = [
+/** Questions par thème ; les réponses chiffrées viennent de la grille publiée. */
+export function themesFaq(grille: GrilleTarifs): ThemeFaq[] {
+  const { abonnements, carnets, greenFees, remiseComptant } = grille;
+  const locations = grille.locations.filter((l) => l.groupe === "location");
+  const practice = grille.locations.filter((l) => l.groupe === "practice");
+  const saisons = saisonsDe(grille);
+  const gf18 = greenFees.find((g) => g.saison === null) ?? greenFees[0];
+  const gf9Haute = greenFees.find((g) => g.saison === "haute");
+  const gf9Basse = greenFees.find((g) => g.saison === "basse");
+  const minuscule = (texte: string) => texte.charAt(0).toLowerCase() + texte.slice(1).replace(/\.$/, "");
+
+  return [
   {
     id: "golf-parcours",
     titre: "Le golf & le parcours",
@@ -110,13 +120,17 @@ export const themesFaq: ThemeFaq[] = [
     questions: [
       {
         question: "Quels sont les tarifs des green fees ?",
-        reponse: `18 trous : ${euros(gf18.prix)} toute l'année. 9 trous : ${euros(gf9Haute.prix)} en haute saison (du 16 avril au 14 novembre) et ${euros(gf9Basse.prix)} en basse saison (du 15 novembre au 15 avril).`,
+        reponse: `${gf18 ? `${gf18.libelle} : ${euros(gf18.prix)} toute l'année.` : ""}${
+          gf9Haute && gf9Basse
+            ? ` 9 trous : ${euros(gf9Haute.prix)} en haute saison (${minuscule(saisons.haute.detail)}) et ${euros(gf9Basse.prix)} en basse saison (${minuscule(saisons.basse.detail)}).`
+            : ""
+        }`.trim(),
         lien: { label: "Tous les tarifs", href: "/tarifs" },
       },
       {
         question: "Existe-t-il des carnets de green fees ?",
         reponse: `Oui, valables 12 mois : ${carnets
-          .map((carnet) => `${carnet.titre.toLowerCase()} à ${euros(carnet.prix)}`)
+          .map((carnet) => `${carnet.libelle.toLowerCase()} à ${euros(carnet.prix)}`)
           .join(", ")}.`,
       },
       {
@@ -144,12 +158,12 @@ export const themesFaq: ThemeFaq[] = [
     questions: [
       {
         question: "Quelles formules d'abonnement proposez-vous ?",
-        reponse: `${abonnements.map((formule) => `${formule.titre} ${euros(formule.prix)}`).join(", ")}, par an.`,
+        reponse: `${abonnements.map((formule) => `${formule.libelle} ${euros(formule.prix)}`).join(", ")}, par an.`,
         lien: { label: "Voir les abonnements", href: "/tarifs" },
       },
       {
         question: "Y a-t-il une réduction en payant comptant ?",
-        reponse: `Oui : −${Math.round(remiseComptant.taux * 100)} % en paiement comptant jusqu'au 31 décembre.`,
+        reponse: `Oui : −${Math.round(remiseComptant.taux * 100)} % en paiement comptant jusqu'au ${remiseComptant.jusquau}.`,
       },
       {
         question: "Peut-on payer l'abonnement en plusieurs fois ?",
@@ -301,7 +315,8 @@ export const themesFaq: ThemeFaq[] = [
       },
     ],
   },
-];
+  ];
+}
 
 /** Raccourcis de la bannière : remplissent la recherche. */
 export const recherchesFrequentes = [

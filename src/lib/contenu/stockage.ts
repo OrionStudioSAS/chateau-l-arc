@@ -3,8 +3,10 @@ import "server-only";
 import competitionsEmbarquees from "@contenu/competitions.json";
 import popupEmbarquee from "@contenu/popup.json";
 import statutEmbarque from "@contenu/statut.json";
+import tarifsEmbarques from "@contenu/tarifs.json";
 
 import type { CategorieCompetition, Installation, StatutCompetition } from "@/lib/api/types";
+import type { GrilleTarifs } from "@/lib/tarifs";
 import { depotConfigure, lireTexte } from "@/lib/contenu/depot";
 
 /**
@@ -70,6 +72,7 @@ type Fichiers = {
   statut: FichierStatut;
   popup: FichierPopup;
   competitions: FicheCompetition[];
+  tarifs: GrilleTarifs;
 };
 
 export type CleContenu = keyof Fichiers;
@@ -79,6 +82,7 @@ export const cheminsContenu: Record<CleContenu, string> = {
   statut: "contenu/statut.json",
   popup: "contenu/popup.json",
   competitions: "contenu/competitions.json",
+  tarifs: "contenu/tarifs.json",
 };
 
 /** Dossier des fichiers déposés (PDF, affiches), servis par /fichiers/… */
@@ -89,6 +93,7 @@ const embarques: Fichiers = {
   statut: statutEmbarque as FichierStatut,
   popup: popupEmbarquee as FichierPopup,
   competitions: competitionsEmbarquees as FicheCompetition[],
+  tarifs: tarifsEmbarques as GrilleTarifs,
 };
 
 /**

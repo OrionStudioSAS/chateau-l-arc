@@ -14,8 +14,11 @@ import { TarifsApercu } from "@/components/sections/tarifs-apercu";
 import { ACCUEIL_CHIFFRES, BANNER_ACCROCHE, BANNER_IMAGE, BANNER_TITRE, BANNER_TEXTE } from "@/constants";
 import { headerActions } from "@/config/site";
 import { estPagePubliqueVisible } from "@/config/visibilite";
+import { getGrilleTarifs } from "@/lib/api/content";
 
-export default function Page() {
+export default async function Page() {
+  const grille = await getGrilleTarifs();
+
   return (
     <>
       <Banniere
@@ -56,7 +59,7 @@ export default function Page() {
 
       <ParcoursSignature />
 
-      <TarifsApercu />
+      <TarifsApercu grille={grille} />
 
       {estPagePubliqueVisible("/competitions") && <CompetitionsApercu />}
 

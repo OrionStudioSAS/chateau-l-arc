@@ -7,19 +7,13 @@ import { TARIFS_CARNETS_SURTITRE, TARIFS_GREENFEES_SURTITRE, TARIFS_LOCATIONS_SU
 import { headerActions } from "@/config/site";
 import { cn } from "@/lib/cn";
 import { proprietesLien } from "@/lib/liens";
-import {
-  carnets,
-  euros,
-  greenFees,
-  locations,
-  practice,
-  type LigneLocation,
-} from "@/lib/tarifs";
+import { getGrilleTarifs } from "@/lib/api/content";
+import { euros, parPartie, saisonsDe, type Location } from "@/lib/tarifs";
 
 /** Ancre de section : décalée sous l'en-tête collant lors d'un saut. */
 const ancre = "scroll-mt-28";
 
-function TableauTarifs({ lignes, legende }: { lignes: LigneLocation[]; legende: string }) {
+function TableauTarifs({ lignes, legende }: { lignes: Location[]; legende: string }) {
   return (
     <table className="w-full text-[14px]">
       <caption className="sr-only">{legende}</caption>
@@ -38,11 +32,11 @@ function TableauTarifs({ lignes, legende }: { lignes: LigneLocation[]; legende: 
       </thead>
       <tbody>
         {lignes.map((ligne) => (
-          <tr key={ligne.libelle} className="border-b border-encre/10 last:border-0">
+          <tr key={ligne.id} className="border-b border-encre/10 last:border-0">
             <th scope="row" className="py-4 text-left font-normal text-encre/85">
               {ligne.libelle}
             </th>
-            <td className="py-4 text-right font-semibold text-encre">{euros(ligne.visiteurs)}</td>
+            <td className="py-4 text-right font-semibold text-encre">{euros(ligne.prix)}</td>
             <td className="py-4 text-right font-semibold text-club-600">
               {ligne.membres === null ? (
                 <>
@@ -63,7 +57,12 @@ function TableauTarifs({ lignes, legende }: { lignes: LigneLocation[]; legende: 
 }
 
 /** Green fees, carnets, puis locations et practice (tarifs visiteurs et membres). */
-export function TarifsGreenFees() {
+export async function TarifsGreenFees() {
+  const grille = await getGrilleTarifs();
+  const saisons = saisonsDe(grille);
+  const locations = grille.locations.filter((ligne) => ligne.groupe === "location");
+  const practice = grille.locations.filter((ligne) => ligne.groupe === "practice");
+
   return (
     <section className="bg-white py-14 lg:py-20">
       <Container>
@@ -75,11 +74,11 @@ export function TarifsGreenFees() {
           </Editable>
 
           <ul className="mt-8 grid gap-5 md:grid-cols-3">
-            {greenFees.map((formule) => {
+            {grille.greenFees.map((formule) => {
               const fonce = Boolean(formule.miseEnAvant);
               return (
                 <li
-                  key={formule.libelle}
+                  key={formule.id}
                   className={cn(
                     "flex flex-col rounded-sm p-7 lg:p-8",
                     fonce ? "bg-club-950 text-sable-50" : "border border-encre/10 bg-white",
@@ -102,7 +101,7 @@ export function TarifsGreenFees() {
                     </span>
                   </p>
                   <p className={cn("mt-3 flex-1 text-[14px]", fonce ? "text-sable-50/80" : "text-encre/65")}>
-                    {formule.detail}
+                    {formule.detail ?? (formule.saison ? saisons[formule.saison].detail : null)}
                   </p>
                   <Link
                     href={headerActions.reservation.href}
@@ -130,20 +129,20 @@ export function TarifsGreenFees() {
           </Editable>
 
           <ul className="mt-8 divide-y divide-encre/10 rounded-sm border border-encre/10 px-6 sm:px-8">
-            {carnets.map((carnet) => (
+            {grille.carnets.map((carnet) => (
               <li
-                key={carnet.titre}
+                key={carnet.id}
                 className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-6"
               >
                 <div>
                   <p className="font-butler text-[22px] font-medium leading-tight text-club-950 sm:text-[26px]">
-                    {carnet.titre}
+                    {carnet.libelle}
                   </p>
-                  <p className="mt-1 text-[13px] text-encre/55">{carnet.offre}</p>
+                  {carnet.detail ? <p className="mt-1 text-[13px] text-encre/55">{carnet.detail}</p> : null}
                 </div>
                 <p className="flex items-baseline gap-4">
                   <span className="text-[12px] text-encre/50">
-                    soit {euros(carnet.parPartie)} la partie
+                    soit {euros(parPartie(carnet))} la partie
                   </span>
                   <span className="font-butler text-[28px] font-medium text-club-950 sm:text-[32px]">
                     {euros(carnet.prix)}

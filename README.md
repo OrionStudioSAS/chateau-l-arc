@@ -118,6 +118,7 @@ pour Orion admin, le dépôt GitHub fait office de stockage.
 | `contenu/statut.json` | Bandeau d'information + état des installations (menu « Parcours ouvert ») |
 | `contenu/competitions.json` | Calendrier des compétitions, brouillons compris |
 | `contenu/popup.json` | Pop-up marketing (une seule) |
+| `contenu/tarifs.json` | Grille tarifaire (green fees, carnets, locations, abonnements, saisons), lue par l'accueil, la page Tarifs et la FAQ |
 | `contenu/fichiers/` | PDF de résultats et affiches déposés, servis par `/fichiers/…` |
 
 Chaque publication du back-office est **un commit** sur `main`, fait par l'API REST de

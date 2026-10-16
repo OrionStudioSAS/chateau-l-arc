@@ -6,6 +6,7 @@ import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 import { ART_DE_VIVRE_CARTES, ART_DE_VIVRE_SURTITRE, ART_DE_VIVRE_TITRE, ART_DE_VIVRE_DESCRIPTION } from "@/constants";
+import { urlRestaurant } from "@/config/site";
 import { estPagePubliqueVisible } from "@/config/visibilite";
 import { cn } from "@/lib/cn";
 
@@ -13,6 +14,8 @@ type Carte = {
   label: string;
   titre: string;
   href?: Route;
+  /** Lien vers un autre site, ouvert dans un nouvel onglet (prioritaire sur `href`). */
+  externe?: string;
   image: string;
   /** Position dans la mosaïque, à partir de 1024 px. */
   grille: string;
@@ -22,7 +25,7 @@ type Carte = {
 
 /** Textes et images dans constants.ts (éditeur visuel) ; liens et mise en page ici, dans le même ordre. */
 const dispositions: Omit<Carte, "label" | "titre" | "image">[] = [
-  { href: "/restaurant", grille: "lg:col-span-7 lg:row-span-2", large: true },
+  { externe: urlRestaurant, grille: "lg:col-span-7 lg:row-span-2", large: true },
   { href: "/academie", grille: "lg:col-span-5" },
   // TODO : destination à fournir (site de l'école, probablement externe).
   { grille: "lg:col-span-5" },
@@ -111,6 +114,21 @@ export function ArtDeVivre() {
               index === 0 && "md:col-span-2",
               carte.grille,
             );
+
+            if (carte.externe) {
+              return (
+                <a
+                  key={carte.titre}
+                  href={carte.externe}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={classes}
+                >
+                  <ContenuCarte carte={carte} index={index} />
+                  <span className="sr-only"> (s&apos;ouvre dans un nouvel onglet)</span>
+                </a>
+              );
+            }
 
             return carte.href && estPagePubliqueVisible(carte.href) ? (
               <Link key={carte.titre} href={carte.href} className={classes}>

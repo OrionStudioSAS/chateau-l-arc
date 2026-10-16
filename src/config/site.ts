@@ -74,6 +74,10 @@ export const urlItineraire = `https://www.google.com/maps/dir/?${new URLSearchPa
 /** Réservation des départs en ligne (Prima Golf), ouverte dans un nouvel onglet. */
 export const urlReservation = "https://prima.golf/sainte-victoire/home";
 
+/** Restaurant « La Table du Golf » sur Tripadvisor (avis et réservation). */
+export const urlRestaurant =
+  "https://www.tripadvisor.fr/Restaurant_Review-g675388-d21110116-Reviews-La_Table_Du_Golf-Fuveau_Bouches_du_Rhone_Provence_Alpes_Cote_d_Azur.html";
+
 export type NavItem = {
   label: string;
   href: Route;

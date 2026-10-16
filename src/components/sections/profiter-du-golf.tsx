@@ -83,7 +83,7 @@ export function ProfiterDuGolf() {
               <Editable path={`${CHEMIN}.${index}.image`} image as="div" className="relative aspect-[16/10]">
                 <Image
                   src={carte.image}
-                  alt=""
+                  alt={carte.titre}
                   fill
                   sizes="(min-width: 768px) 33vw, 100vw"
                   className="object-cover"

@@ -32,6 +32,7 @@ export default async function Page() {
       <JsonLd donnees={[jsonLdGolf(), jsonLdSiteWeb()]} />
       <Banniere
         image={BANNER_IMAGE}
+        imageAlt="Le Château l'Arc entre les pins, face à la montagne Sainte-Victoire"
         accroche={BANNER_ACCROCHE}
         titre={BANNER_TITRE}
         texte={BANNER_TEXTE}

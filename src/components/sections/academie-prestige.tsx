@@ -18,7 +18,7 @@ export function AcademiePrestige() {
           <Editable path="L'Académie · Formules Prestige.ACADEMIE_PRESTIGE_IMAGE" image as="div" className="relative aspect-[4/5] overflow-hidden rounded-sm lg:aspect-[3/4]">
             <Image
               src={ACADEMIE_PRESTIGE_IMAGE}
-              alt=""
+              alt="Cours collectif de golf au Château l'Arc"
               fill
               sizes="(min-width: 1024px) 26rem, 100vw"
               className="object-cover"

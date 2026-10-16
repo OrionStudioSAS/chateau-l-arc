@@ -23,6 +23,7 @@ export default function Page() {
     <>
       <Banniere
         image={PARCOURS_PAGE_BANNIERE_IMAGE}
+        imageAlt="Le parcours 18 trous du Château l'Arc, entre pins et garrigue"
         filAriane={[{ label: "Accueil", href: "/" }, { label: "Parcours" }]}
         accroche={PARCOURS_PAGE_BANNIERE_ACCROCHE}
         titre={PARCOURS_PAGE_BANNIERE_TITRE}

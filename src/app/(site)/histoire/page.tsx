@@ -22,6 +22,7 @@ export default function Page() {
     <>
       <Banniere
         image={HISTOIRE_BANNIERE_IMAGE}
+        imageAlt="La façade du Château l'Arc, demeure du XVIIe siècle à Fuveau"
         filAriane={[{ label: "Accueil", href: "/" }, { label: "Notre histoire" }]}
         titre={HISTOIRE_BANNIERE_TITRE}
         texte={HISTOIRE_BANNIERE_TEXTE}

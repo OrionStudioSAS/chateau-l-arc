@@ -25,6 +25,7 @@ export default async function Page() {
     <>
       <Banniere
         image={COMPETITIONS_PAGE_BANNIERE_IMAGE}
+        imageAlt="Golfeurs réunis lors d'une compétition au Château l'Arc"
         filAriane={[{ label: "Accueil", href: "/" }, { label: "Compétitions" }]}
         titre={COMPETITIONS_PAGE_BANNIERE_TITRE}
         texte={COMPETITIONS_PAGE_BANNIERE_TEXTE}

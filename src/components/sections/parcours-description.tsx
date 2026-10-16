@@ -15,6 +15,7 @@ const cadrages = ["50% 40%", "20% 30%", "80% 35%", "35% 70%", "65% 60%"];
 const photos: PhotoGalerie[] = PARCOURS_PRESENTATION_PHOTOS.map((src, index) => ({
   src,
   cadrage: cadrages[index] ?? "50% 50%",
+  alt: `Le parcours de golf du Château l'Arc, entre pins et garrigue (photo ${index + 1})`,
 }));
 
 export function ParcoursDescription() {

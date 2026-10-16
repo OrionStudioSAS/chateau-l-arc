@@ -9,6 +9,8 @@ export type PhotoGalerie = {
   src: string;
   /** `object-position`, pour varier les cadrages d'une même photo. */
   cadrage: string;
+  /** Texte alternatif (référencement des images, lecteurs d'écran). */
+  alt: string;
 };
 
 /**
@@ -89,7 +91,7 @@ export function TexteEtGalerie({
             >
               <Image
                 src={photo.src}
-                alt=""
+                alt={photo.alt}
                 fill
                 sizes={index === 0 ? "(min-width: 1024px) 33vw, 100vw" : "(min-width: 1024px) 33vw, 50vw"}
                 loading={index === 0 ? "eager" : "lazy"}

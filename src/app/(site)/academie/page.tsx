@@ -22,6 +22,7 @@ export default function Page() {
     <>
       <Banniere
         image={ACADEMIE_BANNIERE_IMAGE}
+        imageAlt="Fairway du golf du Château l'Arc face à la montagne Sainte-Victoire"
         filAriane={[{ label: "Accueil", href: "/" }, { label: "L'Académie" }]}
         titre={ACADEMIE_BANNIERE_TITRE}
         texte={ACADEMIE_BANNIERE_TEXTE}

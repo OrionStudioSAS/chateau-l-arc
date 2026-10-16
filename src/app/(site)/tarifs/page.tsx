@@ -27,6 +27,7 @@ export default async function Page() {
     <>
       <Banniere
         image={TARIFS_PAGE_BANNIERE_IMAGE}
+        imageAlt="Le grand salon du château, accueil du golf"
         filAriane={[{ label: "Accueil", href: "/" }, { label: "Tarifs & abonnements" }]}
         titre={TARIFS_PAGE_BANNIERE_TITRE}
         // TODO : vrai une fois la grille gérée depuis le back-office (cf. lib/tarifs).

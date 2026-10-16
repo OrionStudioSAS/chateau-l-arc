@@ -209,7 +209,7 @@ export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
       <section className="relative -mt-20 overflow-hidden bg-club-950 pb-14 pt-36 text-white sm:pb-16 sm:pt-40">
         <Image
           src={IMAGE_BANNIERE}
-          alt=""
+          alt="Le parcours du golf du Château l'Arc"
           fill
           loading="eager"
           sizes="100vw"

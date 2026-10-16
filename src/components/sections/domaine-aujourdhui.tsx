@@ -42,7 +42,7 @@ export function DomaineAujourdhui() {
               <Editable path={`${SECTION}.DOMAINE_CARTES.${index}.image`} image as="div" className="relative aspect-[4/3]">
                 <Image
                   src={carte.image}
-                  alt=""
+                  alt={carte.titre}
                   fill
                   sizes="(min-width: 768px) 33vw, 100vw"
                   className="object-cover"

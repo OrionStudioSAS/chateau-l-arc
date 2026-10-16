@@ -19,6 +19,7 @@ const delaiEntree = (ms: number) => ({ "--delai": `${ms}ms` }) as React.CSSPrope
 
 export function Banniere({
   image,
+  imageAlt = "",
   accroche,
   titre,
   /**
@@ -43,6 +44,8 @@ export function Banniere({
   cmsPaths,
 }: {
   image: string;
+  /** Description de la photo (référencement des images, lecteurs d'écran). */
+  imageAlt?: string;
   /** Ligne au-dessus du titre (facultative). */
   accroche?: string;
   titre: string;
@@ -72,7 +75,7 @@ export function Banniere({
       <Editable path={cmsPaths?.image ?? ""} image as="div" className="absolute inset-0">
         <Image
           src={image}
-          alt=""
+          alt={imageAlt}
           fill
           loading="eager"
           // Élément le plus grand de la page (LCP) : chargé en priorité.

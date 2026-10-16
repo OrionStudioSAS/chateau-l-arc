@@ -100,7 +100,7 @@ export function VenirAuDomaine() {
         <Editable path={`${SECTION}.VENIR_IMAGE`} image as="div" className="relative aspect-[4/3] overflow-hidden rounded-sm">
           <Image
             src={VENIR_IMAGE}
-            alt="Le Château l'Arc entre les pins parasols"
+            alt="La façade du Château l'Arc et ses tours, à Fuveau"
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
             className="object-cover"

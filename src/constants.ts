@@ -143,7 +143,7 @@ export const ADHESION_TITRE = "Rejoignez le club et jouez toute l'année face à
 export const ADHESION_DESCRIPTION = "Abonnements individuels, couple, famille et jeunes · −5 % en paiement comptant jusqu'au 31 décembre.";
 
 /** Image de fond */
-export const ADHESION_IMAGE = "/images/parcours.png";
+export const ADHESION_IMAGE = "/images/hp-join.png";
 
 // ─── Le parcours · Bannière ───
 
@@ -274,11 +274,11 @@ export const PARCOURS_PRESENTATION_PARAGRAPHES = [
 
 /** Photos */
 export const PARCOURS_PRESENTATION_PHOTOS = [
-  "/images/parcours.png",
-  "/images/parcours.png",
-  "/images/parcours.png",
-  "/images/parcours.png",
-  "/images/parcours.png",
+  "/images/parcours-galerie-1.png",
+  "/images/parcours-galerie-2.png",
+  "/images/parcours-galerie-3.png",
+  "/images/hp-jouer.png",
+  "/images/parcours-galerie-5.png",
 ];
 
 // ─── Histoire · Le domaine ───
@@ -377,8 +377,8 @@ export const FRISE_TITRE = "Quatre siècles, cinq chapitres";
 export const FRISE_CHAPITRES = [
   { titre: "La famille d'Agoult", texte: "Construction du Château l'Arc, point central du domaine, au cœur de la Provence véritable.", image: "/images/notre-histoire.png" },
   { titre: "L'atelier des artistes", texte: "Le château devient l'atelier préféré du peintre Bernard Buffet, puis le refuge estival de Pierre Bergé, Jean Cocteau et Yves Saint Laurent.", image: "/images/tarifs.png" },
-  { titre: "Le cinéma s'invite", texte: "Fernandel y tourne « Uniformes et grandes manœuvres ». Suivront des scènes du film consacré à Yves Saint Laurent, Les Tuche 2 et Divorce Club.", image: "/images/banner.jpg" },
-  { titre: "Robert Trent Jones II", texte: "Le parcours 18 trous s'enroule autour du château, offrant des points de vue magnifiques sur la Sainte-Victoire.", image: "/images/parcours.png" },
+  { titre: "Le cinéma s'invite", texte: "Fernandel y tourne « Uniformes et grandes manœuvres ». Suivront des scènes du film consacré à Yves Saint Laurent, Les Tuche 2 et Divorce Club.", image: "/images/histoire-1950.png" },
+  { titre: "Robert Trent Jones II", texte: "Le parcours 18 trous s'enroule autour du château, offrant des points de vue magnifiques sur la Sainte-Victoire.", image: "/images/histoire-1985.png" },
   { titre: "Un lieu de vie", texte: "Club House dans la demeure historique, restaurant, réceptions et la Sainte-Victoire International School : le domaine vit toute l'année.", image: "/images/hp-dejeuner.png" },
 ];
 
@@ -396,7 +396,7 @@ export const DOMAINE_TEXTE = "Golfeurs ou non, le domaine accueille toute l'ann�
 /** Cartes */
 export const DOMAINE_CARTES = [
   { label: "Club House", titre: "Le château, côté golf", texte: "Grand salon, bar et terrasse panoramique sur la Sainte-Victoire, au cœur de la demeure historique.", image: "/images/hp-milieu-droite.png" },
-  { label: "Réceptions", titre: "Soirées & événements", texte: "Soirées privées, concerts, séminaires : les salons du château se privatisent.", image: "/images/hp-amis.png" },
+  { label: "Réceptions", titre: "Soirées & événements", texte: "Soirées privées, concerts, séminaires : les salons du château se privatisent.", image: "/images/histoire-receptions.png" },
   { label: "Éducation", titre: "Sainte-Victoire International School", texte: "École bilingue avec internat, du CP à la terminale, avec un cursus sport-études golf.", image: "/images/hp-svis.png" },
 ];
 
@@ -419,7 +419,7 @@ export const VENIR_ACCES = [
 ];
 
 /** Photo */
-export const VENIR_IMAGE = "/images/hp-bas-gauche.png";
+export const VENIR_IMAGE = "/images/histoire-venir.png";
 
 // ─── Compétitions · Derniers résultats ───
 
@@ -463,7 +463,7 @@ export const AVANTAGES_LISTE = [
 ];
 
 /** Photo */
-export const AVANTAGES_IMAGE = "/images/parcours.png";
+export const AVANTAGES_IMAGE = "/images/tarifs-avantages.png";
 
 // ─── Tarifs · Questions ───
 
@@ -514,7 +514,7 @@ export const ACADEMIE_PRESTIGE_TITRE = "Les formules Prestige";
 export const ACADEMIE_PRESTIGE_TEXTE = "Des cours collectifs en petit comité pour progresser vite et durablement, encadrés par nos enseignants diplômés d'État.";
 
 /** Photo */
-export const ACADEMIE_PRESTIGE_IMAGE = "/images/hp-join.png";
+export const ACADEMIE_PRESTIGE_IMAGE = "/images/academie-prestige.png";
 
 // ─── L'Académie · Stages & initiations ───
 
@@ -528,7 +528,7 @@ export const ACADEMIE_STAGES_TITRE = "De 2 à 30 personnes";
 export const ACADEMIE_STAGES_TEXTE = "Toute l'année, entre amis, en famille ou entre collègues : réservez en ligne ou par téléphone.";
 
 /** Photo */
-export const ACADEMIE_STAGES_IMAGE = "/images/hp-milieu-droite.png";
+export const ACADEMIE_STAGES_IMAGE = "/images/hp-academie.png";
 
 // ─── L'Académie · Enseignants ───
 

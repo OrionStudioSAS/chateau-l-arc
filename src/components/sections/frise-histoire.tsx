@@ -37,7 +37,7 @@ const etapes: {
     cle: "1950",
     date: "1950",
     note: "Décor de tournages depuis plus de 70 ans",
-    alt: "Le château entre les pins",
+    alt: "Carte postale ancienne de la cour du château, décor de tournages",
     noirEtBlanc: true,
   },
   {

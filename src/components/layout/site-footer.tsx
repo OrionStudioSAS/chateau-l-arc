@@ -8,6 +8,7 @@ import {
   servicesContact,
   site,
 } from "@/config/site";
+import { TAILLE_PLEINE_LARGEUR, variablesPleineLargeur } from "@/lib/titre-pleine-largeur";
 
 const lienPied =
   "text-[15px] text-sable-50/85 underline-offset-4 transition-colors hover:text-sable-50 hover:underline";
@@ -152,7 +153,10 @@ export function SiteFooter() {
 
           {/* Même calage que la bannière : le titre occupe toute la largeur. */}
           <div className="@container mt-4">
-            <p className="whitespace-nowrap font-butler text-[11cqw] font-bold uppercase leading-[0.86] tracking-[2px] text-sable-50/35">
+            <p
+              className={`${TAILLE_PLEINE_LARGEUR} whitespace-nowrap font-butler font-bold uppercase leading-[0.86] tracking-[2px] text-sable-50/35`}
+              style={variablesPleineLargeur("Chateau l’Arc")}
+            >
               Chateau l’Arc
             </p>
           </div>

@@ -181,14 +181,15 @@ export function ExplorerParcours() {
                   <button
                     type="button"
                     onClick={() => setNumero(precedent)}
-                    className="underline-offset-4 hover:underline"
+                    // Zone de toucher agrandie, sans décaler la mise en page.
+                    className="-my-3 py-3 pr-4 underline-offset-4 hover:underline"
                   >
                     <span aria-hidden="true">←</span> Trou {precedent}
                   </button>
                   <button
                     type="button"
                     onClick={() => setNumero(suivant)}
-                    className="underline-offset-4 hover:underline"
+                    className="-my-3 py-3 pl-4 underline-offset-4 hover:underline"
                   >
                     Trou {suivant} <span aria-hidden="true">→</span>
                   </button>

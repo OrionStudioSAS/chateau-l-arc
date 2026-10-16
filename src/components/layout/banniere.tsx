@@ -5,6 +5,7 @@ import type { Route } from "next";
 import { Editable } from "@/components/cms/editable";
 import { cn } from "@/lib/cn";
 import { JsonLd, jsonLdFilAriane } from "@/lib/seo";
+import { TAILLE_PLEINE_LARGEUR, variablesPleineLargeur } from "@/lib/titre-pleine-largeur";
 
 /**
  * Bannière de haut de page, partagée par l'accueil et les pages intérieures.
@@ -21,10 +22,11 @@ export function Banniere({
   accroche,
   titre,
   /**
-   * Taille du titre en unités de conteneur, à recalibrer par page : elle
-   * dépend du nombre de lettres pour que le titre occupe toute la largeur.
+   * Taille du titre : 11 % de la largeur, réduite si le titre est long pour
+   * qu'il tienne toujours sur sa ligne (le texte est modifiable dans le
+   * back-office).
    */
-  tailleTitre = "text-[11cqw]",
+  tailleTitre = TAILLE_PLEINE_LARGEUR,
   /**
    * Interligne du titre. Très serré par défaut (titre sur une ligne, la boîte
    * de ligne laisserait sinon un vide proportionnel à la taille de police) ;
@@ -142,7 +144,10 @@ export function Banniere({
             // écraser l'interligne (voir le commentaire ci-dessus).
             interligneTitre,
           )}
-          style={delaiEntree(300)}
+          style={{
+            ...delaiEntree(300),
+            ...variablesPleineLargeur(titre),
+          }}
         >
           {titre}
         </Editable>

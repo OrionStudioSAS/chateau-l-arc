@@ -138,3 +138,44 @@ body {
     animation: none;
   }
 }
+
+/* Menu mobile : le panneau se déroule, ses liens arrivent en cascade. */
+@keyframes menu-deroule {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+
+@keyframes menu-lien {
+  from {
+    opacity: 0;
+    translate: 0 -8px;
+  }
+  to {
+    opacity: 1;
+    translate: none;
+  }
+}
+
+.menu-deroule {
+  animation: menu-deroule 450ms var(--ease-douce) both;
+}
+
+.menu-lien {
+  animation: menu-lien 500ms var(--ease-douce) var(--delai, 0ms) both;
+}
+
+.menu-voile {
+  animation: entree-image 300ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-deroule,
+  .menu-lien,
+  .menu-voile {
+    animation: none;
+  }
+}

@@ -100,7 +100,7 @@ function RetourReponse() {
           key={valeur}
           type="button"
           onClick={() => setRetour(valeur)}
-          className="flex items-center gap-1.5 rounded-sm border border-encre/15 px-2.5 py-1 text-encre/70 transition-colors hover:border-encre/35 hover:text-encre"
+          className="flex min-h-9 items-center gap-1.5 rounded-sm border border-encre/15 px-3 py-1.5 text-encre/70 sm:min-h-0 sm:px-2.5 sm:py-1 transition-colors hover:border-encre/35 hover:text-encre"
         >
           <Picto nom="pouce" className={cn("size-3.5", valeur === "non" && "rotate-180")} />
           {valeur === "oui" ? "Oui" : "Non"}

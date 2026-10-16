@@ -25,6 +25,9 @@ const lienNav =
 
 const telephone = site.contact.telephoneLien;
 
+/** Cascade des liens du menu mobile : 40 ms entre deux, à partir de 80 ms. */
+const delaiLien = (rang: number) => ({ "--delai": `${80 + rang * 40}ms` }) as React.CSSProperties;
+
 export function SiteHeader({
   statut,
   meteo,
@@ -273,12 +276,12 @@ export function SiteHeader({
             id="menu-mobile"
             // Hauteur bornée à l'écran : le menu défile lui-même sur les petits
             // téléphones en paysage, la page étant bloquée derrière.
-            className="max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain border-t border-club-950/10 bg-white text-encre lg:hidden"
+            className="menu-deroule max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain border-t border-club-950/10 bg-white text-encre lg:hidden"
           >
             <div className="mx-auto w-full max-w-[1600px] px-5 pb-8 pt-2 sm:px-8">
               <ul className="flex flex-col">
-                {headerNav.map((item) => (
-                  <li key={item.href}>
+                {headerNav.map((item, rang) => (
+                  <li key={item.href} className="menu-lien" style={delaiLien(rang)}>
                     <Link
                       href={item.href}
                       onClick={() => setMenuOuvert(false)}
@@ -288,7 +291,7 @@ export function SiteHeader({
                     </Link>
                   </li>
                 ))}
-                <li>
+                <li className="menu-lien" style={delaiLien(headerNav.length)}>
                   <a
                     href={telephone}
                     className="block border-b border-club-950/10 py-4 text-[14px] uppercase tracking-[0.14em] text-encre"
@@ -296,7 +299,7 @@ export function SiteHeader({
                     Nous appeler
                   </a>
                 </li>
-                <li>
+                <li className="menu-lien" style={delaiLien(headerNav.length + 1)}>
                   <Link
                     href={headerActions.info.href}
                     onClick={() => setMenuOuvert(false)}
@@ -306,7 +309,10 @@ export function SiteHeader({
                   </Link>
                 </li>
               </ul>
-              <div className="mt-6 flex flex-col gap-3">
+              <div
+                className="menu-lien mt-6 flex flex-col gap-3"
+                style={delaiLien(headerNav.length + 2)}
+              >
                 <BoutonClair
                   href={headerActions.membre.href}
                   // Fond sable sur blanc : un filet pour que le bouton se détache.
@@ -331,7 +337,7 @@ export function SiteHeader({
         <div
           aria-hidden="true"
           onClick={() => setMenuOuvert(false)}
-          className="fixed inset-0 z-40 bg-club-950/40 lg:hidden"
+          className="menu-voile fixed inset-0 z-40 bg-club-950/40 lg:hidden"
         />
       ) : null}
     </>

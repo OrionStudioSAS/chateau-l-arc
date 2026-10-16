@@ -136,17 +136,40 @@ export function AnimationsDefilement() {
       preparer(image, [{ opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1 }], 1500),
     );
 
+    const enAttente = new Set(revelations.keys());
+
+    // Carrousel horizontal (mobile) : ses cartes hors écran à droite ne
+    // croisent jamais la fenêtre en défilant la page. Elles se révèlent avec
+    // la première, sinon elles arriveraient vides pendant le glissement.
+    const defileurHorizontal = (element: Element) => {
+      for (let parent = element.parentElement; parent && parent !== main; parent = parent.parentElement) {
+        const { overflowX } = window.getComputedStyle(parent);
+        if (overflowX === "auto" || overflowX === "scroll") return parent;
+      }
+      return null;
+    };
+
     const observateur = new IntersectionObserver(
       (entrees) => {
-        const entrantes = entrees
-          .filter((entree) => entree.isIntersecting)
-          .map((entree) => entree.target)
+        const visibles = new Set<Element>();
+        for (const entree of entrees) {
+          if (!entree.isIntersecting) continue;
+          visibles.add(entree.target);
+          const defileur = defileurHorizontal(entree.target);
+          if (!defileur) continue;
+          enAttente.forEach((element) => {
+            if (defileur.contains(element)) visibles.add(element);
+          });
+        }
+        const entrantes = [...visibles]
+          .filter((element) => enAttente.has(element))
           .sort((a, b) =>
             a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1,
           );
 
         entrantes.forEach((element, rang) => {
           observateur.unobserve(element);
+          enAttente.delete(element);
           const animation = revelations.get(element);
           if (!animation) return;
 

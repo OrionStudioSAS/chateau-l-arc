@@ -202,7 +202,7 @@ function Calendrier({ mois }: { mois: [string, CompetitionAvecEtat[]][] }) {
                 </p>
               ))}
               {cases.map((jour, index) => (
-                <div key={index} className="min-h-[72px] bg-white p-1.5 sm:min-h-[96px] sm:p-2">
+                <div key={index} className="min-h-[56px] bg-white p-1.5 sm:min-h-[96px] sm:p-2">
                   {jour ? (
                     <>
                       <p className="text-[12px] text-encre/45">{jour}</p>
@@ -212,12 +212,14 @@ function Calendrier({ mois }: { mois: [string, CompetitionAvecEtat[]][] }) {
                             <Link
                               href={`/competitions/${competition.slug}`}
                               className={cn(
-                                "block truncate rounded-sm px-1.5 py-1 text-[11px] font-medium sm:text-[12px]",
+                                // Sur mobile, une case est trop étroite pour un nom :
+                                // une pastille de couleur, le détail est listé sous la grille.
+                                "block h-2 rounded-full max-sm:bg-current sm:h-auto sm:truncate sm:rounded-sm sm:px-1.5 sm:py-1 sm:text-[12px] sm:font-medium",
                                 tonsPastille[competition.etat.ton],
                               )}
                               title={competition.nom}
                             >
-                              {competition.nom}
+                              <span className="sr-only sm:not-sr-only">{competition.nom}</span>
                             </Link>
                           </li>
                         ))}
@@ -227,6 +229,25 @@ function Calendrier({ mois }: { mois: [string, CompetitionAvecEtat[]][] }) {
                 </div>
               ))}
             </div>
+            <ul className="mt-4 divide-y divide-encre/10 sm:hidden">
+              {competitions.map((competition) => (
+                <li key={competition.id}>
+                  <Link
+                    href={`/competitions/${competition.slug}`}
+                    className="flex items-center gap-3 py-3 text-[15px] font-medium text-club-950"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={cn("size-2.5 shrink-0 rounded-full", tonsPastille[competition.etat.ton], "bg-current")}
+                    />
+                    <span className="w-12 shrink-0 text-[13px] font-normal text-encre/55">
+                      {formatJourMois.format(dateDe(competition.dateDebut))}
+                    </span>
+                    {competition.nom}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </section>
         );
       })}
@@ -290,7 +311,7 @@ export function CompetitionsListe({ competitions }: { competitions: CompetitionA
                   onClick={() => setVue(cle)}
                   aria-pressed={vue === cle}
                   className={cn(
-                    "flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-colors",
+                    "flex items-center gap-2 rounded-full px-4 py-2.5 text-[12px] font-medium transition-colors sm:px-3.5 sm:py-1.5",
                     vue === cle ? "bg-white text-club-950 shadow-sm" : "text-encre/60 hover:text-encre",
                   )}
                 >

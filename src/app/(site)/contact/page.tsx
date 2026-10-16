@@ -3,11 +3,13 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/layout/page-hero";
 import { Container } from "@/components/ui/container";
 import { site } from "@/config/site";
+import { metadonnees } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact & accès",
-  description: `Coordonnées, horaires et accès au ${site.name}.`,
-};
+export const metadata: Metadata = metadonnees({
+  titre: "Contact et accès",
+  description: "Téléphone, e-mail et itinéraire : le golf de Château l'Arc est à Fuveau, à 15 min d'Aix-en-Provence et 25 min de l'aéroport Marseille Provence.",
+  chemin: "/contact",
+});
 
 export default function Page() {
   return (

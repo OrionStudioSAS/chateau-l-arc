@@ -9,12 +9,14 @@ import { ParcoursDescription } from "@/components/sections/parcours-description"
 import { ReperesDepart } from "@/components/sections/reperes-depart";
 import { ZoneEntrainement } from "@/components/sections/zone-entrainement";
 import { PARCOURS_PAGE_BANNIERE_ACCROCHE, PARCOURS_PAGE_BANNIERE_IMAGE, PARCOURS_PAGE_BANNIERE_TEXTE, PARCOURS_PAGE_BANNIERE_TITRE, PARCOURS_PAGE_CHIFFRES } from "@/constants";
+import { metadonnees } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Le parcours",
-  description:
-    "18 trous entre pins et garrigue, face à la montagne Sainte-Victoire : le parcours du Golf Château l'Arc, dessiné par Robert Trent Jones II.",
-};
+export const metadata: Metadata = metadonnees({
+  titre: "Parcours 18 trous près d'Aix",
+  description: "Le parcours 18 trous par 70 (5 817 m) dessiné par Robert Trent Jones II à Fuveau : trou par trou, repères de départ, practice et infos pratiques.",
+  chemin: "/le-parcours",
+  image: "/og/parcours.jpg",
+});
 
 export default function Page() {
   return (

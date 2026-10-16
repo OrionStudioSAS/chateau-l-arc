@@ -9,12 +9,14 @@ import { TarifsNavigation } from "@/components/sections/tarifs-navigation";
 import { getGrilleTarifs } from "@/lib/api/content";
 import { saisonsDe } from "@/lib/tarifs";
 import { TARIFS_PAGE_BANNIERE_IMAGE, TARIFS_PAGE_BANNIERE_TEXTE, TARIFS_PAGE_BANNIERE_TITRE } from "@/constants";
+import { metadonnees } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Tarifs & abonnements",
-  description:
-    "Green fees, carnets, locations, practice et abonnements annuels du Golf Château l'Arc. Haute saison du 16 avril au 14 novembre, basse saison du 15 novembre au 15 avril.",
-};
+export const metadata: Metadata = metadonnees({
+  titre: "Tarifs green fees et abonnements",
+  description: "Green fee 18 trous, 9 trous haute et basse saison, carnets, voiturettes, practice et abonnements annuels du golf de Château l'Arc, près d'Aix-en-Provence.",
+  chemin: "/tarifs",
+  image: "/og/tarifs.jpg",
+});
 
 /** TODO : année des abonnements, à faire suivre chaque saison. */
 const ANNEE_ABONNEMENTS = 2027;

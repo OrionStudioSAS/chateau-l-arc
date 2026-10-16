@@ -7,6 +7,8 @@ import { TexteRiche, texteBrut } from "@/components/ui/texte-riche";
 import { getCompetition } from "@/lib/api/content";
 import { formatDate } from "@/lib/format";
 import { tonsPastille } from "@/lib/competitions";
+import type { CompetitionAvecEtat } from "@/lib/api/types";
+import { JsonLd, jsonLdCompetition, jsonLdFilAriane, metadonnees } from "@/lib/seo";
 
 /**
  * Pas de `generateStaticParams` : avec Cache Components, elle doit renvoyer au
@@ -22,14 +24,21 @@ export async function generateMetadata({
   const { slug } = await params;
   const competition = await getCompetition(slug);
 
-  if (!competition) return { title: "Compétition introuvable" };
+  if (!competition) return { title: "Compétition introuvable", robots: { index: false } };
 
-  return {
-    title: competition.nom,
-    description: competition.description ? texteBrut(competition.description).slice(0, 200) : undefined,
-    openGraph: competition.afficheUrl ? { images: [competition.afficheUrl] } : undefined,
-    alternates: { canonical: `/competitions/${competition.slug}` },
-  };
+  return metadonnees({
+    titre: `${competition.nom} — ${formatDate(competition.dateDebut)}`,
+    description: descriptionCompetition(competition),
+    chemin: `/competitions/${competition.slug}`,
+    image: competition.afficheUrl ?? "/og/competitions.jpg",
+  });
+}
+
+/** Description : celle du club, sinon une phrase composée à partir de la fiche. */
+function descriptionCompetition(competition: CompetitionAvecEtat): string {
+  if (competition.description) return texteBrut(competition.description).slice(0, 158);
+  const details = [competition.formule, competition.trous, competition.categories].filter(Boolean).join(", ");
+  return `${competition.nom}, compétition de golf au Château l'Arc (Fuveau) le ${formatDate(competition.dateDebut)}${details ? ` : ${details}` : ""}. Inscriptions et résultats en ligne.`;
 }
 
 export default async function Page({ params }: PageProps<"/competitions/[slug]">) {
@@ -57,6 +66,15 @@ export default async function Page({ params }: PageProps<"/competitions/[slug]">
 
   return (
     <article className="py-14 lg:py-20">
+      <JsonLd
+        donnees={[
+          jsonLdCompetition(competition, descriptionCompetition(competition)),
+          jsonLdFilAriane(
+            [{ label: "Accueil", href: "/" }, { label: "Compétitions", href: "/competitions" }, { label: competition.nom }],
+            `/competitions/${competition.slug}`,
+          ),
+        ]}
+      />
       <ContainerEtroit>
         <p className="text-xs uppercase tracking-[0.15em] text-club-600">
           {formatDate(competition.dateDebut)}

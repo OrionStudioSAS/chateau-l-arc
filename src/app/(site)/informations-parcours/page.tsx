@@ -4,12 +4,13 @@ import { ListeStatut } from "@/components/layout/liste-statut";
 import { PageHero } from "@/components/layout/page-hero";
 import { Container } from "@/components/ui/container";
 import { getStatutInstallations } from "@/lib/api/content";
+import { metadonnees } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Informations sur le parcours",
-  description:
-    "État du parcours, du practice et des installations du Golf Château l'Arc, mis à jour par l'accueil du club.",
-};
+export const metadata: Metadata = metadonnees({
+  titre: "État du parcours aujourd'hui",
+  description: "Parcours, practice, voiturettes, restaurant : l'état des installations du golf de Château l'Arc, mis à jour chaque matin par l'accueil du club.",
+  chemin: "/informations-parcours",
+});
 
 export default async function Page() {
   const statut = await getStatutInstallations();

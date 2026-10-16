@@ -6,12 +6,14 @@ import { CompetitionsListe } from "@/components/sections/competitions-liste";
 import { DernieresCompetitions } from "@/components/sections/dernieres-competitions";
 import { getCompetitions } from "@/lib/api/content";
 import { COMPETITIONS_PAGE_BANNIERE_IMAGE, COMPETITIONS_PAGE_BANNIERE_TEXTE, COMPETITIONS_PAGE_BANNIERE_TITRE } from "@/constants";
+import { metadonnees } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Compétitions",
-  description:
-    "Calendrier des compétitions du Golf Château l'Arc : du scramble convivial au Grand Prix, inscriptions en ligne et résultats.",
-};
+export const metadata: Metadata = metadonnees({
+  titre: "Compétitions de golf",
+  description: "Calendrier des compétitions du golf de Château l'Arc à Fuveau : scrambles, Grand Prix, seniors. Inscriptions en ligne et résultats dès le lendemain.",
+  chemin: "/competitions",
+  image: "/og/competitions.jpg",
+});
 
 export default async function Page() {
   const competitions = await getCompetitions();

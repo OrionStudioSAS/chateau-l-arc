@@ -3,12 +3,14 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/layout/page-hero";
 import { DernieresCompetitions } from "@/components/sections/dernieres-competitions";
 import { getCompetitions } from "@/lib/api/content";
+import { metadonnees } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Résultats des compétitions",
-  description:
-    "Classements officiels des compétitions du Golf Château l'Arc, publiés dès le lendemain.",
-};
+export const metadata: Metadata = metadonnees({
+  titre: "Résultats des compétitions",
+  description: "Classements officiels des compétitions du golf de Château l'Arc, publiés en PDF dès le lendemain de chaque épreuve, avec les vainqueurs.",
+  chemin: "/competitions/resultats",
+  image: "/og/competitions.jpg",
+});
 
 export default async function Page() {
   const competitions = await getCompetitions();

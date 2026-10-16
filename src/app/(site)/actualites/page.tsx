@@ -5,11 +5,14 @@ import { PageHero } from "@/components/layout/page-hero";
 import { Container } from "@/components/ui/container";
 import { getActualites } from "@/lib/api/content";
 import { formatDate } from "@/lib/format";
+import { metadonnees } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Actualités",
-  description: "Toutes les actualités du Golf Château l'Arc.",
-};
+export const metadata: Metadata = metadonnees({
+  titre: "Actualités",
+  description: "Les actualités du golf de Château l'Arc.",
+  chemin: "/actualites",
+  indexable: false,
+});
 
 export default async function Page() {
   const actualites = await getActualites();

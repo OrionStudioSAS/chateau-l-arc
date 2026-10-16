@@ -4,12 +4,13 @@ import { CentreAide } from "@/components/sections/centre-aide";
 import { FaqContact } from "@/components/sections/faq-contact";
 import { getGrilleTarifs } from "@/lib/api/content";
 import { themesFaq, type ThemeFaq } from "@/lib/faq";
+import { metadonnees } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Questions fréquentes",
-  description:
-    "Parcours, réservations, tarifs, abonnements, académie, compétitions, accès : toutes les réponses aux questions courantes sur le Golf Château l'Arc.",
-};
+export const metadata: Metadata = metadonnees({
+  titre: "Questions fréquentes",
+  description: "Réservation, tarifs, carte verte, abonnements, école de golf, compétitions, accès : toutes les réponses sur le golf de Château l'Arc à Fuveau.",
+  chemin: "/faq",
+});
 
 /** Données structurées FAQPage : les questions peuvent apparaître dans Google. */
 const donneesStructurees = (themes: ThemeFaq[]) => ({

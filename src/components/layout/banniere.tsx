@@ -4,6 +4,7 @@ import type { Route } from "next";
 
 import { Editable } from "@/components/cms/editable";
 import { cn } from "@/lib/cn";
+import { JsonLd, jsonLdFilAriane } from "@/lib/seo";
 
 /**
  * Bannière de haut de page, partagée par l'accueil et les pages intérieures.
@@ -72,6 +73,8 @@ export function Banniere({
           alt=""
           fill
           loading="eager"
+          // Élément le plus grand de la page (LCP) : chargé en priorité.
+          fetchPriority="high"
           sizes="100vw"
           className="entree-image object-cover"
           data-parallax="0.25"
@@ -86,6 +89,7 @@ export function Banniere({
         className="pointer-events-none absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
       />
 
+      {filAriane ? <JsonLd donnees={jsonLdFilAriane(filAriane)} /> : null}
       {filAriane ? (
         <nav
           aria-label="Fil d'Ariane"

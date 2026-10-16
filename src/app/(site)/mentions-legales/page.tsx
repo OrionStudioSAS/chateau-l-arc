@@ -3,11 +3,14 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/layout/page-hero";
 import { EnConstruction } from "@/components/sections/en-construction";
 import { MENTIONS_SURTITRE, MENTIONS_TEXTE, MENTIONS_TITRE } from "@/constants";
+import { metadonnees } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Mentions légales",
+export const metadata: Metadata = metadonnees({
+  titre: "Mentions légales",
   description: "Éditeur, hébergeur et propriété intellectuelle.",
-};
+  chemin: "/mentions-legales",
+  indexable: false,
+});
 
 export default function Page() {
   return (

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Banniere } from "@/components/layout/banniere";
@@ -15,12 +16,20 @@ import { ACCUEIL_CHIFFRES, BANNER_ACCROCHE, BANNER_IMAGE, BANNER_TITRE, BANNER_T
 import { headerActions } from "@/config/site";
 import { estPagePubliqueVisible } from "@/config/visibilite";
 import { getGrilleTarifs } from "@/lib/api/content";
+import { JsonLd, jsonLdGolf, jsonLdSiteWeb, metadonnees } from "@/lib/seo";
+
+export const metadata: Metadata = metadonnees({
+  titreAbsolu: "Château l'Arc Golf Club — Golf 18 trous près d'Aix-en-Provence",
+  description: "Golf 18 trous par 70 signé Robert Trent Jones II, face à la Sainte-Victoire, à 15 min d'Aix-en-Provence. Green fees, abonnements, école de golf et restaurant.",
+  chemin: "/",
+});
 
 export default async function Page() {
   const grille = await getGrilleTarifs();
 
   return (
     <>
+      <JsonLd donnees={[jsonLdGolf(), jsonLdSiteWeb()]} />
       <Banniere
         image={BANNER_IMAGE}
         accroche={BANNER_ACCROCHE}

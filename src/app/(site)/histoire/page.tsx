@@ -8,12 +8,14 @@ import { FriseHistoire } from "@/components/sections/frise-histoire";
 import { HistoireIntro } from "@/components/sections/histoire-intro";
 import { VenirAuDomaine } from "@/components/sections/venir-au-domaine";
 import { HISTOIRE_BANNIERE_IMAGE, HISTOIRE_BANNIERE_TEXTE, HISTOIRE_BANNIERE_TITRE, HISTOIRE_CHIFFRES } from "@/constants";
+import { metadonnees } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Notre histoire",
-  description:
-    "Quatre siècles d'histoire au pied de la Sainte-Victoire : une demeure de famille, un atelier d'artistes, un décor de cinéma et aujourd'hui un golf.",
-};
+export const metadata: Metadata = metadonnees({
+  titre: "Histoire du domaine",
+  description: "Bâti en 1620 au pied de la Sainte-Victoire, le Château l'Arc a accueilli Bernard Buffet, Cocteau et le cinéma avant de devenir un golf en 1985.",
+  chemin: "/histoire",
+  image: "/og/histoire.jpg",
+});
 
 export default function Page() {
   return (

@@ -207,6 +207,10 @@ L'état affiché sur une compétition (« Inscriptions ouvertes », « Ouverture
 `etatCompetition()` (`src/lib/competitions.ts`), appelé côté serveur avec une date
 passée explicitement pour rester déterministe dans les scopes `use cache`.
 
+## SEO
+
+Ce qui est en place et la check-list de mise en ligne : `docs/seo-mise-en-ligne.md`. Plan de redirections 301 de l'ancien site : `docs/plan-redirections-301.md` (règles dans `src/config/redirections.ts`).
+
 ## À faire
 
 - Remplacer les coordonnées marquées `TODO` dans `src/config/site.ts`.

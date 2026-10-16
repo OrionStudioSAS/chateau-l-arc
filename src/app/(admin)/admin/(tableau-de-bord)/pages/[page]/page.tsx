@@ -25,7 +25,7 @@ export default async function Page({ params }: PageProps<"/admin/pages/[page]">)
 
   const contenu =
     (depotConfigure() ? await lireTexte(CHEMIN_CONSTANTES) : null) ??
-    (await readFile(path.join(process.cwd(), CHEMIN_CONSTANTES), "utf8").catch(() => ""));
+    (await readFile(path.join(/* turbopackIgnore: true */ process.cwd(), CHEMIN_CONSTANTES), "utf8").catch(() => ""));
 
   return <EditeurVisuel page={fiche} sections={analyser(contenu)} />;
 }

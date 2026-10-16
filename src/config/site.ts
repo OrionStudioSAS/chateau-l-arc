@@ -8,7 +8,9 @@ import type { Route } from "next";
  * `new URL()` au build. On valide donc chaque candidat avant de le retenir, et
  * on se rabat sur le domaine fourni par Vercel quand rien n'est renseigné.
  */
-const URL_PAR_DEFAUT = "https://www.golfchateaularc.com";
+/** Domaine de production (avec www) : canonicals, sitemap, données structurées. */
+export const DOMAINE_CANONIQUE = "https://www.chateaularcgolfclub.com";
+const URL_PAR_DEFAUT = DOMAINE_CANONIQUE;
 
 function resoudreUrlSite(): string {
   const candidats = [
@@ -40,6 +42,8 @@ function resoudreUrlSite(): string {
  */
 export const site = {
   name: "Golf Château l'Arc",
+  /** Nom de marque utilisé par Google (titres, données structurées) : celui du domaine. */
+  nomMarque: "Château l'Arc Golf Club",
   shortName: "Château l'Arc",
   baseline: "Golf 18 trous au cœur de la Provence",
   /** Ligne affichée au-dessus du titre, en bas de la bannière d'accueil. */

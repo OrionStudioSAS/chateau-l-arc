@@ -34,7 +34,7 @@ export async function GET(_requete: Request, ctx: RouteContext<"/fichiers/[...ch
   try {
     contenu = depotConfigure()
       ? await lireBinaire(relatif)
-      : await readFile(path.join(process.cwd(), relatif));
+      : await readFile(path.join(/* turbopackIgnore: true */ process.cwd(), relatif));
   } catch (erreur) {
     console.error(`Lecture du fichier ${relatif} impossible`, erreur);
   }

@@ -8,12 +8,14 @@ import { AcademiePrestige } from "@/components/sections/academie-prestige";
 import { AcademieStages } from "@/components/sections/academie-stages";
 import { AppelAdhesion } from "@/components/sections/appel-adhesion";
 import { ACADEMIE_BANNIERE_IMAGE, ACADEMIE_BANNIERE_TEXTE, ACADEMIE_BANNIERE_TITRE } from "@/constants";
+import { metadonnees } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "L'Académie",
-  description:
-    "École de golf juniors dès 4 ans, formules Prestige pour adultes, stages et initiations au Golf Château l'Arc, avec des enseignants diplômés d'État.",
-};
+export const metadata: Metadata = metadonnees({
+  titre: "École de golf à Aix-en-Provence",
+  description: "École de golf juniors dès 4 ans, cours adultes en petits groupes, stages et initiations au golf de Château l'Arc, avec des enseignants diplômés d'État.",
+  chemin: "/academie",
+  image: "/og/academie.jpg",
+});
 
 export default function Page() {
   return (

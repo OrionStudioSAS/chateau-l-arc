@@ -24,6 +24,8 @@ export async function generateMetadata({
     title: article.titre,
     description: article.chapo,
     alternates: { canonical: `/actualites/${article.slug}` },
+    // Actualités de démonstration tant que le blog n'est pas branché : non indexées.
+    robots: { index: false, follow: true },
     openGraph: {
       type: "article",
       title: article.titre,

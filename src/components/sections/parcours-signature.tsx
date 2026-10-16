@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Editable } from "@/components/cms/editable";
+import { pagesAVenir } from "@/config/site";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 import { PARCOURS_ATOUTS, PARCOURS_SURTITRE, PARCOURS_TITRE, PARCOURS_DESCRIPTION, PARCOURS_IMAGE } from "@/constants";
@@ -89,7 +90,7 @@ export function ParcoursSignature() {
               Explorer le parcours <span aria-hidden="true">→</span>
             </Link>
             <Link
-              href="/le-parcours/scorecard"
+              href={pagesAVenir.carteDeScore}
               className="inline-flex items-center gap-2 rounded-sm border border-club-950/25 px-5 py-3.5 text-[12px] font-semibold uppercase tracking-[0.1em] text-club-950 transition-colors hover:bg-white"
             >
               Carte de score (PDF)

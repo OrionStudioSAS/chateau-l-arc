@@ -76,7 +76,8 @@ curl -X POST https://<domaine>/api/revalidate \
 | --- | --- |
 | `/` | Hero, accès, actualités (en attente de la maquette définitive) |
 | `/le-parcours`, `/histoire`, `/academie` | Coquilles en attente de maquette |
-| `/informations-parcours`, `/devenir-membre`, `/reserver` | Coquilles créées pour les liens de l'en-tête |
+| `/informations-parcours` | État des installations |
+| Devenir membre, restaurant, proshop, pages légales… | Pas encore construites : liens vers la 404 (`pagesAVenir` dans `src/config/site.ts`) |
 | `/tarifs` | Liste branchée sur la couche contenu (montants factices) |
 | `/actualites`, `/actualites/[slug]` | Branchées sur la couche contenu |
 | `/competitions`, `/competitions/[slug]` | Branchées sur la couche contenu (API : `/evenements`) |

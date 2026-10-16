@@ -93,12 +93,30 @@ export const headerNav: NavItem[] = [
 ];
 
 /**
+ * Pages pas encore construites (supprimées en attendant leur maquette) : les
+ * liens restent en place et mènent à la page 404 jusqu'à leur création.
+ * Une fois une page créée, retirer son `as Route` suffit.
+ */
+export const pagesAVenir = {
+  devenirMembre: "/devenir-membre" as Route,
+  restaurant: "/restaurant" as Route,
+  proshop: "/proshop" as Route,
+  aPropos: "/a-propos" as Route,
+  groupePrivatisation: "/groupe-privatisation" as Route,
+  recrutement: "/recrutement" as Route,
+  carteDeScore: "/le-parcours/scorecard" as Route,
+  cgv: "/cgv" as Route,
+  mentionsLegales: "/mentions-legales" as Route,
+  politiqueConfidentialite: "/politique-de-confidentialite" as Route,
+};
+
+/**
  * Bloc de droite dans l'en-tête : état du parcours, téléphone, deux boutons.
  * `info` reste la page complète de l'état des installations (menu mobile).
  */
 export const headerActions = {
   info: { label: "Informations sur le parcours", href: "/informations-parcours" as Route },
-  membre: { label: "Devenir membre", href: "/devenir-membre" as Route },
+  membre: { label: "Devenir membre", href: pagesAVenir.devenirMembre },
   reservation: { label: "Réserver un départ", href: urlReservation as Route },
 };
 
@@ -111,16 +129,16 @@ export const reseaux: { label: string; url: string }[] = [
 ];
 
 export const liensInstitutionnels: NavItem[] = [
-  { label: "À propos", href: "/a-propos" },
-  { label: "Groupe & Privatisation", href: "/groupe-privatisation" },
-  { label: "Recrutement", href: "/recrutement" },
+  { label: "À propos", href: pagesAVenir.aPropos },
+  { label: "Groupe & Privatisation", href: pagesAVenir.groupePrivatisation },
+  { label: "Recrutement", href: pagesAVenir.recrutement },
   { label: "FAQ", href: "/faq" },
 ];
 
 export const liensLegaux: NavItem[] = [
-  { label: "CGV", href: "/cgv" },
-  { label: "Mentions légales", href: "/mentions-legales" },
-  { label: "Politique de confidentialité", href: "/politique-de-confidentialite" },
+  { label: "CGV", href: pagesAVenir.cgv },
+  { label: "Mentions légales", href: pagesAVenir.mentionsLegales },
+  { label: "Politique de confidentialité", href: pagesAVenir.politiqueConfidentialite },
 ];
 
 /** Accueils téléphoniques affichés en pied de page. TODO : numéros à confirmer. */
@@ -148,18 +166,14 @@ export const partenaires: { nom: string; logo: string; url?: string }[] = [
   { nom: "Autosprinter Toyota Aix-en-Provence", logo: "/images/logo7.png" },
 ];
 
-/** Toutes les pages publiques, pour le plan du site. */
+/** Pages publiques existantes (statistiques et ciblage de la pop-up dans le back-office). */
 export const routesPubliques: NavItem[] = [
   ...headerNav,
   { label: "Nous contacter", href: "/contact" },
   { label: "Résultats des compétitions", href: "/competitions/resultats" },
   { label: "Actualités", href: "/actualites" },
-  { label: "Devenir membre", href: "/devenir-membre" },
-  { label: "La table du golf", href: "/restaurant" },
-  { label: "Pro-shop", href: "/proshop" },
   { label: "Informations sur le parcours", href: "/informations-parcours" },
-  ...liensInstitutionnels,
-  ...liensLegaux,
+  { label: "FAQ", href: "/faq" },
 ];
 
 /**

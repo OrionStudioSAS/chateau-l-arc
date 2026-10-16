@@ -225,39 +225,6 @@ export const HISTOIRE_CHIFFRES = [
   { valeur: "25 min", ligne1: "Aéroport & gare TGV" },
 ];
 
-// ─── Restaurant Le Club House · En-tête ───
-
-/** Surtitre */
-export const RESTAURANT_SURTITRE = "Restaurant";
-
-/** Titre */
-export const RESTAURANT_TITRE = "La table du golf";
-
-/** Texte */
-export const RESTAURANT_TEXTE = "Déjeuner et dîner face au parcours, au club-house du Château l'Arc.";
-
-// ─── Devenir membre · En-tête ───
-
-/** Surtitre */
-export const MEMBRE_SURTITRE = "Abonnements";
-
-/** Titre */
-export const MEMBRE_TITRE = "Devenir membre";
-
-/** Texte */
-export const MEMBRE_TEXTE = "Formules d'abonnement, avantages et démarche d'adhésion au club.";
-
-// ─── Mentions légales · En-tête ───
-
-/** Surtitre */
-export const MENTIONS_SURTITRE = "Informations légales";
-
-/** Titre */
-export const MENTIONS_TITRE = "Mentions légales";
-
-/** Texte */
-export const MENTIONS_TEXTE = "Éditeur, hébergeur et propriété intellectuelle.";
-
 // ─── Le parcours · Présentation ───
 
 /** Surtitre */

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
-import { site } from "@/config/site";
+import { pagesAVenir, site } from "@/config/site";
 import { Editable } from "@/components/cms/editable";
 import { AVANTAGES_IMAGE, AVANTAGES_LISTE, AVANTAGES_SURTITRE, AVANTAGES_TITRE } from "@/constants";
 
@@ -39,7 +39,7 @@ export function AvantagesMembres() {
 
           <div className="mt-10 flex flex-wrap gap-3">
             <Link
-              href="/devenir-membre"
+              href={pagesAVenir.devenirMembre}
               className="inline-flex items-center gap-2 rounded-sm bg-club-950 px-6 py-3.5 text-[13px] font-semibold text-sable-50 transition-colors hover:bg-club-800"
             >
               Demander une adhésion <span aria-hidden="true">→</span>

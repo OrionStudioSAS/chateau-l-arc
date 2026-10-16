@@ -37,11 +37,11 @@ Les règles sont dans `src/config/redirections.ts` et servies par `next.config.t
 | `/fr/contact` | Contact | `/contact` |
 | `/fr/histoire` | Histoire | `/histoire` |
 | `/fr/le-chateau-d-arc` | Le Château l'Arc | `/histoire` |
-| `/fr/mentions-legales-credits` | Mentions légales & Crédits | `/mentions-legales` |
-| `/fr/nos-salles` | Nos salles | `/groupe-privatisation` |
+| `/fr/mentions-legales-credits` | Mentions légales & Crédits | `/` (page pas encore construite) |
+| `/fr/nos-salles` | Nos salles | `/contact` (page Groupe & privatisation pas encore construite) |
 | `/fr/nous-suivre` | Nous suivre | `/contact` |
 | `/fr/organisation` | Nos Partenaires | `/` |
-| `/fr/politique-de-confidentialite` | Politique de confidentialité | `/politique-de-confidentialite` |
+| `/fr/politique-de-confidentialite` | Politique de confidentialité | `/` (page pas encore construite) |
 | `/fr/presentation-1` | Présentation | `/academie` |
 | `/fr/s-inscrire` | S'inscrire | `/academie` |
 | `/fr/tarifs` | Tarifs | `/tarifs` |
@@ -176,7 +176,7 @@ Les règles sont dans `src/config/redirections.ts` et servies par `next.config.t
 | `/fr/actualites/actualites-publiques/la-coupe-du-personnel-2023` | Actualités - La Coupe du personnel 2023 | `/competitions/resultats` |
 | `/fr/actualites/actualites-publiques/list/1` | Actualités | `/competitions` |
 | `/fr/actualites/actualites-publiques/race-to-sainte-victoire-2021` | Actualités - Race To Sainte Victoire 2021 | `/competitions/resultats` |
-| `/fr/actualites/actualites-publiques/recrutement-immediat-d-un-caddy-master-commissaire-de-parcours` | Actualités - Recrutement immédiat d'un caddy master/commissaire de parcours | `/recrutement` |
+| `/fr/actualites/actualites-publiques/recrutement-immediat-d-un-caddy-master-commissaire-de-parcours` | Actualités - Recrutement immédiat d'un caddy master/commissaire de parcours | `/contact` |
 | `/fr/actualites/articles/actualites-parcours-17-avril` | Actualités - Actualités parcours 17 avril | `/informations-parcours` |
 | `/fr/actualites/articles/aeration-des-greens` | Actualités - Aération des Greens | `/informations-parcours` |
 | `/fr/actualites/articles/aeration-des-greens-et-departs` | Actualités - Aération des Greens | `/informations-parcours` |
@@ -198,7 +198,7 @@ Les règles sont dans `src/config/redirections.ts` et servies par `next.config.t
 | `/fr/actualites/articles/list/1` | Actualités | `/competitions` |
 | `/fr/actualites/articles/list/2` | Actualités | `/competitions` |
 | `/fr/actualites/articles/race-to-sainte-victoire-2021` | Actualités - Race To Sainte Victoire 2021 | `/competitions/resultats` |
-| `/fr/actualites/articles/recrutement-immediat-d-un-caddy-master-commissaire-de-parcours` | Actualités - Recrutement immédiat d'un caddy master/commissaire de parcours | `/recrutement` |
+| `/fr/actualites/articles/recrutement-immediat-d-un-caddy-master-commissaire-de-parcours` | Actualités - Recrutement immédiat d'un caddy master/commissaire de parcours | `/contact` |
 | `/fr/actualites/articles/remerciements-pour-votre-fidelite-credit-exceptionnel-dans-vos-reserves` | Authentification | `/tarifs` |
 | `/fr/actualites/articles/reouverture-de-la-route-vers-le-practice` | Authentification | `/le-parcours` |
 

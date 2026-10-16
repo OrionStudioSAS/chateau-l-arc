@@ -9,7 +9,7 @@ Domaine officiel : **https://www.chateaularcgolfclub.com** (avec www).
 | Titres et descriptions | Uniques par page, ciblés « golf 18 trous / Aix-en-Provence / Fuveau / Sainte-Victoire », 45 à 60 caractères pour les titres (gabarit « … \| Château l'Arc Golf Club »), 135 à 160 pour les descriptions. |
 | Balise canonique | Propre à chaque page (`lib/seo.tsx`). L'ancienne version renvoyait toutes les pages vers l'accueil. |
 | Open Graph et Twitter | Titre, description et image 1200 × 630 par page (`public/og/`, `scripts/generer-og.mjs`) ; affiche pour les compétitions. |
-| Indexation | Pages encore en construction en `noindex, follow` (restaurant, devenir membre, mentions légales…), actualités de démonstration aussi. Retirer `indexable: false` et les ajouter au sitemap quand elles auront leur contenu. |
+| Indexation | Les pages sans maquette (restaurant, devenir membre, mentions légales…) sont supprimées : leurs liens mènent à la 404 (`pagesAVenir` dans `src/config/site.ts`). Actualités de démonstration en `noindex, follow`. Ajouter chaque nouvelle page au sitemap à sa création. |
 | Sitemap | `/sitemap.xml` : pages indexables et compétitions publiées, avec leurs images. |
 | robots.txt | Ouvert, sauf `/admin`, `/api/` et l'aperçu de l'éditeur (`?edit`). Prévisualisations Vercel : tout fermé. |
 | Hors domaine officiel | En-tête `X-Robots-Tag: noindex` sur toute autre adresse (`*.vercel.app`, prévisualisations) : pas de contenu dupliqué. Back-office toujours en noindex. |
@@ -30,7 +30,7 @@ Domaine officiel : **https://www.chateaularcgolfclub.com** (avec www).
 
 ## À compléter côté contenu (impact SEO fort)
 
-- Remplir les pages en construction (restaurant, séminaires et privatisation, devenir membre, proshop, mentions légales…) puis les rendre indexables.
+- Créer les pages encore absentes (restaurant, groupe et privatisation, devenir membre, proshop, mentions légales…) et les ajouter au sitemap. Les **mentions légales** sont obligatoires avant la mise en ligne.
 - Renseigner les réseaux sociaux du club (`reseaux` dans `src/config/site.ts`) : ils alimentent `sameAs` des données structurées.
 - Ajouter les horaires d'ouverture de l'accueil (données structurées `openingHours`).
 - Brancher un vrai blog (rubrique Blog) : actualités régulières = signal de fraîcheur, et destination naturelle des anciennes actualités.

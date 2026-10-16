@@ -11,7 +11,4 @@ export const pagesCms: PageCms[] = [
   { cle: "competitions", titre: "Compétitions", chemin: "/competitions", vignette: "/images/competitions.png" },
   { cle: "tarifs", titre: "Tarifs", chemin: "/tarifs", vignette: "/images/tarifs.png" },
   { cle: "academie", titre: "L'Académie", chemin: "/academie", vignette: "/images/academie.png" },
-  { cle: "restaurant", titre: "Restaurant Le Club House", chemin: "/restaurant", vignette: "/images/hp-dejeuner.png" },
-  { cle: "devenir-membre", titre: "Devenir membre", chemin: "/devenir-membre", vignette: "/images/hp-join.png" },
-  { cle: "mentions-legales", titre: "Mentions légales", chemin: "/mentions-legales", vignette: null },
 ];

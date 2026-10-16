@@ -6,7 +6,7 @@ import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 import { ART_DE_VIVRE_CARTES, ART_DE_VIVRE_SURTITRE, ART_DE_VIVRE_TITRE, ART_DE_VIVRE_DESCRIPTION } from "@/constants";
-import { urlRestaurant } from "@/config/site";
+import { pagesAVenir, urlRestaurant } from "@/config/site";
 import { estPagePubliqueVisible } from "@/config/visibilite";
 import { cn } from "@/lib/cn";
 
@@ -29,7 +29,7 @@ const dispositions: Omit<Carte, "label" | "titre" | "image">[] = [
   { href: "/academie", grille: "lg:col-span-5" },
   // TODO : destination à fournir (site de l'école, probablement externe).
   { grille: "lg:col-span-5" },
-  { href: "/proshop", grille: "lg:col-span-6" },
+  { href: pagesAVenir.proshop, grille: "lg:col-span-6" },
   { href: "/competitions", grille: "lg:col-span-6" },
 ];
 

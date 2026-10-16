@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/container";
 import { LienFleche } from "@/components/ui/lien-fleche";
 import { Surtitre } from "@/components/ui/surtitre";
 import { Editable } from "@/components/cms/editable";
+import { pagesAVenir } from "@/config/site";
 import { DOMAINE_CARTES, DOMAINE_SURTITRE, DOMAINE_TEXTE, DOMAINE_TITRE } from "@/constants";
 
 const SECTION = "Histoire · Le domaine aujourd'hui";
@@ -13,7 +14,7 @@ const SECTION = "Histoire · Le domaine aujourd'hui";
  * Textes et images dans constants.ts (éditeur visuel) ; liens ici, dans le
  * même ordre. TODO : lien du site de la SVIS (sans lien, pas de « En savoir plus »).
  */
-const liens: (Route | undefined)[] = ["/restaurant", "/groupe-privatisation", undefined];
+const liens: (Route | undefined)[] = [pagesAVenir.restaurant, pagesAVenir.groupePrivatisation, undefined];
 const cartes = DOMAINE_CARTES.map((carte, index) => ({ ...carte, href: liens[index] }));
 
 export function DomaineAujourdhui() {

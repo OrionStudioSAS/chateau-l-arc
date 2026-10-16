@@ -1,6 +1,6 @@
 import type { Route } from "next";
 
-import { site, urlItineraire } from "@/config/site";
+import { pagesAVenir, site, urlItineraire } from "@/config/site";
 import { enseignants, formulesJuniors, formulesPrestige } from "@/lib/academie";
 import { euros, saisonsDe, type GrilleTarifs, type Location } from "@/lib/tarifs";
 
@@ -105,7 +105,7 @@ export function themesFaq(grille: GrilleTarifs): ThemeFaq[] {
         question: "Puis-je réserver pour un groupe ?",
         reponse:
           "Oui. Pour un groupe, une sortie d'entreprise ou un événement, contactez l'accueil pour organiser vos départs.",
-        lien: { label: "Groupes & privatisation", href: "/groupe-privatisation" },
+        lien: { label: "Groupes & privatisation", href: pagesAVenir.groupePrivatisation },
       },
       {
         question: "Puis-je venir jouer seul ?",
@@ -173,7 +173,7 @@ export function themesFaq(grille: GrilleTarifs): ThemeFaq[] {
         question: "Comment devenir membre ?",
         reponse:
           "Faites votre demande d'adhésion en ligne ou auprès de l'accueil : l'équipe vous accompagne dans le choix de la formule.",
-        lien: { label: "Devenir membre", href: "/devenir-membre" },
+        lien: { label: "Devenir membre", href: pagesAVenir.devenirMembre },
       },
       {
         question: "Qu'est-ce que l'Association sportive ?",

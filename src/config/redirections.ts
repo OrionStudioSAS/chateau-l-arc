@@ -35,7 +35,7 @@ const actualites: Record<string, string> = {
   "la-coupe-du-personnel-2023": "/competitions/resultats",
   "race-to-sainte-victoire-2021": "/competitions/resultats",
   // Vie du club
-  "recrutement-immediat-d-un-caddy-master-commissaire-de-parcours": "/recrutement",
+  "recrutement-immediat-d-un-caddy-master-commissaire-de-parcours": "/contact",
   "remerciements-pour-votre-fidelite-credit-exceptionnel-dans-vos-reserves": "/tarifs",
   "bonne-annee-2020": "/",
   "decouvrez-les-nouvelles-fonctionnalites-de-notre-site-internet": "/",
@@ -67,7 +67,7 @@ export const redirections: Redirection[] = [
   // ─── Académie, événements, contact ───
   { source: "/fr/presentation-1", destination: "/academie" },
   { source: "/fr/s-inscrire", destination: "/academie" },
-  { source: "/fr/nos-salles", destination: "/groupe-privatisation" },
+  { source: "/fr/nos-salles", destination: "/contact" },
   { source: "/fr/contact", destination: "/contact" },
   { source: "/fr/nous-suivre", destination: "/contact" },
 
@@ -80,8 +80,8 @@ export const redirections: Redirection[] = [
   { source: "/fr/actualites/:chemin*", destination: "/competitions" },
 
   // ─── Pages légales ───
-  { source: "/fr/politique-de-confidentialite", destination: "/politique-de-confidentialite" },
-  { source: "/fr/mentions-legales-credits", destination: "/mentions-legales" },
+  { source: "/fr/politique-de-confidentialite", destination: "/" },
+  { source: "/fr/mentions-legales-credits", destination: "/" },
 
   // ─── Espace membres et médias de l'ancienne plateforme ───
   // Connexion membre : la réservation des départs se fait désormais sur Prima Golf.

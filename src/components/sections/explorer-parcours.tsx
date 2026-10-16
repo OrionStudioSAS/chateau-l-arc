@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import { Editable } from "@/components/cms/editable";
+import { pagesAVenir } from "@/config/site";
 import { Container } from "@/components/ui/container";
 import { EXPLORER_SURTITRE, EXPLORER_TEXTE, EXPLORER_TITRE } from "@/constants";
 import { Surtitre } from "@/components/ui/surtitre";
@@ -201,7 +202,7 @@ export function ExplorerParcours() {
 
         <div className="mt-10 text-center lg:mt-12">
           <Link
-            href="/le-parcours/scorecard"
+            href={pagesAVenir.carteDeScore}
             className="inline-block rounded-lg bg-club-950 px-6 py-4 text-[15px] sm:text-[16px] font-semibold text-sable-50 transition-colors hover:bg-club-800"
           >
             Télécharger la carte de score (PDF)

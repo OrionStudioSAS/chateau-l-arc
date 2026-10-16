@@ -6,8 +6,6 @@ import { QuestionsTarifs } from "@/components/sections/questions-tarifs";
 import { TarifsAbonnements } from "@/components/sections/tarifs-abonnements";
 import { TarifsGreenFees } from "@/components/sections/tarifs-green-fees";
 import { TarifsNavigation } from "@/components/sections/tarifs-navigation";
-import { getGrilleTarifs } from "@/lib/api/content";
-import { saisonsDe } from "@/lib/tarifs";
 import { TARIFS_PAGE_BANNIERE_IMAGE, TARIFS_PAGE_BANNIERE_TEXTE, TARIFS_PAGE_BANNIERE_TITRE } from "@/constants";
 import { metadonnees } from "@/lib/seo";
 
@@ -21,8 +19,7 @@ export const metadata: Metadata = metadonnees({
 /** TODO : année des abonnements, à faire suivre chaque saison. */
 const ANNEE_ABONNEMENTS = 2027;
 
-export default async function Page() {
-  const grille = await getGrilleTarifs();
+export default function Page() {
   return (
     <>
       <Banniere
@@ -38,7 +35,7 @@ export default async function Page() {
           image: "Tarifs · Bannière.TARIFS_PAGE_BANNIERE_IMAGE",
         }}
         hauteur="min-h-[70svh]"
-        pied={<TarifsNavigation saisons={saisonsDe(grille)} bornes={grille.saisons} />}
+        pied={<TarifsNavigation />}
       />
 
       <TarifsGreenFees />

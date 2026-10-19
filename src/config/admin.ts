@@ -46,17 +46,13 @@ const groupes: AdminNavGroupe[] = [
       { label: "Pop-up marketing", href: "/admin/popup-marketing", icone: "megaphone" },
       { label: "Pages", href: "/admin/pages", icone: "page" },
       { label: "Blog", href: "/admin/blog", icone: "livre" },
-      { label: "Médiathèque", href: "/admin/mediatheque", icone: "image" },
     ],
   },
   {
     titre: "Extensions",
     items: [
-      { label: "Intégrations", href: "/admin/integrations", icone: "prise" },
-      // TODO : lien Swing Call.
-      { label: "Swing Call", href: null, icone: "swingcall" },
+      { label: "Swing Call", href: "https://app.swingcall.fr", icone: "swingcall" },
       { label: "Orion Translate", href: "/admin/orion-translate", icone: "traduction" },
-      { label: "Orion Forms", href: "/admin/orion-forms", icone: "formulaire" },
     ],
   },
 ];
@@ -80,18 +76,9 @@ export const rubriquesAVenir: Record<string, { titre: string; description: strin
     description: "Les demandes reçues depuis les formulaires du site, suivies au même endroit.",
   },
   blog: { titre: "Blog", description: "Actualités et articles du club." },
-  mediatheque: { titre: "Médiathèque", description: "Photos, vidéos et documents du site." },
-  integrations: {
-    titre: "Intégrations",
-    description: "Outils branchés sur le site : réservation, statistiques, réseaux sociaux.",
-  },
   "orion-translate": {
     titre: "Orion Translate",
     description: "Traduction du site en anglais et dans d'autres langues.",
-  },
-  "orion-forms": {
-    titre: "Orion Forms",
-    description: "Formulaires du site (séminaires, contact, inscriptions), suivis dans Demandes.",
   },
   "orion-faq": { titre: "Orion FAQ", description: "Questions fréquentes du centre d'aide." },
   "orion-reviews": {

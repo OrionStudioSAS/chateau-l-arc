@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 
 import { CentreAide } from "@/components/sections/centre-aide";
 import { FaqContact } from "@/components/sections/faq-contact";
-import { getGrilleTarifs } from "@/lib/api/content";
 import { themesFaq, type ThemeFaq } from "@/lib/faq";
 import { metadonnees } from "@/lib/seo";
 
@@ -25,14 +24,14 @@ const donneesStructurees = (themes: ThemeFaq[]) => ({
   ),
 });
 
-export default async function Page() {
-  const themes = themesFaq(await getGrilleTarifs());
+export default function Page() {
+  const themes = themesFaq;
 
   return (
     <>
       <script
         type="application/ld+json"
-        // Contenu issu de lib/faq et de la grille tarifaire : aucune donnée saisie par un visiteur.
+        // Contenu de constants.ts (back-office) : aucune donnée saisie par un visiteur.
         dangerouslySetInnerHTML={{ __html: JSON.stringify(donneesStructurees(themes)).replace(/</g, "\\u003c") }}
       />
       <CentreAide themes={themes} />

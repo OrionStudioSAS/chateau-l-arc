@@ -5,14 +5,25 @@ import Link from "next/link";
 import type { Route } from "next";
 import { useEffect, useMemo, useState } from "react";
 
+import { Editable, useModeEdition } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { site } from "@/config/site";
+import {
+  FAQ_IMAGE,
+  FAQ_RAPIDE_TEXTE,
+  FAQ_RAPIDE_TITRE,
+  FAQ_RECHERCHE_EXEMPLE,
+  FAQ_RECHERCHES,
+  FAQ_SURTITRE,
+  FAQ_TITRE,
+} from "@/constants";
+import { lienAutorise } from "@/lib/admin/popup";
 import { cn } from "@/lib/cn";
-import { recherchesFrequentes, type PictoTheme, type QuestionFaq, type ThemeFaq } from "@/lib/faq";
+import type { PictoTheme, QuestionFaq, ThemeFaq } from "@/lib/faq";
 import { proprietesLien } from "@/lib/liens";
 
-/** TODO : photo temporaire de la bannière (allée de pins au-dessus d'un fairway). */
-const IMAGE_BANNIERE = "/images/parcours.png";
+const BANNIERE = "FAQ · Bannière";
+const RAPIDE = "FAQ · Réponse rapide";
 
 const chemins: Record<PictoTheme | "telephone" | "loupe" | "pouce", React.ReactNode> = {
   drapeau: <path d="M6 21V4m0 0h11l-2 4 2 4H6" />,
@@ -110,11 +121,31 @@ function RetourReponse() {
   );
 }
 
-function Question({ item, ouverte, groupe }: { item: QuestionFaq; ouverte: boolean; groupe: string }) {
+function Question({
+  item,
+  ouverte,
+  groupe,
+  chemin,
+}: {
+  item: QuestionFaq;
+  ouverte: boolean;
+  groupe: string;
+  /** « Section.CONSTANTE.index », pour l'éditeur visuel. */
+  chemin: string;
+}) {
+  // Éditeur visuel : toutes les réponses dépliées, pour pouvoir cliquer dessus.
+  const edition = useModeEdition();
+  const lien = item.lien.trim();
+  const avecLien = lien !== "" && item.texteLien.trim() !== "" && lienAutorise(lien);
+
   return (
-    <details name={groupe} open={ouverte} className="group border-b border-encre/10 py-5">
+    <details
+      name={edition ? undefined : groupe}
+      open={edition || ouverte}
+      className="group border-b border-encre/10 py-5"
+    >
       <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-[15px] font-semibold text-club-950 [&::-webkit-details-marker]:hidden">
-        {item.question}
+        <Editable path={`${chemin}.question`}>{item.question}</Editable>
         <span
           aria-hidden="true"
           className="flex size-7 shrink-0 items-center justify-center rounded-full border border-encre/15 text-[15px] leading-none text-encre/60 transition-colors group-open:border-club-950 group-open:bg-club-950 group-open:text-sable-50"
@@ -124,16 +155,27 @@ function Question({ item, ouverte, groupe }: { item: QuestionFaq; ouverte: boole
         </span>
       </summary>
       <div className="mt-3 max-w-3xl">
-        <p className="text-[14px] leading-relaxed text-encre/65">{item.reponse}</p>
-        {item.lien ? (
+        <Editable path={`${chemin}.reponse`} as="p" className="text-[14px] leading-relaxed text-encre/65">
+          {item.reponse}
+        </Editable>
+        {avecLien || edition ? (
           <p className="mt-3">
             <Link
-              href={item.lien.href as Route}
-              {...proprietesLien(item.lien.href)}
+              href={(avecLien ? lien : "#") as Route}
+              {...proprietesLien(lien)}
               className="text-[13px] font-semibold text-club-950 underline-offset-4 hover:underline"
             >
-              {item.lien.label} <span aria-hidden="true">→</span>
+              {/* Aperçu de l'éditeur : un lien vide garde une zone cliquable. */}
+              <Editable path={`${chemin}.texteLien`} className="empty:before:text-encre/30 empty:before:content-['Texte_du_lien']">
+                {item.texteLien}
+              </Editable>{" "}
+              <span aria-hidden="true">→</span>
             </Link>
+            {edition ? (
+              <Editable path={`${chemin}.lien`} className="ml-3 text-[12px] text-encre/40 empty:before:content-['aucun_lien']">
+                {lien}
+              </Editable>
+            ) : null}
           </p>
         ) : null}
         <RetourReponse />
@@ -148,6 +190,7 @@ function Question({ item, ouverte, groupe }: { item: QuestionFaq; ouverte: boole
  */
 export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
   const [recherche, setRecherche] = useState("");
+  const edition = useModeEdition();
   const [themeActif, setThemeActif] = useState(tousLesThemes[0].id);
 
   // Pluriels simplifiés (« voiturettes » trouve « voiturette ») : on retire
@@ -165,7 +208,8 @@ export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
       tousLesThemes
         .map((theme) => ({
           ...theme,
-          questions: theme.questions.filter((item) => {
+          // Rang d'origine conservé : il désigne la question dans l'éditeur.
+          questions: theme.questions.map((item, rang) => ({ item, rang })).filter(({ item }) => {
             if (termes.length === 0) return true;
             const texte = normaliser(`${theme.titre} ${item.question} ${item.reponse}`);
             return termes.every((terme) => texte.includes(terme));
@@ -207,17 +251,19 @@ export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
     <>
       {/* Bannière : la recherche filtre les questions en direct. */}
       <section className="relative -mt-20 overflow-hidden bg-club-950 pb-14 pt-36 text-white sm:pb-16 sm:pt-40">
-        <Image
-          src={IMAGE_BANNIERE}
-          alt="Le parcours du golf du Château l'Arc"
-          fill
-          loading="eager"
-          sizes="100vw"
-          className="object-cover"
-          data-parallax="0.2"
-          data-parallax-echelle="1.15"
-        />
-        <div aria-hidden="true" className="absolute inset-0 bg-club-950/60" />
+        <Editable path={`${BANNIERE}.FAQ_IMAGE`} image as="div" className="absolute inset-0">
+          <Image
+            src={FAQ_IMAGE}
+            alt="Le parcours du golf du Château l'Arc"
+            fill
+            loading="eager"
+            sizes="100vw"
+            className="object-cover"
+            data-parallax="0.2"
+            data-parallax-echelle="1.15"
+          />
+        </Editable>
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-club-950/60" />
 
         <nav aria-label="Fil d'Ariane" className="absolute inset-x-0 top-[88px] px-5 text-[13px] text-white/70 sm:px-8 xl:px-10">
           <ol className="flex items-center gap-2">
@@ -234,12 +280,12 @@ export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
         </nav>
 
         <Container className="relative text-center">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.2em] text-or-400">
-            Centre d&apos;aide
-          </p>
-          <h1 className="mx-auto mt-4 max-w-3xl font-butler text-[38px] font-medium leading-[1.1] sm:text-[56px]">
-            Comment pouvons-nous vous aider ?
-          </h1>
+          <Editable path={`${BANNIERE}.FAQ_SURTITRE`} as="p" className="text-[12px] font-semibold uppercase tracking-[0.2em] text-or-400">
+            {FAQ_SURTITRE}
+          </Editable>
+          <Editable path={`${BANNIERE}.FAQ_TITRE`} as="h1" className="mx-auto mt-4 max-w-3xl font-butler text-[38px] font-medium leading-[1.1] sm:text-[56px]">
+            {FAQ_TITRE}
+          </Editable>
 
           <form
             role="search"
@@ -253,14 +299,29 @@ export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
             <label htmlFor="recherche-faq" className="sr-only">
               Rechercher une question
             </label>
-            <input
-              id="recherche-faq"
-              type="search"
-              value={recherche}
-              onChange={(evenement) => setRecherche(evenement.target.value)}
-              placeholder="Rechercher : green fee, voiturette, cours enfant…"
-              className="min-w-0 flex-1 bg-transparent px-2 py-3 text-[15px] outline-none placeholder:text-encre/40"
-            />
+            {/* Texte d'exemple affiché par-dessus le champ (et non en
+                placeholder) : il reste ainsi modifiable dans l'éditeur visuel. */}
+            <div className="relative min-w-0 flex-1">
+              <input
+                id="recherche-faq"
+                type="search"
+                value={recherche}
+                onChange={(evenement) => setRecherche(evenement.target.value)}
+                className="w-full bg-transparent px-2 py-3 text-[15px] outline-none"
+              />
+              {recherche === "" ? (
+                <Editable
+                  path={`${BANNIERE}.FAQ_RECHERCHE_EXEMPLE`}
+                  aria-hidden="true"
+                  className={cn(
+                    "absolute inset-y-0 left-2 right-0 flex items-center truncate text-left text-[15px] text-encre/40",
+                    !edition && "pointer-events-none",
+                  )}
+                >
+                  {FAQ_RECHERCHE_EXEMPLE}
+                </Editable>
+              ) : null}
+            </div>
             <button
               type="submit"
               className="rounded-sm bg-or-500 px-5 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-or-600"
@@ -271,14 +332,14 @@ export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
 
           <div className="mx-auto mt-6 flex max-w-3xl flex-wrap items-center justify-center gap-2 text-[12px]">
             <span className="text-white/70">Recherches fréquentes :</span>
-            {recherchesFrequentes.map((terme) => (
+            {FAQ_RECHERCHES.map((terme, index) => (
               <button
-                key={terme}
+                key={index}
                 type="button"
                 onClick={() => rechercher(terme)}
                 className="rounded-full border border-white/25 bg-white/10 px-3 py-1.5 backdrop-blur-sm transition-colors hover:bg-white/20"
               >
-                {terme}
+                <Editable path={`${BANNIERE}.FAQ_RECHERCHES.${index}`}>{terme}</Editable>
               </button>
             ))}
           </div>
@@ -306,7 +367,9 @@ export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
                     )}
                   >
                     <Picto nom={theme.picto} className="text-encre/50" />
-                    <span className="flex-1">{theme.titre}</span>
+                    <Editable path={`${theme.section}.${theme.constantes.titre}`} className="flex-1">
+                      {theme.titre}
+                    </Editable>
                     <span className="hidden text-[11px] text-encre/40 lg:inline">{theme.questions.length}</span>
                   </a>
                 </li>
@@ -314,10 +377,12 @@ export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
             </ul>
 
             <div className="mt-6 hidden rounded-sm bg-club-950 p-6 text-sable-50 lg:block">
-              <p className="text-[14px] font-semibold">Besoin d&apos;une réponse rapide ?</p>
-              <p className="mt-2 text-[13px] leading-relaxed text-sable-50/70">
-                L&apos;accueil golf vous répond par téléphone.
-              </p>
+              <Editable path={`${RAPIDE}.FAQ_RAPIDE_TITRE`} as="p" className="text-[14px] font-semibold">
+                {FAQ_RAPIDE_TITRE}
+              </Editable>
+              <Editable path={`${RAPIDE}.FAQ_RAPIDE_TEXTE`} as="p" className="mt-2 text-[13px] leading-relaxed text-sable-50/70">
+                {FAQ_RAPIDE_TEXTE}
+              </Editable>
               <a
                 href={site.contact.telephoneLien}
                 className="mt-4 flex items-center gap-2 text-[15px] font-semibold text-or-400"
@@ -360,19 +425,20 @@ export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
                         <span className="flex size-10 items-center justify-center rounded-full bg-sable-100 text-club-950">
                           <Picto nom={theme.picto} />
                         </span>
-                        {theme.titre}
+                        <Editable path={`${theme.section}.${theme.constantes.titre}`}>{theme.titre}</Editable>
                       </h2>
                       <p className="shrink-0 text-[12px] text-encre/45">
                         {theme.questions.length} question{theme.questions.length > 1 ? "s" : ""}
                       </p>
                     </div>
                     <div className="mt-3">
-                      {theme.questions.map((item, index) => (
+                      {theme.questions.map(({ item, rang }, index) => (
                         <Question
-                          key={item.question}
+                          key={rang}
                           item={item}
                           groupe={`faq-${theme.id}`}
                           ouverte={index === 0}
+                          chemin={`${theme.section}.${theme.constantes.questions}.${rang}`}
                         />
                       ))}
                     </div>

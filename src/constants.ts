@@ -504,3 +504,369 @@ export const ACADEMIE_ENSEIGNANTS_SURTITRE = "Nos enseignants";
 
 /** Titre */
 export const ACADEMIE_ENSEIGNANTS_TITRE = "Une équipe pour vous accompagner";
+
+// ─── FAQ · Bannière ───
+
+/** Surtitre */
+export const FAQ_SURTITRE = "Centre d'aide";
+
+/** Titre */
+export const FAQ_TITRE = "Comment pouvons-nous vous aider ?";
+
+/** Texte d'exemple du champ de recherche */
+export const FAQ_RECHERCHE_EXEMPLE = "Rechercher : green fee, voiturette, cours enfant…";
+
+/** Recherches fréquentes */
+export const FAQ_RECHERCHES = [
+  "Tarifs green fees",
+  "Réserver un départ",
+  "Carte verte",
+  "Compétitions",
+  "Voiturettes",
+  "Accès",
+];
+
+/** Photo */
+export const FAQ_IMAGE = "/images/parcours.png";
+
+// ─── FAQ · Réponse rapide ───
+
+/** Titre */
+export const FAQ_RAPIDE_TITRE = "Besoin d'une réponse rapide ?";
+
+/** Texte */
+export const FAQ_RAPIDE_TEXTE = "L'accueil golf vous répond par téléphone.";
+
+
+// ─── FAQ · Le golf & le parcours ───
+
+/** Titre du thème */
+export const FAQ_GOLF_TITRE = "Le golf & le parcours";
+
+/** Questions (lien et texte du lien facultatifs : laisser vides pour aucun lien) */
+export const FAQ_GOLF_QUESTIONS = [
+  {
+    question: "Le golf est-il ouvert aux non-membres ?",
+    reponse: "Oui. Le parcours est ouvert à tous les golfeurs, membres ou non. Il suffit de réserver un départ en ligne ou auprès de l'accueil et de régler un green fee.",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Faut-il un niveau minimum pour jouer ?",
+    reponse: "Une carte verte ou un index est demandé pour jouer le parcours. Pour débuter, l'Académie propose des initiations encadrées par nos enseignants.",
+    lien: "/academie",
+    texteLien: "Découvrir l'Académie",
+  },
+  {
+    question: "Combien de temps dure une partie de 18 trous ?",
+    reponse: "Comptez en moyenne quatre heures à quatre heures et demie pour un 18 trous.",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Comment connaître l'état du parcours avant de venir ?",
+    reponse: "L'accueil met à jour l'état du parcours, des voiturettes et des installations chaque matin. Il est affiché en haut du site : cliquez sur « Parcours ouvert » pour le détail.",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Une tenue particulière est-elle exigée ?",
+    reponse: "Oui : une tenue de golf correcte est exigée sur le parcours et au practice.",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Qui a dessiné le parcours ?",
+    reponse: "Robert Trent Jones II, l'un des plus grands architectes de golf au monde, en 1985. Le parcours est un par 70 de 5 817 mètres.",
+    lien: "/le-parcours",
+    texteLien: "Explorer le parcours",
+  },
+];
+
+// ─── FAQ · Réservations & départs ───
+
+/** Titre du thème */
+export const FAQ_RESERVATIONS_TITRE = "Réservations & départs";
+
+/** Questions (lien et texte du lien facultatifs : laisser vides pour aucun lien) */
+export const FAQ_RESERVATIONS_QUESTIONS = [
+  {
+    question: "Comment réserver un départ ?",
+    reponse: "En ligne, à tout moment, via le bouton « Réserver un départ », ou par téléphone auprès de l'accueil au 04 42 29 83 41.",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Puis-je modifier ou annuler ma réservation ?",
+    reponse: "Contactez l'accueil au 04 42 29 83 41 : il vous indiquera les conditions de modification ou d'annulation.",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Puis-je réserver pour un groupe ?",
+    reponse: "Oui. Pour un groupe, une sortie d'entreprise ou un événement, contactez l'accueil pour organiser vos départs.",
+    lien: "/groupe-privatisation",
+    texteLien: "Groupes & privatisation",
+  },
+  {
+    question: "Puis-je venir jouer seul ?",
+    reponse: "Oui. Réservez simplement un départ en ligne ou auprès de l'accueil.",
+    lien: "",
+    texteLien: "",
+  },
+];
+
+// ─── FAQ · Tarifs & paiement ───
+
+/** Titre du thème */
+export const FAQ_TARIFS_TITRE = "Tarifs & paiement";
+
+/** Questions (lien et texte du lien facultatifs : laisser vides pour aucun lien) */
+export const FAQ_TARIFS_QUESTIONS = [
+  {
+    question: "Quels sont les tarifs des green fees ?",
+    reponse: "18 trous : 85 € toute l'année. 9 trous : 55 € en haute saison (du 16 avril au 14 novembre) et 45 € en basse saison (du 15 novembre au 15 avril).",
+    lien: "/tarifs",
+    texteLien: "Tous les tarifs",
+  },
+  {
+    question: "Existe-t-il des carnets de green fees ?",
+    reponse: "Oui, valables 12 mois : 6 parcours 18 trous à 350 €, 12 parcours 18 trous à 700 €, 12 parcours 9 trous à 450 €.",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Combien coûte la location d'une voiturette ?",
+    reponse: "Voiturette 18 trous : 40 € (28 € pour les membres) ; voiturette 9 trous : 33 € (25 € pour les membres).",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Quels moyens de paiement acceptez-vous ?",
+    reponse: "L'accueil vous renseigne sur les moyens de paiement acceptés sur place.",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Peut-on offrir un green fee ?",
+    reponse: "Oui, contactez l'accueil du club pour toute demande de cadeau.",
+    lien: "",
+    texteLien: "",
+  },
+];
+
+// ─── FAQ · Abonnements & vie de club ───
+
+/** Titre du thème */
+export const FAQ_ABONNEMENTS_TITRE = "Abonnements & vie de club";
+
+/** Questions (lien et texte du lien facultatifs : laisser vides pour aucun lien) */
+export const FAQ_ABONNEMENTS_QUESTIONS = [
+  {
+    question: "Quelles formules d'abonnement proposez-vous ?",
+    reponse: "Individuel 2 280 €, Couple 3 732 €, Famille (2 adultes) 3 732 €, Individuel −35 ans 1 560 €, Couple −35 ans 2 748 €, −25 ans & étudiants 984 €, −15 ans 540 €, Individuel +80 ans 2 052 €, Couple +80 ans 3 300 €, par an.",
+    lien: "/tarifs",
+    texteLien: "Voir les abonnements",
+  },
+  {
+    question: "Y a-t-il une réduction en payant comptant ?",
+    reponse: "Oui : −5 % en paiement comptant jusqu'au 31/12.",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Peut-on payer l'abonnement en plusieurs fois ?",
+    reponse: "Contactez l'accueil pour connaître les modalités de paiement de votre abonnement.",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Comment devenir membre ?",
+    reponse: "Faites votre demande d'adhésion en ligne ou auprès de l'accueil : l'équipe vous accompagne dans le choix de la formule.",
+    lien: "/devenir-membre",
+    texteLien: "Devenir membre",
+  },
+  {
+    question: "Qu'est-ce que l'Association sportive ?",
+    reponse: "L'Association sportive anime la vie du club : compétitions, rencontres et événements entre membres tout au long de la saison.",
+    lien: "",
+    texteLien: "",
+  },
+];
+
+// ─── FAQ · L'Académie : cours & stages ───
+
+/** Titre du thème */
+export const FAQ_ACADEMIE_TITRE = "L'Académie : cours & stages";
+
+/** Questions (lien et texte du lien facultatifs : laisser vides pour aucun lien) */
+export const FAQ_ACADEMIE_QUESTIONS = [
+  {
+    question: "À partir de quel âge peut-on apprendre ?",
+    reponse: "Dès 4 ans, à l'école de golf juniors : 4 – 7 ans 310 € par an (1h30 par semaine), 7 ans et + 410 € par an (2h00 par semaine), le mercredi et le samedi.",
+    lien: "/academie",
+    texteLien: "École juniors",
+  },
+  {
+    question: "Proposez-vous des cours pour adultes ?",
+    reponse: "Oui, les formules Prestige : cours collectifs de 6 personnes maximum, une heure par jour, lundi, mardi, jeudi et vendredi, dès 90 € par mois.",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Y a-t-il des stages pendant les vacances ?",
+    reponse: "Oui, des stages tous niveaux sont organisés pendant les vacances scolaires et toute l'année.",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Peut-on organiser une initiation découverte ?",
+    reponse: "Oui, de 2 à 30 personnes, entre amis, en famille ou entre collègues. Réservez par téléphone auprès de l'accueil.",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Qui sont les enseignants ?",
+    reponse: "Julien Lefevre et Arnaud Bonnard, enseignants diplômés d'État.",
+    lien: "",
+    texteLien: "",
+  },
+];
+
+// ─── FAQ · Compétitions ───
+
+/** Titre du thème */
+export const FAQ_COMPETITIONS_TITRE = "Compétitions";
+
+/** Questions (lien et texte du lien facultatifs : laisser vides pour aucun lien) */
+export const FAQ_COMPETITIONS_QUESTIONS = [
+  {
+    question: "Comment s'inscrire à une compétition ?",
+    reponse: "Depuis la page Compétitions : choisissez la compétition, puis suivez le bouton « S'inscrire » dès l'ouverture des inscriptions.",
+    lien: "/competitions",
+    texteLien: "Calendrier des compétitions",
+  },
+  {
+    question: "Les compétitions sont-elles ouvertes aux visiteurs ?",
+    reponse: "Certaines, oui : elles portent la mention « Ouvert à tous ». Le filtre « Ouvertes aux visiteurs » de la page Compétitions les regroupe.",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Où consulter les résultats ?",
+    reponse: "Les classements officiels sont publiés au format PDF dès le lendemain de chaque compétition.",
+    lien: "/competitions/resultats",
+    texteLien: "Résultats de la saison",
+  },
+];
+
+// ─── FAQ · Practice & matériel ───
+
+/** Titre du thème */
+export const FAQ_PRACTICE_TITRE = "Practice & matériel";
+
+/** Questions (lien et texte du lien facultatifs : laisser vides pour aucun lien) */
+export const FAQ_PRACTICE_QUESTIONS = [
+  {
+    question: "Combien coûte un seau de balles ?",
+    reponse: "1 seau de balles : 4 € (3 € pour les membres) ; 5 seaux : 18 € (12 € pour les membres) ; 10 seaux : 34 € (22 € pour les membres) ; 25 seaux : 75 € (50 € pour les membres).",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Peut-on louer du matériel ?",
+    reponse: "Oui : chariot manuel : 5 € ; série complète (location) : 40 €.",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Les voiturettes sont-elles toujours autorisées ?",
+    reponse: "Leur circulation dépend de l'état du terrain. L'accueil indique chaque matin si elles sont autorisées, en haut du site (« Parcours ouvert »).",
+    lien: "",
+    texteLien: "",
+  },
+];
+
+// ─── FAQ · Restaurant & Club House ───
+
+/** Titre du thème */
+export const FAQ_RESTAURANT_TITRE = "Restaurant & Club House";
+
+/** Questions (lien et texte du lien facultatifs : laisser vides pour aucun lien) */
+export const FAQ_RESTAURANT_QUESTIONS = [
+  {
+    question: "Le restaurant est-il ouvert aux non-golfeurs ?",
+    reponse: "Contactez directement le restaurant pour connaître les horaires et réserver une table.",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Peut-on profiter de la terrasse ?",
+    reponse: "La grande terrasse du Club House offre une vue panoramique sur la montagne Sainte-Victoire.",
+    lien: "",
+    texteLien: "",
+  },
+];
+
+// ─── FAQ · Séminaires & réceptions ───
+
+/** Titre du thème */
+export const FAQ_SEMINAIRES_TITRE = "Séminaires & réceptions";
+
+/** Questions (lien et texte du lien facultatifs : laisser vides pour aucun lien) */
+export const FAQ_SEMINAIRES_QUESTIONS = [
+  {
+    question: "Peut-on privatiser le domaine ?",
+    reponse: "Oui, pour un séminaire, une journée golf d'entreprise, une soirée ou une réception. Faites votre demande via la page Contact.",
+    lien: "/contact",
+    texteLien: "Nous contacter",
+  },
+  {
+    question: "Quelles prestations proposez-vous ?",
+    reponse: "Salons du château, restauration et initiations au golf : l'équipe établit avec vous une proposition sur mesure.",
+    lien: "",
+    texteLien: "",
+  },
+];
+
+// ─── FAQ · Accès & infos pratiques ───
+
+/** Titre du thème */
+export const FAQ_ACCES_TITRE = "Accès & infos pratiques";
+
+/** Questions (lien et texte du lien facultatifs : laisser vides pour aucun lien) */
+export const FAQ_ACCES_QUESTIONS = [
+  {
+    question: "Où se trouve le golf ?",
+    reponse: "Domaine Château l'Arc, 13710 Fuveau, aux portes d'Aix-en-Provence.",
+    lien: "",
+    texteLien: "",
+  },
+  {
+    question: "Comment venir ?",
+    reponse: "Le domaine est à 25 minutes de l'aéroport Marseille Provence et de la gare TGV d'Aix-en-Provence, et à 5 minutes de l'autoroute A8.",
+    lien: "https://www.google.com/maps/dir/?api=1&destination=Ch%C3%A2teau+l%27Arc+Golf+Club%2C+13710+Fuveau",
+    texteLien: "Itinéraire",
+  },
+  {
+    question: "Comment joindre l'accueil ?",
+    reponse: "Par téléphone au 04 42 29 83 41 ou par e-mail à golf@chateaularcgolfclub.com.",
+    lien: "",
+    texteLien: "",
+  },
+];
+
+// ─── FAQ · Nous contacter ───
+
+/** Surtitre */
+export const FAQ_CONTACT_SURTITRE = "Vous n'avez pas trouvé votre réponse ?";
+
+/** Titre */
+export const FAQ_CONTACT_TITRE = "Notre équipe est là pour vous";
+
+/** Moyens de contact */
+export const FAQ_CONTACT_CANAUX = [
+  { titre: "Par téléphone", texte: "L'accueil golf répond à vos questions.", lien: "tel:+33442298341", texteLien: "04 42 29 83 41" },
+  { titre: "Par e-mail", texte: "golf@chateaularcgolfclub.com", lien: "mailto:golf@chateaularcgolfclub.com", texteLien: "Écrire au club" },
+  { titre: "Par formulaire", texte: "Adhésion, cours ou événement : la bonne équipe vous répond.", lien: "/contact", texteLien: "Page Contact" },
+];

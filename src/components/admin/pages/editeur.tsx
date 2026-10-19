@@ -96,6 +96,14 @@ function ChampTexte({
  * correspondant, chaque saisie s'applique en direct dans l'aperçu. La
  * publication modifie src/constants.ts : le design (CSS) n'est jamais touché.
  */
+/** Nom affiché des clés d'objets (« texteLien » → « Texte du lien »). */
+const libellesCles: Record<string, string> = {
+  reponse: "Réponse",
+  lien: "Lien (page du site /…, https://, tel: ou mailto:)",
+  texteLien: "Texte du lien",
+};
+const libelleCle = (cle: string) => libellesCles[cle] ?? cle.charAt(0).toUpperCase() + cle.slice(1);
+
 export function EditeurVisuel({ page, sections }: { page: PageCms; sections: SectionCms[] }) {
   const champs = useMemo(
     () => new Map(sections.flatMap((s) => s.champs.map((c) => [c.nom, { ...c, section: s.nom }]))),
@@ -341,7 +349,7 @@ export function EditeurVisuel({ page, sections }: { page: PageCms; sections: Sec
                   modifier(champ.nom, objets.map((o, j) => (j === i ? { ...o, [cle]: nouvelle } : o)));
                 return (
                   <div key={cle} data-champ={sousChemin}>
-                    <label htmlFor={sousChemin} className="mb-1 block text-[12px] text-neutral-500">{cle.charAt(0).toUpperCase() + cle.slice(1)}</label>
+                    <label htmlFor={sousChemin} className="mb-1 block text-[12px] text-neutral-500">{libelleCle(cle)}</label>
                     {estImage(champ.valeur[i]?.[cle] ?? "") ? (
                       <ChampImage valeur={v} apercu={apercuImage(v)} onChoisir={(f) => remplacerImage(f, `${champ.nom}-${i}-${cle}`, maj)} />
                     ) : (

@@ -7,16 +7,14 @@ import {
   publierPopup,
   type BrouillonPopup,
 } from "@/app/(admin)/admin/(tableau-de-bord)/popup-marketing/actions";
+import { ChampLien } from "@/components/admin/champ-lien";
 import { classeChamp } from "@/components/admin/competitions/champs";
 import { IconeAdmin } from "@/components/admin/icone-admin";
 import { CartePopup } from "@/components/layout/carte-popup";
 import {
   JOURS_AVANT_RETOUR,
-  libelleLien,
-  liensRapides,
   LONGUEUR_MAX_TEXTE,
   LONGUEUR_MAX_TITRE,
-  pagesDuSite,
   surtitrePopup,
 } from "@/lib/admin/popup";
 import type { Popup } from "@/lib/api/types";
@@ -84,53 +82,6 @@ function Compteur({ valeur, max }: { valeur: string; max: number }) {
     >
       {valeur.length} / {max}
     </span>
-  );
-}
-
-/** Lien du bouton : pages du site proposées, ou toute adresse (https, tel, mailto). */
-function ChampLien({ valeur, onChange }: { valeur: string; onChange: (lien: string) => void }) {
-  const [focus, setFocus] = useState(false);
-  const libelle = libelleLien(valeur);
-  const terme = valeur.trim().toLowerCase();
-  const propositions = [...pagesDuSite.map((p) => ({ ...p, libelle: `Page ${p.libelle}` })), ...liensRapides].filter(
-    (p) => !terme || p.href.toLowerCase().includes(terme) || p.libelle.toLowerCase().includes(terme),
-  );
-
-  return (
-    <div className="relative">
-      <IconeAdmin nom="lien" className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
-      <input
-        id="lien-popup"
-        value={focus || !libelle ? valeur : `${valeur} — ${pagesDuSite.some((p) => p.href === valeur) ? "Page " : ""}${libelle}`}
-        onChange={(e) => onChange(e.target.value)}
-        onFocus={() => setFocus(true)}
-        onBlur={() => window.setTimeout(() => setFocus(false), 150)}
-        placeholder="/une-page, https://…, tel:…"
-        aria-describedby="aide-lien"
-        className={cn(classeChamp, "pl-9 pr-8")}
-      />
-      <IconeAdmin nom="chevronHaut" className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 rotate-180 text-neutral-400" />
-      {focus && propositions.length ? (
-        <ul className="absolute inset-x-0 top-full z-20 mt-1 max-h-60 overflow-y-auto rounded-lg border border-neutral-200 bg-white p-1 shadow-lg">
-          {propositions.map((p) => (
-            <li key={p.href}>
-              <button
-                type="button"
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => {
-                  onChange(p.href);
-                  (document.activeElement as HTMLElement | null)?.blur();
-                }}
-                className="flex w-full items-baseline gap-2 rounded-md px-2.5 py-1.5 text-left text-[14px] hover:bg-neutral-100"
-              >
-                <span className="text-neutral-900">{p.libelle}</span>
-                <span className="truncate text-[12px] text-neutral-400">{p.href}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : null}
-    </div>
   );
 }
 
@@ -281,7 +232,7 @@ export function PopupAdmin({ popup }: { popup: Popup | null }) {
               </div>
               <div>
                 <label htmlFor="lien-popup" className="mb-1.5 block text-[13px] font-medium text-neutral-700">Lien</label>
-                <ChampLien valeur={b.boutonLien} onChange={(lien) => maj("boutonLien", lien)} />
+                <ChampLien id="lien-popup" aide="aide-lien" valeur={b.boutonLien} onChange={(lien) => maj("boutonLien", lien)} />
                 <p id="aide-lien" className="mt-1.5 text-[12px] text-neutral-500">
                   Une page du site, un numéro de téléphone ou un lien externe.
                 </p>

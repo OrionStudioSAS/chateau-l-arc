@@ -2,8 +2,10 @@ import { cacheLife, cacheTag } from "next/cache";
 
 import { ApiError, apiFetch, apiIsConfigured } from "@/lib/api/client";
 import { actualitesMock } from "@/lib/api/mock/actualites";
+import { dernierJour, slugCompetitionLiee } from "@/lib/bandeau";
 import { avecEtat, mapperCompetition } from "@/lib/competitions";
 import { lireContenu, type FichierPopup } from "@/lib/contenu/stockage";
+import { aujourdhuiAParis } from "@/lib/format";
 import { normaliserInstallation } from "@/lib/statut";
 import type { GrilleTarifs } from "@/lib/tarifs";
 import type {
@@ -149,8 +151,13 @@ export async function getBandeau(): Promise<Bandeau> {
     };
   }
 
+  // Bandeau qui renvoie vers une compétition : il s'efface après l'épreuve.
+  const slug = slugCompetitionLiee(bandeau.lien?.href);
+  const liee = slug ? competitions.find((c) => c.slug === slug) : undefined;
+  const expire = liee ? dernierJour(liee) < aujourdhuiAParis() : false;
+
   return {
-    actif: bandeau.actif,
+    actif: bandeau.actif && !expire,
     message: bandeau.message,
     lien: bandeau.lien ?? undefined,
     publieLe: bandeau.publieLe ?? undefined,

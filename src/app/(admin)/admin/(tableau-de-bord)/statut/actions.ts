@@ -4,7 +4,8 @@ import { updateTag } from "next/cache";
 
 import { tags } from "@/lib/api/content";
 import { exigerUtilisateur } from "@/lib/admin/session";
-import { commiter, historique, lireTexte } from "@/lib/contenu/depot";
+import { historiqueStatut, type EntreeHistorique } from "@/lib/admin/historique";
+import { commiter } from "@/lib/contenu/depot";
 import {
   cheminsContenu,
   lireDans,
@@ -79,30 +80,21 @@ export async function publierStatut(
   return { ok: true, message: "Statut publié sur le site." };
 }
 
-export type EntreeHistorique = { date: string; changements: string[] };
-
-function differences(avant: FichierStatut | null, apres: FichierStatut): string[] {
+/** Changements des installations entre deux versions du fichier. */
+function differences(avant: FichierStatut, apres: FichierStatut): string[] {
   const lignes: string[] = [];
-  const precedentes = new Map(
-    (avant?.installations ?? []).map((i) => [i.cle, normaliserInstallation(i)]),
-  );
+  const precedentes = new Map(avant.installations.map((i) => [i.cle, normaliserInstallation(i)]));
 
   for (const brute of apres.installations) {
     const installation = normaliserInstallation(brute);
     const ancienne = precedentes.get(installation.cle);
     const valeur = valeurStatut(installation);
     if (!ancienne) {
-      if (avant) lignes.push(`${installation.libelle} : ajouté (${valeur})`);
+      lignes.push(`${installation.libelle} : ajouté (${valeur})`);
       continue;
     }
     const valeurAvant = valeurStatut(ancienne);
     if (valeurAvant !== valeur) lignes.push(`${installation.libelle} : ${valeurAvant} → ${valeur}`);
-  }
-
-  if (avant && avant.bandeau.message !== apres.bandeau.message) {
-    lignes.push(
-      apres.bandeau.message ? `Bandeau : « ${apres.bandeau.message} »` : "Bandeau masqué",
-    );
   }
   return lignes;
 }
@@ -112,28 +104,7 @@ export async function lireHistoriqueStatut(): Promise<EntreeHistorique[]> {
   await exigerUtilisateur();
 
   try {
-    const commits = await historique(cheminsContenu.statut, 11);
-    const versions = await Promise.all(
-      commits.map(async (commit) => {
-        const texte = await lireTexte(cheminsContenu.statut, commit.sha);
-        return texte ? (JSON.parse(texte) as FichierStatut) : null;
-      }),
-    );
-
-    return commits.slice(0, 10).flatMap((commit, i) => {
-      const version = versions[i];
-      if (!version) return [];
-      const changements = differences(versions[i + 1] ?? null, version);
-      const precedente = versions[i + 1];
-      return [
-        {
-          date: commit.date,
-          changements: changements.length
-            ? changements
-            : [precedente ? "Republication à l'identique" : "Publication initiale"],
-        },
-      ];
-    });
+    return await historiqueStatut(differences);
   } catch (e) {
     console.error("Historique du statut illisible", e);
     return [];

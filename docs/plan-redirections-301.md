@@ -50,8 +50,8 @@ Les règles sont dans `src/config/redirections.ts` et servies par `next.config.t
 
 | Ancienne URL | Titre de l'ancienne page | Nouvelle URL |
 | --- | --- | --- |
-| `/fr/actualites/actualites-publiques/parcours-point-au-17-novembre` | Actualités - Parcours I point au 17 novembre | `/informations-parcours` |
-| `/fr/actualites/articles/parcours-point-au-17-novembre` | Actualités - Parcours I point au 17 novembre | `/informations-parcours` |
+| `/fr/actualites/actualites-publiques/parcours-point-au-17-novembre` | Actualités - Parcours I point au 17 novembre | `/le-parcours` |
+| `/fr/actualites/articles/parcours-point-au-17-novembre` | Actualités - Parcours I point au 17 novembre | `/le-parcours` |
 | `/fr/parcours` | Parcours | `/le-parcours` |
 | `/fr/parcours/parcours/1` | Trou n° 1 - Trou n°1 | `/le-parcours` |
 | `/fr/parcours/parcours/10` | Trou n° 10 - Trou n°10 | `/le-parcours` |
@@ -157,9 +157,9 @@ Les règles sont dans `src/config/redirections.ts` et servies par `next.config.t
 | Ancienne URL | Titre de l'ancienne page | Nouvelle URL |
 | --- | --- | --- |
 | `/fr/actualites` | Actualités | `/competitions` |
-| `/fr/actualites/actualites-publiques/actualites-parcours-17-avril` | Actualités - Actualités parcours 17 avril | `/informations-parcours` |
-| `/fr/actualites/actualites-publiques/aeration-des-greens` | Actualités - Aération des Greens | `/informations-parcours` |
-| `/fr/actualites/actualites-publiques/aeration-des-greens-et-departs` | Actualités - Aération des Greens | `/informations-parcours` |
+| `/fr/actualites/actualites-publiques/actualites-parcours-17-avril` | Actualités - Actualités parcours 17 avril | `/le-parcours` |
+| `/fr/actualites/actualites-publiques/aeration-des-greens` | Actualités - Aération des Greens | `/le-parcours` |
+| `/fr/actualites/actualites-publiques/aeration-des-greens-et-departs` | Actualités - Aération des Greens | `/le-parcours` |
 | `/fr/actualites/actualites-publiques/agsca-avril-2024` | Actualités - AGSCA AVRIL 2024 | `/competitions/resultats` |
 | `/fr/actualites/actualites-publiques/amicale-des-seniors-de-provence-1` | Actualités - Amicale des Séniors de Provence - Mars 24 | `/competitions/resultats` |
 | `/fr/actualites/actualites-publiques/amicale-des-seniors-de-provence-avril-24` | Actualités - Amicale des Séniors de Provence - Avril 24 | `/competitions/resultats` |
@@ -170,16 +170,16 @@ Les règles sont dans `src/config/redirections.ts` et servies par `next.config.t
 | `/fr/actualites/actualites-publiques/championnat-de-ligue-par-equipes-2eme-division-messieurs` | Actualités - Championnat de Ligue par Equipes 2ème Division - Messieurs | `/competitions/resultats` |
 | `/fr/actualites/actualites-publiques/championnat-de-ligue-par-equipes-promotion-seniors-messieurs-et-dames` | Actualités - Championnat de Ligue par Equipes Promotion Seniors Messieurs et Dames | `/competitions/resultats` |
 | `/fr/actualites/actualites-publiques/decouvrez-les-nouvelles-fonctionnalites-de-notre-site-internet` | Actualités - Découvrez les Nouvelles Fonctionnalités de Notre Site Internet ! | `/` |
-| `/fr/actualites/actualites-publiques/des-nouvelles-du-parcours-chateau-l-arc` | Actualités - Des nouvelles du parcours Château l’Arc | `/informations-parcours` |
+| `/fr/actualites/actualites-publiques/des-nouvelles-du-parcours-chateau-l-arc` | Actualités - Des nouvelles du parcours Château l’Arc | `/le-parcours` |
 | `/fr/actualites/actualites-publiques/finale-de-ligue-individuel-match-play-2023` | Actualités - Finale de Ligue Individuel Match-Play 2023 | `/competitions/resultats` |
 | `/fr/actualites/actualites-publiques/interclubs-provence-dames-paca` | Actualités - Interclubs Provence Dames Paca | `/competitions/resultats` |
 | `/fr/actualites/actualites-publiques/la-coupe-du-personnel-2023` | Actualités - La Coupe du personnel 2023 | `/competitions/resultats` |
 | `/fr/actualites/actualites-publiques/list/1` | Actualités | `/competitions` |
 | `/fr/actualites/actualites-publiques/race-to-sainte-victoire-2021` | Actualités - Race To Sainte Victoire 2021 | `/competitions/resultats` |
 | `/fr/actualites/actualites-publiques/recrutement-immediat-d-un-caddy-master-commissaire-de-parcours` | Actualités - Recrutement immédiat d'un caddy master/commissaire de parcours | `/contact` |
-| `/fr/actualites/articles/actualites-parcours-17-avril` | Actualités - Actualités parcours 17 avril | `/informations-parcours` |
-| `/fr/actualites/articles/aeration-des-greens` | Actualités - Aération des Greens | `/informations-parcours` |
-| `/fr/actualites/articles/aeration-des-greens-et-departs` | Actualités - Aération des Greens | `/informations-parcours` |
+| `/fr/actualites/articles/actualites-parcours-17-avril` | Actualités - Actualités parcours 17 avril | `/le-parcours` |
+| `/fr/actualites/articles/aeration-des-greens` | Actualités - Aération des Greens | `/le-parcours` |
+| `/fr/actualites/articles/aeration-des-greens-et-departs` | Actualités - Aération des Greens | `/le-parcours` |
 | `/fr/actualites/articles/agsca-avril-2024` | Actualités - AGSCA AVRIL 2024 | `/competitions/resultats` |
 | `/fr/actualites/articles/amicale-des-seniors-de-provence-1` | Actualités - Amicale des Séniors de Provence - Mars 24 | `/competitions/resultats` |
 | `/fr/actualites/articles/amicale-des-seniors-de-provence-avril-24` | Actualités - Amicale des Séniors de Provence - Avril 24 | `/competitions/resultats` |
@@ -191,7 +191,7 @@ Les règles sont dans `src/config/redirections.ts` et servies par `next.config.t
 | `/fr/actualites/articles/championnat-de-ligue-par-equipes-promotion-seniors-messieurs-et-dames` | Actualités - Championnat de Ligue par Equipes Promotion Seniors Messieurs et Dames | `/competitions/resultats` |
 | `/fr/actualites/articles/de-nouvelles-balles-au-practice` | Actualités - De nouvelles balles au practice | `/le-parcours` |
 | `/fr/actualites/articles/decouvrez-les-nouvelles-fonctionnalites-de-notre-site-internet` | Actualités - Découvrez les Nouvelles Fonctionnalités de Notre Site Internet ! | `/` |
-| `/fr/actualites/articles/des-nouvelles-du-parcours-chateau-l-arc` | Actualités - Des nouvelles du parcours Château l’Arc | `/informations-parcours` |
+| `/fr/actualites/articles/des-nouvelles-du-parcours-chateau-l-arc` | Actualités - Des nouvelles du parcours Château l’Arc | `/le-parcours` |
 | `/fr/actualites/articles/finale-de-ligue-individuel-match-play-2023` | Actualités - Finale de Ligue Individuel Match-Play 2023 | `/competitions/resultats` |
 | `/fr/actualites/articles/interclubs-provence-dames-paca` | Actualités - Interclubs Provence Dames Paca | `/competitions/resultats` |
 | `/fr/actualites/articles/la-coupe-du-personnel-2023` | Actualités - La Coupe du personnel 2023 | `/competitions/resultats` |

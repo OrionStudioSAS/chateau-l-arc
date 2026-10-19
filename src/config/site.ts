@@ -115,7 +115,6 @@ export const pagesAVenir = {
  * `info` reste la page complète de l'état des installations (menu mobile).
  */
 export const headerActions = {
-  info: { label: "Informations sur le parcours", href: "/informations-parcours" as Route },
   membre: { label: "Devenir membre", href: pagesAVenir.devenirMembre },
   reservation: { label: "Réserver un départ", href: urlReservation as Route },
 };
@@ -172,7 +171,6 @@ export const routesPubliques: NavItem[] = [
   { label: "Nous contacter", href: "/contact" },
   { label: "Résultats des compétitions", href: "/competitions/resultats" },
   { label: "Actualités", href: "/actualites" },
-  { label: "Informations sur le parcours", href: "/informations-parcours" },
   { label: "FAQ", href: "/faq" },
 ];
 

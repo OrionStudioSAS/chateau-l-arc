@@ -73,8 +73,7 @@ export function themesFaq(grille: GrilleTarifs): ThemeFaq[] {
       {
         question: "Comment connaître l'état du parcours avant de venir ?",
         reponse:
-          "L'accueil met à jour l'état du parcours, des voiturettes et des installations chaque matin. Il est affiché en haut du site (« Parcours ouvert ») et détaillé sur la page dédiée.",
-        lien: { label: "Voir l'état du jour", href: "/informations-parcours" },
+          "L'accueil met à jour l'état du parcours, des voiturettes et des installations chaque matin. Il est affiché en haut du site : cliquez sur « Parcours ouvert » pour le détail.",
       },
       {
         question: "Une tenue particulière est-elle exigée ?",
@@ -255,8 +254,7 @@ export function themesFaq(grille: GrilleTarifs): ThemeFaq[] {
       {
         question: "Les voiturettes sont-elles toujours autorisées ?",
         reponse:
-          "Leur circulation dépend de l'état du terrain. L'accueil indique chaque matin si elles sont autorisées.",
-        lien: { label: "Voir l'état du jour", href: "/informations-parcours" },
+          "Leur circulation dépend de l'état du terrain. L'accueil indique chaque matin si elles sont autorisées, en haut du site (« Parcours ouvert »).",
       },
     ],
   },

@@ -26,7 +26,6 @@ const pages: { chemin: string; titre: string; description: string }[] = [
   { chemin: "/academie", titre: "Académie", description: "École de golf juniors dès 4 ans, formules Prestige adultes, stages et initiations." },
   { chemin: "/competitions", titre: "Compétitions", description: "Calendrier de la saison et inscriptions en ligne." },
   { chemin: "/competitions/resultats", titre: "Résultats", description: "Résultats des compétitions passées." },
-  { chemin: "/informations-parcours", titre: "État du parcours", description: "Ouverture du parcours, du practice et des voiturettes, mis à jour par l'accueil." },
   { chemin: "/histoire", titre: "Histoire du domaine", description: "Le château depuis 1620 et la création du golf en 1985." },
   { chemin: "/faq", titre: "Questions fréquentes", description: "Réservation, niveau requis, tenue, tarifs, accès." },
   { chemin: "/contact", titre: "Contact et accès", description: "Coordonnées et itinéraire." },

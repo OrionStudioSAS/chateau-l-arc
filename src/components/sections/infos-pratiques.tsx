@@ -1,10 +1,8 @@
-import Link from "next/link";
 
 import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { INFOS_CARTES, INFOS_NOTE, INFOS_SURTITRE, INFOS_TITRE } from "@/constants";
 import { Surtitre } from "@/components/ui/surtitre";
-import { headerActions } from "@/config/site";
 import { getStatutInstallations } from "@/lib/api/content";
 import { libelleEtat, optionCourante } from "@/lib/statut";
 import { cn } from "@/lib/cn";
@@ -111,10 +109,7 @@ export async function InfosPratiques() {
           </p>
 
           {etat ? (
-            <Link
-              href={headerActions.info.href}
-              className="flex items-center gap-2 font-semibold text-club-950 underline-offset-4 hover:underline"
-            >
+            <p className="flex items-center gap-2 font-semibold text-club-950">
               <span
                 aria-hidden="true"
                 className={cn(
@@ -127,7 +122,7 @@ export async function InfosPratiques() {
                 )}
               />
               {etat}
-            </Link>
+            </p>
           ) : null}
         </div>
       </Container>

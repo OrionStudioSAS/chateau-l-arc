@@ -13,12 +13,12 @@ export type Redirection = { source: string; destination: string };
 
 /** Anciennes actualités : chacune vers la page la plus proche de son sujet. */
 const actualites: Record<string, string> = {
-  // État du parcours, travaux, practice
-  "actualites-parcours-17-avril": "/informations-parcours",
-  "aeration-des-greens": "/informations-parcours",
-  "aeration-des-greens-et-departs": "/informations-parcours",
-  "parcours-point-au-17-novembre": "/informations-parcours",
-  "des-nouvelles-du-parcours-chateau-l-arc": "/informations-parcours",
+  // État du parcours, travaux, practice : page du parcours
+  "actualites-parcours-17-avril": "/le-parcours",
+  "aeration-des-greens": "/le-parcours",
+  "aeration-des-greens-et-departs": "/le-parcours",
+  "parcours-point-au-17-novembre": "/le-parcours",
+  "des-nouvelles-du-parcours-chateau-l-arc": "/le-parcours",
   "reouverture-de-la-route-vers-le-practice": "/le-parcours",
   "annonce-speciale-practice": "/le-parcours",
   "de-nouvelles-balles-au-practice": "/le-parcours",

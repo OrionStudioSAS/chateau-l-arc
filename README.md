@@ -76,7 +76,6 @@ curl -X POST https://<domaine>/api/revalidate \
 | --- | --- |
 | `/` | Hero, accès, actualités (en attente de la maquette définitive) |
 | `/le-parcours`, `/histoire`, `/academie` | Coquilles en attente de maquette |
-| `/informations-parcours` | État des installations |
 | Devenir membre, restaurant, proshop, pages légales… | Pas encore construites : liens vers la 404 (`pagesAVenir` dans `src/config/site.ts`) |
 | `/tarifs` | Liste branchée sur la couche contenu (montants factices) |
 | `/actualites`, `/actualites/[slug]` | Branchées sur la couche contenu |
@@ -216,7 +215,7 @@ Ce qui est en place et la check-list de mise en ligne : `docs/seo-mise-en-ligne.
 
 - Remplacer les coordonnées marquées `TODO` dans `src/config/site.ts`.
 - Intégrer le blason du club à la place du lettrage de `src/components/layout/logo.tsx`.
-- Confirmer les destinations des liens d'en-tête (`/informations-parcours`, `/devenir-membre`,
+- Confirmer les destinations des liens d'en-tête (`/devenir-membre`,
   `/reserver` — réservation interne ou plateforme externe ?).
 - Aligner la palette de `src/app/globals.css` sur la charte (la typo est fixée :
   Bricolage Grotesque, chargée dans `src/app/layout.tsx`).

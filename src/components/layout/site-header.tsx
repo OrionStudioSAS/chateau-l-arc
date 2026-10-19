@@ -299,19 +299,10 @@ export function SiteHeader({
                     Nous appeler
                   </a>
                 </li>
-                <li className="menu-lien" style={delaiLien(headerNav.length + 1)}>
-                  <Link
-                    href={headerActions.info.href}
-                    onClick={() => setMenuOuvert(false)}
-                    className="block border-b border-club-950/10 py-4 text-[14px] uppercase tracking-[0.14em] text-encre"
-                  >
-                    {headerActions.info.label}
-                  </Link>
-                </li>
               </ul>
               <div
                 className="menu-lien mt-6 flex flex-col gap-3"
-                style={delaiLien(headerNav.length + 2)}
+                style={delaiLien(headerNav.length + 1)}
               >
                 <BoutonClair
                   href={headerActions.membre.href}

@@ -17,7 +17,6 @@ const pages: { chemin: string; priorite: number; frequence: MetadataRoute.Sitema
   { chemin: "/competitions", priorite: 0.8, frequence: "weekly", image: "/og/competitions.jpg" },
   { chemin: "/competitions/resultats", priorite: 0.6, frequence: "weekly" },
   { chemin: "/histoire", priorite: 0.6, frequence: "yearly", image: "/og/histoire.jpg" },
-  { chemin: "/informations-parcours", priorite: 0.6, frequence: "daily" },
   { chemin: "/faq", priorite: 0.6, frequence: "monthly" },
   { chemin: "/contact", priorite: 0.5, frequence: "yearly" },
 ];

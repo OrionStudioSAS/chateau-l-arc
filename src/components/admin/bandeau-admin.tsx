@@ -3,14 +3,9 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 
-import {
-  lireHistoriqueBandeau,
-  publierBandeau,
-  type BrouillonBandeau,
-} from "@/app/(admin)/admin/(tableau-de-bord)/bandeau/actions";
+import { publierBandeau, type BrouillonBandeau } from "@/app/(admin)/admin/(tableau-de-bord)/bandeau/actions";
 import { ChampLien, type PropositionLien } from "@/components/admin/champ-lien";
 import { classeChamp } from "@/components/admin/competitions/champs";
-import { HistoriquePublications } from "@/components/admin/historique-publications";
 import { IconeAdmin } from "@/components/admin/icone-admin";
 import { LONGUEUR_MAX_BANDEAU, LONGUEUR_MAX_BOUTON_BANDEAU, slugCompetitionLiee } from "@/lib/bandeau";
 import { cn } from "@/lib/cn";
@@ -64,8 +59,6 @@ export function BandeauAdmin({
   const [b, setB] = useState(bandeau);
   const [appareil, setAppareil] = useState<"ordinateur" | "mobile">("ordinateur");
   const [message, setMessage] = useState<{ ok: boolean; texte: string } | null>(null);
-  const [historique, setHistorique] = useState(false);
-  const fermerHistorique = useCallback(() => setHistorique(false), []);
   const [enCours, demarrer] = useTransition();
   const minuteur = useRef<number | undefined>(undefined);
 
@@ -124,21 +117,11 @@ export function BandeauAdmin({
 
   return (
     <>
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="text-[24px] font-semibold tracking-tight text-neutral-900">Bandeau d&apos;information</h1>
-          <p className="mt-1 text-[14px] text-neutral-500">
-            Ce que vos visiteurs voient en haut du site. Les changements sont visibles dès la publication.
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={() => setHistorique(true)}
-          className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-[14px] font-medium text-neutral-800 transition-colors hover:bg-neutral-50"
-        >
-          <IconeAdmin nom="historique" className="size-4 text-neutral-600" />
-          Historique
-        </button>
+      <div>
+        <h1 className="text-[24px] font-semibold tracking-tight text-neutral-900">Bandeau d&apos;information</h1>
+        <p className="mt-1 text-[14px] text-neutral-500">
+          Ce que vos visiteurs voient en haut du site. Les changements sont visibles dès la publication.
+        </p>
       </div>
 
       <div className="mt-6 grid grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
@@ -370,8 +353,6 @@ export function BandeauAdmin({
           {message.texte}
         </p>
       ) : null}
-
-      {historique ? <HistoriquePublications charger={lireHistoriqueBandeau} onFermer={fermerHistorique} /> : null}
     </>
   );
 }

@@ -3,12 +3,11 @@
 import { updateTag } from "next/cache";
 
 import { tags } from "@/lib/api/content";
-import { historiqueStatut, type EntreeHistorique } from "@/lib/admin/historique";
 import { lienAutorise } from "@/lib/admin/popup";
 import { exigerUtilisateur } from "@/lib/admin/session";
 import { LONGUEUR_MAX_BANDEAU, LONGUEUR_MAX_BOUTON_BANDEAU } from "@/lib/bandeau";
 import { commiter } from "@/lib/contenu/depot";
-import { cheminsContenu, lireDans, versJson, type FichierStatut } from "@/lib/contenu/stockage";
+import { cheminsContenu, lireDans, versJson } from "@/lib/contenu/stockage";
 
 export type BrouillonBandeau = {
   actif: boolean;
@@ -74,28 +73,4 @@ export async function publierBandeau(brouillon: BrouillonBandeau): Promise<Resul
 
   updateTag(tags.bandeau);
   return { ok: true, message: b.actif ? "Bandeau publié sur le site." : "Bandeau masqué sur le site." };
-}
-
-/** Changements du bandeau entre deux versions du fichier. */
-function differences(avant: FichierStatut, apres: FichierStatut): string[] {
-  const [a, b] = [avant.bandeau, apres.bandeau];
-  const lignes: string[] = [];
-  if (a.actif !== b.actif) lignes.push(b.actif ? "Bandeau affiché" : "Bandeau masqué");
-  if (a.message !== b.message) lignes.push(`Message : « ${b.message} »`);
-  if (a.lien?.href !== b.lien?.href || a.lien?.label !== b.lien?.label) {
-    lignes.push(b.lien ? `Bouton : « ${b.lien.label} » → ${b.lien.href}` : "Bouton retiré");
-  }
-  return lignes;
-}
-
-/** Dix dernières publications du bandeau, avec ce qui a changé à chacune. */
-export async function lireHistoriqueBandeau(): Promise<EntreeHistorique[]> {
-  await exigerUtilisateur();
-
-  try {
-    return await historiqueStatut(differences);
-  } catch (e) {
-    console.error("Historique du bandeau illisible", e);
-    return [];
-  }
 }

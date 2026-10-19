@@ -1,12 +1,14 @@
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 import { Editable } from "@/components/cms/editable";
-import { REPERES_DETAILS, REPERES_NOTE, REPERES_SURTITRE, REPERES_TITRE } from "@/constants";
 import { REPERES } from "@/lib/reperes";
+import { i18n } from "@/lib/i18n/serveur";
 
 const SECTION = "Le parcours · Repères de départ";
 
-export function ReperesDepart() {
+export async function ReperesDepart() {
+  const { T, tr } = await i18n();
+  const { REPERES_DETAILS, REPERES_NOTE, REPERES_SURTITRE, REPERES_TITRE } = T;
   return (
     <section className="bg-white py-14 lg:py-20">
       <Container>
@@ -37,7 +39,7 @@ export function ReperesDepart() {
               />
 
               <p className="mt-4 text-[16px] font-semibold text-club-950">
-                {repere.nom}
+                {tr(repere.nom)}
               </p>
 
               <Editable path={`${SECTION}.REPERES_DETAILS.${index}.distance`} as="p" className="mt-3 font-butler text-[24px] font-medium leading-none text-club-950">

@@ -1,11 +1,11 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Lien as Link } from "@/components/ui/lien";
 
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 import { Editable } from "@/components/cms/editable";
-import { VENIR_ACCES, VENIR_IMAGE, VENIR_SURTITRE, VENIR_TITRE_1, VENIR_TITRE_2 } from "@/constants";
 import { site, urlItineraire } from "@/config/site";
+import { i18n } from "@/lib/i18n/serveur";
 
 type Picto = "avion" | "train" | "route";
 
@@ -13,7 +13,6 @@ const SECTION = "Histoire · Venir au domaine";
 
 /** Textes dans constants.ts (éditeur visuel) ; pictogrammes ici, dans le même ordre. */
 const pictos: Picto[] = ["avion", "train", "route"];
-const acces = VENIR_ACCES.map((item, index) => ({ ...item, picto: pictos[index] ?? "route" }));
 
 function Pictogramme({ nom }: { nom: Picto | "itineraire" | "repere" }) {
   const chemins = {
@@ -50,7 +49,10 @@ function Pictogramme({ nom }: { nom: Picto | "itineraire" | "repere" }) {
 }
 
 /** « Venir au domaine » : temps d'accès, itinéraire et photo du château. */
-export function VenirAuDomaine() {
+export async function VenirAuDomaine() {
+  const { T, tr } = await i18n();
+  const { VENIR_ACCES, VENIR_IMAGE, VENIR_SURTITRE, VENIR_TITRE_1, VENIR_TITRE_2 } = T;
+  const acces = VENIR_ACCES.map((item, index) => ({ ...item, picto: pictos[index] ?? "route" }));
   return (
     <section className="bg-white py-14 lg:py-20">
       <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
@@ -86,13 +88,13 @@ export function VenirAuDomaine() {
               className="inline-flex items-center gap-2 rounded-sm bg-club-950 px-5 py-3.5 text-[13px] font-semibold text-sable-50 transition-colors hover:bg-club-800"
             >
               <Pictogramme nom="itineraire" />
-              Itinéraire
+              {tr("Itinéraire")}
             </a>
             <Link
               href="/contact"
               className="inline-flex items-center rounded-sm border border-club-950/25 px-5 py-3.5 text-[13px] font-semibold text-club-950 transition-colors hover:bg-sable-50"
             >
-              Nous contacter
+              {tr("Nous contacter")}
             </Link>
           </div>
         </div>
@@ -100,7 +102,7 @@ export function VenirAuDomaine() {
         <Editable path={`${SECTION}.VENIR_IMAGE`} image as="div" className="relative aspect-[4/3] overflow-hidden rounded-sm">
           <Image
             src={VENIR_IMAGE}
-            alt="La façade du Château l'Arc et ses tours, à Fuveau"
+            alt={tr("La façade du Château l'Arc et ses tours, à Fuveau")}
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
             className="object-cover"

@@ -7,6 +7,7 @@ import { JOURS_AVANT_RETOUR, surtitrePopup } from "@/lib/admin/popup";
 import { evenements, suivre } from "@/lib/analytics/evenements";
 import type { Popup } from "@/lib/api/types";
 import { aujourdhuiAParis } from "@/lib/format";
+import { useI18n } from "@/lib/i18n/client";
 
 /**
  * Mémorise la version fermée et la date de fermeture. Une seule clé : une
@@ -29,6 +30,7 @@ function dejaFermee(version: string): boolean {
 }
 
 export function PopupMarketing({ popup }: { popup: Popup | null }) {
+  const i18n = useI18n();
   const [ouverte, setOuverte] = useState(false);
   const boite = useRef<HTMLDivElement>(null);
   const focusPrecedent = useRef<HTMLElement | null>(null);
@@ -78,6 +80,7 @@ export function PopupMarketing({ popup }: { popup: Popup | null }) {
   }, [ouverte, fermer]);
 
   if (!popup || !ouverte) return null;
+  const { tr, lien } = i18n;
 
   return (
     <div
@@ -94,11 +97,11 @@ export function PopupMarketing({ popup }: { popup: Popup | null }) {
         className="max-h-full w-full max-w-sm overflow-y-auto rounded-xl outline-none"
       >
         <CartePopup
-          surtitre={surtitrePopup(popup.boutonLien, popup.debut)}
-          titre={popup.titre}
-          texte={popup.texte}
-          boutonLibelle={popup.boutonLibelle}
-          boutonLien={popup.boutonLien}
+          surtitre={surtitrePopup(popup.boutonLien, popup.debut, tr)}
+          titre={tr(popup.titre)}
+          texte={tr(popup.texte)}
+          boutonLibelle={popup.boutonLibelle ? tr(popup.boutonLibelle) : undefined}
+          boutonLien={popup.boutonLien ? lien(popup.boutonLien) : undefined}
           afficheUrl={popup.afficheUrl}
           onFermer={fermer}
           onAction={() => {

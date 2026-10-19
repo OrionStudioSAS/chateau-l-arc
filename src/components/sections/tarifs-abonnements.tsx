@@ -1,14 +1,15 @@
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 import { Editable } from "@/components/cms/editable";
-import { TARIFS_ABONNEMENTS_TITRE } from "@/constants";
 import { site } from "@/config/site";
 import { cn } from "@/lib/cn";
 import { getGrilleTarifs } from "@/lib/api/content";
-import { euros } from "@/lib/tarifs";
+import { i18n } from "@/lib/i18n/serveur";
 
 /** Abonnements annuels, avec le prix remisé en paiement comptant. */
 export async function TarifsAbonnements({ annee }: { annee: number }) {
+  const { T, tr, euros } = await i18n();
+  const { TARIFS_ABONNEMENTS_TITRE } = T;
   const { abonnements, remiseComptant } = await getGrilleTarifs();
   const pourcentage = Math.round(remiseComptant.taux * 100);
 
@@ -16,7 +17,7 @@ export async function TarifsAbonnements({ annee }: { annee: number }) {
     <section id="abonnements" className="scroll-mt-28 bg-sable-100 py-14 lg:py-20">
       <Container>
         <Surtitre aligne="gauche" className="text-or-600">
-          Abonnements {annee}
+          {tr("Abonnements")} {annee}
         </Surtitre>
 
         <div className="mt-5 flex flex-wrap items-end justify-between gap-x-8 gap-y-5">
@@ -26,7 +27,7 @@ export async function TarifsAbonnements({ annee }: { annee: number }) {
 
           <div className="flex flex-wrap items-center gap-3">
             <p className="rounded-sm bg-or-500 px-4 py-2.5 text-[13px] font-medium text-white">
-              −{pourcentage}&nbsp;% en paiement comptant jusqu&apos;au {remiseComptant.jusquau}
+              −{pourcentage}&nbsp;% {tr("en paiement comptant jusqu'au")} {remiseComptant.jusquau}
             </p>
             <a
               href={site.contact.telephoneLien}
@@ -43,7 +44,7 @@ export async function TarifsAbonnements({ annee }: { annee: number }) {
               >
                 <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" />
               </svg>
-              Nous appeler
+              {tr("Nous appeler")}
             </a>
           </div>
         </div>
@@ -60,7 +61,7 @@ export async function TarifsAbonnements({ annee }: { annee: number }) {
                 )}
               >
                 <p className={cn("text-[14px] font-semibold", fonce ? "text-sable-50" : "text-club-950")}>
-                  {abonnement.libelle}
+                  {tr(abonnement.libelle)}
                 </p>
                 <p className="mt-3 flex items-baseline gap-2">
                   <span
@@ -72,12 +73,11 @@ export async function TarifsAbonnements({ annee }: { annee: number }) {
                     {euros(abonnement.prix)}
                   </span>
                   <span className={cn("text-[13px]", fonce ? "text-sable-50/60" : "text-encre/50")}>
-                    / an
+                    / {tr("an")}
                   </span>
                 </p>
                 <p className={cn("mt-2 text-[12px]", fonce ? "text-or-400" : "text-or-600")}>
-                  soit {euros(Math.round(abonnement.prix * (1 - remiseComptant.taux)))} en paiement
-                  comptant
+                  {tr("soit")} {euros(Math.round(abonnement.prix * (1 - remiseComptant.taux)))} {tr("en paiement comptant")}
                 </p>
               </li>
             );

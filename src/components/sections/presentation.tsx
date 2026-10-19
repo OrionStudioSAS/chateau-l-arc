@@ -3,11 +3,13 @@ import Image from "next/image";
 import { ChampVideo } from "@/components/cms/champ-video";
 import { PresentationIntro } from "@/components/sections/presentation-intro";
 import { Container } from "@/components/ui/container";
-import { VIDEO_YOUTUBE_ID } from "@/constants";
+import { i18n } from "@/lib/i18n/serveur";
 
 const IMAGE_PROVISOIRE = "/images/banner.jpg";
 
-export function Presentation() {
+export async function Presentation() {
+  const { T, tr } = await i18n();
+  const { VIDEO_YOUTUBE_ID } = T;
   return (
     <section className="overflow-hidden bg-white py-14 lg:py-20">
       <PresentationIntro />
@@ -17,7 +19,7 @@ export function Presentation() {
           {VIDEO_YOUTUBE_ID ? (
             <iframe
               src={`https://www.youtube-nocookie.com/embed/${VIDEO_YOUTUBE_ID}`}
-              title="Vidéo de présentation du Golf Château l'Arc"
+              title={tr("Vidéo de présentation du Golf Château l'Arc")}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
               loading="lazy"

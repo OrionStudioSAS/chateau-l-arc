@@ -1,16 +1,18 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Lien as Link } from "@/components/ui/lien";
 
 import { Editable } from "@/components/cms/editable";
-import { ADHESION_DESCRIPTION, ADHESION_IMAGE, ADHESION_SAISON, ADHESION_TITRE } from "@/constants";
 import { site } from "@/config/site";
+import { i18n } from "@/lib/i18n/serveur";
 
 
 /**
  * Dernier appel de l'accueil, juste avant le pied de page : encart photo en
  * retrait des bords de l'écran, comme sur la maquette.
  */
-export function AppelAdhesion() {
+export async function AppelAdhesion() {
+  const { T } = await i18n();
+  const { ADHESION_DESCRIPTION, ADHESION_IMAGE, ADHESION_SAISON, ADHESION_TITRE } = T;
   return (
     <section className="bg-white px-3 pt-14 sm:px-4 lg:pt-20">
       <div className="relative overflow-hidden bg-club-950 text-white">

@@ -1,12 +1,11 @@
-import Link from "next/link";
+import { Lien as Link } from "@/components/ui/lien";
 
 import { Container } from "@/components/ui/container";
 import { LienFleche } from "@/components/ui/lien-fleche";
 import { Surtitre } from "@/components/ui/surtitre";
 import { Editable } from "@/components/cms/editable";
-import { RESULTATS_SURTITRE, RESULTATS_TITRE } from "@/constants";
 import { getCompetitionsAvecResultats } from "@/lib/api/content";
-import { formatDateCourte } from "@/lib/format";
+import { i18n } from "@/lib/i18n/serveur";
 
 /**
  * Résultats publiés depuis le back-office (PDF + vainqueurs). Sur la page
@@ -21,6 +20,8 @@ export async function DernieresCompetitions({
   /** Toute la saison, sans titre de section ni lien. */
   complet?: boolean;
 }) {
+  const { T, tr, locale } = await i18n();
+  const { RESULTATS_SURTITRE, RESULTATS_TITRE } = T;
   const competitions = await getCompetitionsAvecResultats(complet ? 100 : 3);
 
   if (competitions.length === 0) {
@@ -28,7 +29,7 @@ export async function DernieresCompetitions({
       <section className="py-14 lg:py-20">
         <Container>
           <p className="text-[15px] text-encre/60">
-            Les résultats de la saison seront publiés ici, dès le lendemain de chaque compétition.
+            {tr("Les résultats de la saison seront publiés ici, dès le lendemain de chaque compétition.")}
           </p>
         </Container>
       </section>
@@ -51,7 +52,7 @@ export async function DernieresCompetitions({
               </Editable>
             </div>
             <LienFleche href="/competitions/resultats" className="text-[14px]">
-              Tous les résultats {saison}
+              {tr("Tous les résultats")} {saison}
             </LienFleche>
           </div>
         )}
@@ -63,15 +64,15 @@ export async function DernieresCompetitions({
               className="grid grid-cols-[4.5rem_minmax(0,1fr)] items-center gap-x-4 gap-y-3 py-5 lg:grid-cols-[5rem_minmax(0,1fr)_auto]"
             >
               <p className="text-[13px] font-medium text-or-600">
-                {formatDateCourte(competition.dateDebut)}
+                {new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", timeZone: "UTC" }).format(new Date(`${competition.dateDebut.slice(0, 10)}T12:00:00Z`))}
               </p>
               <div className="min-w-0">
                 <h3 className="font-butler text-[20px] font-medium leading-tight text-club-950 sm:text-[22px]">
-                  {competition.nom}
+                  {tr(competition.nom)}
                 </h3>
                 {competition.vainqueurs ? (
                   <p className="mt-1 text-[13px] text-encre/60">
-                    Vainqueurs : {competition.vainqueurs}
+                    {tr("Vainqueurs")} : {competition.vainqueurs}
                   </p>
                 ) : null}
               </div>
@@ -94,14 +95,14 @@ export async function DernieresCompetitions({
                   >
                     <path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14" />
                   </svg>
-                  PDF officiel
-                  <span className="sr-only"> — résultats de {competition.nom}</span>
+                  {tr("PDF officiel")}
+                  <span className="sr-only"> — {tr("résultats de")} {tr(competition.nom)}</span>
                 </a>
                 <Link
                   href={`/competitions/${competition.slug}`}
                   className="inline-flex items-center gap-2 rounded-sm bg-club-950 px-5 py-3 text-[13px] font-semibold text-sable-50 transition-colors hover:bg-club-800"
                 >
-                  Voir le classement <span aria-hidden="true">→</span>
+                  {tr("Voir le classement")} <span aria-hidden="true">→</span>
                 </Link>
               </div>
             </li>

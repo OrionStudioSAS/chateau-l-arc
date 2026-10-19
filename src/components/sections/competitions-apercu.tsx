@@ -1,16 +1,17 @@
-import Link from "next/link";
+import { Lien as Link } from "@/components/ui/lien";
 
 import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { LienFleche } from "@/components/ui/lien-fleche";
 import { Surtitre } from "@/components/ui/surtitre";
-import { COMPETITIONS_SURTITRE, COMPETITIONS_TITRE } from "@/constants";
 import { getProchainesCompetitions } from "@/lib/api/content";
 import { cn } from "@/lib/cn";
-import { tonsPastille } from "@/lib/competitions";
-import { formatJour, formatMoisCourt } from "@/lib/format";
+import { libelleEtat, tonsPastille } from "@/lib/competitions";
+import { i18n } from "@/lib/i18n/serveur";
 
 export async function CompetitionsApercu() {
+  const { T, tr, locale } = await i18n();
+  const { COMPETITIONS_SURTITRE, COMPETITIONS_TITRE } = T;
   const competitions = await getProchainesCompetitions(3);
 
   return (
@@ -28,13 +29,13 @@ export async function CompetitionsApercu() {
             </Editable>
           </div>
           <LienFleche href="/competitions" className="text-[14px]">
-            Voir tout le calendrier
+            {tr("Voir tout le calendrier")}
           </LienFleche>
         </div>
 
         {competitions.length === 0 ? (
           <p className="mt-10 text-[15px] text-encre/60">
-            Le calendrier de la saison sera bientôt en ligne.
+            {tr("Le calendrier de la saison sera bientôt en ligne.")}
           </p>
         ) : (
           <ul className="mt-10 grid gap-5 lg:mt-12 lg:grid-cols-3">
@@ -46,10 +47,10 @@ export async function CompetitionsApercu() {
                 <div className="flex items-start gap-4">
                   <p className="flex size-14 shrink-0 flex-col items-center justify-center rounded-sm bg-club-950 leading-none">
                     <span className="font-butler text-[22px] font-bold text-sable-50">
-                      {formatJour(competition.dateDebut)}
+                      {new Intl.DateTimeFormat(locale, { day: "2-digit", timeZone: "UTC" }).format(new Date(`${competition.dateDebut.slice(0, 10)}T12:00:00Z`))}
                     </span>
                     <span className="mt-1 text-[10px] font-medium uppercase text-or-400">
-                      {formatMoisCourt(competition.dateDebut)}
+                      {new Intl.DateTimeFormat(locale, { month: "short", timeZone: "UTC" }).format(new Date(`${competition.dateDebut.slice(0, 10)}T12:00:00Z`)).replace(".", "")}
                     </span>
                   </p>
 
@@ -60,18 +61,19 @@ export async function CompetitionsApercu() {
                         tonsPastille[competition.etat.ton],
                       )}
                     >
-                      {competition.etat.libelle}
+                      {libelleEtat(competition, tr, locale)}
                     </p>
                     <p className="mt-1.5 text-[12px] leading-relaxed text-gris-500">
                       {[competition.formule, competition.depart, competition.indexMaximum]
-                        .filter(Boolean)
+                        .filter((v): v is string => Boolean(v))
+                        .map(tr)
                         .join(" · ")}
                     </p>
                   </div>
                 </div>
 
                 <h3 className="mt-5 flex-1 font-butler text-[22px] font-medium leading-tight text-club-950">
-                  {competition.nom}
+                  {tr(competition.nom)}
                 </h3>
 
                 <Link
@@ -84,7 +86,7 @@ export async function CompetitionsApercu() {
                       : "border border-club-950/25 text-club-950 hover:bg-sable-50",
                   )}
                 >
-                  {competition.etat.action} <span aria-hidden="true">→</span>
+                  {tr(competition.etat.action)} <span aria-hidden="true">→</span>
                 </Link>
               </li>
             ))}

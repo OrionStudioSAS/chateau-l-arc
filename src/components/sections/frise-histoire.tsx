@@ -2,9 +2,9 @@ import Image from "next/image";
 
 import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
-import { FRISE_CHAPITRES, FRISE_SURTITRE, FRISE_TITRE } from "@/constants";
 import { Surtitre } from "@/components/ui/surtitre";
 import { cn } from "@/lib/cn";
+import { i18n } from "@/lib/i18n/serveur";
 
 /**
  * Chapitres de la chronologie. Une image sur deux à gauche, le texte en face.
@@ -13,7 +13,8 @@ import { cn } from "@/lib/cn";
  */
 const etapes: {
   cle: string;
-  date: React.ReactNode;
+  /** « XXe » : le suffixe d'un siècle s'affiche en exposant (cf. siecle). */
+  date: string;
   note?: string;
   alt: string;
   noirEtBlanc?: boolean;
@@ -25,12 +26,7 @@ const etapes: {
   },
   {
     cle: "xxe",
-    // Le « e » est en exposant, comme il se doit pour un siècle.
-    date: (
-      <>
-        XX<sup>e</sup>
-      </>
-    ),
+    date: "XXe",
     alt: "Le grand salon du château",
   },
   {
@@ -54,8 +50,23 @@ const etapes: {
 
 const SECTION = "Histoire · Chronologie";
 
+/** « XXe » → XX<sup>e</sup> (« 20th » → 20<sup>th</sup>) : le suffixe d'un siècle en exposant. */
+function siecle(date: string): React.ReactNode {
+  const m = date.match(/^([IVXLC]+|\d+)(e|er|th|st|nd|rd)$/);
+  return m ? (
+    <>
+      {m[1]}
+      <sup>{m[2]}</sup>
+    </>
+  ) : (
+    date
+  );
+}
+
 /** « Quatre siècles, cinq chapitres » : frise verticale alternée. */
-export function FriseHistoire() {
+export async function FriseHistoire() {
+  const { T, tr } = await i18n();
+  const { FRISE_CHAPITRES, FRISE_SURTITRE, FRISE_TITRE } = T;
   return (
     <section className="bg-white py-14 lg:py-20">
       <Container>
@@ -101,7 +112,7 @@ export function FriseHistoire() {
                 >
                   <Image
                     src={chapitre.image}
-                    alt={etape.alt}
+                    alt={tr(etape.alt)}
                     fill
                     sizes="(min-width: 1024px) 40vw, 100vw"
                     className={cn("object-cover", etape.noirEtBlanc && "grayscale")}
@@ -110,7 +121,7 @@ export function FriseHistoire() {
 
                 <div className={imageAGauche ? "lg:order-2" : "lg:order-1"}>
                   <p className="font-butler text-[44px] font-medium leading-none text-or-500 sm:text-[56px]">
-                    {etape.date}
+                    {siecle(tr(etape.date))}
                   </p>
                   <Editable path={`${chemin}.titre`} as="h3" className="mt-3 font-butler text-[26px] font-medium text-club-950 sm:text-[30px]">
                     {chapitre.titre}
@@ -123,7 +134,7 @@ export function FriseHistoire() {
                       <span aria-hidden="true" className="text-or-500">
                         ▤
                       </span>
-                      {etape.note}
+                      {tr(etape.note)}
                     </p>
                   ) : null}
                 </div>

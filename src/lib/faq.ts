@@ -1,25 +1,4 @@
-import {
-  FAQ_ABONNEMENTS_QUESTIONS,
-  FAQ_ABONNEMENTS_TITRE,
-  FAQ_ACADEMIE_QUESTIONS,
-  FAQ_ACADEMIE_TITRE,
-  FAQ_ACCES_QUESTIONS,
-  FAQ_ACCES_TITRE,
-  FAQ_COMPETITIONS_QUESTIONS,
-  FAQ_COMPETITIONS_TITRE,
-  FAQ_GOLF_QUESTIONS,
-  FAQ_GOLF_TITRE,
-  FAQ_PRACTICE_QUESTIONS,
-  FAQ_PRACTICE_TITRE,
-  FAQ_RESERVATIONS_QUESTIONS,
-  FAQ_RESERVATIONS_TITRE,
-  FAQ_RESTAURANT_QUESTIONS,
-  FAQ_RESTAURANT_TITRE,
-  FAQ_SEMINAIRES_QUESTIONS,
-  FAQ_SEMINAIRES_TITRE,
-  FAQ_TARIFS_QUESTIONS,
-  FAQ_TARIFS_TITRE,
-} from "@/constants";
+import type { Constantes } from "@/lib/i18n";
 
 /**
  * Questions fréquentes, par thème. Tous les textes (titres, questions,
@@ -75,16 +54,18 @@ const theme = (
   questions: [...questions],
 });
 
-/** Thèmes dans l'ordre d'affichage. */
-export const themesFaq: ThemeFaq[] = [
-  theme("golf-parcours", "drapeau", "Le golf & le parcours", "FAQ_GOLF", FAQ_GOLF_TITRE, FAQ_GOLF_QUESTIONS),
-  theme("reservations", "calendrier", "Réservations & départs", "FAQ_RESERVATIONS", FAQ_RESERVATIONS_TITRE, FAQ_RESERVATIONS_QUESTIONS),
-  theme("tarifs", "etiquette", "Tarifs & paiement", "FAQ_TARIFS", FAQ_TARIFS_TITRE, FAQ_TARIFS_QUESTIONS),
-  theme("abonnements", "membres", "Abonnements & vie de club", "FAQ_ABONNEMENTS", FAQ_ABONNEMENTS_TITRE, FAQ_ABONNEMENTS_QUESTIONS),
-  theme("academie", "academie", "L'Académie : cours & stages", "FAQ_ACADEMIE", FAQ_ACADEMIE_TITRE, FAQ_ACADEMIE_QUESTIONS),
-  theme("competitions", "trophee", "Compétitions", "FAQ_COMPETITIONS", FAQ_COMPETITIONS_TITRE, FAQ_COMPETITIONS_QUESTIONS),
-  theme("practice", "practice", "Practice & matériel", "FAQ_PRACTICE", FAQ_PRACTICE_TITRE, FAQ_PRACTICE_QUESTIONS),
-  theme("restaurant", "couverts", "Restaurant & Club House", "FAQ_RESTAURANT", FAQ_RESTAURANT_TITRE, FAQ_RESTAURANT_QUESTIONS),
-  theme("seminaires", "salle", "Séminaires & réceptions", "FAQ_SEMINAIRES", FAQ_SEMINAIRES_TITRE, FAQ_SEMINAIRES_QUESTIONS),
-  theme("acces", "repere", "Accès & infos pratiques", "FAQ_ACCES", FAQ_ACCES_TITRE, FAQ_ACCES_QUESTIONS),
-];
+/** Thèmes dans l'ordre d'affichage, avec les textes de la langue de la page. */
+export function themesFaq(T: Constantes): ThemeFaq[] {
+  return [
+    theme("golf-parcours", "drapeau", "Le golf & le parcours", "FAQ_GOLF", T.FAQ_GOLF_TITRE, T.FAQ_GOLF_QUESTIONS),
+    theme("reservations", "calendrier", "Réservations & départs", "FAQ_RESERVATIONS", T.FAQ_RESERVATIONS_TITRE, T.FAQ_RESERVATIONS_QUESTIONS),
+    theme("tarifs", "etiquette", "Tarifs & paiement", "FAQ_TARIFS", T.FAQ_TARIFS_TITRE, T.FAQ_TARIFS_QUESTIONS),
+    theme("abonnements", "membres", "Abonnements & vie de club", "FAQ_ABONNEMENTS", T.FAQ_ABONNEMENTS_TITRE, T.FAQ_ABONNEMENTS_QUESTIONS),
+    theme("academie", "academie", "L'Académie : cours & stages", "FAQ_ACADEMIE", T.FAQ_ACADEMIE_TITRE, T.FAQ_ACADEMIE_QUESTIONS),
+    theme("competitions", "trophee", "Compétitions", "FAQ_COMPETITIONS", T.FAQ_COMPETITIONS_TITRE, T.FAQ_COMPETITIONS_QUESTIONS),
+    theme("practice", "practice", "Practice & matériel", "FAQ_PRACTICE", T.FAQ_PRACTICE_TITRE, T.FAQ_PRACTICE_QUESTIONS),
+    theme("restaurant", "couverts", "Restaurant & Club House", "FAQ_RESTAURANT", T.FAQ_RESTAURANT_TITRE, T.FAQ_RESTAURANT_QUESTIONS),
+    theme("seminaires", "salle", "Séminaires & réceptions", "FAQ_SEMINAIRES", T.FAQ_SEMINAIRES_TITRE, T.FAQ_SEMINAIRES_QUESTIONS),
+    theme("acces", "repere", "Accès & infos pratiques", "FAQ_ACCES", T.FAQ_ACCES_TITRE, T.FAQ_ACCES_QUESTIONS),
+  ];
+}

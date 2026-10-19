@@ -2,6 +2,8 @@ import type { Installation } from "@/lib/api/types";
 import type { Meteo } from "@/lib/meteo";
 import { optionCourante, valeurStatut, type TonStatut } from "@/lib/statut";
 import { cn } from "@/lib/cn";
+import type { Traducteur } from "@/lib/i18n";
+import { useI18n } from "@/lib/i18n/client";
 
 type Picto = "drapeau" | "voiturette" | "cible" | "couverts";
 
@@ -65,16 +67,6 @@ function Pictogramme({ nom, className }: { nom: Picto | Meteo["picto"] | "vent";
   );
 }
 
-const heureParis = new Intl.DateTimeFormat("fr-FR", {
-  hour: "numeric",
-  minute: "2-digit",
-  timeZone: "Europe/Paris",
-});
-const jourParis = new Intl.DateTimeFormat("fr-FR", {
-  day: "numeric",
-  month: "short",
-  timeZone: "Europe/Paris",
-});
 const dateParis = new Intl.DateTimeFormat("fr-CA", { timeZone: "Europe/Paris" });
 
 /**
@@ -82,7 +74,7 @@ const dateParis = new Intl.DateTimeFormat("fr-CA", { timeZone: "Europe/Paris" })
  * N'est rendu qu'à l'ouverture du panneau, donc côté navigateur : `new Date()`
  * y donne bien l'heure du visiteur.
  */
-function libelleMiseAJour(installations: Installation[]): string | null {
+function libelleMiseAJour(installations: Installation[], tr: Traducteur, locale: string): string | null {
   const derniere = installations.reduce<string | null>(
     (plusRecente, { majLe }) => (!plusRecente || majLe > plusRecente ? majLe : plusRecente),
     null,
@@ -91,17 +83,19 @@ function libelleMiseAJour(installations: Installation[]): string | null {
 
   const date = new Date(derniere);
   if (dateParis.format(date) === dateParis.format(new Date())) {
-    return `Mis à jour ${heureParis.format(date).replace(":", "h")}`;
+    const heure = new Intl.DateTimeFormat(locale, { hour: "numeric", minute: "2-digit", timeZone: "Europe/Paris" }).format(date);
+    return `${tr("Mis à jour")} ${locale.startsWith("fr") ? heure.replace(":", "h") : heure}`;
   }
-  return `Mis à jour le ${jourParis.format(date)}`;
+  const jour = new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", timeZone: "Europe/Paris" }).format(date);
+  return `${tr("Mis à jour le")} ${jour}`;
 }
 
 /** Libellé du bouton d'ouverture : l'état du parcours, ou un repli neutre. */
-export function libelleBoutonStatut(installations: Installation[]) {
+export function libelleBoutonStatut(installations: Installation[], tr: Traducteur) {
   const parcours = installations.find((installation) => installation.cle === "parcours");
-  if (!parcours) return { texte: "Infos du jour", ton: null };
+  if (!parcours) return { texte: tr("Infos du jour"), ton: null };
   const option = optionCourante(parcours);
-  return { texte: `Parcours ${option.libelle.toLowerCase()}`, ton: option.ton };
+  return { texte: `${tr("Parcours")} ${tr(option.libelle).toLowerCase()}`, ton: option.ton };
 }
 
 const couleursPastille: Record<TonStatut, string> = {
@@ -125,23 +119,24 @@ export function PanneauStatut({
   installations: Installation[];
   meteo: Meteo | null;
 }) {
+  const { tr, locale } = useI18n();
   const affichees = lignes.flatMap((ligne) => {
     const installation = installations.find((candidate) => candidate.cle === ligne.cle);
     if (!installation) return [];
 
     return [{ ...ligne, ton: optionCourante(installation).ton, valeur: valeurStatut(installation) }];
   });
-  const miseAJour = libelleMiseAJour(installations);
+  const miseAJour = libelleMiseAJour(installations, tr, locale);
 
   return (
     <div className="px-6 pb-5 pt-5">
       <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-or-400">
-        Aujourd&apos;hui au golf
+        {tr("Aujourd'hui au golf")}
       </p>
 
       {affichees.length === 0 ? (
         <p className="mt-4 text-[14px] text-white/70">
-          Informations momentanément indisponibles.
+          {tr("Informations momentanément indisponibles.")}
         </p>
       ) : (
         <dl className="mt-4 space-y-3.5">
@@ -149,11 +144,11 @@ export function PanneauStatut({
             <div key={ligne.cle} className="flex items-center justify-between gap-6">
               <dt className="flex items-center gap-3 text-[14px] text-white/85">
                 <Pictogramme nom={ligne.picto} className="text-white/80" />
-                {ligne.libelle}
+                {tr(ligne.libelle)}
               </dt>
               <dd className="flex items-center gap-2.5 text-[14px] font-semibold text-white">
                 <PastilleStatut ton={ligne.ton} />
-                {ligne.valeur}
+                {tr(ligne.valeur)}
               </dd>
             </div>
           ))}
@@ -166,12 +161,12 @@ export function PanneauStatut({
             <>
               <span className="flex items-center gap-2">
                 <Pictogramme nom={meteo.picto} className="text-or-400" />
-                {meteo.temperature}&nbsp;°C · {meteo.ciel}
+                {meteo.temperature}&nbsp;°C · {tr(meteo.ciel)}
               </span>
               <span className="flex items-center gap-2">
                 <Pictogramme nom="vent" className="text-white/70" />
                 <span>
-                  <span className="sr-only">Vent </span>
+                  <span className="sr-only">{tr("Vent")} </span>
                   {meteo.vent}&nbsp;km/h
                 </span>
               </span>

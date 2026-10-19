@@ -1,5 +1,4 @@
-import Link from "next/link";
-import type { Route } from "next";
+import { Lien as Link } from "@/components/ui/lien";
 
 import { cn } from "@/lib/cn";
 import { proprietesLien } from "@/lib/liens";
@@ -9,12 +8,12 @@ import { proprietesLien } from "@/lib/liens";
  * Générique comme `next/link`, pour accepter aussi les routes dynamiques
  * construites par interpolation sans passer par un cast.
  */
-export function LienFleche<T extends string>({
+export function LienFleche({
   href,
   className,
   children,
 }: {
-  href: Route<T>;
+  href: string;
   className?: string;
   children: React.ReactNode;
 }) {

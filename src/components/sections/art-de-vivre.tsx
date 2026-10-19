@@ -1,19 +1,18 @@
 import Image from "next/image";
-import Link from "next/link";
-import type { Route } from "next";
+import { Lien as Link } from "@/components/ui/lien";
 
 import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
-import { ART_DE_VIVRE_CARTES, ART_DE_VIVRE_SURTITRE, ART_DE_VIVRE_TITRE, ART_DE_VIVRE_DESCRIPTION } from "@/constants";
 import { pagesAVenir, urlRestaurant } from "@/config/site";
 import { estPagePubliqueVisible } from "@/config/visibilite";
 import { cn } from "@/lib/cn";
+import { i18n } from "@/lib/i18n/serveur";
 
 type Carte = {
   label: string;
   titre: string;
-  href?: Route;
+  href?: string;
   /** Lien vers un autre site, ouvert dans un nouvel onglet (prioritaire sur `href`). */
   externe?: string;
   image: string;
@@ -32,11 +31,6 @@ const dispositions: Omit<Carte, "label" | "titre" | "image">[] = [
   { href: pagesAVenir.proshop, grille: "lg:col-span-6" },
   { href: "/competitions", grille: "lg:col-span-6" },
 ];
-
-const cartes: Carte[] = ART_DE_VIVRE_CARTES.map((carte, index) => ({
-  ...carte,
-  ...(dispositions[index] ?? { grille: "lg:col-span-6" }),
-}));
 
 const CHEMIN = "Accueil · Art de vivre.ART_DE_VIVRE_CARTES";
 
@@ -80,7 +74,13 @@ function ContenuCarte({ carte, index }: { carte: Carte; index: number }) {
   );
 }
 
-export function ArtDeVivre() {
+export async function ArtDeVivre() {
+  const { T, tr } = await i18n();
+  const { ART_DE_VIVRE_SURTITRE, ART_DE_VIVRE_TITRE, ART_DE_VIVRE_DESCRIPTION, ART_DE_VIVRE_CARTES } = T;
+  const cartes: Carte[] = ART_DE_VIVRE_CARTES.map((carte, index) => ({
+    ...carte,
+    ...(dispositions[index] ?? { grille: "lg:col-span-6" }),
+  }));
   return (
     <section className="bg-sable-100 py-14 lg:py-20">
       <Container>
@@ -125,7 +125,7 @@ export function ArtDeVivre() {
                   className={classes}
                 >
                   <ContenuCarte carte={carte} index={index} />
-                  <span className="sr-only"> (s&apos;ouvre dans un nouvel onglet)</span>
+                  <span className="sr-only"> ({tr("s'ouvre dans un nouvel onglet")})</span>
                 </a>
               );
             }

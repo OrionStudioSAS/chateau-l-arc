@@ -1,14 +1,15 @@
 "use client";
 
-import Link from "next/link";
+import { Lien as Link } from "@/components/ui/lien";
 import { useEffect, useRef, useState, useTransition } from "react";
 
-import { envoyerDemande, type EnvoiDemande, type ResultatEnvoi } from "@/app/(site)/contact/actions";
+import { envoyerDemande, type EnvoiDemande, type ResultatEnvoi } from "@/app/[lang]/contact/actions";
 import { Editable, useModeEdition } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
-import * as T from "@/constants";
 import type { TypeDemande } from "@/lib/demandes";
 import { cn } from "@/lib/cn";
+import * as FR from "@/constants";
+import { useI18n } from "@/lib/i18n/client";
 
 /** Données chiffrées, issues des mêmes sources que les pages Tarifs et Académie. */
 export type OffresContact = {
@@ -31,11 +32,15 @@ const SECTIONS = {
 
 const ORDRE: TypeDemande[] = ["adhesion", "cours", "evenement", "autre"];
 
-const euros = (montant: number) =>
-  `${new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 }).format(montant)} €`;
 const enumerer = (valeurs: string[]) =>
   valeurs.length <= 1 ? valeurs.join("") : `${valeurs.slice(0, -1).join(", ")} & ${valeurs.at(-1)}`;
 const minuscule = (texte: string) => texte.charAt(0).toLowerCase() + texte.slice(1);
+
+/** Libellé affiché (traduit) → libellé français, pour la demande reçue par le club. */
+function versFrancais(valeur: string, traduits: readonly string[], francais: readonly string[]): string {
+  const i = traduits.indexOf(valeur);
+  return i === -1 ? valeur : (francais[i] ?? valeur);
+}
 
 /* ─── Petits éléments du formulaire ─────────────────────────────────── */
 
@@ -229,6 +234,7 @@ type Recap = { titre: string; lignes: [string, string][] };
  * (Demandes) ; tous les textes se modifient dans Pages › Contact.
  */
 export function FormulaireContact({ offres }: { offres: OffresContact }) {
+  const { T, tr, euros, langue, locale } = useI18n();
   const edition = useModeEdition();
   const [type, setType] = useState<TypeDemande>("adhesion");
   const [resultat, setResultat] = useState<Extract<ResultatEnvoi, { ok: true }> | null>(null);
@@ -277,7 +283,7 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
   useEffect(() => {
     ouvertLe.current = Date.now();
     // Mois de début proposés : calculés ici, la page étant prérendue.
-    const format = new Intl.DateTimeFormat("fr-FR", { month: "long", year: "numeric" });
+    const format = new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" });
     const maintenant = new Date();
     const liste = Array.from({ length: 8 }, (_, i) => {
       const d = new Date(maintenant.getFullYear(), maintenant.getMonth() + i, 1);
@@ -286,14 +292,14 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
     });
     const minuteur = window.setTimeout(() => setMois(liste), 0);
     return () => window.clearTimeout(minuteur);
-  }, []);
+  }, [locale]);
 
   const enfant = publicCours === 1;
   const formulesCours = enfant
-    ? offres.juniors.map((f) => ({ titre: f.titre, prix: `${euros(f.prix)} / an`, texte: f.description, rythme: f.rythme }))
+    ? offres.juniors.map((f) => ({ cle: f.titre, titre: tr(f.titre), prix: `${euros(f.prix)} / ${tr("an")}`, texte: tr(f.description), rythme: tr(f.rythme) }))
     : [
-        ...offres.prestige.map((f) => ({ titre: f.titre, prix: `${euros(f.prix)} / mois`, texte: f.description, rythme: "1 h par jour, 6 pers. max" })),
-        ...T.CONTACT_COURS_SUR_DEMANDE.map((f) => ({ ...f, rythme: "À convenir" })),
+        ...offres.prestige.map((f) => ({ cle: f.titre, titre: tr(f.titre), prix: `${euros(f.prix)} / ${tr("mois")}`, texte: tr(f.description), rythme: tr("1 h par jour, 6 pers. max") })),
+        ...T.CONTACT_COURS_SUR_DEMANDE.map((f, i) => ({ ...f, cle: ["Initiation découverte", "Cours individuel"][i] ?? f.titre, rythme: tr("À convenir") })),
       ];
   const joursCours = enfant ? T.CONTACT_COURS_JOURS_ENFANTS : T.CONTACT_COURS_JOURS_ADULTES;
 
@@ -305,39 +311,39 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
 
   /* Résumé de la colonne de droite. */
   const abo = offres.abonnements.find((a) => a.id === abonnement);
-  const formule = formulesCours.find((f) => f.titre === formuleCours);
+  const formule = formulesCours.find((f) => f.cle === formuleCours);
   const recap: Recap =
     type === "adhesion"
       ? {
-          titre: abo ? `Abonnement ${minuscule(abo.libelle)}` : "Abonnement",
+          titre: abo ? `${tr("Abonnement")} ${minuscule(tr(abo.libelle))}` : tr("Abonnement"),
           lignes: [
-            ["Formule", abo?.libelle ?? "—"],
-            ["Tarif annuel", abo ? euros(abo.prix) : "—"],
-            ["En comptant", abo ? euros(Math.round(abo.prix * (1 - offres.remise))) : "—"],
-            ["Règlement", reglement === 0 ? "Comptant" : "En plusieurs fois"],
+            [tr("Formule"), abo ? tr(abo.libelle) : "—"],
+            [tr("Tarif annuel"), abo ? euros(abo.prix) : "—"],
+            [tr("En comptant"), abo ? euros(Math.round(abo.prix * (1 - offres.remise))) : "—"],
+            [tr("Règlement"), reglement === 0 ? tr("Comptant") : tr("En plusieurs fois")],
           ],
         }
       : type === "cours"
         ? {
-            titre: formuleCours || "Cours & stages",
+            titre: formule?.titre || tr("Cours & stages"),
             lignes: [
-              ["Public", `${enfant ? "Enfant" : "Adulte"}${niveau[0] ? ` · ${minuscule(niveau[0])}` : ""}`],
-              ["Tarif", formule?.prix ?? "—"],
-              ["Rythme", formule?.rythme ?? "—"],
-              ["Jours", enumerer(jours) || "À convenir"],
+              [tr("Public"), `${enfant ? tr("Enfant") : tr("Adulte")}${niveau[0] ? ` · ${minuscule(niveau[0])}` : ""}`],
+              [tr("Tarif"), formule?.prix ?? "—"],
+              [tr("Rythme"), formule?.rythme ?? "—"],
+              [tr("Jours"), enumerer(jours) || tr("À convenir")],
             ],
           }
         : type === "evenement"
           ? {
-              titre: `${evenement} · ${participants} personne${participants > 1 ? "s" : ""}`,
+              titre: `${evenement} · ${participants} ${participants > 1 ? tr("personnes") : tr("personne")}`,
               lignes: [
-                ["Date", date ? new Intl.DateTimeFormat("fr-FR", { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).format(new Date(`${date}T12:00:00Z`)) : "À définir"],
-                ["Format", moment[0] ?? "—"],
-                ["Prestations", enumerer(prestations) || "—"],
-                ...(facturation === 0 && societe ? [["Société", societe] as [string, string]] : []),
+                [tr("Date"), date ? new Intl.DateTimeFormat(locale, { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).format(new Date(`${date}T12:00:00Z`)) : tr("À définir")],
+                [tr("Format"), moment[0] ?? "—"],
+                [tr("Prestations"), enumerer(prestations) || "—"],
+                ...(facturation === 0 && societe ? [[tr("Société"), societe] as [string, string]] : []),
               ],
             }
-          : { titre: sujet[0] ?? "Votre question", lignes: [["Sujet", sujet[0] ?? "—"]] };
+          : { titre: sujet[0] ?? tr("Votre question"), lignes: [[tr("Sujet"), sujet[0] ?? "—"]] };
 
   const textes = {
     adhesion: { bouton: T.CONTACT_ADHESION_BOUTON, suite: T.CONTACT_ADHESION_SUITE, equipe: T.CONTACT_ADHESION_EQUIPE, equipeTexte: T.CONTACT_ADHESION_EQUIPE_TEXTE, prefixe: "CONTACT_ADHESION" },
@@ -351,19 +357,40 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
     e.preventDefault();
     if (edition) return;
     setErreur(null);
+    const fr = (valeur: string, cle: keyof typeof FR) =>
+      versFrancais(valeur, T[cle] as unknown as string[], FR[cle] as unknown as string[]);
+    const titresEvenements = T.CONTACT_EVENEMENT_TYPES.map((t) => t.titre);
     const champs: EnvoiDemande["champs"] =
       type === "adhesion"
-        ? { formule: abonnement, reglement: reglement === 0 ? "comptant" : "plusieurs", index, licence, deja: deja[0] ?? "" }
+        ? { formule: abonnement, reglement: reglement === 0 ? "comptant" : "plusieurs", index, licence, deja: fr(deja[0] ?? "", "CONTACT_ADHESION_DEJA_CHOIX") }
         : type === "cours"
-          ? { public: enfant ? "enfant" : "adulte", formule: formuleCours, niveau: niveau[0] ?? "", jours, debut, enseignant }
+          ? {
+              public: enfant ? "enfant" : "adulte",
+              formule: formuleCours,
+              niveau: fr(niveau[0] ?? "", "CONTACT_COURS_NIVEAUX"),
+              jours: jours.map((j) => fr(j, enfant ? "CONTACT_COURS_JOURS_ENFANTS" : "CONTACT_COURS_JOURS_ADULTES")),
+              debut,
+              enseignant,
+            }
           : type === "evenement"
-            ? { evenement, date, participants, moment: moment[0] ?? "", prestations, budget, facturation: facturation === 0 ? "Société" : "Particulier", societe: facturation === 0 ? societe : "", fonction }
-            : { sujet: sujet[0] ?? "" };
+            ? {
+                evenement: versFrancais(evenement, titresEvenements, FR.CONTACT_EVENEMENT_TYPES.map((t) => t.titre)),
+                date,
+                participants,
+                moment: fr(moment[0] ?? "", "CONTACT_EVENEMENT_MOMENTS"),
+                prestations: prestations.map((p) => fr(p, "CONTACT_EVENEMENT_PRESTATIONS")),
+                budget: fr(budget, "CONTACT_EVENEMENT_BUDGETS"),
+                facturation: facturation === 0 ? "Société" : "Particulier",
+                societe: facturation === 0 ? societe : "",
+                fonction,
+              }
+            : { sujet: fr(sujet[0] ?? "", "CONTACT_AUTRE_SUJETS") };
 
     demarrer(async () => {
       const reponse = await envoyerDemande({
         type, champs, prenom, nom, email, telephone, message, consentement, newsletter, piege,
         duree: Date.now() - ouvertLe.current,
+        langue,
       });
       if (reponse.ok) {
         setResultat(reponse);
@@ -448,7 +475,7 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
           {T.CONTACT_CHOIX_TITRE}
         </Editable>
 
-        <div role="radiogroup" aria-label="Type de demande" className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div role="radiogroup" aria-label={tr("Type de demande")} className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {ORDRE.map((cle, i) => {
             const choix = T.CONTACT_CHOIX[i];
             if (!choix) return null;
@@ -488,13 +515,13 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
         </div>
 
         <div className="mt-10 grid grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-14">
-          <form onSubmit={envoyer} noValidate aria-label="Votre demande">
+          <form onSubmit={envoyer} noValidate aria-label={tr("Votre demande")}>
             {type === "adhesion" ? (
               <>
                 <Etape numero={numero()} titre={T.CONTACT_ADHESION_ETAPE_1} texte={T.CONTACT_ADHESION_ETAPE_1_TEXTE} chemin={`${sectionType}.CONTACT_ADHESION_ETAPE_1`} cheminTexte={`${sectionType}.CONTACT_ADHESION_ETAPE_1_TEXTE`}>
-                  <div role="radiogroup" aria-label="Formule" className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+                  <div role="radiogroup" aria-label={tr("Formule")} className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
                     {offres.abonnements.map((a) => (
-                      <CarteChoix key={a.id} actif={abonnement === a.id} onClick={() => setAbonnement(a.id)} titre={a.libelle} prix={euros(a.prix)} />
+                      <CarteChoix key={a.id} actif={abonnement === a.id} onClick={() => setAbonnement(a.id)} titre={tr(a.libelle)} prix={euros(a.prix)} />
                     ))}
                   </div>
                   <Editable path={`${sectionType}.CONTACT_ADHESION_REGLEMENT`} as="p" className="mb-2 mt-6 text-[12px] font-medium text-encre/70">
@@ -502,7 +529,7 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
                   </Editable>
                   <Segment
                     label={T.CONTACT_ADHESION_REGLEMENT}
-                    options={[`Comptant · −${Math.round(offres.remise * 100)} %`, "En plusieurs fois"]}
+                    options={[`${tr("Comptant")} · −${Math.round(offres.remise * 100)} %`, tr("En plusieurs fois")]}
                     valeur={reglement}
                     onChange={setReglement}
                   />
@@ -510,11 +537,11 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
 
                 <Etape numero={numero()} titre={T.CONTACT_ADHESION_ETAPE_2} chemin={`${sectionType}.CONTACT_ADHESION_ETAPE_2`}>
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <Champ id="index" label="Index" aide={<Editable path={`${sectionType}.CONTACT_ADHESION_INDEX_AIDE`}>{T.CONTACT_ADHESION_INDEX_AIDE}</Editable>}>
+                    <Champ id="index" label={tr("Index")} aide={<Editable path={`${sectionType}.CONTACT_ADHESION_INDEX_AIDE`}>{T.CONTACT_ADHESION_INDEX_AIDE}</Editable>}>
                       <input id="index" value={index} onChange={(e) => setIndex(e.target.value)} inputMode="decimal" maxLength={20} placeholder="ex. 24,5" className={classeChamp} />
                     </Champ>
-                    <Champ id="licence" label="N° de licence FFGolf">
-                      <input id="licence" value={licence} onChange={(e) => setLicence(e.target.value)} maxLength={30} placeholder="Facultatif" className={classeChamp} />
+                    <Champ id="licence" label={tr("N° de licence FFGolf")}>
+                      <input id="licence" value={licence} onChange={(e) => setLicence(e.target.value)} maxLength={30} placeholder={tr("Facultatif")} className={classeChamp} />
                     </Champ>
                   </div>
                   <Editable path={`${sectionType}.CONTACT_ADHESION_DEJA`} as="p" className="mb-2 mt-5 text-[12px] font-medium text-encre/70">
@@ -538,15 +565,15 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
                 </Etape>
 
                 <Etape numero={numero()} titre={T.CONTACT_COURS_ETAPE_2} texte={T.CONTACT_COURS_ETAPE_2_TEXTE} chemin={`${sectionType}.CONTACT_COURS_ETAPE_2`} cheminTexte={`${sectionType}.CONTACT_COURS_ETAPE_2_TEXTE`}>
-                  <div role="radiogroup" aria-label="Formule" className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+                  <div role="radiogroup" aria-label={tr("Formule")} className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
                     {formulesCours.map((f, i) => {
                       const surDemande = !enfant && i >= offres.prestige.length ? i - offres.prestige.length : -1;
                       const chemin = `${sectionType}.CONTACT_COURS_SUR_DEMANDE.${surDemande}`;
                       return (
                         <CarteChoix
-                          key={f.titre}
-                          actif={formuleCours === f.titre}
-                          onClick={() => setFormuleCours(f.titre)}
+                          key={f.cle}
+                          actif={formuleCours === f.cle}
+                          onClick={() => setFormuleCours(f.cle)}
                           titre={f.titre}
                           prix={f.prix}
                           texte={f.texte}
@@ -563,11 +590,11 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
                 </Etape>
 
                 <Etape numero={numero()} titre={T.CONTACT_COURS_ETAPE_3} chemin={`${sectionType}.CONTACT_COURS_ETAPE_3`}>
-                  <p className="mb-2 text-[12px] font-medium text-encre/70">Niveau</p>
-                  <Puces label="Niveau" options={T.CONTACT_COURS_NIVEAUX} valeurs={niveau} onChange={setNiveau} chemin={`${sectionType}.CONTACT_COURS_NIVEAUX`} />
-                  <p className="mb-2 mt-5 text-[12px] font-medium text-encre/70">Jours de cours</p>
+                  <p className="mb-2 text-[12px] font-medium text-encre/70">{tr("Niveau")}</p>
+                  <Puces label={tr("Niveau")} options={T.CONTACT_COURS_NIVEAUX} valeurs={niveau} onChange={setNiveau} chemin={`${sectionType}.CONTACT_COURS_NIVEAUX`} />
+                  <p className="mb-2 mt-5 text-[12px] font-medium text-encre/70">{tr("Jours de cours")}</p>
                   <Puces
-                    label="Jours de cours"
+                    label={tr("Jours de cours")}
                     multiple
                     options={joursCours}
                     valeurs={jours}
@@ -575,17 +602,17 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
                     chemin={`${sectionType}.${enfant ? "CONTACT_COURS_JOURS_ENFANTS" : "CONTACT_COURS_JOURS_ADULTES"}`}
                   />
                   <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                    <Champ id="debut" label="Début souhaité">
+                    <Champ id="debut" label={tr("Début souhaité")}>
                       <select id="debut" value={debut} onChange={(e) => setDebut(e.target.value)} className={classeChamp}>
-                        <option value="">Dès que possible</option>
+                        <option value="">{tr("Dès que possible")}</option>
                         {mois.map((m) => (
                           <option key={m.cle} value={m.cle}>{m.libelle}</option>
                         ))}
                       </select>
                     </Champ>
-                    <Champ id="enseignant" label="Enseignant">
+                    <Champ id="enseignant" label={tr("Enseignant")}>
                       <select id="enseignant" value={enseignant} onChange={(e) => setEnseignant(e.target.value)} className={classeChamp}>
-                        <option value="">Pas de préférence</option>
+                        <option value="">{tr("Pas de préférence")}</option>
                         {offres.enseignants.map((n) => (
                           <option key={n} value={n}>{n}</option>
                         ))}
@@ -599,7 +626,7 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
             {type === "evenement" ? (
               <>
                 <Etape numero={numero()} titre={T.CONTACT_EVENEMENT_ETAPE_1} chemin={`${sectionType}.CONTACT_EVENEMENT_ETAPE_1`}>
-                  <div role="radiogroup" aria-label="Type d'événement" className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+                  <div role="radiogroup" aria-label={tr("Type d'événement")} className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                     {T.CONTACT_EVENEMENT_TYPES.map((t, i) => (
                       <CarteChoix
                         key={i}
@@ -615,12 +642,12 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
 
                 <Etape numero={numero()} titre={T.CONTACT_EVENEMENT_ETAPE_2} chemin={`${sectionType}.CONTACT_EVENEMENT_ETAPE_2`}>
                   <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_11rem]">
-                    <Champ id="date" label="Date souhaitée" aide={<Editable path={`${sectionType}.CONTACT_EVENEMENT_DATE_AIDE`}>{T.CONTACT_EVENEMENT_DATE_AIDE}</Editable>}>
+                    <Champ id="date" label={tr("Date souhaitée")} aide={<Editable path={`${sectionType}.CONTACT_EVENEMENT_DATE_AIDE`}>{T.CONTACT_EVENEMENT_DATE_AIDE}</Editable>}>
                       <input id="date" type="date" value={date} onChange={(e) => setDate(e.target.value)} className={classeChamp} />
                     </Champ>
-                    <Champ id="participants" label="Nombre de participants" requis>
+                    <Champ id="participants" label={tr("Nombre de participants")} requis>
                       <div className="flex h-11 items-center rounded-sm border border-encre/15">
-                        <button type="button" aria-label="Un participant de moins" onClick={() => setParticipants((n) => Math.max(1, n - 1))} className="h-full px-3.5 text-[18px] text-encre/60 hover:text-encre">−</button>
+                        <button type="button" aria-label={tr("Un participant de moins")} onClick={() => setParticipants((n) => Math.max(1, n - 1))} className="h-full px-3.5 text-[18px] text-encre/60 hover:text-encre">−</button>
                         <input
                           id="participants"
                           inputMode="numeric"
@@ -628,28 +655,28 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
                           onChange={(e) => setParticipants(Math.max(1, Math.min(2000, Number(e.target.value.replace(/\D/g, "")) || 1)))}
                           className="w-full min-w-0 bg-transparent text-center text-[15px] font-semibold text-club-950 outline-none"
                         />
-                        <button type="button" aria-label="Un participant de plus" onClick={() => setParticipants((n) => Math.min(2000, n + 1))} className="h-full px-3.5 text-[18px] text-encre/60 hover:text-encre">+</button>
+                        <button type="button" aria-label={tr("Un participant de plus")} onClick={() => setParticipants((n) => Math.min(2000, n + 1))} className="h-full px-3.5 text-[18px] text-encre/60 hover:text-encre">+</button>
                       </div>
                     </Champ>
                   </div>
-                  <p className="mb-2 mt-5 text-[12px] font-medium text-encre/70">Moment</p>
-                  <Puces label="Moment" options={T.CONTACT_EVENEMENT_MOMENTS} valeurs={moment} onChange={setMoment} chemin={`${sectionType}.CONTACT_EVENEMENT_MOMENTS`} />
+                  <p className="mb-2 mt-5 text-[12px] font-medium text-encre/70">{tr("Moment")}</p>
+                  <Puces label={tr("Moment")} options={T.CONTACT_EVENEMENT_MOMENTS} valeurs={moment} onChange={setMoment} chemin={`${sectionType}.CONTACT_EVENEMENT_MOMENTS`} />
                 </Etape>
 
                 <Etape numero={numero()} titre={T.CONTACT_EVENEMENT_ETAPE_3} texte={T.CONTACT_EVENEMENT_ETAPE_3_TEXTE} chemin={`${sectionType}.CONTACT_EVENEMENT_ETAPE_3`} cheminTexte={`${sectionType}.CONTACT_EVENEMENT_ETAPE_3_TEXTE`}>
-                  <Puces label="Prestations" multiple options={T.CONTACT_EVENEMENT_PRESTATIONS} valeurs={prestations} onChange={setPrestations} chemin={`${sectionType}.CONTACT_EVENEMENT_PRESTATIONS`} />
+                  <Puces label={tr("Prestations")} multiple options={T.CONTACT_EVENEMENT_PRESTATIONS} valeurs={prestations} onChange={setPrestations} chemin={`${sectionType}.CONTACT_EVENEMENT_PRESTATIONS`} />
                   <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                    <Champ id="budget" label="Budget indicatif">
+                    <Champ id="budget" label={tr("Budget indicatif")}>
                       <select id="budget" value={budget} onChange={(e) => setBudget(e.target.value)} className={classeChamp}>
                         {T.CONTACT_EVENEMENT_BUDGETS.map((b) => (
                           <option key={b} value={b}>{b}</option>
                         ))}
                       </select>
                     </Champ>
-                    <Champ id="facturation" label="Facture au nom de">
+                    <Champ id="facturation" label={tr("Facture au nom de")}>
                       <select id="facturation" value={facturation} onChange={(e) => setFacturation(Number(e.target.value))} className={classeChamp}>
-                        <option value={0}>Société</option>
-                        <option value={1}>Particulier</option>
+                        <option value={0}>{tr("Société")}</option>
+                        <option value={1}>{tr("Particulier")}</option>
                       </select>
                     </Champ>
                   </div>
@@ -659,7 +686,7 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
 
             {type === "autre" ? (
               <Etape numero={numero()} titre={T.CONTACT_AUTRE_ETAPE_1} chemin={`${sectionType}.CONTACT_AUTRE_ETAPE_1`}>
-                <Puces label="Sujet" options={T.CONTACT_AUTRE_SUJETS} valeurs={sujet} onChange={setSujet} chemin={`${sectionType}.CONTACT_AUTRE_SUJETS`} />
+                <Puces label={tr("Sujet")} options={T.CONTACT_AUTRE_SUJETS} valeurs={sujet} onChange={setSujet} chemin={`${sectionType}.CONTACT_AUTRE_SUJETS`} />
               </Etape>
             ) : null}
 
@@ -667,34 +694,34 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
               <div className="grid gap-4 sm:grid-cols-2">
                 {type === "evenement" && facturation === 0 ? (
                   <>
-                    <Champ id="societe" label="Société" requis>
+                    <Champ id="societe" label={tr("Société")} requis>
                       <input id="societe" value={societe} onChange={(e) => setSociete(e.target.value)} maxLength={80} autoComplete="organization" className={classeChamp} />
                     </Champ>
-                    <Champ id="fonction" label="Fonction">
+                    <Champ id="fonction" label={tr("Fonction")}>
                       <input id="fonction" value={fonction} onChange={(e) => setFonction(e.target.value)} maxLength={60} autoComplete="organization-title" className={classeChamp} />
                     </Champ>
                   </>
                 ) : null}
-                <Champ id="prenom" label="Prénom" requis>
+                <Champ id="prenom" label={tr("Prénom")} requis>
                   <input id="prenom" value={prenom} onChange={(e) => setPrenom(e.target.value)} maxLength={60} autoComplete="given-name" required className={classeChamp} />
                 </Champ>
-                <Champ id="nom" label="Nom" requis>
+                <Champ id="nom" label={tr("Nom")} requis>
                   <input id="nom" value={nom} onChange={(e) => setNom(e.target.value)} maxLength={60} autoComplete="family-name" required className={classeChamp} />
                 </Champ>
-                <Champ id="email" label="E-mail" requis>
+                <Champ id="email" label={tr("E-mail")} requis>
                   <div className="relative">
                     <Picto d={pictos.mail} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-encre/35" />
                     <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={120} autoComplete="email" required className={cn(classeChamp, "pl-9")} />
                   </div>
                 </Champ>
-                <Champ id="telephone" label="Téléphone">
+                <Champ id="telephone" label={tr("Téléphone")}>
                   <div className="relative">
                     <Picto d={pictos.telephone} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-encre/35" />
                     <input id="telephone" type="tel" value={telephone} onChange={(e) => setTelephone(e.target.value)} maxLength={30} autoComplete="tel" className={cn(classeChamp, "pl-9")} />
                   </div>
                 </Champ>
                 <div className="sm:col-span-2">
-                  <Champ id="message" label="Votre message" requis={type === "autre"}>
+                  <Champ id="message" label={tr("Votre message")} requis={type === "autre"}>
                     <textarea
                       id="message"
                       value={message}
@@ -740,7 +767,7 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
                 disabled={enCours}
                 className="flex items-center gap-2 rounded-sm bg-or-500 px-5 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-or-600 disabled:opacity-60"
               >
-                {enCours ? "Envoi…" : <Editable path={`${sectionType}.${textes.prefixe}_BOUTON`}>{textes.bouton}</Editable>}
+                {enCours ? tr("Envoi…") : <Editable path={`${sectionType}.${textes.prefixe}_BOUTON`}>{textes.bouton}</Editable>}
                 <span aria-hidden="true">→</span>
               </button>
               <p className="flex items-center gap-1.5 text-[12px] text-encre/45">
@@ -750,7 +777,7 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
             </div>
           </form>
 
-          <aside aria-label="Résumé de votre demande" className="rounded-sm bg-club-950 p-6 text-sable-50 shadow-[0_12px_30px_rgba(16,24,40,0.18)] lg:sticky lg:top-28">
+          <aside aria-label={tr("Résumé de votre demande")} className="rounded-sm bg-club-950 p-6 text-sable-50 shadow-[0_12px_30px_rgba(16,24,40,0.18)] lg:sticky lg:top-28">
             <Editable path={`${SECTIONS.envoi}.CONTACT_RECAP_SURTITRE`} as="p" className="text-[11px] font-semibold uppercase tracking-[0.16em] text-or-400">
               {T.CONTACT_RECAP_SURTITRE}
             </Editable>

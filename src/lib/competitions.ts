@@ -74,6 +74,22 @@ export function avecEtat(
   return { ...competition, etat: etatCompetition(competition, maintenant) };
 }
 
+/**
+ * Libellé d'état dans la langue de la page : « Ouverture le 20 octobre »
+ * contient une date, il est donc recomposé plutôt que traduit tel quel.
+ */
+export function libelleEtat(
+  competition: CompetitionAvecEtat,
+  tr: (francais: string) => string,
+  locale: string,
+): string {
+  if (competition.etat.cle === "a-venir" && competition.inscriptionOuverture) {
+    const date = new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", timeZone: "Europe/Paris" });
+    return `${tr("Ouverture le")} ${date.format(new Date(competition.inscriptionOuverture))}`;
+  }
+  return tr(competition.etat.libelle);
+}
+
 /** Libellés des catégories (filtres, étiquettes, back-office). */
 export const libellesCategorie: Record<CategorieCompetition, string> = {
   club: "Club",

@@ -1,28 +1,22 @@
 import Image from "next/image";
-import type { Route } from "next";
 
 import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { LienFleche } from "@/components/ui/lien-fleche";
 import { Surtitre } from "@/components/ui/surtitre";
-import { PROFITER_CARTES, PROFITER_SURTITRE, PROFITER_TITRE, PROFITER_DESCRIPTION } from "@/constants";
 import { headerActions } from "@/config/site";
 import { estPagePubliqueVisible } from "@/config/visibilite";
+import { i18n } from "@/lib/i18n/serveur";
 
 type Picto = "drapeau" | "membres" | "academie";
 
 /** Textes et images dans constants.ts (éditeur visuel) ; liens et pictos ici, dans le même ordre. */
-const destinations: { href: Route; picto: Picto }[] = [
+const destinations: { href: string; picto: Picto }[] = [
   { href: headerActions.reservation.href, picto: "drapeau" },
   { href: "/tarifs", picto: "membres" },
   { href: "/academie", picto: "academie" },
 ];
 
-const parcours = PROFITER_CARTES.map((carte, index) => ({
-  ...carte,
-  ...destinations[index],
-  lien: { label: carte.lien, href: destinations[index]?.href ?? "/" },
-}));
 
 const CHEMIN = "Accueil · Bienvenue.PROFITER_CARTES";
 
@@ -54,7 +48,14 @@ function Pictogramme({ nom }: { nom: Picto }) {
   );
 }
 
-export function ProfiterDuGolf() {
+export async function ProfiterDuGolf() {
+  const { T } = await i18n();
+  const { PROFITER_SURTITRE, PROFITER_TITRE, PROFITER_DESCRIPTION, PROFITER_CARTES } = T;
+  const parcours = PROFITER_CARTES.map((carte, index) => ({
+    ...carte,
+    ...destinations[index],
+    lien: { label: carte.lien, href: destinations[index]?.href ?? "/" },
+  }));
   return (
     <section className="bg-white py-14 lg:py-20">
       <Container>

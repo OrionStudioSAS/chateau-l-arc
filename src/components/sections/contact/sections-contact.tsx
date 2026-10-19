@@ -1,22 +1,14 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Lien as Link } from "@/components/ui/lien";
 import type { Route } from "next";
 
 import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 import { site, urlItineraire } from "@/config/site";
-import {
-  CONTACT_AUTRES_CARTES,
-  CONTACT_AUTRES_SURTITRE,
-  CONTACT_VENIR_BOUTON,
-  CONTACT_VENIR_HORAIRES,
-  CONTACT_VENIR_IMAGE,
-  CONTACT_VENIR_SURTITRE,
-  CONTACT_VENIR_TITRE,
-} from "@/constants";
 import { lienAutorise } from "@/lib/admin/popup";
 import { proprietesLien } from "@/lib/liens";
+import { i18n } from "@/lib/i18n/serveur";
 
 const traits = {
   fill: "none",
@@ -66,7 +58,8 @@ const pictos = {
 };
 
 /** Encarts de la bannière Contact : accueil golf et e-mail. */
-export function CoordonneesBanniere() {
+export async function CoordonneesBanniere() {
+  const { tr } = await i18n();
   const lignes = [
     { libelle: "Accueil golf", valeur: site.contact.telephone, href: site.contact.telephoneLien, picto: pictos.telephone },
     { libelle: "E-mail", valeur: site.contact.email, href: `mailto:${site.contact.email}`, picto: pictos.mail },
@@ -80,7 +73,7 @@ export function CoordonneesBanniere() {
               <Picto className="size-3.5">{ligne.picto}</Picto>
             </span>
             <span>
-              <span className="block text-[10px] uppercase tracking-[0.14em] text-encre/45">{ligne.libelle}</span>
+              <span className="block text-[10px] uppercase tracking-[0.14em] text-encre/45">{tr(ligne.libelle)}</span>
               <span className="block text-[13px] font-medium">{ligne.valeur}</span>
             </span>
           </a>
@@ -91,7 +84,9 @@ export function CoordonneesBanniere() {
 }
 
 /** « Autres demandes » : réservation, restaurant, accueil. */
-export function AutresDemandes() {
+export async function AutresDemandes() {
+  const { T } = await i18n();
+  const { CONTACT_AUTRES_CARTES, CONTACT_AUTRES_SURTITRE } = T;
   const section = "Contact · Autres demandes";
   const icones = [pictos.drapeau, pictos.couverts, pictos.question];
   return (
@@ -139,7 +134,9 @@ export function AutresDemandes() {
 }
 
 /** « Venir au domaine » : adresse, accueil, horaires et itinéraire. */
-export function VenirContact() {
+export async function VenirContact() {
+  const { T, tr } = await i18n();
+  const { CONTACT_VENIR_BOUTON, CONTACT_VENIR_HORAIRES, CONTACT_VENIR_IMAGE, CONTACT_VENIR_SURTITRE, CONTACT_VENIR_TITRE } = T;
   const section = "Contact · Venir au domaine";
   const lignes = [
     { libelle: "Adresse", valeur: `${site.contact.adresse}, ${site.contact.codePostalVille}`, picto: pictos.repere },
@@ -165,7 +162,7 @@ export function VenirContact() {
                   <Picto>{ligne.picto}</Picto>
                 </span>
                 <div>
-                  <dt className="text-[10px] uppercase tracking-[0.14em] text-encre/45">{ligne.libelle}</dt>
+                  <dt className="text-[10px] uppercase tracking-[0.14em] text-encre/45">{tr(ligne.libelle)}</dt>
                   <dd className="text-[14px] text-club-950">
                     {ligne.href ? (
                       <a href={ligne.href} className="hover:underline">{ligne.valeur}</a>
@@ -188,7 +185,7 @@ export function VenirContact() {
           </a>
         </div>
         <Editable path={`${section}.CONTACT_VENIR_IMAGE`} image as="div" className="relative aspect-[4/3] overflow-hidden rounded-sm">
-          <Image src={CONTACT_VENIR_IMAGE} alt="Vue aérienne du domaine du Château l'Arc et de son parcours" fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+          <Image src={CONTACT_VENIR_IMAGE} alt={tr("Vue aérienne du domaine du Château l'Arc et de son parcours")} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
           <p className="absolute bottom-4 left-4 flex items-center gap-2 bg-white px-3 py-2 text-[12px] font-medium text-club-950 shadow-sm">
             <Picto className="size-3.5">{pictos.repere}</Picto>
             {site.contact.adresse} · {site.contact.codePostalVille}

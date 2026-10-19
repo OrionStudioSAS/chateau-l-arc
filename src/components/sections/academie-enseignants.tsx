@@ -2,9 +2,9 @@ import { PictoAcademie } from "@/components/sections/academie-pictos";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 import { Editable } from "@/components/cms/editable";
-import { ACADEMIE_ENSEIGNANTS_SURTITRE, ACADEMIE_ENSEIGNANTS_TITRE } from "@/constants";
 import { site } from "@/config/site";
 import { enseignants } from "@/lib/academie";
+import { i18n } from "@/lib/i18n/serveur";
 
 const initiales = (nom: string) =>
   nom
@@ -14,7 +14,9 @@ const initiales = (nom: string) =>
     .toUpperCase();
 
 /** « Nos enseignants » : initiales en attendant les portraits (cf. lib/academie). */
-export function AcademieEnseignants() {
+export async function AcademieEnseignants() {
+  const { T, tr } = await i18n();
+  const { ACADEMIE_ENSEIGNANTS_SURTITRE, ACADEMIE_ENSEIGNANTS_TITRE } = T;
   return (
     <section className="bg-white py-14 lg:py-20">
       <Container>
@@ -45,13 +47,13 @@ export function AcademieEnseignants() {
                 </h3>
                 <p className="mt-1 flex items-center gap-2 text-[13px] text-encre/65">
                   <PictoAcademie nom="diplome" className="size-3.5 text-or-600" />
-                  {enseignant.titre}
+                  {tr(enseignant.titre)}
                 </p>
                 <a
                   href={site.contact.telephoneLien}
                   className="mt-4 inline-flex rounded-sm border border-club-950/25 px-4 py-2.5 text-[13px] font-semibold text-club-950 transition-colors hover:bg-sable-50"
                 >
-                  Réserver un cours
+                  {tr("Réserver un cours")}
                 </a>
               </div>
             </li>

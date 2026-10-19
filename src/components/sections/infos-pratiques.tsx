@@ -1,11 +1,11 @@
 
 import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
-import { INFOS_CARTES, INFOS_NOTE, INFOS_SURTITRE, INFOS_TITRE } from "@/constants";
 import { Surtitre } from "@/components/ui/surtitre";
 import { getStatutInstallations } from "@/lib/api/content";
 import { libelleEtat, optionCourante } from "@/lib/statut";
 import { cn } from "@/lib/cn";
+import { i18n } from "@/lib/i18n/serveur";
 
 type Picto = "carte" | "horloge" | "voiturette" | "tenue";
 
@@ -13,7 +13,6 @@ const SECTION = "Le parcours · Infos pratiques";
 
 /** Textes dans constants.ts (éditeur visuel) ; pictogrammes ici, dans le même ordre. */
 const pictos: Picto[] = ["carte", "horloge", "voiturette", "tenue"];
-const infos = INFOS_CARTES.map((info, index) => ({ ...info, picto: pictos[index] ?? "carte" }));
 
 function Pictogramme({ nom }: { nom: Picto }) {
   const chemins: Record<Picto, React.ReactNode> = {
@@ -57,6 +56,9 @@ function Pictogramme({ nom }: { nom: Picto }) {
 
 /** « Avant de jouer » : règles pratiques et état du jour, tiré du back-office. */
 export async function InfosPratiques() {
+  const { T } = await i18n();
+  const { INFOS_CARTES, INFOS_NOTE, INFOS_SURTITRE, INFOS_TITRE } = T;
+  const infos = INFOS_CARTES.map((info, index) => ({ ...info, picto: pictos[index] ?? "carte" }));
   const installations = await getStatutInstallations();
   const parcours = installations.find((installation) => installation.cle === "parcours");
   const voiturettes = installations.find((installation) => installation.cle === "voiturette");

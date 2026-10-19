@@ -1,24 +1,21 @@
 import { Editable } from "@/components/cms/editable";
 import { TexteEtGalerie, type PhotoGalerie } from "@/components/sections/texte-et-galerie";
-import {
-  PARCOURS_PRESENTATION_PARAGRAPHES,
-  PARCOURS_PRESENTATION_PHOTOS,
-  PARCOURS_PRESENTATION_SURTITRE,
-  PARCOURS_PRESENTATION_TITRE,
-} from "@/constants";
+import { i18n } from "@/lib/i18n/serveur";
 
 const SECTION = "Le parcours · Présentation";
 
 /** Cadrage de chaque photo de la galerie (les images sont dans constants.ts). */
 const cadrages = ["50% 50%", "50% 50%", "50% 50%", "50% 50%", "50% 50%"];
 
-const photos: PhotoGalerie[] = PARCOURS_PRESENTATION_PHOTOS.map((src, index) => ({
-  src,
-  cadrage: cadrages[index] ?? "50% 50%",
-  alt: `Le parcours de golf du Château l'Arc, entre pins et garrigue (photo ${index + 1})`,
-}));
 
-export function ParcoursDescription() {
+export async function ParcoursDescription() {
+  const { T } = await i18n();
+  const { PARCOURS_PRESENTATION_PARAGRAPHES, PARCOURS_PRESENTATION_PHOTOS, PARCOURS_PRESENTATION_SURTITRE, PARCOURS_PRESENTATION_TITRE } = T;
+  const photos: PhotoGalerie[] = PARCOURS_PRESENTATION_PHOTOS.map((src, index) => ({
+    src,
+    cadrage: cadrages[index] ?? "50% 50%",
+    alt: `Le parcours de golf du Château l'Arc, entre pins et garrigue (photo ${index + 1})`,
+  }));
   return (
     <TexteEtGalerie
       surtitre={PARCOURS_PRESENTATION_SURTITRE}

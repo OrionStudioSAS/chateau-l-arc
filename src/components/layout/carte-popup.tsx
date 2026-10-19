@@ -1,4 +1,7 @@
+"use client";
+
 import { cn } from "@/lib/cn";
+import { useI18n } from "@/lib/i18n/client";
 
 /**
  * Contenu de la pop-up marketing. Partagé par le site public et l'aperçu du
@@ -28,6 +31,7 @@ export function CartePopup({
   idTitre?: string;
   className?: string;
 }) {
+  const { tr } = useI18n();
   return (
     <div
       className={cn(
@@ -38,7 +42,7 @@ export function CartePopup({
       <button
         type="button"
         onClick={onFermer}
-        aria-label="Fermer"
+        aria-label={tr("Fermer")}
         className={cn(
           "absolute right-3 top-3 z-10 flex size-8 items-center justify-center rounded-full transition-colors",
           afficheUrl

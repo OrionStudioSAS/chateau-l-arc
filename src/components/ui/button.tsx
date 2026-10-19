@@ -1,5 +1,4 @@
-import Link from "next/link";
-import type { Route } from "next";
+import { Lien as Link } from "@/components/ui/lien";
 
 import { cn } from "@/lib/cn";
 
@@ -28,7 +27,7 @@ export function ButtonLink({
   className,
   children,
 }: {
-  href: Route;
+  href: string;
   variant?: Variant;
   className?: string;
   children: React.ReactNode;

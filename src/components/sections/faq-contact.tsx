@@ -1,11 +1,11 @@
-import Link from "next/link";
+import { Lien as Link } from "@/components/ui/lien";
 import type { Route } from "next";
 
 import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
-import { FAQ_CONTACT_CANAUX, FAQ_CONTACT_SURTITRE, FAQ_CONTACT_TITRE } from "@/constants";
 import { lienAutorise } from "@/lib/admin/popup";
+import { i18n } from "@/lib/i18n/serveur";
 
 const traits = {
   fill: "none",
@@ -18,7 +18,9 @@ const traits = {
 const SECTION = "FAQ · Nous contacter";
 
 /** « Notre équipe est là pour vous » : trois façons de joindre le club. */
-export function FaqContact() {
+export async function FaqContact() {
+  const { T } = await i18n();
+  const { FAQ_CONTACT_CANAUX, FAQ_CONTACT_SURTITRE, FAQ_CONTACT_TITRE } = T;
   // Textes et liens dans constants.ts (éditeur visuel) ; pictogrammes ici, dans le même ordre.
   const pictos = [
     <path key="telephone" d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" />,

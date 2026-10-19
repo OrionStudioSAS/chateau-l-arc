@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Lien as Link } from "@/components/ui/lien";
 
 import { CarteDomaine } from "@/components/layout/carte-domaine";
 import {
@@ -9,6 +9,7 @@ import {
   servicesContact,
   site,
 } from "@/config/site";
+import { i18n } from "@/lib/i18n/serveur";
 import { TAILLE_PLEINE_LARGEUR, variablesPleineLargeur } from "@/lib/titre-pleine-largeur";
 
 const lienPied =
@@ -16,7 +17,8 @@ const lienPied =
 
 const telSansEspaces = (numero: string) => numero.replace(/[^+\d]/g, "");
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const { tr } = await i18n();
   return (
     // Même cadre blanc que l'encart « Rejoignez le club » : le pied de page
     // est en retrait des bords de l'écran. Sa marge haute le sépare aussi de
@@ -59,7 +61,7 @@ export function SiteFooter() {
                 {liensInstitutionnels.map((lien) => (
                   <li key={lien.href}>
                     <Link href={lien.href} className={lienPied}>
-                      {lien.label}
+                      {tr(lien.label)}
                     </Link>
                   </li>
                 ))}
@@ -69,7 +71,7 @@ export function SiteFooter() {
                 {liensLegaux.map((lien) => (
                   <li key={lien.href}>
                     <Link href={lien.href} className={lienPied}>
-                      {lien.label}
+                      {tr(lien.label)}
                     </Link>
                   </li>
                 ))}
@@ -84,9 +86,9 @@ export function SiteFooter() {
                   key={service.nom}
                   className="rounded-sm border border-sable-50/25 px-5 py-4 sm:py-5"
                 >
-                  <p className="text-[19px] font-semibold">{service.nom}</p>
+                  <p className="text-[19px] font-semibold">{tr(service.nom)}</p>
                   <p className="mt-2 text-[15px] text-sable-50/85 sm:mt-4">
-                    {service.horaires}
+                    {tr(service.horaires)}
                   </p>
                   <p className="mt-2 text-[15px] text-sable-50/85 sm:mt-4">
                     <a
@@ -102,7 +104,7 @@ export function SiteFooter() {
 
             <div className="order-4 rounded-sm bg-sauge-200 px-6 py-6 text-club-950">
               <p className="text-[20px] font-bold uppercase tracking-[0.02em]">
-                Devenir membre
+                {tr("Devenir membre")}
               </p>
 
               <address className="mt-6 text-[15px] not-italic leading-relaxed text-club-950/80">
@@ -136,20 +138,20 @@ export function SiteFooter() {
                   href={site.contact.telephoneLien}
                   className="rounded-sm bg-club-950 px-5 py-3 text-[12px] font-medium uppercase tracking-[0.06em] text-sable-50 transition-colors hover:bg-club-800"
                 >
-                  Nous appeler
+                  {tr("Nous appeler")}
                 </a>
                 <Link
                   href={pagesAVenir.devenirMembre}
                   className="rounded-sm bg-white px-5 py-3 text-[12px] font-medium uppercase tracking-[0.06em] text-club-950 transition-colors hover:bg-sable-50"
                 >
-                  En savoir plus
+                  {tr("En savoir plus")}
                 </Link>
               </div>
             </div>
           </div>
 
           <p className="mt-12 max-w-3xl lg:max-w-none text-[14px] font-medium uppercase tracking-[-0.14px] text-sable-50/70 sm:text-[17px] lg:text-[20px] lg:tracking-[-0.2px]">
-            {site.heroAccroche}
+            {tr(site.heroAccroche)}
           </p>
 
           {/* Même calage que la bannière : le titre occupe toute la largeur. */}
@@ -168,7 +170,7 @@ export function SiteFooter() {
               <span aria-hidden="true" className="text-or-500">
                 ♥
               </span>{" "}
-              Design &amp; Made by{" "}
+              {tr("Design & Made by")}{" "}
               <a
                 href="https://orion-studio.io"
                 target="_blank"

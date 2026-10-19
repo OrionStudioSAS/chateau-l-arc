@@ -1,16 +1,14 @@
 import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
-import {
-  HISTOIRE_INTRO_CITATION,
-  HISTOIRE_INTRO_PARAGRAPHES,
-  HISTOIRE_INTRO_SURTITRE,
-} from "@/constants";
+import { i18n } from "@/lib/i18n/serveur";
 
 const SECTION = "Histoire · Le domaine";
 
 /** « Le domaine » : citation à gauche, présentation à droite. */
-export function HistoireIntro() {
+export async function HistoireIntro() {
+  const { T } = await i18n();
+  const { HISTOIRE_INTRO_CITATION, HISTOIRE_INTRO_PARAGRAPHES, HISTOIRE_INTRO_SURTITRE } = T;
   return (
     <section className="bg-white py-14 lg:py-20">
       <Container className="grid gap-8 lg:grid-cols-2 lg:gap-20">

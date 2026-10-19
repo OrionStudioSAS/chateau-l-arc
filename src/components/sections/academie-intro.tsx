@@ -1,9 +1,9 @@
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 import { Editable } from "@/components/cms/editable";
-import { ACADEMIE_INTRO_CARTES, ACADEMIE_INTRO_SURTITRE, ACADEMIE_INTRO_TEXTE, ACADEMIE_INTRO_TITRE } from "@/constants";
 
 import { PictoAcademie, type NomPicto } from "@/components/sections/academie-pictos";
+import { i18n } from "@/lib/i18n/serveur";
 
 const SECTION = "L'Académie · Une école pour chaque golfeur";
 
@@ -13,10 +13,12 @@ const cibles: { ancre: string; picto: NomPicto }[] = [
   { ancre: "prestige", picto: "adultes" },
   { ancre: "stages", picto: "groupe" },
 ];
-const parcours = ACADEMIE_INTRO_CARTES.map((carte, index) => ({ ...carte, ...(cibles[index] ?? cibles[0]) }));
 
 /** « Une école pour chaque golfeur » : trois portes d'entrée vers les sections. */
-export function AcademieIntro() {
+export async function AcademieIntro() {
+  const { T } = await i18n();
+  const { ACADEMIE_INTRO_CARTES, ACADEMIE_INTRO_SURTITRE, ACADEMIE_INTRO_TEXTE, ACADEMIE_INTRO_TITRE } = T;
+  const parcours = ACADEMIE_INTRO_CARTES.map((carte, index) => ({ ...carte, ...(cibles[index] ?? cibles[0]) }));
   return (
     <section className="bg-white py-14 lg:py-20">
       <Container>

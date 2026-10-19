@@ -1,0 +1,2032 @@
+[
+ {
+  "groupe": "Compétitions",
+  "textes": [
+   {
+    "texte": "Être prévenu",
+    "origine": "src/lib/competitions.ts"
+   },
+   {
+    "texte": "Terminé",
+    "origine": "src/lib/competitions.ts"
+   },
+   {
+    "texte": "Inscriptions ouvertes",
+    "origine": "src/lib/competitions.ts"
+   },
+   {
+    "texte": "S'inscrire",
+    "origine": "src/lib/competitions.ts"
+   },
+   {
+    "texte": "Club",
+    "origine": "src/lib/competitions.ts"
+   },
+   {
+    "texte": "Seniors",
+    "origine": "src/lib/competitions.ts"
+   },
+   {
+    "texte": "Toutes",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
+    "texte": "Ouvertes aux visiteurs",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   }
+  ]
+ },
+ {
+  "groupe": "Contenus du back-office",
+  "textes": [
+   {
+    "texte": "18 trous",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "Toute l'année, réservation en ligne.",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "9 trous · haute saison",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "9 trous · basse saison",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "6 parcours 18 trous",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "5 achetés + 1 offert",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "12 parcours 18 trous",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "10 achetés + 2 offerts",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "12 parcours 9 trous",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "Voiturette 18 trous",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "Voiturette 9 trous",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "Chariot manuel",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "Série complète (location)",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "1 seau de balles",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "5 seaux",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "10 seaux",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "25 seaux",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "Individuel",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "Couple",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "Famille (2 adultes)",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "Individuel −35 ans",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "Couple −35 ans",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "−25 ans & étudiants",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "−15 ans",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "Individuel +80 ans",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "Couple +80 ans",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "Abonnements 2027 ouverts : -5% paiement comptant",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Devenir membre",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Parcours 18 trous",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Greens d'hiver",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Greens provisoires sur certains trous",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Practice",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Zone d'entraînement",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Voiturettes",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Selon l'état du terrain",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Chariot électrique",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Club-house",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Proshop",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Restaurant",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Le Club House · terrasse",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Ouvert midi",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Piscine",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Tennis",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Courts 1 et 2",
+    "origine": "contenu/statut.json"
+   },
+   {
+    "texte": "Stages d'été : dernières places",
+    "origine": "contenu/popup.json"
+   },
+   {
+    "texte": "Stages enfants & adultes en juillet-août. Réservez avant le 15 juillet.",
+    "origine": "contenu/popup.json"
+   },
+   {
+    "texte": "Réserver un stage",
+    "origine": "contenu/popup.json"
+   },
+   {
+    "texte": "Scramble de juin",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Scramble",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Shotgun · 9h00",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "54 (ouvert à tous)",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Mixte · équipes de 2",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Apéritif de clôture",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Formulaire sur le site",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "15 € + green fee",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Scramble à 2, joué sous le soleil de juin. Résultats à publier.",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Coupe de l'automne",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Stableford",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Messieurs · Dames · Seniors",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Remise des prix · cocktail",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Formulaire sur le site + à l'accueil",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Compétition en stableford ouverte à tous. Départ shotgun, remise des prix en terrasse suivie d'un cocktail.",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Scramble à 4",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Départ 8h30",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Mixte · équipes de 4",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Dîner au club-house",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "20 € + green fee",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Scramble à 4 joueurs, suivi d'un dîner au club-house. Constitution libre des équipes.",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Grand Prix du Château",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Stroke play",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Départs en 10 trous · 8h00",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "36 trous",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Index < 18",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Messieurs · Dames",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Déjeuner les deux jours",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "35 € + green fee",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Deux jours de stroke play sur l'ensemble du parcours, réservés aux index inférieurs à 18.",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Trophée des Seniors",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Shotgun · 10h00",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Seniors",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Remise des prix",
+    "origine": "contenu/competitions.json"
+   },
+   {
+    "texte": "Rendez-vous annuel des seniors du club, en stableford individuel.",
+    "origine": "contenu/competitions.json"
+   }
+  ]
+ },
+ {
+  "groupe": "En-tête, pied de page et bandeau",
+  "textes": [
+   {
+    "texte": "Information du club",
+    "origine": "src/components/layout/announcement-bar.tsx"
+   },
+   {
+    "texte": "Fil d'Ariane",
+    "origine": "src/components/layout/banniere.tsx"
+   },
+   {
+    "texte": "Itinéraire vers",
+    "origine": "src/components/layout/carte-domaine.tsx"
+   },
+   {
+    "texte": "Itinéraire",
+    "origine": "src/components/layout/carte-domaine.tsx"
+   },
+   {
+    "texte": "Fermer",
+    "origine": "src/components/layout/carte-popup.tsx"
+   },
+   {
+    "texte": "Erreur 404",
+    "origine": "src/components/layout/not-found-content.tsx"
+   },
+   {
+    "texte": "Balle perdue",
+    "origine": "src/components/layout/not-found-content.tsx"
+   },
+   {
+    "texte": "La page que vous cherchez n'existe pas ou a été déplacée. Pas de pénalité : rejouez depuis l'un de ces départs.",
+    "origine": "src/components/layout/not-found-content.tsx"
+   },
+   {
+    "texte": "Retour à l'accueil",
+    "origine": "src/components/layout/not-found-content.tsx"
+   },
+   {
+    "texte": "Nous contacter",
+    "origine": "src/components/layout/not-found-content.tsx"
+   },
+   {
+    "texte": "Départ",
+    "origine": "src/components/layout/not-found-content.tsx"
+   },
+   {
+    "texte": "Y aller",
+    "origine": "src/components/layout/not-found-content.tsx"
+   },
+   {
+    "texte": "Mis à jour",
+    "origine": "src/components/layout/panneau-statut.tsx"
+   },
+   {
+    "texte": "Mis à jour le",
+    "origine": "src/components/layout/panneau-statut.tsx"
+   },
+   {
+    "texte": "Infos du jour",
+    "origine": "src/components/layout/panneau-statut.tsx"
+   },
+   {
+    "texte": "Parcours",
+    "origine": "src/components/layout/panneau-statut.tsx"
+   },
+   {
+    "texte": "Aujourd'hui au golf",
+    "origine": "src/components/layout/panneau-statut.tsx"
+   },
+   {
+    "texte": "Informations momentanément indisponibles.",
+    "origine": "src/components/layout/panneau-statut.tsx"
+   },
+   {
+    "texte": "Vent",
+    "origine": "src/components/layout/panneau-statut.tsx"
+   },
+   {
+    "texte": "Devenir membre",
+    "origine": "src/components/layout/site-footer.tsx"
+   },
+   {
+    "texte": "Nous appeler",
+    "origine": "src/components/layout/site-footer.tsx"
+   },
+   {
+    "texte": "En savoir plus",
+    "origine": "src/components/layout/site-footer.tsx"
+   },
+   {
+    "texte": "Design & Made by",
+    "origine": "src/components/layout/site-footer.tsx"
+   },
+   {
+    "texte": "Navigation principale",
+    "origine": "src/components/layout/site-header.tsx"
+   },
+   {
+    "texte": "Accueil",
+    "origine": "src/components/layout/site-header.tsx"
+   },
+   {
+    "texte": "Appeler le golf au",
+    "origine": "src/components/layout/site-header.tsx"
+   },
+   {
+    "texte": "Menu",
+    "origine": "src/components/layout/site-header.tsx"
+   }
+  ]
+ },
+ {
+  "groupe": "État du parcours",
+  "textes": [
+   {
+    "texte": "Ouvert",
+    "origine": "src/lib/statut.ts"
+   },
+   {
+    "texte": "Restreint",
+    "origine": "src/lib/statut.ts"
+   },
+   {
+    "texte": "Fermé",
+    "origine": "src/lib/statut.ts"
+   },
+   {
+    "texte": "Non",
+    "origine": "src/lib/statut.ts"
+   },
+   {
+    "texte": "Oui",
+    "origine": "src/lib/statut.ts"
+   },
+   {
+    "texte": "Autorisées",
+    "origine": "src/lib/statut.ts"
+   },
+   {
+    "texte": "Chemins",
+    "origine": "src/lib/statut.ts"
+   },
+   {
+    "texte": "Interdites",
+    "origine": "src/lib/statut.ts"
+   },
+   {
+    "texte": "Europe/Paris",
+    "origine": "src/lib/meteo.ts"
+   },
+   {
+    "texte": "Météo indisponible",
+    "origine": "src/lib/meteo.ts"
+   },
+   {
+    "texte": "Parcours 18 trous",
+    "origine": "src/components/layout/panneau-statut.tsx"
+   },
+   {
+    "texte": "Voiturettes",
+    "origine": "src/components/layout/panneau-statut.tsx"
+   },
+   {
+    "texte": "Practice",
+    "origine": "src/components/layout/panneau-statut.tsx"
+   },
+   {
+    "texte": "Restaurant",
+    "origine": "src/components/layout/panneau-statut.tsx"
+   }
+  ]
+ },
+ {
+  "groupe": "L'Académie (formules)",
+  "textes": [
+   {
+    "texte": "Mercredi & samedi",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "8 élèves maximum",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Prêt de club inclus",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "30 séances par an",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "4 – 7 ans",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "1h30 par semaine",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Éveil golfique par le jeu, en petits groupes.",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "7 ans et +",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "2h00 par semaine",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Technique, parcours et premières compétitions jeunes.",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Stages pendant les vacances scolaires · Licence FFGolf : 21 € (−13 ans) / 24 € (13–18 ans)",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Cours collectifs · 6 personnes maximum",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "1 heure par jour",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Lundi, mardi, jeudi et vendredi",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "−10 % pour les membres du club",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Prestige · 1 mois",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Pour essayer le rythme des cours collectifs.",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Prestige · 3 mois",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Le bon tempo pour installer les fondamentaux.",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Prestige · 6 mois",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "La progression sur la durée, au meilleur tarif.",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Prestige + · 6 mois",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Idéal pour les nouveaux joueurs.",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Recommandé",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "*Parcours accessible à partir de 13h l'hiver, 14h l'été.",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Initiations découverte",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Une première approche du golf, encadrée par un enseignant.",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Ateliers thématiques",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Petit jeu, putting, sortie de bunker…",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Stages tous niveaux",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Pendant les vacances scolaires et toute l'année.",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Enseignant diplômé d'État",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Cours à volonté",
+    "origine": "src/lib/academie.ts"
+   },
+   {
+    "texte": "Parcours 9 trous à volonté*",
+    "origine": "src/lib/academie.ts"
+   }
+  ]
+ },
+ {
+  "groupe": "Le parcours (trou par trou)",
+  "textes": [
+   {
+    "texte": "Nous commençons par un long par 5 donnant sur la Sainte-Victoire, avec de nombreux bunkers. Idéal pour débuter votre partie.",
+    "origine": "src/lib/parcours.ts"
+   },
+   {
+    "texte": "Jouez à droite des bunkers de fairway, le deuxième coup s'ouvre naturellement vers le green.",
+    "origine": "src/lib/parcours.ts"
+   },
+   {
+    "texte": "Blanc",
+    "origine": "src/lib/reperes.ts"
+   },
+   {
+    "texte": "Jaune",
+    "origine": "src/lib/reperes.ts"
+   },
+   {
+    "texte": "Bleu",
+    "origine": "src/lib/reperes.ts"
+   },
+   {
+    "texte": "Rouge",
+    "origine": "src/lib/reperes.ts"
+   },
+   {
+    "texte": "Violet",
+    "origine": "src/lib/reperes.ts"
+   },
+   {
+    "texte": "Orange",
+    "origine": "src/lib/reperes.ts"
+   }
+  ]
+ },
+ {
+  "groupe": "Menus et pied de page",
+  "textes": [
+   {
+    "texte": "Parcours 18 trous dessiné par Robert Trent Jones II · Aux portes d'Aix-en-Provence",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Parcours",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Tarifs",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Compétitions",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Histoire",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Vie académie",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Devenir membre",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Réserver un départ",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Linkedin",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Instagram",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "TikTok",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Youtube",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "À propos",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Groupe & Privatisation",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Recrutement",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "FAQ",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "CGV",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Mentions légales",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Politique de confidentialité",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Lundi - Dimanche | 12h-1h",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Bar / Restaurant",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Pro-shop",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Les Masques",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Golf d'Aix-en-Provence — Set Club",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "La Cabre d'Or Golf",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Le Club Golf",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Les Alchimistes",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Golf des Marques",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Autosprinter Toyota Aix-en-Provence",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Nous contacter",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Résultats des compétitions",
+    "origine": "src/config/site.ts"
+   },
+   {
+    "texte": "Actualités",
+    "origine": "src/config/site.ts"
+   }
+  ]
+ },
+ {
+  "groupe": "Page 404",
+  "textes": [
+   {
+    "texte": "Le parcours",
+    "origine": "src/components/layout/not-found-content.tsx"
+   },
+   {
+    "texte": "18 trous, par 70, au cœur de la Provence.",
+    "origine": "src/components/layout/not-found-content.tsx"
+   },
+   {
+    "texte": "Tarifs",
+    "origine": "src/components/layout/not-found-content.tsx"
+   },
+   {
+    "texte": "Green fees, abonnements et services sur place.",
+    "origine": "src/components/layout/not-found-content.tsx"
+   },
+   {
+    "texte": "Compétitions",
+    "origine": "src/components/layout/not-found-content.tsx"
+   },
+   {
+    "texte": "Calendrier, inscriptions et résultats.",
+    "origine": "src/components/layout/not-found-content.tsx"
+   },
+   {
+    "texte": "L'académie",
+    "origine": "src/components/layout/not-found-content.tsx"
+   },
+   {
+    "texte": "Cours, stages et école de golf.",
+    "origine": "src/components/layout/not-found-content.tsx"
+   }
+  ]
+ },
+ {
+  "groupe": "Page Contact",
+  "textes": [
+   {
+    "texte": "Choisissez une formule d'abonnement.",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Demande",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Devenir membre",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Formule",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Abonnement",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Règlement",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Comptant",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "En plusieurs fois",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Choisissez une formule.",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Cours & stages",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Jours",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "À convenir",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Choisissez le type d'événement.",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Indiquez le nom de la société.",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Séminaire & privatisation",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Événement",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "personnes",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "personne",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Date",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "À définir",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Choisissez le type de demande.",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Indiquez votre prénom et votre nom.",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Votre adresse e-mail semble incomplète.",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Écrivez votre question dans le message.",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Cochez la case d'accord pour que le club puisse vous répondre.",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Envoyée le",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "L'envoi est momentanément indisponible. Appelez l'accueil au",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Trop de demandes envoyées depuis votre connexion. Réessayez dans une heure.",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "L'envoi a échoué. Réessayez dans un instant ou appelez l'accueil au",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "an",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "mois",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "1 h par jour, 6 pers. max",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Tarif annuel",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "En comptant",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Public",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Enfant",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Adulte",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Tarif",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Rythme",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Format",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Prestations",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Société",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Votre question",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Sujet",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Type de demande",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Votre demande",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Index",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "N° de licence FFGolf",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Facultatif",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Niveau",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Jours de cours",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Début souhaité",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Dès que possible",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Enseignant",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Pas de préférence",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Type d'événement",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Date souhaitée",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Nombre de participants",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Un participant de moins",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Un participant de plus",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Moment",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Budget indicatif",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Facture au nom de",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Particulier",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Fonction",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Prénom",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Nom",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "E-mail",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Téléphone",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Votre message",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Envoi…",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Résumé de votre demande",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Vue aérienne du domaine du Château l'Arc et de son parcours",
+    "origine": "src/components/sections/contact/sections-contact.tsx"
+   },
+   {
+    "texte": "la direction du club",
+    "origine": "src/lib/demandes.ts"
+   },
+   {
+    "texte": "l'Académie",
+    "origine": "src/lib/demandes.ts"
+   },
+   {
+    "texte": "l'équipe événements",
+    "origine": "src/lib/demandes.ts"
+   },
+   {
+    "texte": "l'accueil golf",
+    "origine": "src/lib/demandes.ts"
+   },
+   {
+    "texte": "Accueil golf",
+    "origine": "src/components/sections/contact/sections-contact.tsx"
+   },
+   {
+    "texte": "Adresse",
+    "origine": "src/components/sections/contact/sections-contact.tsx"
+   },
+   {
+    "texte": "Horaires",
+    "origine": "src/components/sections/contact/sections-contact.tsx"
+   }
+  ]
+ },
+ {
+  "groupe": "Pages",
+  "textes": [
+   {
+    "texte": "Accueil",
+    "origine": "src/app/[lang]/academie/page.tsx"
+   },
+   {
+    "texte": "L'Académie",
+    "origine": "src/app/[lang]/academie/page.tsx"
+   },
+   {
+    "texte": "Fairway du golf du Château l'Arc face à la montagne Sainte-Victoire",
+    "origine": "src/app/[lang]/academie/page.tsx"
+   },
+   {
+    "texte": "Retour aux actualités",
+    "origine": "src/app/[lang]/actualites/[slug]/page.tsx"
+   },
+   {
+    "texte": "Le club",
+    "origine": "src/app/[lang]/actualites/page.tsx"
+   },
+   {
+    "texte": "Actualités",
+    "origine": "src/app/[lang]/actualites/page.tsx"
+   },
+   {
+    "texte": "Compétitions, travaux, rendez-vous : les nouvelles du domaine.",
+    "origine": "src/app/[lang]/actualites/page.tsx"
+   },
+   {
+    "texte": "Compétition introuvable",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "compétition de golf au Château l'Arc (Fuveau) le",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Inscriptions et résultats en ligne.",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Formule",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Départ",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Trous",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Index maximum",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Catégories",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Droit de jeu — membres",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Droit de jeu — visiteurs",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Inclus",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Inscription",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Places",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Sponsor",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Compétitions",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Affiche",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Télécharger le règlement (PDF)",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Télécharger les résultats (PDF)",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Retour au calendrier",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Golfeurs réunis lors d'une compétition au Château l'Arc",
+    "origine": "src/app/[lang]/competitions/page.tsx"
+   },
+   {
+    "texte": "Résultats de la saison",
+    "origine": "src/app/[lang]/competitions/resultats/page.tsx"
+   },
+   {
+    "texte": "Classements officiels au format PDF, publiés dès le lendemain de chaque compétition.",
+    "origine": "src/app/[lang]/competitions/resultats/page.tsx"
+   },
+   {
+    "texte": "Contact",
+    "origine": "src/app/[lang]/contact/page.tsx"
+   },
+   {
+    "texte": "Le parcours du Château l'Arc face à la montagne Sainte-Victoire",
+    "origine": "src/app/[lang]/contact/page.tsx"
+   },
+   {
+    "texte": "Notre histoire",
+    "origine": "src/app/[lang]/histoire/page.tsx"
+   },
+   {
+    "texte": "La façade du Château l'Arc, demeure du XVIIe siècle à Fuveau",
+    "origine": "src/app/[lang]/histoire/page.tsx"
+   },
+   {
+    "texte": "Aller au contenu",
+    "origine": "src/app/[lang]/layout.tsx"
+   },
+   {
+    "texte": "Parcours",
+    "origine": "src/app/[lang]/le-parcours/page.tsx"
+   },
+   {
+    "texte": "Le parcours 18 trous du Château l'Arc, entre pins et garrigue",
+    "origine": "src/app/[lang]/le-parcours/page.tsx"
+   },
+   {
+    "texte": "Découvrir le parcours",
+    "origine": "src/app/[lang]/page.tsx"
+   },
+   {
+    "texte": "Le Château l'Arc entre les pins, face à la montagne Sainte-Victoire",
+    "origine": "src/app/[lang]/page.tsx"
+   },
+   {
+    "texte": "Tarifs & abonnements",
+    "origine": "src/app/[lang]/tarifs/page.tsx"
+   },
+   {
+    "texte": "Le grand salon du château, accueil du golf",
+    "origine": "src/app/[lang]/tarifs/page.tsx"
+   }
+  ]
+ },
+ {
+  "groupe": "Pop-up marketing",
+  "textes": [
+   {
+    "texte": "Hiver",
+    "origine": "src/lib/admin/popup.ts"
+   },
+   {
+    "texte": "Printemps",
+    "origine": "src/lib/admin/popup.ts"
+   },
+   {
+    "texte": "Été",
+    "origine": "src/lib/admin/popup.ts"
+   },
+   {
+    "texte": "Automne",
+    "origine": "src/lib/admin/popup.ts"
+   }
+  ]
+ },
+ {
+  "groupe": "Référencement (titres et descriptions Google)",
+  "textes": [
+   {
+    "texte": "École de golf à Aix-en-Provence",
+    "origine": "src/app/[lang]/academie/page.tsx"
+   },
+   {
+    "texte": "École de golf juniors dès 4 ans, cours adultes en petits groupes, stages et initiations au golf de Château l'Arc, avec des enseignants diplômés d'État.",
+    "origine": "src/app/[lang]/academie/page.tsx"
+   },
+   {
+    "texte": "L'Académie · Bannière.ACADEMIE_BANNIERE_TITRE",
+    "origine": "src/app/[lang]/academie/page.tsx"
+   },
+   {
+    "texte": "Actualités",
+    "origine": "src/app/[lang]/actualites/page.tsx"
+   },
+   {
+    "texte": "Les actualités du golf de Château l'Arc.",
+    "origine": "src/app/[lang]/actualites/page.tsx"
+   },
+   {
+    "texte": "Compétitions de golf",
+    "origine": "src/app/[lang]/competitions/page.tsx"
+   },
+   {
+    "texte": "Calendrier des compétitions du golf de Château l'Arc à Fuveau : scrambles, Grand Prix, seniors. Inscriptions en ligne et résultats dès le lendemain.",
+    "origine": "src/app/[lang]/competitions/page.tsx"
+   },
+   {
+    "texte": "Compétitions · Bannière.COMPETITIONS_PAGE_BANNIERE_TITRE",
+    "origine": "src/app/[lang]/competitions/page.tsx"
+   },
+   {
+    "texte": "Résultats des compétitions",
+    "origine": "src/app/[lang]/competitions/resultats/page.tsx"
+   },
+   {
+    "texte": "Classements officiels des compétitions du golf de Château l'Arc, publiés en PDF dès le lendemain de chaque épreuve, avec les vainqueurs.",
+    "origine": "src/app/[lang]/competitions/resultats/page.tsx"
+   },
+   {
+    "texte": "Contact et demandes",
+    "origine": "src/app/[lang]/contact/page.tsx"
+   },
+   {
+    "texte": "Adhésion, cours de golf, séminaire ou simple question : écrivez au golf de Château l'Arc à Fuveau, l'équipe concernée vous répond directement.",
+    "origine": "src/app/[lang]/contact/page.tsx"
+   },
+   {
+    "texte": "Contact · Bannière.CONTACT_TITRE",
+    "origine": "src/app/[lang]/contact/page.tsx"
+   },
+   {
+    "texte": "Questions fréquentes",
+    "origine": "src/app/[lang]/faq/page.tsx"
+   },
+   {
+    "texte": "Réservation, tarifs, carte verte, abonnements, école de golf, compétitions, accès : toutes les réponses sur le golf de Château l'Arc à Fuveau.",
+    "origine": "src/app/[lang]/faq/page.tsx"
+   },
+   {
+    "texte": "Histoire du domaine",
+    "origine": "src/app/[lang]/histoire/page.tsx"
+   },
+   {
+    "texte": "Bâti en 1620 au pied de la Sainte-Victoire, le Château l'Arc a accueilli Bernard Buffet, Cocteau et le cinéma avant de devenir un golf en 1985.",
+    "origine": "src/app/[lang]/histoire/page.tsx"
+   },
+   {
+    "texte": "Histoire · Bannière.HISTOIRE_BANNIERE_TITRE",
+    "origine": "src/app/[lang]/histoire/page.tsx"
+   },
+   {
+    "texte": "Parcours 18 trous près d'Aix",
+    "origine": "src/app/[lang]/le-parcours/page.tsx"
+   },
+   {
+    "texte": "Le parcours 18 trous par 70 (5 817 m) dessiné par Robert Trent Jones II à Fuveau : trou par trou, repères de départ, practice et infos pratiques.",
+    "origine": "src/app/[lang]/le-parcours/page.tsx"
+   },
+   {
+    "texte": "Le parcours · Bannière.PARCOURS_PAGE_BANNIERE_TITRE",
+    "origine": "src/app/[lang]/le-parcours/page.tsx"
+   },
+   {
+    "texte": "Château l'Arc Golf Club — Golf 18 trous près d'Aix-en-Provence",
+    "origine": "src/app/[lang]/page.tsx"
+   },
+   {
+    "texte": "Golf 18 trous par 70 signé Robert Trent Jones II, face à la Sainte-Victoire, à 15 min d'Aix-en-Provence. Green fees, abonnements, école de golf et restaurant.",
+    "origine": "src/app/[lang]/page.tsx"
+   },
+   {
+    "texte": "Accueil · Bannière.BANNER_TITRE",
+    "origine": "src/app/[lang]/page.tsx"
+   },
+   {
+    "texte": "Tarifs green fees et abonnements",
+    "origine": "src/app/[lang]/tarifs/page.tsx"
+   },
+   {
+    "texte": "Green fee 18 trous, 9 trous haute et basse saison, carnets, voiturettes, practice et abonnements annuels du golf de Château l'Arc, près d'Aix-en-Provence.",
+    "origine": "src/app/[lang]/tarifs/page.tsx"
+   },
+   {
+    "texte": "Tarifs · Bannière.TARIFS_PAGE_BANNIERE_TITRE",
+    "origine": "src/app/[lang]/tarifs/page.tsx"
+   }
+  ]
+ },
+ {
+  "groupe": "Sections des pages",
+  "textes": [
+   {
+    "texte": "Réserver un cours",
+    "origine": "src/components/sections/academie-enseignants.tsx"
+   },
+   {
+    "texte": "Seau de balles au practice, face à la Sainte-Victoire",
+    "origine": "src/components/sections/academie-juniors.tsx"
+   },
+   {
+    "texte": "Cours collectif de golf au Château l'Arc",
+    "origine": "src/components/sections/academie-prestige.tsx"
+   },
+   {
+    "texte": "Vue aérienne du domaine et du practice",
+    "origine": "src/components/sections/academie-stages.tsx"
+   },
+   {
+    "texte": "Nous appeler",
+    "origine": "src/components/sections/academie-stages.tsx"
+   },
+   {
+    "texte": "s'ouvre dans un nouvel onglet",
+    "origine": "src/components/sections/art-de-vivre.tsx"
+   },
+   {
+    "texte": "Le parcours entre les pins, face à la montagne Sainte-Victoire",
+    "origine": "src/components/sections/avantages-membres.tsx"
+   },
+   {
+    "texte": "Merci pour votre retour !",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "Merci. N'hésitez pas à appeler l'accueil au",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "Cette réponse vous a-t-elle aidé ?",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "Oui",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "Non",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "Le parcours du golf du Château l'Arc",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "Fil d'Ariane",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "Accueil",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "Questions fréquentes",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "Rechercher une question",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "Rechercher",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "Recherches fréquentes :",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "Thèmes",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "Aucune question ne correspond à",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "L'accueil vous répond au",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "Voir toutes les questions",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "questions",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "question",
+    "origine": "src/components/sections/centre-aide.tsx"
+   },
+   {
+    "texte": "Voir tout le calendrier",
+    "origine": "src/components/sections/competitions-apercu.tsx"
+   },
+   {
+    "texte": "Le calendrier de la saison sera bientôt en ligne.",
+    "origine": "src/components/sections/competitions-apercu.tsx"
+   },
+   {
+    "texte": "Sur invitation",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
+    "texte": "Contactez l'accueil",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
+    "texte": "Inscriptions dès le",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
+    "texte": "Réservé aux membres",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
+    "texte": "places",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
+    "texte": "Ouvert à tous",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
+    "texte": "S'inscrire",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
+    "texte": "Être prévenu",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
+    "texte": "Affichage",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
+    "texte": "Liste",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
+    "texte": "Calendrier",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
+    "texte": "Ajouter à mon agenda",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
+    "texte": "Aucune compétition à venir dans cette catégorie pour le moment.",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
+    "texte": "compétitions",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
+    "texte": "compétition",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
+    "texte": "Les résultats de la saison seront publiés ici, dès le lendemain de chaque compétition.",
+    "origine": "src/components/sections/dernieres-competitions.tsx"
+   },
+   {
+    "texte": "Tous les résultats",
+    "origine": "src/components/sections/dernieres-competitions.tsx"
+   },
+   {
+    "texte": "Vainqueurs",
+    "origine": "src/components/sections/dernieres-competitions.tsx"
+   },
+   {
+    "texte": "PDF officiel",
+    "origine": "src/components/sections/dernieres-competitions.tsx"
+   },
+   {
+    "texte": "résultats de",
+    "origine": "src/components/sections/dernieres-competitions.tsx"
+   },
+   {
+    "texte": "Voir le classement",
+    "origine": "src/components/sections/dernieres-competitions.tsx"
+   },
+   {
+    "texte": "En savoir plus",
+    "origine": "src/components/sections/domaine-aujourdhui.tsx"
+   },
+   {
+    "texte": "Plan du parcours 18 trous",
+    "origine": "src/components/sections/explorer-parcours.tsx"
+   },
+   {
+    "texte": "Trou n°",
+    "origine": "src/components/sections/explorer-parcours.tsx"
+   },
+   {
+    "texte": "Choisir un trou",
+    "origine": "src/components/sections/explorer-parcours.tsx"
+   },
+   {
+    "texte": "Vidéo du trou n°",
+    "origine": "src/components/sections/explorer-parcours.tsx"
+   },
+   {
+    "texte": "Par",
+    "origine": "src/components/sections/explorer-parcours.tsx"
+   },
+   {
+    "texte": "Départ",
+    "origine": "src/components/sections/explorer-parcours.tsx"
+   },
+   {
+    "texte": "Le conseil du pro",
+    "origine": "src/components/sections/explorer-parcours.tsx"
+   },
+   {
+    "texte": "Trou",
+    "origine": "src/components/sections/explorer-parcours.tsx"
+   },
+   {
+    "texte": "Télécharger la carte de score (PDF)",
+    "origine": "src/components/sections/explorer-parcours.tsx"
+   },
+   {
+    "texte": "Le parcours entre pins et garrigue, la Sainte-Victoire en toile de fond",
+    "origine": "src/components/sections/parcours-signature.tsx"
+   },
+   {
+    "texte": "Carte de score (PDF)",
+    "origine": "src/components/sections/parcours-signature.tsx"
+   },
+   {
+    "texte": "Vidéo de présentation du Golf Château l'Arc",
+    "origine": "src/components/sections/presentation.tsx"
+   },
+   {
+    "texte": "Abonnements",
+    "origine": "src/components/sections/tarifs-abonnements.tsx"
+   },
+   {
+    "texte": "en paiement comptant jusqu'au",
+    "origine": "src/components/sections/tarifs-abonnements.tsx"
+   },
+   {
+    "texte": "an",
+    "origine": "src/components/sections/tarifs-abonnements.tsx"
+   },
+   {
+    "texte": "soit",
+    "origine": "src/components/sections/tarifs-abonnements.tsx"
+   },
+   {
+    "texte": "en paiement comptant",
+    "origine": "src/components/sections/tarifs-abonnements.tsx"
+   },
+   {
+    "texte": "9 trous",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Idéal pour une partie après le travail ou une découverte du parcours.",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "7 j/7, toute la journée",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Basse saison",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Haute saison",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Réserver",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "18 trous",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Le parcours complet, à jouer à votre rythme sur la journée.",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Même tarif toute l'année",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Réservation en ligne",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Voiturette",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "en option",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Réserver un départ",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Le plus joué",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Soit",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "le green fee",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "le carnet",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Acheter un carnet",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Chariot manuel",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Seau de balles",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Tarifs",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Saison",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Tous les tarifs et abonnements",
+    "origine": "src/components/sections/tarifs-apercu.tsx"
+   },
+   {
+    "texte": "Prestation",
+    "origine": "src/components/sections/tarifs-green-fees.tsx"
+   },
+   {
+    "texte": "Visiteurs",
+    "origine": "src/components/sections/tarifs-green-fees.tsx"
+   },
+   {
+    "texte": "Membres",
+    "origine": "src/components/sections/tarifs-green-fees.tsx"
+   },
+   {
+    "texte": "Pas de tarif membre",
+    "origine": "src/components/sections/tarifs-green-fees.tsx"
+   },
+   {
+    "texte": "joueur",
+    "origine": "src/components/sections/tarifs-green-fees.tsx"
+   },
+   {
+    "texte": "la partie",
+    "origine": "src/components/sections/tarifs-green-fees.tsx"
+   },
+   {
+    "texte": "Locations : voiturettes, chariot et matériel",
+    "origine": "src/components/sections/tarifs-green-fees.tsx"
+   },
+   {
+    "texte": "Practice : seaux de balles",
+    "origine": "src/components/sections/tarifs-green-fees.tsx"
+   },
+   {
+    "texte": "Rubriques de la page",
+    "origine": "src/components/sections/tarifs-navigation.tsx"
+   },
+   {
+    "texte": "Itinéraire",
+    "origine": "src/components/sections/venir-au-domaine.tsx"
+   },
+   {
+    "texte": "Nous contacter",
+    "origine": "src/components/sections/venir-au-domaine.tsx"
+   },
+   {
+    "texte": "La façade du Château l'Arc et ses tours, à Fuveau",
+    "origine": "src/components/sections/venir-au-domaine.tsx"
+   },
+   {
+    "texte": "Vidéo de la zone d'entraînement du Golf Château l'Arc",
+    "origine": "src/components/sections/zone-entrainement.tsx"
+   },
+   {
+    "texte": "Ouverture le",
+    "origine": "src/lib/competitions.ts"
+   },
+   {
+    "texte": "Du",
+    "origine": "src/lib/tarifs.ts"
+   },
+   {
+    "texte": "au",
+    "origine": "src/lib/tarifs.ts"
+   },
+   {
+    "texte": "Carte postale ancienne du Château l'Arc, à Fuveau",
+    "origine": "src/components/sections/frise-histoire.tsx"
+   },
+   {
+    "texte": "XXe",
+    "origine": "src/components/sections/frise-histoire.tsx"
+   },
+   {
+    "texte": "Le grand salon du château",
+    "origine": "src/components/sections/frise-histoire.tsx"
+   },
+   {
+    "texte": "Décor de tournages depuis plus de 70 ans",
+    "origine": "src/components/sections/frise-histoire.tsx"
+   },
+   {
+    "texte": "Carte postale ancienne de la cour du château, décor de tournages",
+    "origine": "src/components/sections/frise-histoire.tsx"
+   },
+   {
+    "texte": "Le parcours face à la montagne Sainte-Victoire",
+    "origine": "src/components/sections/frise-histoire.tsx"
+   },
+   {
+    "texte": "Auj.",
+    "origine": "src/components/sections/frise-histoire.tsx"
+   },
+   {
+    "texte": "La terrasse du restaurant",
+    "origine": "src/components/sections/frise-histoire.tsx"
+   },
+   {
+    "texte": "Green fees",
+    "origine": "src/components/sections/tarifs-navigation.tsx"
+   },
+   {
+    "texte": "Carnets",
+    "origine": "src/components/sections/tarifs-navigation.tsx"
+   },
+   {
+    "texte": "Locations & practice",
+    "origine": "src/components/sections/tarifs-navigation.tsx"
+   },
+   {
+    "texte": "Avantages membres",
+    "origine": "src/components/sections/tarifs-navigation.tsx"
+   },
+   {
+    "texte": "Questions",
+    "origine": "src/components/sections/tarifs-navigation.tsx"
+   }
+  ]
+ },
+ {
+  "groupe": "Tarifs (questions)",
+  "textes": [
+   {
+    "texte": "Peut-on régler l'abonnement en plusieurs fois ?",
+    "origine": "src/lib/tarifs.ts"
+   },
+   {
+    "texte": "Contactez l'accueil pour connaître les modalités de paiement. Une remise de 5 % s'applique en paiement comptant jusqu'au 31 décembre.",
+    "origine": "src/lib/tarifs.ts"
+   },
+   {
+    "texte": "Faut-il un index ou une carte verte pour jouer ?",
+    "origine": "src/lib/tarifs.ts"
+   },
+   {
+    "texte": "Une carte verte ou un index est demandé pour jouer le parcours. En cas de doute, l'accueil vous renseigne avant votre venue.",
+    "origine": "src/lib/tarifs.ts"
+   },
+   {
+    "texte": "Les tarifs basse saison s'appliquent-ils automatiquement ?",
+    "origine": "src/lib/tarifs.ts"
+   },
+   {
+    "texte": "Le tarif 9 trous basse saison (45 €) correspond aux départs entre le 15 novembre et le 15 avril. L'accueil vous confirme le tarif lors de votre réservation.",
+    "origine": "src/lib/tarifs.ts"
+   },
+   {
+    "texte": "Peut-on offrir un green fee ou un carnet ?",
+    "origine": "src/lib/tarifs.ts"
+   },
+   {
+    "texte": "Contactez l'accueil du club pour toute demande de cadeau.",
+    "origine": "src/lib/tarifs.ts"
+   }
+  ]
+ }
+]

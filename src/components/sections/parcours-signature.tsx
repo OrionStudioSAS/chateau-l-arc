@@ -1,18 +1,17 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Lien as Link } from "@/components/ui/lien";
 
 import { Editable } from "@/components/cms/editable";
 import { pagesAVenir } from "@/config/site";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
-import { PARCOURS_ATOUTS, PARCOURS_SURTITRE, PARCOURS_TITRE, PARCOURS_DESCRIPTION, PARCOURS_IMAGE } from "@/constants";
+import { i18n } from "@/lib/i18n/serveur";
 
 
 type Picto = "compas" | "montagne" | "drapeau";
 
 /** Textes dans constants.ts (éditeur visuel) ; pictogrammes ici, dans le même ordre. */
 const pictos: Picto[] = ["compas", "montagne", "drapeau"];
-const atouts = PARCOURS_ATOUTS.map((atout, index) => ({ ...atout, picto: pictos[index] ?? "drapeau" }));
 
 function Pictogramme({ nom }: { nom: Picto }) {
   const chemins: Record<Picto, React.ReactNode> = {
@@ -42,14 +41,17 @@ function Pictogramme({ nom }: { nom: Picto }) {
   );
 }
 
-export function ParcoursSignature() {
+export async function ParcoursSignature() {
+  const { T, tr } = await i18n();
+  const { PARCOURS_ATOUTS, PARCOURS_SURTITRE, PARCOURS_TITRE, PARCOURS_DESCRIPTION, PARCOURS_IMAGE } = T;
+  const atouts = PARCOURS_ATOUTS.map((atout, index) => ({ ...atout, picto: pictos[index] ?? "drapeau" }));
   return (
     <section className="bg-sable-100 py-14 lg:py-20">
       <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-20">
         <Editable path="Accueil · Le parcours.PARCOURS_IMAGE" image as="div" className="relative aspect-[4/3] overflow-hidden rounded-sm lg:aspect-[5/4]">
           <Image
             src={PARCOURS_IMAGE}
-            alt="Le parcours entre pins et garrigue, la Sainte-Victoire en toile de fond"
+            alt={tr("Le parcours entre pins et garrigue, la Sainte-Victoire en toile de fond")}
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
             className="object-cover"
@@ -93,7 +95,7 @@ export function ParcoursSignature() {
               href={pagesAVenir.carteDeScore}
               className="inline-flex items-center gap-2 rounded-sm border border-club-950/25 px-5 py-3.5 text-[12px] font-semibold uppercase tracking-[0.1em] text-club-950 transition-colors hover:bg-white"
             >
-              Carte de score (PDF)
+              {tr("Carte de score (PDF)")}
             </Link>
           </div>
         </div>

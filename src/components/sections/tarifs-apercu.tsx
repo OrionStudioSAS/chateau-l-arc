@@ -1,18 +1,18 @@
 "use client";
 
-import Link from "next/link";
-import type { Route } from "next";
+import { Lien as Link } from "@/components/ui/lien";
 import { useState } from "react";
 
 import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { LienFleche } from "@/components/ui/lien-fleche";
 import { Surtitre } from "@/components/ui/surtitre";
-import { TARIFS_TITRE, TARIFS_DESCRIPTION } from "@/constants";
 import { headerActions } from "@/config/site";
 import { cn } from "@/lib/cn";
 import { proprietesLien } from "@/lib/liens";
-import { euros, parPartie, type GrilleTarifs } from "@/lib/tarifs";
+import { parPartie, type GrilleTarifs } from "@/lib/tarifs";
+import type { Traducteur } from "@/lib/i18n";
+import { useI18n } from "@/lib/i18n/client";
 
 type Saison = "haute" | "basse";
 
@@ -23,12 +23,12 @@ type Formule = {
   unite: string;
   texte: string;
   points: Record<Saison, string[]>;
-  action: { label: string; href: Route };
+  action: { label: string; href: string };
   miseEnAvant?: string;
 };
 
 /** Les trois formules de l'accueil, tirées de la grille publiée (back-office, « Tarifs »). */
-function formulesDe(grille: GrilleTarifs): Formule[] {
+function formulesDe(grille: GrilleTarifs, tr: Traducteur, euros: (montant: number) => string): Formule[] {
   const prix = (id: string, repli: number) =>
     [...grille.greenFees, ...grille.carnets, ...grille.locations].find((l) => l.id === id)?.prix ?? repli;
   const neufHaute = grille.greenFees.find((g) => g.saison === "haute")?.prix ?? prix("gf-9-haute", 55);
@@ -39,42 +39,42 @@ function formulesDe(grille: GrilleTarifs): Formule[] {
 
   const formules: Formule[] = [
     {
-      libelle: "9 trous",
+      libelle: tr("9 trous"),
       prix: { haute: euros(neufHaute), basse: euros(neufBasse) },
-      unite: "/ joueur",
-      texte: "Idéal pour une partie après le travail ou une découverte du parcours.",
+      unite: tr("/ joueur"),
+      texte: tr("Idéal pour une partie après le travail ou une découverte du parcours."),
       points: {
-        haute: ["7 j/7, toute la journée", `Basse saison : ${euros(neufBasse)}`],
-        basse: ["7 j/7, toute la journée", `Haute saison : ${euros(neufHaute)}`],
+        haute: [tr("7 j/7, toute la journée"), `${tr("Basse saison")} : ${euros(neufBasse)}`],
+        basse: [tr("7 j/7, toute la journée"), `${tr("Haute saison")} : ${euros(neufHaute)}`],
       },
-      action: { label: "Réserver", href: headerActions.reservation.href },
+      action: { label: tr("Réserver"), href: headerActions.reservation.href },
     },
     {
-      libelle: "18 trous",
+      libelle: tr("18 trous"),
       prix: { haute: euros(dixHuit), basse: euros(dixHuit) },
-      unite: "/ joueur",
-      texte: "Le parcours complet, à jouer à votre rythme sur la journée.",
+      unite: tr("/ joueur"),
+      texte: tr("Le parcours complet, à jouer à votre rythme sur la journée."),
       points: {
-        haute: ["Même tarif toute l'année", "Réservation en ligne", `Voiturette ${euros(voiturette)} en option`],
-        basse: ["Même tarif toute l'année", "Réservation en ligne", `Voiturette ${euros(voiturette)} en option`],
+        haute: [tr("Même tarif toute l'année"), tr("Réservation en ligne"), `${tr("Voiturette")} ${euros(voiturette)} ${tr("en option")}`],
+        basse: [tr("Même tarif toute l'année"), tr("Réservation en ligne"), `${tr("Voiturette")} ${euros(voiturette)} ${tr("en option")}`],
       },
-      action: { label: "Réserver un départ", href: headerActions.reservation.href },
-      miseEnAvant: "Le plus joué",
+      action: { label: tr("Réserver un départ"), href: headerActions.reservation.href },
+      miseEnAvant: tr("Le plus joué"),
     },
   ];
 
   if (carnet) {
     const points = [
-      `Soit ${euros(parPartie(carnet))} le green fee`,
-      ...(grandCarnet ? [`${grandCarnet.libelle} : ${euros(grandCarnet.prix)}`] : []),
+      `${tr("Soit")} ${euros(parPartie(carnet))} ${tr("le green fee")}`,
+      ...(grandCarnet ? [`${tr(grandCarnet.libelle)} : ${euros(grandCarnet.prix)}`] : []),
     ];
     formules.push({
-      libelle: carnet.libelle,
+      libelle: tr(carnet.libelle),
       prix: { haute: euros(carnet.prix), basse: euros(carnet.prix) },
-      unite: "le carnet",
-      texte: carnet.detail ?? "",
+      unite: tr("le carnet"),
+      texte: carnet.detail ? tr(carnet.detail) : "",
       points: { haute: points, basse: points },
-      action: { label: "Acheter un carnet", href: "/tarifs" },
+      action: { label: tr("Acheter un carnet"), href: "/tarifs" },
     });
   }
   return formules;
@@ -87,20 +87,22 @@ const saisons: { cle: Saison; libelle: string }[] = [
 
 /** Bloc tarifs de l'accueil : trois formules et bascule haute / basse saison. */
 export function TarifsApercu({ grille }: { grille: GrilleTarifs }) {
+  const { T, tr, euros } = useI18n();
+  const { TARIFS_TITRE, TARIFS_DESCRIPTION } = T;
   const [saison, setSaison] = useState<Saison>("haute");
-  const formules = formulesDe(grille);
+  const formules = formulesDe(grille, tr, euros);
   const prixLocation = (id: string) => grille.locations.find((l) => l.id === id);
   const extras = [
-    prixLocation("voiturette-18") && `Voiturette ${euros(prixLocation("voiturette-18")!.prix)}`,
-    prixLocation("chariot") && `Chariot manuel ${euros(prixLocation("chariot")!.prix)}`,
-    prixLocation("seau-1") && `Seau de balles ${euros(prixLocation("seau-1")!.prix)}`,
+    prixLocation("voiturette-18") && `${tr("Voiturette")} ${euros(prixLocation("voiturette-18")!.prix)}`,
+    prixLocation("chariot") && `${tr("Chariot manuel")} ${euros(prixLocation("chariot")!.prix)}`,
+    prixLocation("seau-1") && `${tr("Seau de balles")} ${euros(prixLocation("seau-1")!.prix)}`,
   ].filter(Boolean);
 
   return (
     <section className="bg-white py-14 lg:py-20">
       <Container>
         <div className="text-center">
-          <Surtitre className="text-or-600">Tarifs</Surtitre>
+          <Surtitre className="text-or-600">{tr("Tarifs")}</Surtitre>
 
           <Editable path="Accueil · Tarifs.TARIFS_TITRE" as="h2" className="mt-5 font-butler text-[34px] font-medium leading-[1.1] text-club-950 sm:text-[48px]">
             {TARIFS_TITRE}
@@ -112,7 +114,7 @@ export function TarifsApercu({ grille }: { grille: GrilleTarifs }) {
 
           <div
             role="group"
-            aria-label="Saison"
+            aria-label={tr("Saison")}
             className="mt-6 inline-flex rounded-full bg-sable-100 p-1"
           >
             {saisons.map((item) => (
@@ -128,7 +130,7 @@ export function TarifsApercu({ grille }: { grille: GrilleTarifs }) {
                     : "text-encre/70 hover:text-encre",
                 )}
               >
-                {item.libelle}
+                {tr(item.libelle)}
               </button>
             ))}
           </div>
@@ -206,7 +208,7 @@ export function TarifsApercu({ grille }: { grille: GrilleTarifs }) {
         <p className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-center text-[13px] text-encre/55">
           <span>{extras.join(" · ")}</span>
           <LienFleche href="/tarifs" className="text-[13px]">
-            Tous les tarifs et abonnements
+            {tr("Tous les tarifs et abonnements")}
           </LienFleche>
         </p>
       </Container>

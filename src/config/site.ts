@@ -80,7 +80,7 @@ export const urlRestaurant =
 
 export type NavItem = {
   label: string;
-  href: Route;
+  href: string;
 };
 
 /** Liens de gauche dans l'en-tête, dans l'ordre de la maquette. */

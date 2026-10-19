@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 import { Editable } from "@/components/cms/editable";
 import { ContainerEtroit } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
-import { PRESENTATION_SURTITRE, PRESENTATION_TEXTE, PRESENTATION_VIGNETTES } from "@/constants";
+import { useI18n } from "@/lib/i18n/client";
 
 /**
  * Vignettes décoratives réparties autour du texte, par rangées de deux.
@@ -23,8 +23,6 @@ const vignettes = [
   { cote: "droite", rangee: 2, x: "13.5%", y: "84%", image: "/images/hp-bas-droite.png", derive: 20 },
 ] as const;
 
-const TEXTE = PRESENTATION_TEXTE;
-
 const borner = (valeur: number) => Math.min(Math.max(valeur, 0), 1);
 const adoucir = (t: number) => 1 - (1 - t) ** 3;
 
@@ -39,6 +37,8 @@ const adoucir = (t: number) => 1 - (1 - t) ** 3;
  * d'animations, tout reste simplement affiché.
  */
 export function PresentationIntro() {
+  const { T } = useI18n();
+  const { PRESENTATION_SURTITRE, PRESENTATION_TEXTE, PRESENTATION_VIGNETTES } = T;
   const bloc = useRef<HTMLDivElement>(null);
   const paragraphe = useRef<HTMLParagraphElement>(null);
 
@@ -172,7 +172,7 @@ export function PresentationIntro() {
             ref={paragraphe}
             className="mt-10 text-[20px] font-normal leading-[1.6] tracking-[-0.2px] text-encre/85"
           >
-            {TEXTE.split(" ").map((mot, index) => (
+            {PRESENTATION_TEXTE.split(" ").map((mot, index) => (
               <span key={index}>
                 <span data-mot className="inline-block">
                   {mot}

@@ -1,16 +1,15 @@
-import Link from "next/link";
-import type { Route } from "next";
+import { Lien as Link } from "@/components/ui/lien";
 
 import { cn } from "@/lib/cn";
 import { proprietesLien } from "@/lib/liens";
 
 /** Pendant clair du bouton doré (« Devenir membre », « Voir la scorecard »). */
-export function BoutonClair<T extends string>({
+export function BoutonClair({
   href,
   className,
   children,
 }: {
-  href: Route<T>;
+  href: string;
   className?: string;
   children: React.ReactNode;
 }) {

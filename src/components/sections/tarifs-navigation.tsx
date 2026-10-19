@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/cn";
+import { useI18n } from "@/lib/i18n/client";
 
 /** Ancres des sections de la page, dans l'ordre d'affichage. */
 const rubriquesTarifs = [
@@ -19,6 +20,7 @@ const rubriquesTarifs = [
  * soulignement suit la section à l'écran).
  */
 export function TarifsNavigation() {
+  const { tr } = useI18n();
   const [active, setActive] = useState<string>(rubriquesTarifs[0].id);
 
   useEffect(() => {
@@ -47,7 +49,7 @@ export function TarifsNavigation() {
   }, []);
 
   return (
-    <nav aria-label="Rubriques de la page" className="sans-barre -mx-5 overflow-x-auto px-5 sm:mx-0 sm:px-0">
+    <nav aria-label={tr("Rubriques de la page")} className="sans-barre -mx-5 overflow-x-auto px-5 sm:mx-0 sm:px-0">
       <ul className="flex gap-6 whitespace-nowrap text-[13px] sm:gap-8">
         {rubriquesTarifs.map(({ id, libelle }) => (
           <li key={id}>
@@ -61,7 +63,7 @@ export function TarifsNavigation() {
                   : "border-transparent text-white/70 hover:text-white",
               )}
             >
-              {libelle}
+              {tr(libelle)}
             </a>
           </li>
         ))}

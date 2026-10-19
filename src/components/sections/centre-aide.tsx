@@ -1,26 +1,18 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Lien as Link } from "@/components/ui/lien";
 import type { Route } from "next";
 import { useEffect, useMemo, useState } from "react";
 
 import { Editable, useModeEdition } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { site } from "@/config/site";
-import {
-  FAQ_IMAGE,
-  FAQ_RAPIDE_TEXTE,
-  FAQ_RAPIDE_TITRE,
-  FAQ_RECHERCHE_EXEMPLE,
-  FAQ_RECHERCHES,
-  FAQ_SURTITRE,
-  FAQ_TITRE,
-} from "@/constants";
 import { lienAutorise } from "@/lib/admin/popup";
 import { cn } from "@/lib/cn";
 import type { PictoTheme, QuestionFaq, ThemeFaq } from "@/lib/faq";
 import { proprietesLien } from "@/lib/liens";
+import { useI18n } from "@/lib/i18n/client";
 
 const BANNIERE = "FAQ · Bannière";
 const RAPIDE = "FAQ · Réponse rapide";
@@ -91,21 +83,22 @@ const normaliser = (texte: string) =>
 
 /** « Cette réponse vous a-t-elle aidé ? » — retour local, rien n'est enregistré. */
 function RetourReponse() {
+  const { tr } = useI18n();
   const [retour, setRetour] = useState<"oui" | "non" | null>(null);
 
   if (retour) {
     return (
       <p className="mt-4 text-[12px] text-encre/50">
         {retour === "oui"
-          ? "Merci pour votre retour !"
-          : `Merci. N'hésitez pas à appeler l'accueil au ${site.contact.telephone}.`}
+          ? tr("Merci pour votre retour !")
+          : `${tr("Merci. N'hésitez pas à appeler l'accueil au")} ${site.contact.telephone}.`}
       </p>
     );
   }
 
   return (
     <p className="mt-4 flex flex-wrap items-center gap-2 text-[12px] text-encre/50">
-      Cette réponse vous a-t-elle aidé ?
+      {tr("Cette réponse vous a-t-elle aidé ?")}
       {(["oui", "non"] as const).map((valeur) => (
         <button
           key={valeur}
@@ -114,7 +107,7 @@ function RetourReponse() {
           className="flex min-h-9 items-center gap-1.5 rounded-sm border border-encre/15 px-3 py-1.5 text-encre/70 sm:min-h-0 sm:px-2.5 sm:py-1 transition-colors hover:border-encre/35 hover:text-encre"
         >
           <Picto nom="pouce" className={cn("size-3.5", valeur === "non" && "rotate-180")} />
-          {valeur === "oui" ? "Oui" : "Non"}
+          {valeur === "oui" ? tr("Oui") : tr("Non")}
         </button>
       ))}
     </p>
@@ -189,6 +182,8 @@ function Question({
  * l'écran est mis en avant), questions en accordéon.
  */
 export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
+  const { T, tr } = useI18n();
+  const { FAQ_IMAGE, FAQ_RAPIDE_TEXTE, FAQ_RAPIDE_TITRE, FAQ_RECHERCHE_EXEMPLE, FAQ_RECHERCHES, FAQ_SURTITRE, FAQ_TITRE } = T;
   const [recherche, setRecherche] = useState("");
   const edition = useModeEdition();
   const [themeActif, setThemeActif] = useState(tousLesThemes[0].id);
@@ -254,7 +249,7 @@ export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
         <Editable path={`${BANNIERE}.FAQ_IMAGE`} image as="div" className="absolute inset-0">
           <Image
             src={FAQ_IMAGE}
-            alt="Le parcours du golf du Château l'Arc"
+            alt={tr("Le parcours du golf du Château l'Arc")}
             fill
             loading="eager"
             sizes="100vw"
@@ -265,16 +260,16 @@ export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
         </Editable>
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-club-950/60" />
 
-        <nav aria-label="Fil d'Ariane" className="absolute inset-x-0 top-[88px] px-5 text-[13px] text-white/70 sm:px-8 xl:px-10">
+        <nav aria-label={tr("Fil d'Ariane")} className="absolute inset-x-0 top-[88px] px-5 text-[13px] text-white/70 sm:px-8 xl:px-10">
           <ol className="flex items-center gap-2">
             <li>
               <Link href="/" className="transition-colors hover:text-white">
-                Accueil
+                {tr("Accueil")}
               </Link>
             </li>
             <li aria-hidden="true">›</li>
             <li aria-current="page" className="font-medium text-white">
-              Questions fréquentes
+              {tr("Questions fréquentes")}
             </li>
           </ol>
         </nav>
@@ -297,7 +292,7 @@ export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
           >
             <Picto nom="loupe" className="ml-3 size-5 text-encre/40" />
             <label htmlFor="recherche-faq" className="sr-only">
-              Rechercher une question
+              {tr("Rechercher une question")}
             </label>
             {/* Texte d'exemple affiché par-dessus le champ (et non en
                 placeholder) : il reste ainsi modifiable dans l'éditeur visuel. */}
@@ -326,12 +321,12 @@ export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
               type="submit"
               className="rounded-sm bg-or-500 px-5 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-or-600"
             >
-              Rechercher
+              {tr("Rechercher")}
             </button>
           </form>
 
           <div className="mx-auto mt-6 flex max-w-3xl flex-wrap items-center justify-center gap-2 text-[12px]">
-            <span className="text-white/70">Recherches fréquentes :</span>
+            <span className="text-white/70">{tr("Recherches fréquentes :")}</span>
             {FAQ_RECHERCHES.map((terme, index) => (
               <button
                 key={index}
@@ -352,7 +347,7 @@ export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
         <Container className="grid grid-cols-1 gap-10 lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-16">
           {/* Thèmes : colonne collante à partir de 1024 px. */}
           <aside className="min-w-0 lg:sticky lg:top-28 lg:self-start">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-encre/45">Thèmes</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-encre/45">{tr("Thèmes")}</p>
             <ul className="sans-barre -mx-5 mt-3 flex gap-2 overflow-x-auto px-5 sm:mx-0 sm:flex-wrap sm:px-0 lg:block lg:space-y-1">
               {tousLesThemes.map((theme) => (
                 <li key={theme.id} className="shrink-0">
@@ -397,10 +392,10 @@ export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
             {themes.length === 0 ? (
               <div className="rounded-sm bg-sable-100 p-8 text-center">
                 <p className="text-[15px] text-club-950">
-                  Aucune question ne correspond à « {recherche} ».
+                  {tr("Aucune question ne correspond à")} « {recherche} ».
                 </p>
                 <p className="mt-2 text-[14px] text-encre/60">
-                  L&apos;accueil vous répond au{" "}
+                  {tr("L'accueil vous répond au")}{" "}
                   <a href={site.contact.telephoneLien} className="font-semibold text-club-950 underline">
                     {site.contact.telephone}
                   </a>
@@ -411,7 +406,7 @@ export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
                   onClick={() => setRecherche("")}
                   className="mt-5 text-[13px] font-semibold text-club-950 underline-offset-4 hover:underline"
                 >
-                  Voir toutes les questions
+                  {tr("Voir toutes les questions")}
                 </button>
               </div>
             ) : (
@@ -428,7 +423,7 @@ export function CentreAide({ themes: tousLesThemes }: { themes: ThemeFaq[] }) {
                         <Editable path={`${theme.section}.${theme.constantes.titre}`}>{theme.titre}</Editable>
                       </h2>
                       <p className="shrink-0 text-[12px] text-encre/45">
-                        {theme.questions.length} question{theme.questions.length > 1 ? "s" : ""}
+                        {theme.questions.length} {theme.questions.length > 1 ? tr("questions") : tr("question")}
                       </p>
                     </div>
                     <div className="mt-3">

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 
 import { reseaux, site, urlItineraire } from "@/config/site";
 import type { CompetitionAvecEtat } from "@/lib/api/types";
+import { infoLangue, LANGUE_PRINCIPALE, languesPubliees } from "@/lib/i18n/langues";
+import { cheminLocal } from "@/lib/i18n/chemins";
+import { i18n } from "@/lib/i18n/serveur";
 
 /**
  * SEO : métadonnées par page et données structurées (JSON-LD, schema.org).
@@ -14,7 +17,7 @@ import type { CompetitionAvecEtat } from "@/lib/api/types";
 /** Image de partage par défaut (1200 × 630, cf. scripts/generer-og.mjs). */
 export const IMAGE_PARTAGE = "/og/accueil.jpg";
 
-export function metadonnees({
+export async function metadonnees({
   titre,
   titreAbsolu,
   description,
@@ -32,24 +35,43 @@ export function metadonnees({
   image?: string;
   /** Faux : page encore en construction ou sans contenu propre (noindex, follow). */
   indexable?: boolean;
-}): Metadata {
-  const titrePartage = titreAbsolu ?? `${titre} | ${site.nomMarque}`;
+}): Promise<Metadata> {
+  // Titre, description et adresses dans la langue de la page ; les versions
+  // des autres langues publiées sont déclarées en hreflang.
+  const { langue, tr } = await i18n();
+  const titreLocal = titre ? tr(titre) : undefined;
+  const titreAbsoluLocal = titreAbsolu ? tr(titreAbsolu) : undefined;
+  const descriptionLocale = tr(description);
+  const adresse = cheminLocal(chemin, langue);
+  const titrePartage = titreAbsoluLocal ?? `${titreLocal} | ${site.nomMarque}`;
   return {
-    title: titreAbsolu ? { absolute: titreAbsolu } : titre,
-    description,
-    alternates: { canonical: chemin },
+    title: titreAbsoluLocal ? { absolute: titreAbsoluLocal } : titreLocal,
+    description: descriptionLocale,
+    alternates: {
+      canonical: adresse,
+      ...(indexable
+        ? {
+            languages: {
+              ...Object.fromEntries(languesPubliees.map((l) => [l.code, cheminLocal(chemin, l.code)])),
+              "x-default": cheminLocal(chemin, LANGUE_PRINCIPALE),
+            },
+          }
+        : {}),
+    },
     openGraph: {
       type: "website",
-      locale: "fr_FR",
+      locale: infoLangue(langue).locale,
+      alternateLocale: languesPubliees.filter((l) => l.code !== langue).map((l) => l.locale),
       siteName: site.nomMarque,
-      url: chemin,
+      url: adresse,
       title: titrePartage,
-      description,
+      description: descriptionLocale,
       // Dimensions connues seulement pour les images de partage générées (/og/).
       images: [image.startsWith("/og/") ? { url: image, width: 1200, height: 630, alt: titrePartage } : { url: image, alt: titrePartage }],
     },
-    twitter: { card: "summary_large_image", title: titrePartage, description, images: [image] },
-    ...(indexable ? {} : { robots: { index: false, follow: true } }),
+    twitter: { card: "summary_large_image", title: titrePartage, description: descriptionLocale, images: [image] },
+    // Page non indexable, ou langue pas encore publiée (traduction en cours).
+    ...(indexable && infoLangue(langue).publiee ? {} : { robots: { index: false, follow: true } }),
   };
 }
 
@@ -73,16 +95,18 @@ const lieu = () => ({
 const absolu = (chemin: string) => new URL(chemin, site.url).toString();
 
 /** Le golf : terrain, club et lieu d'activité (page d'accueil). */
-export function jsonLdGolf() {
+export async function jsonLdGolf() {
+  const { tr, langue } = await i18n();
   return {
     "@context": "https://schema.org",
     "@type": ["GolfCourse", "SportsActivityLocation"],
     "@id": `${site.url}/#golf`,
     name: site.nomMarque,
     alternateName: [site.name, "Golf de Château l'Arc", "Golf Château l'Arc Fuveau"],
-    description:
+    description: tr(
       "Golf 18 trous par 70 (5 817 m) dessiné par Robert Trent Jones II en 1985, entre pins et garrigue, face à la montagne Sainte-Victoire, à 15 minutes d'Aix-en-Provence.",
-    url: site.url,
+    ),
+    url: absolu(cheminLocal("/", langue)),
     logo: absolu("/icons/icone-512.png"),
     image: [absolu("/og/accueil.jpg"), absolu("/og/parcours.jpg")],
     telephone: "+33442298341",
@@ -94,21 +118,22 @@ export function jsonLdGolf() {
     priceRange: "€€",
     currenciesAccepted: "EUR",
     amenityFeature: ["Practice", "Putting-green", "Club-house", "Restaurant", "Proshop", "École de golf"].map(
-      (nom) => ({ "@type": "LocationFeatureSpecification", name: nom, value: true }),
+      (nom) => ({ "@type": "LocationFeatureSpecification", name: tr(nom), value: true }),
     ),
     sameAs: reseaux.map((r) => r.url).filter(Boolean),
   };
 }
 
-export function jsonLdSiteWeb() {
+export async function jsonLdSiteWeb() {
+  const { langue } = await i18n();
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": `${site.url}/#site`,
     name: site.nomMarque,
     alternateName: site.name,
-    url: site.url,
-    inLanguage: "fr-FR",
+    inLanguage: languesPubliees.map((l) => l.locale.replace("_", "-")),
+    url: absolu(cheminLocal("/", langue)),
     publisher: { "@id": `${site.url}/#golf` },
   };
 }
@@ -132,12 +157,13 @@ export function jsonLdFilAriane(etapes: { label: string; href?: string }[], chem
 }
 
 /** Compétition (SportsEvent) : date, lieu, inscription, organisateur. */
-export function jsonLdCompetition(competition: CompetitionAvecEtat, description?: string) {
+export async function jsonLdCompetition(competition: CompetitionAvecEtat, description?: string) {
+  const { tr, lien } = await i18n();
   const prix = competition.droitJeuMembres?.match(/\d+(?:[.,]\d+)?/)?.[0]?.replace(",", ".");
   return {
     "@context": "https://schema.org",
     "@type": "SportsEvent",
-    name: competition.nom,
+    name: tr(competition.nom),
     sport: "Golf",
     startDate: competition.dateDebut,
     endDate: competition.dateFin ?? competition.dateDebut,
@@ -145,7 +171,7 @@ export function jsonLdCompetition(competition: CompetitionAvecEtat, description?
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     location: lieu(),
     organizer: { "@type": "SportsOrganization", name: site.nomMarque, url: site.url },
-    url: absolu(`/competitions/${competition.slug}`),
+    url: absolu(lien(`/competitions/${competition.slug}`)),
     ...(description ? { description } : {}),
     ...(competition.afficheUrl ? { image: [absolu(competition.afficheUrl)] } : { image: [absolu("/og/competitions.jpg")] }),
     ...(prix
@@ -154,7 +180,7 @@ export function jsonLdCompetition(competition: CompetitionAvecEtat, description?
             "@type": "Offer",
             price: prix,
             priceCurrency: "EUR",
-            url: absolu(`/competitions/${competition.slug}`),
+            url: absolu(lien(`/competitions/${competition.slug}`)),
             availability:
               competition.etat.cle === "ouverte" ? "https://schema.org/InStock" : "https://schema.org/SoldOut",
             ...(competition.inscriptionOuverture ? { validFrom: competition.inscriptionOuverture } : {}),

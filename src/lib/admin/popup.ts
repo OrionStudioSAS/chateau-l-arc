@@ -52,10 +52,14 @@ const saisons = ["Hiver", "Hiver", "Printemps", "Printemps", "Printemps", "Été
  * Surtitre de la pop-up, déduit de la page visée et de la saison de début :
  * « Académie · Été 2026 ». Rien à saisir pour le club.
  */
-export function surtitrePopup(lien: string | undefined | null, debut: string | undefined | null): string {
+export function surtitrePopup(
+  lien: string | undefined | null,
+  debut: string | undefined | null,
+  tr: (francais: string) => string = (x) => x,
+): string {
   const page = lien?.startsWith("/") ? pagesDuSite.find((p) => p.href === lien)?.libelle : undefined;
-  const rubrique = page && page !== "Accueil" ? page.replace(/^(L'|Le |La |Les )/, "") : null;
+  const rubrique = page && page !== "Accueil" ? tr(page.replace(/^(L'|Le |La |Les )/, "")) : null;
   const date = debut ? new Date(`${debut}T12:00:00Z`) : null;
-  const saison = date ? `${saisons[date.getUTCMonth()]} ${date.getUTCFullYear()}` : null;
+  const saison = date ? `${tr(saisons[date.getUTCMonth()])} ${date.getUTCFullYear()}` : null;
   return [rubrique, saison].filter(Boolean).join(" · ");
 }

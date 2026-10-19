@@ -1,15 +1,17 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Lien as Link } from "@/components/ui/lien";
 
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 import { pagesAVenir, site } from "@/config/site";
 import { Editable } from "@/components/cms/editable";
-import { AVANTAGES_IMAGE, AVANTAGES_LISTE, AVANTAGES_SURTITRE, AVANTAGES_TITRE } from "@/constants";
+import { i18n } from "@/lib/i18n/serveur";
 
 const SECTION = "Tarifs · Avantages membres";
 
-export function AvantagesMembres() {
+export async function AvantagesMembres() {
+  const { T, tr } = await i18n();
+  const { AVANTAGES_IMAGE, AVANTAGES_LISTE, AVANTAGES_SURTITRE, AVANTAGES_TITRE } = T;
   return (
     <section id="avantages" className="scroll-mt-28 bg-white py-14 lg:py-20">
       <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-20">
@@ -59,7 +61,7 @@ export function AvantagesMembres() {
               >
                 <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" />
               </svg>
-              Nous appeler
+              {tr("Nous appeler")}
             </a>
           </div>
         </div>
@@ -67,7 +69,7 @@ export function AvantagesMembres() {
         <Editable path={`${SECTION}.AVANTAGES_IMAGE`} image as="div" className="relative aspect-[4/3] overflow-hidden rounded-sm">
           <Image
             src={AVANTAGES_IMAGE}
-            alt="Le parcours entre les pins, face à la montagne Sainte-Victoire"
+            alt={tr("Le parcours entre les pins, face à la montagne Sainte-Victoire")}
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
             className="object-cover"

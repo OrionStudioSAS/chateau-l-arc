@@ -2,10 +2,12 @@ import Image from "next/image";
 
 import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
-import { PARTENAIRES_TITRE } from "@/constants";
 import { partenaires } from "@/config/site";
+import { i18n } from "@/lib/i18n/serveur";
 
-export function Partenaires() {
+export async function Partenaires() {
+  const { T } = await i18n();
+  const { PARTENAIRES_TITRE } = T;
   return (
     <section className="border-t border-encre/10 bg-white py-12 lg:py-14">
       <Container>

@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Lien as Link } from "@/components/ui/lien";
+import { useSelectedLayoutSegments } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { Logo } from "@/components/layout/logo";
@@ -14,6 +14,9 @@ import { BoutonClair } from "@/components/ui/bouton-clair";
 import { BoutonOr } from "@/components/ui/bouton-or";
 import { headerActions, headerNav, routesHeroSombre, site } from "@/config/site";
 import { cn } from "@/lib/cn";
+import { languesPubliees } from "@/lib/i18n/langues";
+import { cheminLocal } from "@/lib/i18n/chemins";
+import { useI18n } from "@/lib/i18n/client";
 import type { Installation } from "@/lib/api/types";
 import type { Meteo } from "@/lib/meteo";
 
@@ -35,7 +38,13 @@ export function SiteHeader({
   statut: Installation[];
   meteo: Meteo | null;
 }) {
-  const pathname = usePathname();
+  const { tr, langue } = useI18n();
+  // Chemin français de la page (segments internes sous app/[lang]) : le même
+  // côté serveur et navigateur, quelle que soit l'adresse traduite affichée.
+  const segments = useSelectedLayoutSegments();
+  const pathname = `/${segments.filter((s) => !s.startsWith("(") && !s.startsWith("__")).join("/")}`;
+  // Autres langues de la page, pour le sélecteur.
+  const autresLangues = languesPubliees.filter((l) => l.code !== langue);
   const [defile, setDefile] = useState(false);
   const [menuOuvert, setMenuOuvert] = useState(false);
   const [infosOuvertes, setInfosOuvertes] = useState(false);
@@ -104,7 +113,7 @@ export function SiteHeader({
     return () => window.removeEventListener("scroll", surDefilement);
   }, []);
 
-  const boutonStatut = libelleBoutonStatut(statut);
+  const boutonStatut = libelleBoutonStatut(statut, tr);
 
   // Transparent uniquement en haut d'une page à hero sombre, menu mobile fermé.
   const transparent =
@@ -123,7 +132,7 @@ export function SiteHeader({
         {/* Grille en trois colonnes : le logo reste centré sans recouvrir les
             liens, quelle que soit la largeur des blocs latéraux. */}
         <div className="mx-auto grid h-20 w-full max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 sm:px-8 xl:px-10">
-          <nav aria-label="Navigation principale" className="hidden lg:block">
+          <nav aria-label={tr("Navigation principale")} className="hidden lg:block">
             <ul className="flex items-center gap-4 xl:gap-8">
               {headerNav.map((item) => {
                 const actif =
@@ -138,7 +147,7 @@ export function SiteHeader({
                         transparent ? "text-white" : "text-encre",
                       )}
                     >
-                      {item.label}
+                      {tr(item.label)}
                     </Link>
                   </li>
                 );
@@ -148,7 +157,7 @@ export function SiteHeader({
 
           <Link
             href="/"
-            aria-label="Accueil"
+            aria-label={tr("Accueil")}
             onClick={() => setMenuOuvert(false)}
             // col-start explicite : la nav masquée sort de la grille en mobile.
             className="col-start-2 justify-self-center"
@@ -201,7 +210,7 @@ export function SiteHeader({
                 <div
                   id="infos-parcours"
                   role="region"
-                  aria-label="Aujourd'hui au golf"
+                  aria-label={tr("Aujourd'hui au golf")}
                   // Verre dépoli : la photo reste visible à travers. Sur l'en-tête
                   // blanc (page défilée), voile plus sombre pour garder le texte
                   // blanc lisible au-dessus d'un contenu clair.
@@ -215,9 +224,26 @@ export function SiteHeader({
               ) : null}
             </div>
 
+            {autresLangues.map((l) => (
+              <a
+                key={l.code}
+                href={cheminLocal(pathname, l.code)}
+                hrefLang={l.code}
+                lang={l.code}
+                title={l.natif}
+                className={cn(
+                  "mr-3 hidden text-[12px] font-semibold uppercase tracking-[0.12em] underline-offset-4 hover:underline lg:block",
+                  transparent ? "text-white" : "text-encre",
+                )}
+              >
+                <span className="sr-only">{l.natif} : </span>
+                {l.code}
+              </a>
+            ))}
+
             <a
               href={telephone}
-              aria-label={`Appeler le golf au ${site.contact.telephone}`}
+              aria-label={`${tr("Appeler le golf au")} ${site.contact.telephone}`}
               className={cn(
                 "mr-3.5 hidden size-9 items-center justify-center rounded-full border transition-colors xl:flex",
                 transparent
@@ -247,13 +273,13 @@ export function SiteHeader({
                 transparent ? "bg-white hover:bg-sable-100" : "bg-sable-100 hover:bg-sable-50",
               )}
             >
-              {headerActions.membre.label}
+              {tr(headerActions.membre.label)}
             </BoutonClair>
             <BoutonOr
               href={headerActions.reservation.href}
               className={cn(boutonEnTete, "hidden lg:inline-flex")}
             >
-              {headerActions.reservation.label}
+              {tr(headerActions.reservation.label)}
             </BoutonOr>
 
             <button
@@ -266,7 +292,7 @@ export function SiteHeader({
                 transparent ? "border-sable-50/40" : "border-club-950/15",
               )}
             >
-              {menuOuvert ? "Fermer" : "Menu"}
+              {menuOuvert ? tr("Fermer") : tr("Menu")}
             </button>
           </div>
         </div>
@@ -287,7 +313,7 @@ export function SiteHeader({
                       onClick={() => setMenuOuvert(false)}
                       className="block border-b border-club-950/10 py-4 text-[14px] uppercase tracking-[0.14em] text-encre"
                     >
-                      {item.label}
+                      {tr(item.label)}
                     </Link>
                   </li>
                 ))}
@@ -296,9 +322,21 @@ export function SiteHeader({
                     href={telephone}
                     className="block border-b border-club-950/10 py-4 text-[14px] uppercase tracking-[0.14em] text-encre"
                   >
-                    Nous appeler
+                    {tr("Nous appeler")}
                   </a>
                 </li>
+                {autresLangues.map((l) => (
+                  <li key={l.code} className="menu-lien" style={delaiLien(headerNav.length + 1)}>
+                    <a
+                      href={cheminLocal(pathname, l.code)}
+                      hrefLang={l.code}
+                      lang={l.code}
+                      className="block border-b border-club-950/10 py-4 text-[14px] uppercase tracking-[0.14em] text-encre"
+                    >
+                      {l.natif}
+                    </a>
+                  </li>
+                ))}
               </ul>
               <div
                 className="menu-lien mt-6 flex flex-col gap-3"
@@ -309,13 +347,13 @@ export function SiteHeader({
                   // Fond sable sur blanc : un filet pour que le bouton se détache.
                   className="justify-center border border-club-950/10 py-4"
                 >
-                  {headerActions.membre.label}
+                  {tr(headerActions.membre.label)}
                 </BoutonClair>
                 <BoutonOr
                   href={headerActions.reservation.href}
                   className="justify-center py-4"
                 >
-                  {headerActions.reservation.label}
+                  {tr(headerActions.reservation.label)}
                 </BoutonOr>
               </div>
             </div>

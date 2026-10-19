@@ -1,32 +1,33 @@
-import Link from "next/link";
+import { Lien as Link } from "@/components/ui/lien";
 
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 import { Editable } from "@/components/cms/editable";
-import { TARIFS_CARNETS_SURTITRE, TARIFS_GREENFEES_SURTITRE, TARIFS_LOCATIONS_SURTITRE } from "@/constants";
 import { headerActions } from "@/config/site";
 import { cn } from "@/lib/cn";
 import { proprietesLien } from "@/lib/liens";
 import { getGrilleTarifs } from "@/lib/api/content";
-import { euros, parPartie, saisonsDe, type Location } from "@/lib/tarifs";
+import { parPartie, saisonsDe, type Location } from "@/lib/tarifs";
+import { i18n } from "@/lib/i18n/serveur";
 
 /** Ancre de section : décalée sous l'en-tête collant lors d'un saut. */
 const ancre = "scroll-mt-28";
 
-function TableauTarifs({ lignes, legende }: { lignes: Location[]; legende: string }) {
+async function TableauTarifs({ lignes, legende }: { lignes: Location[]; legende: string }) {
+  const { tr, euros } = await i18n();
   return (
     <table className="w-full text-[14px]">
       <caption className="sr-only">{legende}</caption>
       <thead>
         <tr className="border-b border-encre/70 text-[11px] uppercase tracking-[0.14em]">
           <th scope="col" className="pb-3 text-left font-normal">
-            <span className="sr-only">Prestation</span>
+            <span className="sr-only">{tr("Prestation")}</span>
           </th>
           <th scope="col" className="w-24 pb-3 text-right font-normal text-encre/50 sm:w-32">
-            Visiteurs
+            {tr("Visiteurs")}
           </th>
           <th scope="col" className="w-24 pb-3 text-right font-semibold text-club-600 sm:w-32">
-            Membres
+            {tr("Membres")}
           </th>
         </tr>
       </thead>
@@ -34,7 +35,7 @@ function TableauTarifs({ lignes, legende }: { lignes: Location[]; legende: strin
         {lignes.map((ligne) => (
           <tr key={ligne.id} className="border-b border-encre/10 last:border-0">
             <th scope="row" className="py-4 text-left font-normal text-encre/85">
-              {ligne.libelle}
+              {tr(ligne.libelle)}
             </th>
             <td className="py-4 text-right font-semibold text-encre">{euros(ligne.prix)}</td>
             <td className="py-4 text-right font-semibold text-club-600">
@@ -43,7 +44,7 @@ function TableauTarifs({ lignes, legende }: { lignes: Location[]; legende: strin
                   <span aria-hidden="true" className="text-encre/30">
                     —
                   </span>
-                  <span className="sr-only">Pas de tarif membre</span>
+                  <span className="sr-only">{tr("Pas de tarif membre")}</span>
                 </>
               ) : (
                 euros(ligne.membres)
@@ -58,8 +59,10 @@ function TableauTarifs({ lignes, legende }: { lignes: Location[]; legende: strin
 
 /** Green fees, carnets, puis locations et practice (tarifs visiteurs et membres). */
 export async function TarifsGreenFees() {
+  const { T, tr, euros, locale } = await i18n();
+  const { TARIFS_CARNETS_SURTITRE, TARIFS_GREENFEES_SURTITRE, TARIFS_LOCATIONS_SURTITRE } = T;
   const grille = await getGrilleTarifs();
-  const saisons = saisonsDe(grille);
+  const saisons = saisonsDe(grille, tr, locale);
   const locations = grille.locations.filter((ligne) => ligne.groupe === "location");
   const practice = grille.locations.filter((ligne) => ligne.groupe === "practice");
 
@@ -85,7 +88,7 @@ export async function TarifsGreenFees() {
                   )}
                 >
                   <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-or-500">
-                    {formule.libelle}
+                    {tr(formule.libelle)}
                   </p>
                   <p className="mt-4 flex items-baseline gap-2">
                     <span
@@ -97,11 +100,11 @@ export async function TarifsGreenFees() {
                       {euros(formule.prix)}
                     </span>
                     <span className={cn("text-[13px]", fonce ? "text-sable-50/60" : "text-encre/50")}>
-                      / joueur
+                      / {tr("joueur")}
                     </span>
                   </p>
                   <p className={cn("mt-3 flex-1 text-[14px]", fonce ? "text-sable-50/80" : "text-encre/65")}>
-                    {formule.detail ?? (formule.saison ? saisons[formule.saison].detail : null)}
+                    {formule.detail ? tr(formule.detail) : formule.saison ? saisons[formule.saison].detail : null}
                   </p>
                   <Link
                     href={headerActions.reservation.href}
@@ -113,7 +116,7 @@ export async function TarifsGreenFees() {
                         : "border border-club-950/25 text-club-950 hover:bg-sable-50",
                     )}
                   >
-                    Réserver un départ <span aria-hidden="true">→</span>
+                    {tr("Réserver un départ")} <span aria-hidden="true">→</span>
                   </Link>
                 </li>
               );
@@ -136,13 +139,13 @@ export async function TarifsGreenFees() {
               >
                 <div>
                   <p className="font-butler text-[22px] font-medium leading-tight text-club-950 sm:text-[26px]">
-                    {carnet.libelle}
+                    {tr(carnet.libelle)}
                   </p>
-                  {carnet.detail ? <p className="mt-1 text-[13px] text-encre/55">{carnet.detail}</p> : null}
+                  {carnet.detail ? <p className="mt-1 text-[13px] text-encre/55">{tr(carnet.detail)}</p> : null}
                 </div>
                 <p className="flex items-baseline gap-4">
                   <span className="text-[12px] text-encre/50">
-                    soit {euros(parPartie(carnet))} la partie
+                    {tr("soit")} {euros(parPartie(carnet))} {tr("la partie")}
                   </span>
                   <span className="font-butler text-[28px] font-medium text-club-950 sm:text-[32px]">
                     {euros(carnet.prix)}
@@ -161,8 +164,8 @@ export async function TarifsGreenFees() {
           </Editable>
 
           <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-20">
-            <TableauTarifs lignes={locations} legende="Locations : voiturettes, chariot et matériel" />
-            <TableauTarifs lignes={practice} legende="Practice : seaux de balles" />
+            <TableauTarifs lignes={locations} legende={tr("Locations : voiturettes, chariot et matériel")} />
+            <TableauTarifs lignes={practice} legende={tr("Practice : seaux de balles")} />
           </div>
         </div>
       </Container>

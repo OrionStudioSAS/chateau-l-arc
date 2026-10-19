@@ -1,5 +1,4 @@
-import Link from "next/link";
-import type { Route } from "next";
+import { Lien as Link } from "@/components/ui/lien";
 
 import { cn } from "@/lib/cn";
 import { proprietesLien } from "@/lib/liens";
@@ -13,7 +12,7 @@ export function BoutonOr({
   className,
   children,
 }: {
-  href: Route;
+  href: string;
   className?: string;
   children: React.ReactNode;
 }) {

@@ -1,9 +1,9 @@
 import Image from "next/image";
-import Link from "next/link";
-import type { Route } from "next";
+import { Lien as Link } from "@/components/ui/lien";
 
 import { Editable } from "@/components/cms/editable";
 import { cn } from "@/lib/cn";
+import { i18n } from "@/lib/i18n/serveur";
 import { JsonLd, jsonLdFilAriane } from "@/lib/seo";
 import { TAILLE_PLEINE_LARGEUR, variablesPleineLargeur } from "@/lib/titre-pleine-largeur";
 
@@ -17,7 +17,7 @@ import { TAILLE_PLEINE_LARGEUR, variablesPleineLargeur } from "@/lib/titre-plein
 /** Décalage de l'animation d'arrivée, pour enchaîner les textes en cascade. */
 const delaiEntree = (ms: number) => ({ "--delai": `${ms}ms` }) as React.CSSProperties;
 
-export function Banniere({
+export async function Banniere({
   image,
   imageAlt = "",
   accroche,
@@ -58,7 +58,7 @@ export function Banniere({
   /** Hauteur minimale : plein écran sur l'accueil, 80 % ailleurs. */
   hauteur?: string;
   /** Fil d'Ariane sous l'en-tête ; le dernier élément est la page courante. */
-  filAriane?: { label: string; href?: Route }[];
+  filAriane?: { label: string; href?: string }[];
   actions?: React.ReactNode;
   /** Rangée pleine largeur sous le texte (onglets de la page Tarifs…). */
   pied?: React.ReactNode;
@@ -66,6 +66,12 @@ export function Banniere({
   encart?: React.ReactNode;
   cmsPaths?: { accroche?: string; titre?: string; texte?: string; image?: string };
 }) {
+  const { tr, lien } = await i18n();
+  // Fil d'Ariane : libellés et adresses dans la langue de la page.
+  const etapes = filAriane?.map((etape) => ({
+    label: tr(etape.label),
+    href: etape.href ? lien(etape.href) : undefined,
+  }));
   return (
     <section
       className={cn(
@@ -78,7 +84,7 @@ export function Banniere({
       <Editable path={cmsPaths?.image ?? ""} image as="div" className="absolute inset-0">
         <Image
           src={image}
-          alt={imageAlt}
+          alt={tr(imageAlt)}
           fill
           loading="eager"
           // Élément le plus grand de la page (LCP) : chargé en priorité.
@@ -97,14 +103,14 @@ export function Banniere({
         className="pointer-events-none absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
       />
 
-      {filAriane ? <JsonLd donnees={jsonLdFilAriane(filAriane)} /> : null}
+      {etapes ? <JsonLd donnees={jsonLdFilAriane(etapes)} /> : null}
       {filAriane ? (
         <nav
-          aria-label="Fil d'Ariane"
+          aria-label={tr("Fil d'Ariane")}
           className="absolute inset-x-0 top-[88px] px-5 text-[13px] text-white/70 sm:px-8 xl:px-10"
         >
           <ol className="flex flex-wrap items-center gap-2">
-            {filAriane.map((etape, index) => (
+            {(etapes ?? []).map((etape, index) => (
               <li key={etape.label} className="flex items-center gap-2">
                 {index > 0 ? <span aria-hidden="true">›</span> : null}
                 {etape.href ? (

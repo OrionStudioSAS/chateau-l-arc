@@ -35,27 +35,39 @@ function decaler(mmjj: string, jours: number): string {
   return `${String(date.getUTCMonth() + 1).padStart(2, "0")}-${String(date.getUTCDate()).padStart(2, "0")}`;
 }
 
-const jourMois = new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", timeZone: "UTC" });
-const enLettres = (mmjj: string) => {
+/** « 16 avril » (« 1er mai ») en français, « 16 April » ailleurs. */
+const enLettres = (mmjj: string, locale: string) => {
   const [m, j] = mmjj.split("-").map(Number);
-  return jourMois.format(new Date(Date.UTC(2001, m - 1, j))).replace(/^1 /, "1er ");
+  const texte = new Intl.DateTimeFormat(locale, { day: "numeric", month: "long", timeZone: "UTC" }).format(
+    new Date(Date.UTC(2001, m - 1, j)),
+  );
+  return locale.startsWith("fr") ? texte.replace(/^1 /, "1er ") : texte;
 };
 
-/** Libellés des saisons, au format affiché sur le site. */
-export function saisonsDe(grille: GrilleTarifs) {
+/**
+ * Libellés des saisons, au format affiché sur le site (dans la langue de la
+ * page si `tr` et `locale` sont fournis).
+ */
+export function saisonsDe(
+  grille: GrilleTarifs,
+  tr: (francais: string) => string = (x) => x,
+  locale = "fr-FR",
+) {
   const { hauteDebut, hauteFin } = grille.saisons;
   const basseDebut = decaler(hauteFin, 1);
   const basseFin = decaler(hauteDebut, -1);
+  const periode = (debut: string, fin: string) =>
+    `${tr("Du")} ${enLettres(debut, locale)} ${tr("au")} ${enLettres(fin, locale)}.`;
   return {
     haute: {
-      libelle: "Haute saison",
+      libelle: tr("Haute saison"),
       periode: `${versJJMM(hauteDebut)} – ${versJJMM(hauteFin)}`,
-      detail: `Du ${enLettres(hauteDebut)} au ${enLettres(hauteFin)}.`,
+      detail: periode(hauteDebut, hauteFin),
     },
     basse: {
-      libelle: "Basse saison",
+      libelle: tr("Basse saison"),
       periode: `${versJJMM(basseDebut)} – ${versJJMM(basseFin)}`,
-      detail: `Du ${enLettres(basseDebut)} au ${enLettres(basseFin)}.`,
+      detail: periode(basseDebut, basseFin),
     },
   } as const;
 }

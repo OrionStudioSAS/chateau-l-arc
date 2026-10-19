@@ -1,18 +1,20 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Lien as Link } from "@/components/ui/lien";
 import { useEffect, useRef, useState } from "react";
 
 import { Editable } from "@/components/cms/editable";
 import { pagesAVenir } from "@/config/site";
 import { Container } from "@/components/ui/container";
-import { EXPLORER_SURTITRE, EXPLORER_TEXTE, EXPLORER_TITRE } from "@/constants";
 import { Surtitre } from "@/components/ui/surtitre";
 import { TROUS } from "@/lib/parcours";
 import { REPERES } from "@/lib/reperes";
+import { useI18n } from "@/lib/i18n/client";
 
 export function ExplorerParcours() {
+  const { T, tr } = useI18n();
+  const { EXPLORER_SURTITRE, EXPLORER_TEXTE, EXPLORER_TITRE } = T;
   const [numero, setNumero] = useState(1);
   const trou = TROUS.find((candidat) => candidat.numero === numero) ?? TROUS[0];
   const selecteur = useRef<HTMLDivElement>(null);
@@ -60,7 +62,7 @@ export function ExplorerParcours() {
             <div className="relative mx-auto w-full max-w-[640px]">
               <Image
                 src="/images/map.png"
-                alt="Plan du parcours 18 trous"
+                alt={tr("Plan du parcours 18 trous")}
                 width={1742}
                 height={1074}
                 className="h-auto w-full"
@@ -72,7 +74,7 @@ export function ExplorerParcours() {
                   type="button"
                   onClick={() => setNumero(candidat.numero)}
                   aria-pressed={candidat.numero === numero}
-                  title={`Trou n°${candidat.numero}`}
+                  title={`${tr("Trou n°")}${candidat.numero}`}
                   className={`absolute size-9 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-club-600 ${
                     candidat.numero === numero
                       ? "ring-2 ring-club-950 ring-offset-2"
@@ -83,7 +85,7 @@ export function ExplorerParcours() {
                     top: `${candidat.position.y}%`,
                   }}
                 >
-                  <span className="sr-only">Trou n°{candidat.numero}</span>
+                  <span className="sr-only">{tr("Trou n°")}{candidat.numero}</span>
                 </button>
               ))}
             </div>
@@ -93,7 +95,7 @@ export function ExplorerParcours() {
             <div
               ref={selecteur}
               role="group"
-              aria-label="Choisir un trou"
+              aria-label={tr("Choisir un trou")}
               className="sans-barre relative -mx-5 mt-6 flex gap-2 overflow-x-auto px-5 sm:-mx-8 sm:px-8 md:hidden"
             >
               {TROUS.map((candidat) => (
@@ -103,7 +105,7 @@ export function ExplorerParcours() {
                   data-numero={candidat.numero}
                   onClick={() => setNumero(candidat.numero)}
                   aria-pressed={candidat.numero === numero}
-                  aria-label={`Trou n°${candidat.numero}`}
+                  aria-label={`${tr("Trou n°")}${candidat.numero}`}
                   className={`flex size-11 shrink-0 items-center justify-center rounded-full text-[15px] font-semibold transition-colors ${
                     candidat.numero === numero
                       ? "bg-club-950 text-sable-50"
@@ -123,7 +125,7 @@ export function ExplorerParcours() {
               <div className="relative aspect-video min-h-[200px] w-full bg-black">
                 <iframe
                   src={`https://www.youtube-nocookie.com/embed/${trou.videoYoutubeId}?autoplay=1&mute=1&loop=1&playlist=${trou.videoYoutubeId}&playsinline=1&rel=0`}
-                  title={`Vidéo du trou n°${trou.numero}`}
+                  title={`${tr("Vidéo du trou n°")}${trou.numero}`}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
                   allowFullScreen
                   loading="lazy"
@@ -135,15 +137,15 @@ export function ExplorerParcours() {
               <div className="bg-sable-100 px-5 py-6 sm:px-8">
                 <div className="flex flex-wrap items-center gap-4">
                   <p className="font-butler text-[28px] font-medium text-club-950">
-                    Trou n°{trou.numero}
+                    {tr("Trou n°")}{trou.numero}
                   </p>
                   <span className="rounded-full bg-club-950 px-4 py-1.5 text-[12px] font-semibold text-sable-50">
-                    Par {trou.par} · HCP {trou.hcp}
+                    {tr("Par")} {trou.par} · HCP {trou.hcp}
                   </span>
                 </div>
 
                 <p className="mt-4 text-[16px] leading-relaxed text-encre/80">
-                  {trou.description}
+                  {tr(trou.description)}
                 </p>
 
                 <ul className="mt-6 grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:gap-3">
@@ -160,7 +162,7 @@ export function ExplorerParcours() {
                         style={{ backgroundColor: repere.couleur }}
                       />
                       <span className="text-[14px] font-semibold text-club-950">
-                        <span className="sr-only">Départ {repere.nom} : </span>
+                        <span className="sr-only">{tr("Départ")} {tr(repere.nom)} : </span>
                         {trou.distances[repere.cle]}&nbsp;m
                       </span>
                     </li>
@@ -170,10 +172,10 @@ export function ExplorerParcours() {
                 {trou.conseilDuPro ? (
                   <figure className="mt-6 rounded-lg border border-dashed border-or-500/60 px-5 py-4">
                     <figcaption className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-or-600">
-                      <span aria-hidden="true">🏌️</span> Le conseil du pro
+                      <span aria-hidden="true">🏌️</span> {tr("Le conseil du pro")}
                     </figcaption>
                     <blockquote className="mt-2 text-[15px] leading-relaxed text-encre/80">
-                      «&nbsp;{trou.conseilDuPro}&nbsp;»
+                      «&nbsp;{tr(trou.conseilDuPro)}&nbsp;»
                     </blockquote>
                   </figure>
                 ) : null}
@@ -185,14 +187,14 @@ export function ExplorerParcours() {
                     // Zone de toucher agrandie, sans décaler la mise en page.
                     className="-my-3 py-3 pr-4 underline-offset-4 hover:underline"
                   >
-                    <span aria-hidden="true">←</span> Trou {precedent}
+                    <span aria-hidden="true">←</span> {tr("Trou")} {precedent}
                   </button>
                   <button
                     type="button"
                     onClick={() => setNumero(suivant)}
                     className="-my-3 py-3 pl-4 underline-offset-4 hover:underline"
                   >
-                    Trou {suivant} <span aria-hidden="true">→</span>
+                    {tr("Trou")} {suivant} <span aria-hidden="true">→</span>
                   </button>
                 </div>
               </div>
@@ -205,7 +207,7 @@ export function ExplorerParcours() {
             href={pagesAVenir.carteDeScore}
             className="inline-block rounded-lg bg-club-950 px-6 py-4 text-[15px] sm:text-[16px] font-semibold text-sable-50 transition-colors hover:bg-club-800"
           >
-            Télécharger la carte de score (PDF)
+            {tr("Télécharger la carte de score (PDF)")}
           </Link>
         </div>
       </Container>

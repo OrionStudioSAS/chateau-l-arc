@@ -2,16 +2,13 @@ import { Container } from "@/components/ui/container";
 import { ChampVideo } from "@/components/cms/champ-video";
 import { Editable } from "@/components/cms/editable";
 import { Surtitre } from "@/components/ui/surtitre";
-import {
-  ENTRAINEMENT_PARAGRAPHES,
-  ENTRAINEMENT_SURTITRE,
-  ENTRAINEMENT_TITRE,
-  ENTRAINEMENT_VIDEO,
-} from "@/constants";
+import { i18n } from "@/lib/i18n/serveur";
 
 const SECTION = "Le parcours · Zone d'entraînement";
 
-export function ZoneEntrainement() {
+export async function ZoneEntrainement() {
+  const { T, tr } = await i18n();
+  const { ENTRAINEMENT_PARAGRAPHES, ENTRAINEMENT_SURTITRE, ENTRAINEMENT_TITRE, ENTRAINEMENT_VIDEO } = T;
   return (
     <section className="py-14 lg:py-20">
       <Container>
@@ -44,7 +41,7 @@ export function ZoneEntrainement() {
         <div className="relative mt-14 aspect-video w-full overflow-hidden rounded-sm bg-club-950">
           <iframe
             src={`https://www.youtube-nocookie.com/embed/${ENTRAINEMENT_VIDEO}`}
-            title="Vidéo de la zone d'entraînement du Golf Château l'Arc"
+            title={tr("Vidéo de la zone d'entraînement du Golf Château l'Arc")}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             loading="lazy"

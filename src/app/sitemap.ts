@@ -3,6 +3,8 @@ import type { MetadataRoute } from "next";
 import { site } from "@/config/site";
 import { estPagePubliqueVisible } from "@/config/visibilite";
 import { getCompetitions } from "@/lib/api/content";
+import { cheminLocal } from "@/lib/i18n/chemins";
+import { languesPubliees } from "@/lib/i18n/langues";
 
 /**
  * Pages indexées, avec leur image principale. Les pages encore en
@@ -23,23 +25,41 @@ const pages: { chemin: string; priorite: number; frequence: MetadataRoute.Sitema
 
 const absolu = (chemin: string) => new URL(chemin, site.url).toString();
 
+/**
+ * Une entrée par page et par langue publiée, chacune déclarant ses versions
+ * dans les autres langues (hreflang), comme dans l'en-tête des pages.
+ */
+function versions(cheminFrancais: string) {
+  const languages = Object.fromEntries(
+    languesPubliees.map((l) => [l.code, absolu(cheminLocal(cheminFrancais, l.code))]),
+  );
+  return languesPubliees.map((l) => ({
+    url: absolu(cheminLocal(cheminFrancais, l.code)),
+    alternates: { languages: { ...languages, "x-default": absolu(cheminFrancais) } },
+  }));
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const competitions = estPagePubliqueVisible("/competitions") ? await getCompetitions() : [];
 
   return [
     ...pages
       .filter((page) => estPagePubliqueVisible(page.chemin))
-      .map((page) => ({
-        url: absolu(page.chemin),
-        changeFrequency: page.frequence,
-        priority: page.priorite,
-        ...(page.image ? { images: [absolu(page.image)] } : {}),
+      .flatMap((page) =>
+        versions(page.chemin).map((version) => ({
+          ...version,
+          changeFrequency: page.frequence,
+          priority: page.priorite,
+          ...(page.image ? { images: [absolu(page.image)] } : {}),
+        })),
+      ),
+    ...competitions.flatMap((competition) =>
+      versions(`/competitions/${competition.slug}`).map((version) => ({
+        ...version,
+        changeFrequency: "weekly" as const,
+        priority: 0.5,
+        ...(competition.afficheUrl ? { images: [absolu(competition.afficheUrl)] } : {}),
       })),
-    ...competitions.map((competition) => ({
-      url: absolu(`/competitions/${competition.slug}`),
-      changeFrequency: "weekly" as const,
-      priority: 0.5,
-      ...(competition.afficheUrl ? { images: [absolu(competition.afficheUrl)] } : {}),
-    })),
+    ),
   ];
 }

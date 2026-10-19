@@ -4,18 +4,20 @@ import { PictoAcademie } from "@/components/sections/academie-pictos";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 import { Editable } from "@/components/cms/editable";
-import { ACADEMIE_STAGES_IMAGE, ACADEMIE_STAGES_SURTITRE, ACADEMIE_STAGES_TEXTE, ACADEMIE_STAGES_TITRE } from "@/constants";
 import { site } from "@/config/site";
 import { stages } from "@/lib/academie";
+import { i18n } from "@/lib/i18n/serveur";
 
-export function AcademieStages() {
+export async function AcademieStages() {
+  const { T, tr } = await i18n();
+  const { ACADEMIE_STAGES_IMAGE, ACADEMIE_STAGES_SURTITRE, ACADEMIE_STAGES_TEXTE, ACADEMIE_STAGES_TITRE } = T;
   return (
     <section id="stages" className="scroll-mt-28 bg-sable-100 py-14 lg:py-20">
       <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-20">
         <Editable path="L'Académie · Stages & initiations.ACADEMIE_STAGES_IMAGE" image as="div" className="relative aspect-[5/4] overflow-hidden rounded-sm">
           <Image
             src={ACADEMIE_STAGES_IMAGE}
-            alt="Vue aérienne du domaine et du practice"
+            alt={tr("Vue aérienne du domaine et du practice")}
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
             className="object-cover"
@@ -46,8 +48,8 @@ export function AcademieStages() {
                   ✓
                 </span>
                 <div>
-                  <p className="text-[14px] font-semibold text-club-950">{stage.titre}</p>
-                  <p className="mt-0.5 text-[13px] text-encre/60">{stage.texte}</p>
+                  <p className="text-[14px] font-semibold text-club-950">{tr(stage.titre)}</p>
+                  <p className="mt-0.5 text-[13px] text-encre/60">{tr(stage.texte)}</p>
                 </div>
               </li>
             ))}
@@ -58,7 +60,7 @@ export function AcademieStages() {
             className="mt-8 inline-flex items-center gap-2 rounded-sm border border-club-950/25 bg-white px-5 py-3.5 text-[13px] font-semibold text-club-950 transition-colors hover:bg-sable-50"
           >
             <PictoAcademie nom="telephone" />
-            Nous appeler
+            {tr("Nous appeler")}
           </a>
         </div>
       </Container>

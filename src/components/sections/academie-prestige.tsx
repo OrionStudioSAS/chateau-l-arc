@@ -4,13 +4,14 @@ import { PictoAcademie } from "@/components/sections/academie-pictos";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 import { Editable } from "@/components/cms/editable";
-import { ACADEMIE_PRESTIGE_IMAGE, ACADEMIE_PRESTIGE_SURTITRE, ACADEMIE_PRESTIGE_TEXTE, ACADEMIE_PRESTIGE_TITRE } from "@/constants";
 import { atoutsPrestige, formulesPrestige, notePrestige } from "@/lib/academie";
 import { cn } from "@/lib/cn";
-import { euros } from "@/lib/tarifs";
+import { i18n } from "@/lib/i18n/serveur";
 
 
-export function AcademiePrestige() {
+export async function AcademiePrestige() {
+  const { T, tr, euros } = await i18n();
+  const { ACADEMIE_PRESTIGE_IMAGE, ACADEMIE_PRESTIGE_SURTITRE, ACADEMIE_PRESTIGE_TEXTE, ACADEMIE_PRESTIGE_TITRE } = T;
   return (
     <section id="prestige" className="scroll-mt-28 bg-white py-14 lg:py-20">
       <Container>
@@ -18,7 +19,7 @@ export function AcademiePrestige() {
           <Editable path="L'Académie · Formules Prestige.ACADEMIE_PRESTIGE_IMAGE" image as="div" className="relative aspect-[4/5] overflow-hidden rounded-sm lg:aspect-[3/4]">
             <Image
               src={ACADEMIE_PRESTIGE_IMAGE}
-              alt="Cours collectif de golf au Château l'Arc"
+              alt={tr("Cours collectif de golf au Château l'Arc")}
               fill
               sizes="(min-width: 1024px) 26rem, 100vw"
               className="object-cover"
@@ -43,7 +44,7 @@ export function AcademiePrestige() {
                   <span className="flex size-8 items-center justify-center rounded-full bg-sable-100 text-encre/60">
                     <PictoAcademie nom={atout.picto} />
                   </span>
-                  {atout.libelle}
+                  {tr(atout.libelle)}
                 </li>
               ))}
             </ul>
@@ -62,11 +63,11 @@ export function AcademiePrestige() {
                 )}
               >
                 <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-or-500">
-                  {formule.titre}
+                  {tr(formule.titre)}
                 </p>
                 {formule.etiquette ? (
                   <p className="mt-2 w-fit rounded-full bg-or-500 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-white">
-                    {formule.etiquette}
+                    {tr(formule.etiquette)}
                   </p>
                 ) : null}
                 <p className="mt-4 flex items-baseline gap-2">
@@ -83,7 +84,7 @@ export function AcademiePrestige() {
                   </span>
                 </p>
                 <p className={cn("mt-3 text-[14px] leading-relaxed", fonce ? "text-sable-50/80" : "text-encre/60")}>
-                  {formule.description}
+                  {tr(formule.description)}
                 </p>
                 {formule.points ? (
                   <ul className="mt-3 space-y-1.5">
@@ -92,7 +93,7 @@ export function AcademiePrestige() {
                         <span aria-hidden="true" className="text-or-400">
                           ✓
                         </span>
-                        {point}
+                        {tr(point)}
                       </li>
                     ))}
                   </ul>
@@ -101,7 +102,7 @@ export function AcademiePrestige() {
             );
           })}
         </ul>
-        <p className="mt-4 text-[12px] text-encre/55">{notePrestige}</p>
+        <p className="mt-4 text-[12px] text-encre/55">{tr(notePrestige)}</p>
       </Container>
     </section>
   );

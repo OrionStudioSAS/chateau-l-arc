@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { site, urlItineraire } from "@/config/site";
 import { cn } from "@/lib/cn";
+import { useI18n } from "@/lib/i18n/client";
 
 /** Style vectoriel OpenFreeMap (gratuit, sans clé, usage commercial autorisé). */
 const STYLE = "https://tiles.openfreemap.org/styles/positron";
@@ -129,6 +130,7 @@ function recolorer(style: StyleSpecification): StyleSpecification {
  * La bibliothèque (MapLibre) n'est chargée qu'à l'approche du pied de page.
  */
 export function CarteDomaine({ className }: { className?: string }) {
+  const { tr } = useI18n();
   const conteneur = useRef<HTMLDivElement>(null);
   const [prete, setPrete] = useState(false);
 
@@ -212,10 +214,10 @@ export function CarteDomaine({ className }: { className?: string }) {
         target="_blank"
         rel="noopener"
         className="group absolute inset-0 flex items-start p-3"
-        aria-label={`Itinéraire vers ${site.contact.adresse}, ${site.contact.codePostalVille} (Google Maps)`}
+        aria-label={`${tr("Itinéraire vers")} ${site.contact.adresse}, ${site.contact.codePostalVille} (Google Maps)`}
       >
         <span className="rounded-sm bg-club-950/90 px-3 py-1.5 text-[12px] font-medium text-sable-50 shadow-sm transition-colors group-hover:bg-club-950">
-          {site.contact.adresse}, {site.contact.codePostalVille} · Itinéraire{" "}
+          {site.contact.adresse}, {site.contact.codePostalVille} · {tr("Itinéraire")}{" "}
           <span aria-hidden="true">↗</span>
         </span>
       </a>

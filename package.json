@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node scripts/copier-worker-carte.mjs && node scripts/optimiser-images.mjs && next dev",
-    "build": "node scripts/copier-worker-carte.mjs && node scripts/optimiser-images.mjs && next build",
+    "dev": "node scripts/copier-worker-carte.mjs && node scripts/optimiser-images.mjs && node scripts/extraire-textes.mjs && next dev",
+    "build": "node scripts/copier-worker-carte.mjs && node scripts/optimiser-images.mjs && node scripts/extraire-textes.mjs && next build",
     "start": "next start",
     "lint": "eslint"
   },

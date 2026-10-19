@@ -10,6 +10,7 @@ import { site } from "@/config/site";
 import { exigerUtilisateur } from "@/lib/admin/session";
 import { derniereModification } from "@/lib/contenu/depot";
 import { lireContenu } from "@/lib/contenu/stockage";
+import { demandesDisponibles, listerDemandes } from "@/lib/demandes-stockage";
 
 /**
  * La lecture de session se fait ici : `instant` ne se propage pas depuis le
@@ -46,14 +47,17 @@ function libellePublication(iso: string | null): string | null {
  */
 export default async function TableauDeBordLayout({ children }: LayoutProps<"/admin">) {
   const utilisateur = await exigerUtilisateur();
-  const [competitions, publication] = await Promise.all([
+  const [competitions, publication, demandes] = await Promise.all([
     lireContenu("competitions"),
     derniereModification("contenu"),
+    // Compteur seulement : une base injoignable ne bloque pas le back-office.
+    demandesDisponibles ? listerDemandes().catch(() => []) : Promise.resolve([]),
   ]);
 
   const aujourdhui = cleJour.format(new Date());
   const compteurs = {
     competitions: competitions.filter((c) => (c.dateFin ?? c.dateDebut) >= aujourdhui).length,
+    demandes: demandes.filter((d) => d.statut === "a-traiter").length,
   };
 
   const marque = (

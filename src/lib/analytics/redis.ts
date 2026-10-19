@@ -60,7 +60,7 @@ export async function redis(commandes: Commande[]): Promise<unknown[]> {
 /* ─── Stockage en mémoire (développement) ─────────────────────────────── */
 
 type Valeur = Map<string, number> | Set<string>;
-const globale = globalThis as unknown as { __suiviMemoire?: Map<string, Valeur> };
+const globale = globalThis as unknown as { __suiviMemoire?: Map<string, Valeur>; __texteMemoire?: Map<string, string> };
 const cles = (globale.__suiviMemoire ??= new Map());
 
 function hash(cle: string) {
@@ -72,7 +72,10 @@ function ensemble(cle: string) {
   return cles.get(cle) as Set<string>;
 }
 
-/** Sous-ensemble des commandes Redis utilisées par le suivi. */
+/** Valeurs texte (demandes de contact). */
+const textes = (globale.__texteMemoire ??= new Map<string, string>());
+
+/** Sous-ensemble des commandes Redis utilisées par le suivi et les demandes. */
 function memoire(commandes: Commande[]): unknown[] {
   return commandes.map(([nom, ...args]) => {
     const [cle, a, b] = args.map(String);
@@ -106,6 +109,26 @@ function memoire(commandes: Commande[]): unknown[] {
         return hash(cle).size;
       case "EXPIRE":
         return 1;
+      case "SET":
+        textes.set(cle, a);
+        return "OK";
+      case "GET":
+        return textes.get(cle) ?? null;
+      case "MGET":
+        return args.map((k) => textes.get(String(k)) ?? null);
+      case "DEL":
+        return args.filter((k) => textes.delete(String(k))).length;
+      case "INCR": {
+        const valeur = Number(textes.get(cle) ?? 0) + 1;
+        textes.set(cle, String(valeur));
+        return valeur;
+      }
+      case "ZREM":
+        return args.slice(1).filter((membre) => hash(cle).delete(String(membre))).length;
+      case "ZREVRANGE": {
+        const tries = [...hash(cle)].sort((x, y) => y[1] - x[1]).map(([membre]) => membre);
+        return tries.slice(Number(a), Number(b) === -1 ? undefined : Number(b) + 1);
+      }
       default:
         throw new Error(`Commande non simulée : ${nom}`);
     }

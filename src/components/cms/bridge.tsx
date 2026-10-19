@@ -75,15 +75,28 @@ export function CmsBridge() {
     `;
     document.head.appendChild(style);
 
-    // Les zones reçoivent leur attribut juste après l'hydratation : on attend un peu.
-    const annonce = window.setTimeout(() => {
+    // Les zones reçoivent leur attribut juste après l'hydratation : on attend
+    // un peu. Elles sont réannoncées quand la page change (formulaire de la
+    // page Contact, confirmation…), pour que leurs champs apparaissent.
+    let derniere = "";
+    const annoncer = () => {
       const chemins = [
         ...new Set([...document.querySelectorAll("[data-cms-path]")].map((el) => el.getAttribute("data-cms-path"))),
       ];
+      const empreinte = chemins.join("|");
+      if (empreinte === derniere) return;
+      derniere = empreinte;
       window.parent.postMessage({ type: "cms:ready", chemins }, window.location.origin);
-    }, 400);
+    };
+    let annonce = window.setTimeout(annoncer, 400);
+    const observateur = new MutationObserver(() => {
+      window.clearTimeout(annonce);
+      annonce = window.setTimeout(annoncer, 300);
+    });
+    observateur.observe(document.body, { childList: true, subtree: true });
 
     return () => {
+      observateur.disconnect();
       window.clearTimeout(annonce);
       window.removeEventListener("message", handleMessage);
       document.removeEventListener("click", bloquer, true);

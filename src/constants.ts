@@ -870,3 +870,302 @@ export const FAQ_CONTACT_CANAUX = [
   { titre: "Par e-mail", texte: "golf@chateaularcgolfclub.com", lien: "mailto:golf@chateaularcgolfclub.com", texteLien: "Écrire au club" },
   { titre: "Par formulaire", texte: "Adhésion, cours ou événement : la bonne équipe vous répond.", lien: "/contact", texteLien: "Page Contact" },
 ];
+
+// ─── Contact · Bannière ───
+
+/** Titre */
+export const CONTACT_TITRE = "Contact";
+
+/** Texte */
+export const CONTACT_TEXTE = "Adhésion, cours ou événement : choisissez votre demande, l'équipe concernée vous répond directement.";
+
+/** Photo */
+export const CONTACT_IMAGE = "/images/academie.png";
+
+// ─── Contact · Choix de la demande ───
+
+/** Titre */
+export const CONTACT_CHOIX_TITRE = "Que souhaitez-vous faire ?";
+
+/** Demandes proposées (dans l'ordre : adhésion, cours, événement, autre) */
+export const CONTACT_CHOIX = [
+  { titre: "Devenir membre", texte: "Jouer toute l'année et profiter de la vie du club." },
+  { titre: "Cours & stages", texte: "Progresser avec nos enseignants, dès 4 ans." },
+  { titre: "Séminaire & privatisation", texte: "Organiser un événement au domaine." },
+  { titre: "Autres", texte: "Une autre question ? Horaires, accès, location de matériel…" },
+];
+
+// ─── Contact · Devenir membre ───
+
+/** Étape 1 */
+export const CONTACT_ADHESION_ETAPE_1 = "Votre formule";
+
+/** Étape 1 · précision */
+export const CONTACT_ADHESION_ETAPE_1_TEXTE = "Tarifs 2027 · −5 % en paiement comptant";
+
+/** Mode de règlement */
+export const CONTACT_ADHESION_REGLEMENT = "Mode de règlement souhaité";
+
+/** Étape 2 */
+export const CONTACT_ADHESION_ETAPE_2 = "Votre profil golf";
+
+/** Aide du champ Index */
+export const CONTACT_ADHESION_INDEX_AIDE = "Laissez vide si vous débutez";
+
+/** Question « déjà joueur » */
+export const CONTACT_ADHESION_DEJA = "Jouez-vous déjà au Château l'Arc ?";
+
+/** Réponses « déjà joueur » */
+export const CONTACT_ADHESION_DEJA_CHOIX = [
+  "Oui, en visiteur",
+  "Pas encore",
+  "Ancien membre",
+];
+
+/** Bouton d'envoi */
+export const CONTACT_ADHESION_BOUTON = "Envoyer ma demande d'adhésion";
+
+/** Et ensuite ? */
+export const CONTACT_ADHESION_SUITE = [
+  "La direction étudie votre demande.",
+  "Vous êtes rappelé pour finaliser l'adhésion et le paiement.",
+  "Votre abonnement est créé dans le logiciel du club.",
+];
+
+/** Équipe qui répond */
+export const CONTACT_ADHESION_EQUIPE = "Direction du club";
+
+/** Équipe · précision */
+export const CONTACT_ADHESION_EQUIPE_TEXTE = "Adhésions & abonnements";
+
+// ─── Contact · Cours & stages ───
+
+/** Étape 1 */
+export const CONTACT_COURS_ETAPE_1 = "Pour qui ?";
+
+/** Public (adulte, enfant) */
+export const CONTACT_COURS_PUBLICS = [
+  "Pour moi (adulte)",
+  "Pour mon enfant",
+];
+
+/** Étape 2 */
+export const CONTACT_COURS_ETAPE_2 = "Votre formule";
+
+/** Étape 2 · précision */
+export const CONTACT_COURS_ETAPE_2_TEXTE = "Tarifs de l'Académie";
+
+/** Formules sur demande (adultes) */
+export const CONTACT_COURS_SUR_DEMANDE = [
+  { titre: "Initiation découverte", prix: "Sur demande", texte: "De 2 à 30 personnes." },
+  { titre: "Cours individuel", prix: "Sur demande", texte: "Avec l'enseignant de votre choix." },
+];
+
+/** Note sous les formules adultes */
+export const CONTACT_COURS_NOTE = "Cours collectifs de 6 personnes maximum · 1 h par jour · −10 % pour les membres";
+
+/** Étape 3 */
+export const CONTACT_COURS_ETAPE_3 = "Votre niveau & vos disponibilités";
+
+/** Niveaux */
+export const CONTACT_COURS_NIVEAUX = [
+  "Je débute",
+  "Carte verte",
+  "Index 36 à 18",
+  "Index < 18",
+];
+
+/** Jours de cours (adultes) */
+export const CONTACT_COURS_JOURS_ADULTES = [
+  "Lundi",
+  "Mardi",
+  "Jeudi",
+  "Vendredi",
+];
+
+/** Jours de cours (enfants) */
+export const CONTACT_COURS_JOURS_ENFANTS = [
+  "Mercredi",
+  "Samedi",
+];
+
+/** Bouton d'envoi */
+export const CONTACT_COURS_BOUTON = "Envoyer ma demande";
+
+/** Et ensuite ? */
+export const CONTACT_COURS_SUITE = [
+  "L'Académie vérifie les places sur vos jours.",
+  "Un enseignant vous propose une date de démarrage.",
+  "Vous finalisez l'inscription avec le club.",
+];
+
+/** Équipe qui répond */
+export const CONTACT_COURS_EQUIPE = "L'Académie";
+
+/** Équipe · précision */
+export const CONTACT_COURS_EQUIPE_TEXTE = "Julien Lefevre · Arnaud Bonnard";
+
+// ─── Contact · Séminaire & privatisation ───
+
+/** Étape 1 */
+export const CONTACT_EVENEMENT_ETAPE_1 = "Votre événement";
+
+/** Types d'événement */
+export const CONTACT_EVENEMENT_TYPES = [
+  { titre: "Séminaire", texte: "Salle de réunion et pauses." },
+  { titre: "Journée golf entreprise", texte: "Initiation ou compétition amicale." },
+  { titre: "Soirée privée", texte: "Cocktail ou dîner au château." },
+  { titre: "Réception familiale", texte: "Anniversaire, fête de famille." },
+];
+
+/** Étape 2 */
+export const CONTACT_EVENEMENT_ETAPE_2 = "Date & participants";
+
+/** Aide de la date */
+export const CONTACT_EVENEMENT_DATE_AIDE = "Dates flexibles ? Précisez-le dans le message.";
+
+/** Moments */
+export const CONTACT_EVENEMENT_MOMENTS = [
+  "Journée",
+  "Demi-journée",
+  "Soirée",
+];
+
+/** Étape 3 */
+export const CONTACT_EVENEMENT_ETAPE_3 = "Prestations souhaitées";
+
+/** Étape 3 · précision */
+export const CONTACT_EVENEMENT_ETAPE_3_TEXTE = "Plusieurs choix possibles";
+
+/** Prestations */
+export const CONTACT_EVENEMENT_PRESTATIONS = [
+  "Salle de réunion",
+  "Initiation golf",
+  "Compétition amicale",
+  "Déjeuner",
+  "Cocktail",
+  "Dîner",
+];
+
+/** Budgets indicatifs */
+export const CONTACT_EVENEMENT_BUDGETS = [
+  "Non défini",
+  "Moins de 2 000 €",
+  "2 000 à 5 000 €",
+  "5 000 à 10 000 €",
+  "Plus de 10 000 €",
+];
+
+/** Bouton d'envoi */
+export const CONTACT_EVENEMENT_BOUTON = "Recevoir une proposition";
+
+/** Et ensuite ? */
+export const CONTACT_EVENEMENT_SUITE = [
+  "L'équipe événements vérifie la disponibilité des salles.",
+  "Vous recevez une proposition personnalisée.",
+  "Une visite du domaine peut être organisée.",
+];
+
+/** Équipe qui répond */
+export const CONTACT_EVENEMENT_EQUIPE = "Événements & réceptions";
+
+/** Équipe · précision */
+export const CONTACT_EVENEMENT_EQUIPE_TEXTE = "Réponse avec une proposition";
+
+// ─── Contact · Autre question ───
+
+/** Étape 1 */
+export const CONTACT_AUTRE_ETAPE_1 = "Votre question";
+
+/** Sujets */
+export const CONTACT_AUTRE_SUJETS = [
+  "Réservation d'un départ",
+  "Restaurant",
+  "Location de matériel",
+  "Compétitions",
+  "Autre",
+];
+
+/** Bouton d'envoi */
+export const CONTACT_AUTRE_BOUTON = "Envoyer ma question";
+
+/** Et ensuite ? */
+export const CONTACT_AUTRE_SUITE = [
+  "L'accueil golf lit votre message.",
+  "Il vous répond par e-mail ou par téléphone.",
+];
+
+/** Équipe qui répond */
+export const CONTACT_AUTRE_EQUIPE = "Accueil golf";
+
+/** Équipe · précision */
+export const CONTACT_AUTRE_EQUIPE_TEXTE = "Réponse par e-mail ou par téléphone";
+
+// ─── Contact · Coordonnées et envoi ───
+
+/** Titre de l'étape */
+export const CONTACT_COORDONNEES_TITRE = "Vos coordonnées";
+
+/** Texte d'exemple du message */
+export const CONTACT_MESSAGE_EXEMPLE = "Une précision, une question…";
+
+/** Consentement */
+export const CONTACT_CONSENTEMENT = "J'accepte que mes données soient utilisées pour répondre à ma demande.";
+
+/** Lettre du club */
+export const CONTACT_NEWSLETTER = "Je souhaite recevoir la lettre du club (facultatif).";
+
+/** Réassurance à côté du bouton */
+export const CONTACT_RASSURANCE = "Vos données restent au club. Aucun engagement.";
+
+/** Surtitre du récapitulatif */
+export const CONTACT_RECAP_SURTITRE = "Votre demande";
+
+/** Titre « Et ensuite ? » */
+export const CONTACT_SUITE_TITRE = "Et ensuite ?";
+
+// ─── Contact · Confirmation ───
+
+/** Titre ({prenom} : prénom du visiteur) */
+export const CONTACT_MERCI_TITRE = "Merci {prenom}, votre demande est bien envoyée";
+
+/** Texte ({equipe}, {email}) */
+export const CONTACT_MERCI_TEXTE = "Elle a été transmise à {equipe}, qui revient vers vous très vite à l'adresse {email}.";
+
+/** Titre du récapitulatif */
+export const CONTACT_MERCI_RECAP = "Récapitulatif";
+
+/** Bouton principal */
+export const CONTACT_MERCI_BOUTON_1 = "Retour à l'accueil";
+
+/** Bouton secondaire */
+export const CONTACT_MERCI_BOUTON_2 = "Découvrir le parcours";
+
+// ─── Contact · Autres demandes ───
+
+/** Surtitre */
+export const CONTACT_AUTRES_SURTITRE = "Autres demandes";
+
+/** Cartes (lien : page du site, https://, tel: ou mailto:) */
+export const CONTACT_AUTRES_CARTES = [
+  { titre: "Réserver un départ", texte: "Green fee 9 ou 18 trous, réservation en ligne.", texteLien: "Réserver", lien: "https://prima.golf/sainte-victoire/home" },
+  { titre: "Restaurant", texte: "Réservez une table au Club House.", texteLien: "Appeler le restaurant", lien: "tel:+33130939559" },
+  { titre: "Une autre question ?", texte: "Horaires, accès, location de matériel…", texteLien: "Écrire à l'accueil", lien: "mailto:golf@chateaularcgolfclub.com" },
+];
+
+// ─── Contact · Venir au domaine ───
+
+/** Surtitre */
+export const CONTACT_VENIR_SURTITRE = "Nous trouver";
+
+/** Titre */
+export const CONTACT_VENIR_TITRE = "Venir au domaine";
+
+/** Horaires */
+export const CONTACT_VENIR_HORAIRES = "Tous les jours · horaires à confirmer par le club";
+
+/** Bouton */
+export const CONTACT_VENIR_BOUTON = "Itinéraire";
+
+/** Photo */
+export const CONTACT_VENIR_IMAGE = "/images/hp-academie.png";

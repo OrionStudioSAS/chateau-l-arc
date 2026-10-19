@@ -12,4 +12,5 @@ export const pagesCms: PageCms[] = [
   { cle: "tarifs", titre: "Tarifs", chemin: "/tarifs", vignette: "/images/tarifs.png" },
   { cle: "academie", titre: "L'Académie", chemin: "/academie", vignette: "/images/academie.png" },
   { cle: "faq", titre: "FAQ", chemin: "/faq", vignette: "/images/parcours.png" },
+  { cle: "contact", titre: "Contact", chemin: "/contact", vignette: "/images/academie.png" },
 ];

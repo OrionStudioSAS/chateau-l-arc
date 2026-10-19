@@ -165,7 +165,8 @@ export function EditeurVisuel({ page, sections }: { page: PageCms; sections: Sec
     const surMessage = (e: MessageEvent) => {
       if (e.origin !== window.location.origin || e.source !== iframe.current?.contentWindow) return;
       if (e.data?.type === "cms:ready") {
-        setPresents(e.data.chemins ?? []);
+        // Union : un formulaire masqué garde ses champs dans le panneau.
+        setPresents((avant) => [...new Set([...(avant ?? []), ...((e.data.chemins as string[]) ?? [])])]);
         // Aperçu (re)chargé : on y remet la saisie en cours.
         for (const [nom, valeur] of Object.entries(brouillon)) {
           const champ = champs.get(nom);

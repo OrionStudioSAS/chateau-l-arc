@@ -29,6 +29,11 @@ function comptes(): Map<string, { sel: Buffer; empreinte: Buffer }> {
   return liste;
 }
 
+/** E-mails des comptes du back-office (assignation des demandes). */
+export function emailsComptes(): string[] {
+  return [...comptes().keys()];
+}
+
 const hacher = (motDePasse: string, sel: Buffer) =>
   new Promise<Buffer>((resoudre, rejeter) =>
     scrypt(motDePasse, sel, 64, (erreur, cle) => (erreur ? rejeter(erreur) : resoudre(cle))),

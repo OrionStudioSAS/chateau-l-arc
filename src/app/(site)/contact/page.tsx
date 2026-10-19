@@ -1,53 +1,49 @@
 import type { Metadata } from "next";
 
-import { PageHero } from "@/components/layout/page-hero";
-import { Container } from "@/components/ui/container";
-import { site } from "@/config/site";
+import { Banniere } from "@/components/layout/banniere";
+import { FormulaireContact } from "@/components/sections/contact/formulaire-contact";
+import { AutresDemandes, CoordonneesBanniere, VenirContact } from "@/components/sections/contact/sections-contact";
+import { CONTACT_IMAGE, CONTACT_TEXTE, CONTACT_TITRE } from "@/constants";
+import { getGrilleTarifs } from "@/lib/api/content";
+import { enseignants, formulesJuniors, formulesPrestige } from "@/lib/academie";
 import { metadonnees } from "@/lib/seo";
 
 export const metadata: Metadata = metadonnees({
-  titre: "Contact et accès",
-  description: "Téléphone, e-mail et itinéraire : le golf de Château l'Arc est à Fuveau, à 15 min d'Aix-en-Provence et 25 min de l'aéroport Marseille Provence.",
+  titre: "Contact et demandes",
+  description: "Adhésion, cours de golf, séminaire ou simple question : écrivez au golf de Château l'Arc à Fuveau, l'équipe concernée vous répond directement.",
   chemin: "/contact",
 });
 
-export default function Page() {
+export default async function Page() {
+  const grille = await getGrilleTarifs();
+
   return (
     <>
-      <PageHero
-        surtitre="Nous joindre"
-        titre="Contact & accès"
-        chapo="Accueil, réservations, séminaires : une seule adresse pour toutes vos demandes."
+      <Banniere
+        image={CONTACT_IMAGE}
+        imageAlt="Le parcours du Château l'Arc face à la montagne Sainte-Victoire"
+        filAriane={[{ label: "Accueil", href: "/" }, { label: "Contact" }]}
+        titre={CONTACT_TITRE}
+        texte={CONTACT_TEXTE}
+        hauteur="min-h-[64svh]"
+        encart={<CoordonneesBanniere />}
+        cmsPaths={{
+          titre: "Contact · Bannière.CONTACT_TITRE",
+          texte: "Contact · Bannière.CONTACT_TEXTE",
+          image: "Contact · Bannière.CONTACT_IMAGE",
+        }}
       />
-      <Container className="grid gap-12 py-16 md:grid-cols-2">
-        <div>
-          <h2 className="font-display text-2xl text-club-950">Coordonnées</h2>
-          <address className="mt-6 space-y-3 text-base not-italic leading-relaxed text-encre/75">
-            <p>
-              {site.contact.adresse}
-              <br />
-              {site.contact.codePostalVille}
-            </p>
-            <p>
-              <a className="text-club-800 underline-offset-4 hover:underline" href={site.contact.telephoneLien}>
-                {site.contact.telephone}
-              </a>
-            </p>
-            <p>
-              <a className="text-club-800 underline-offset-4 hover:underline" href={`mailto:${site.contact.email}`}>
-                {site.contact.email}
-              </a>
-            </p>
-          </address>
-        </div>
-        <div className="rounded-3xl border border-dashed border-club-950/20 bg-sable-100/60 px-8 py-14 text-center">
-          <p className="font-display text-2xl text-club-950">Formulaire à venir</p>
-          <p className="mx-auto mt-3 max-w-xs text-sm leading-relaxed text-encre/60">
-            Le formulaire de contact sera branché sur l&apos;API dès que l&apos;endpoint
-            d&apos;envoi sera défini.
-          </p>
-        </div>
-      </Container>
+      <FormulaireContact
+        offres={{
+          abonnements: grille.abonnements.map(({ id, libelle, prix }) => ({ id, libelle, prix })),
+          remise: grille.remiseComptant.taux,
+          prestige: formulesPrestige.map(({ titre, prix, description }) => ({ titre, prix, description })),
+          juniors: formulesJuniors,
+          enseignants: enseignants.map((e) => e.nom),
+        }}
+      />
+      <AutresDemandes />
+      <VenirContact />
     </>
   );
 }

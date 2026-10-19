@@ -7,7 +7,7 @@ export type AdminNavItem = {
   href: string | null;
   icone: NomIconeAdmin;
   /** Compteur affiché à droite (cf. layout du tableau de bord). */
-  compteur?: "competitions";
+  compteur?: "competitions" | "demandes";
 };
 
 export type AdminNavGroupe = { titre: string | null; items: AdminNavItem[] };
@@ -21,7 +21,7 @@ const groupes: AdminNavGroupe[] = [
     titre: null,
     items: [
       { label: "Accueil", href: "/admin", icone: "maison" },
-      { label: "Demandes", href: "/admin/demandes", icone: "courrier" },
+      { label: "Demandes", href: "/admin/demandes", icone: "courrier", compteur: "demandes" },
     ],
   },
   {
@@ -71,10 +71,6 @@ export const adminNavPied: AdminNavItem[] = [
 
 /** Rubriques sans écran pour l'instant : servies par admin/[rubrique]. */
 export const rubriquesAVenir: Record<string, { titre: string; description: string }> = {
-  demandes: {
-    titre: "Demandes",
-    description: "Les demandes reçues depuis les formulaires du site, suivies au même endroit.",
-  },
   blog: { titre: "Blog", description: "Actualités et articles du club." },
   "orion-translate": {
     titre: "Orion Translate",

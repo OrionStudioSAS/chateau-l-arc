@@ -41,6 +41,7 @@ export function Banniere({
   filAriane,
   actions,
   pied,
+  encart,
   cmsPaths,
 }: {
   image: string;
@@ -61,6 +62,8 @@ export function Banniere({
   actions?: React.ReactNode;
   /** Rangée pleine largeur sous le texte (onglets de la page Tarifs…). */
   pied?: React.ReactNode;
+  /** Bloc calé en bas à droite à partir de 1024 px, sous le texte avant (coordonnées de la page Contact). */
+  encart?: React.ReactNode;
   cmsPaths?: { accroche?: string; titre?: string; texte?: string; image?: string };
 }) {
   return (
@@ -176,6 +179,15 @@ export function Banniere({
         {pied ? (
           <div className="entree-texte mt-8 pb-2 sm:mt-10" style={delaiEntree(600)}>
             {pied}
+          </div>
+        ) : null}
+
+        {encart ? (
+          <div
+            className="entree-texte mt-6 pb-2 lg:absolute lg:bottom-6 lg:right-6 lg:mt-0 lg:pb-0"
+            style={delaiEntree(600)}
+          >
+            {encart}
           </div>
         ) : null}
       </div>

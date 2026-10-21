@@ -465,6 +465,10 @@
     "origine": "src/components/layout/panneau-statut.tsx"
    },
    {
+    "texte": "Langue",
+    "origine": "src/components/layout/selecteur-langue.tsx"
+   },
+   {
     "texte": "Devenir membre",
     "origine": "src/components/layout/site-footer.tsx"
    },

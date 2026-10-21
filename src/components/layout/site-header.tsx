@@ -5,6 +5,7 @@ import { useSelectedLayoutSegments } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { Logo } from "@/components/layout/logo";
+import { Drapeau, SelecteurLangue } from "@/components/layout/selecteur-langue";
 import {
   PanneauStatut,
   PastilleStatut,
@@ -166,6 +167,8 @@ export function SiteHeader({
           </Link>
 
           <div className="col-start-3 flex items-center justify-self-end lg:gap-2.5">
+            <SelecteurLangue chemin={pathname} transparent={transparent} />
+
             {/* Panneau déroulant (motif « disclosure ») : il présente un état,
                 pas des actions, d'où un bouton + région plutôt qu'un role="menu". */}
             {/* h-20 : la zone occupe toute la hauteur de l'en-tête, pour que le
@@ -223,23 +226,6 @@ export function SiteHeader({
                 </div>
               ) : null}
             </div>
-
-            {autresLangues.map((l) => (
-              <a
-                key={l.code}
-                href={cheminLocal(pathname, l.code)}
-                hrefLang={l.code}
-                lang={l.code}
-                title={l.natif}
-                className={cn(
-                  "mr-3 hidden text-[12px] font-semibold uppercase tracking-[0.12em] underline-offset-4 hover:underline lg:block",
-                  transparent ? "text-white" : "text-encre",
-                )}
-              >
-                <span className="sr-only">{l.natif} : </span>
-                {l.code}
-              </a>
-            ))}
 
             <a
               href={telephone}
@@ -331,8 +317,9 @@ export function SiteHeader({
                       href={cheminLocal(pathname, l.code)}
                       hrefLang={l.code}
                       lang={l.code}
-                      className="block border-b border-club-950/10 py-4 text-[14px] uppercase tracking-[0.14em] text-encre"
+                      className="flex items-center gap-3 border-b border-club-950/10 py-4 text-[14px] uppercase tracking-[0.14em] text-encre"
                     >
+                      <Drapeau code={l.code} className="size-5 ring-1 ring-black/10" />
                       {l.natif}
                     </a>
                   </li>

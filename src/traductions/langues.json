@@ -1,0 +1,20 @@
+[
+  {
+    "code": "fr",
+    "nom": "Français",
+    "natif": "Français",
+    "locale": "fr_FR",
+    "principale": true,
+    "publiee": true,
+    "incluse": true
+  },
+  {
+    "code": "en",
+    "nom": "Anglais",
+    "natif": "English",
+    "locale": "en_GB",
+    "principale": false,
+    "publiee": true,
+    "incluse": true
+  }
+]

@@ -35,6 +35,7 @@ const ORDRE: TypeDemande[] = ["adhesion", "cours", "evenement", "autre"];
 const enumerer = (valeurs: string[]) =>
   valeurs.length <= 1 ? valeurs.join("") : `${valeurs.slice(0, -1).join(", ")} & ${valeurs.at(-1)}`;
 const minuscule = (texte: string) => texte.charAt(0).toLowerCase() + texte.slice(1);
+const majuscule = (texte: string) => texte.charAt(0).toUpperCase() + texte.slice(1);
 
 /** Libellé affiché (traduit) → libellé français, pour la demande reçue par le club. */
 function versFrancais(valeur: string, traduits: readonly string[], francais: readonly string[]): string {
@@ -315,7 +316,8 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
   const recap: Recap =
     type === "adhesion"
       ? {
-          titre: abo ? `${tr("Abonnement")} ${minuscule(tr(abo.libelle))}` : tr("Abonnement"),
+          // Ordre des mots propre à chaque langue : « Abonnement couple », « Couple membership ».
+          titre: abo ? majuscule(tr("Abonnement {formule}").replace("{formule}", minuscule(tr(abo.libelle)))) : tr("Abonnement"),
           lignes: [
             [tr("Formule"), abo ? tr(abo.libelle) : "—"],
             [tr("Tarif annuel"), abo ? euros(abo.prix) : "—"],

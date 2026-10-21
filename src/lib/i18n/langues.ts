@@ -1,6 +1,10 @@
-import donnees from "@/traductions/traductions.json";
+import donnees from "@/traductions/langues.json";
 
-/** Langues du site (sans les textes) : partagé par le proxy, le site et le back-office. */
+/**
+ * Langues du site (sans les textes) : partagé par le proxy, le site et le
+ * back-office. Les textes traduits sont dans traductions.json, lus côté
+ * serveur seulement (lib/i18n/dictionnaires) pour ne pas alourdir le navigateur.
+ */
 
 export type Langue = string;
 export type InfoLangue = {
@@ -27,16 +31,11 @@ export type Dictionnaire = {
   interface: Record<string, string>;
 };
 
-export type FichierTraductions = {
-  langues: InfoLangue[];
-  traductions: Record<string, Dictionnaire>;
-};
-
-export const fichierTraductions = donnees as FichierTraductions;
-const fichier = fichierTraductions;
+/** Contenu de src/traductions/traductions.json : code de langue → textes. */
+export type FichierTraductions = Record<string, Dictionnaire>;
 
 export const LANGUE_PRINCIPALE = "fr";
-export const langues: InfoLangue[] = fichier.langues;
+export const langues: InfoLangue[] = donnees as InfoLangue[];
 /** Langues servies par le site (la principale comprise). */
 export const codesLangues = langues.map((l) => l.code);
 export const languesPubliees = langues.filter((l) => l.principale || l.publiee);
@@ -46,11 +45,6 @@ export const estLangue = (valeur: unknown): valeur is Langue =>
 
 export const infoLangue = (langue: Langue) =>
   langues.find((l) => l.code === langue) ?? langues[0];
-
-const VIDE: Dictionnaire = { constantes: {}, interface: {} };
-
-export const dictionnaire = (langue: Langue): Dictionnaire =>
-  langue === LANGUE_PRINCIPALE ? VIDE : (fichier.traductions[langue] ?? VIDE);
 
 /** Locale des formats de date et de nombre (« en-GB »). */
 export const localeIntl = (langue: Langue) => infoLangue(langue).locale.replace("_", "-");

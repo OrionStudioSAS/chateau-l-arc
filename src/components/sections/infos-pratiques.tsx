@@ -56,7 +56,7 @@ function Pictogramme({ nom }: { nom: Picto }) {
 
 /** « Avant de jouer » : règles pratiques et état du jour, tiré du back-office. */
 export async function InfosPratiques() {
-  const { T } = await i18n();
+  const { T, tr } = await i18n();
   const { INFOS_CARTES, INFOS_NOTE, INFOS_SURTITRE, INFOS_TITRE } = T;
   const infos = INFOS_CARTES.map((info, index) => ({ ...info, picto: pictos[index] ?? "carte" }));
   const installations = await getStatutInstallations();
@@ -64,8 +64,10 @@ export async function InfosPratiques() {
   const voiturettes = installations.find((installation) => installation.cle === "voiturette");
 
   const etat = [
-    parcours ? `Parcours ${libelleEtat(parcours).toLowerCase()}` : null,
-    voiturettes ? `voiturettes ${voiturettes.etat === "chemins" ? "sur les chemins" : libelleEtat(voiturettes).toLowerCase()}` : null,
+    parcours ? `${tr("Parcours")} ${tr(libelleEtat(parcours)).toLowerCase()}` : null,
+    voiturettes
+      ? `${tr("voiturettes")} ${voiturettes.etat === "chemins" ? tr("sur les chemins") : tr(libelleEtat(voiturettes)).toLowerCase()}`
+      : null,
   ]
     .filter(Boolean)
     .join(" · ");

@@ -22,6 +22,8 @@ const ajouter = (groupe, texte, origine) => {
   const t = texte.trim();
   // Rien à traduire : vide, nombre, chemin, adresse, code.
   if (!t || !/[A-Za-zÀ-ÿ]{2}/.test(t) || /^(\/|https?:|tel:|mailto:|#)/.test(t)) return;
+  // Chemins de l'éditeur visuel (« Accueil · Bannière.BANNER_TITRE ») : pas du texte.
+  if (/\.[A-Z][A-Z0-9_]{2,}(\.|$)/.test(t)) return;
   if (!groupes.has(groupe)) groupes.set(groupe, new Map());
   if (!groupes.get(groupe).has(t)) groupes.get(groupe).set(t, origine);
 };
@@ -51,7 +53,7 @@ for (const chemin of fichiers(src)) {
   const groupe = groupeDe(chemin);
 
   // 1. tr("…")
-  for (const m of texte.matchAll(/\btr\(\s*"((?:[^"\\]|\\.)*)"\s*\)/g)) ajouter(groupe, decoder(m[1]), rel);
+  for (const m of texte.matchAll(/\btr\(\s*"((?:[^"\\]|\\.)*)"\s*,?\s*\)/g)) ajouter(groupe, decoder(m[1]), rel);
 
   // 2. Pages : métadonnées, fil d'Ariane, en-têtes simples.
   if (rel.startsWith("src/app/[lang]/")) {
@@ -71,10 +73,11 @@ const donnees = [
   ["src/lib/reperes.ts", /\b(nom):\s*"((?:[^"\\]|\\.)*)"/g, "Le parcours (trou par trou)"],
   ["src/lib/tarifs.ts", /\b(question|reponse):\s*"((?:[^"\\]|\\.)*)"/g, "Tarifs (questions)"],
   ["src/lib/statut.ts", /\b(libelle):\s*[`"]((?:[^"`\\]|\\.)*)[`"]/g, "État du parcours"],
-  ["src/lib/meteo.ts", /"([A-ZÀ-Ü][^"]*[a-zà-ü][^"]*)"/g, "État du parcours"],
+  ["src/lib/meteo.ts", /\b(ciel):\s*"((?:[^"\\]|\\.)*)"/g, "État du parcours"],
   ["src/lib/competitions.ts", /\b(libelle|action):\s*"((?:[^"\\]|\\.)*)"/g, "Compétitions"],
   ["src/lib/competitions.ts", /\b(club|"grand-prix"|seniors):\s*"((?:[^"\\]|\\.)*)"/g, "Compétitions"],
   ["src/lib/admin/popup.ts", /"(Hiver|Printemps|Été|Automne)"/g, "Pop-up marketing"],
+  ["src/lib/seo.tsx", /amenityFeature:\s*\[([^\]]*)\]/g, "Référencement (titres et descriptions Google)"],
   ["src/lib/demandes.ts", /\bequipe:\s*"((?:[^"\\]|\\.)*)"/g, "Page Contact"],
   ["src/components/layout/panneau-statut.tsx", /\blibelle:\s*"((?:[^"\\]|\\.)*)"/g, "État du parcours"],
   ["src/components/layout/not-found-content.tsx", /\b(titre|texte):\s*"((?:[^"\\]|\\.)*)"/g, "Page 404"],
@@ -88,12 +91,17 @@ for (const [fichier, motif, groupe] of donnees) {
   const texte = readFileSync(join(racine, fichier), "utf8");
   for (const m of texte.matchAll(motif)) {
     const valeur = m[2] ?? m[1];
-    if (motif.source.startsWith("points")) {
+    if (/^(points|amenityFeature)/.test(motif.source)) {
       for (const p of valeur.matchAll(/"((?:[^"\\]|\\.)*)"/g)) ajouter(groupe, decoder(p[1]), fichier);
     } else if (!valeur.includes("${")) {
       ajouter(groupe, decoder(valeur), fichier);
     }
   }
+}
+
+// États au féminin des installations (`Ouvert${e}` dans lib/statut.ts).
+for (const etat of ["Ouvert", "Fermé", "Autorisé", "Interdit"]) {
+  for (const e of ["", "e"]) ajouter("État du parcours", `${etat}${e}`, "src/lib/statut.ts");
 }
 
 // 4. Contenus du back-office (version du dépôt local).

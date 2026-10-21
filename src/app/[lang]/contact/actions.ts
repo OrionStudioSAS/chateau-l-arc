@@ -8,7 +8,8 @@ import { formulesJuniors, formulesPrestige } from "@/lib/academie";
 import { LONGUEUR_MAX_MESSAGE, typesDemande, type Demande, type TypeDemande } from "@/lib/demandes";
 import { demandesDisponibles, enregistrerDemande, envoiAutorise } from "@/lib/demandes-stockage";
 import { euros } from "@/lib/tarifs";
-import { dictionnaire, estLangue, formateurEuros, LANGUE_PRINCIPALE, localeIntl, traducteur, type Traducteur } from "@/lib/i18n";
+import { dictionnaire } from "@/lib/i18n/dictionnaires";
+import { estLangue, formateurEuros, LANGUE_PRINCIPALE, localeIntl, traducteur, type Traducteur } from "@/lib/i18n";
 
 /** Ce que le formulaire envoie ; tout est revérifié ici. */
 export type EnvoiDemande = {
@@ -43,6 +44,7 @@ export type ResultatEnvoi =
 const texte = (valeur: unknown, max = 120) => String(valeur ?? "").trim().slice(0, max);
 const liste = (valeur: unknown) =>
   (Array.isArray(valeur) ? valeur : []).map((v) => texte(v, 60)).filter(Boolean).slice(0, 12);
+const majuscule = (texte: string) => texte.charAt(0).toUpperCase() + texte.slice(1);
 const enumerer = (valeurs: string[]) =>
   valeurs.length <= 1 ? valeurs.join("") : `${valeurs.slice(0, -1).join(", ")} & ${valeurs.at(-1)}`;
 
@@ -81,7 +83,7 @@ async function construire(
       details,
       resume: [
         { libelle: tr("Demande"), valeur: tr("Devenir membre") },
-        { libelle: tr("Formule"), valeur: `${tr("Abonnement")} ${tr(formule.libelle).toLowerCase()} · ${prix(formule.prix)}` },
+        { libelle: tr("Formule"), valeur: `${majuscule(tr("Abonnement {formule}").replace("{formule}", tr(formule.libelle).toLowerCase()))} · ${prix(formule.prix)}` },
         { libelle: tr("Règlement"), valeur: comptant ? tr("Comptant") : tr("En plusieurs fois") },
       ],
     };
@@ -155,8 +157,8 @@ async function construire(
     etiquette: "Contact",
     details: [{ libelle: "Sujet", valeur: sujet }],
     resume: [
-      { libelle: "Demande", valeur: "Autre question" },
-      { libelle: "Sujet", valeur: sujet },
+      { libelle: tr("Demande"), valeur: tr("Autre question") },
+      { libelle: tr("Sujet"), valeur: tr(sujet) },
     ],
   };
 }

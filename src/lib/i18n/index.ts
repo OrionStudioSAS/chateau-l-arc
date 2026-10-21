@@ -1,5 +1,5 @@
 import * as FR from "@/constants";
-import { dictionnaire, localeIntl, type Dictionnaire, type Langue } from "@/lib/i18n/langues";
+import { localeIntl, type Dictionnaire, type Langue } from "@/lib/i18n/langues";
 
 /**
  * Langues du site public (Orion Translate).
@@ -7,8 +7,8 @@ import { dictionnaire, localeIntl, type Dictionnaire, type Langue } from "@/lib/
  * Le français est la langue source : textes de constants.ts, libellés écrits
  * dans les composants (`tr("…")`) et contenus du back-office. Les autres
  * langues ne stockent que leurs traductions, dans src/traductions/
- * traductions.json (publié depuis le back-office) ; un texte non traduit
- * s'affiche en français.
+ * traductions.json (publié depuis le back-office › Orion Translate) ; un
+ * texte non traduit s'affiche en français.
  *
  * Module partagé serveur / navigateur : aucune dépendance au rendu.
  */
@@ -62,8 +62,6 @@ export function appliquerConstantes(dico: Dictionnaire): Constantes {
   memoire.set(dico, constantes);
   return constantes;
 }
-
-export const constantes = (langue: Langue): Constantes => appliquerConstantes(dictionnaire(langue));
 
 /* ─── Prix ──────────────────────────────────────────────────────────── */
 

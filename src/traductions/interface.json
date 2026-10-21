@@ -518,11 +518,43 @@
     "origine": "src/lib/statut.ts"
    },
    {
-    "texte": "Europe/Paris",
+    "texte": "ensoleillé",
     "origine": "src/lib/meteo.ts"
    },
    {
-    "texte": "Météo indisponible",
+    "texte": "éclaircies",
+    "origine": "src/lib/meteo.ts"
+   },
+   {
+    "texte": "couvert",
+    "origine": "src/lib/meteo.ts"
+   },
+   {
+    "texte": "brouillard",
+    "origine": "src/lib/meteo.ts"
+   },
+   {
+    "texte": "bruine",
+    "origine": "src/lib/meteo.ts"
+   },
+   {
+    "texte": "pluie",
+    "origine": "src/lib/meteo.ts"
+   },
+   {
+    "texte": "neige",
+    "origine": "src/lib/meteo.ts"
+   },
+   {
+    "texte": "averses",
+    "origine": "src/lib/meteo.ts"
+   },
+   {
+    "texte": "orage",
+    "origine": "src/lib/meteo.ts"
+   },
+   {
+    "texte": "nuageux",
     "origine": "src/lib/meteo.ts"
    },
    {
@@ -540,6 +572,30 @@
    {
     "texte": "Restaurant",
     "origine": "src/components/layout/panneau-statut.tsx"
+   },
+   {
+    "texte": "Ouverte",
+    "origine": "src/lib/statut.ts"
+   },
+   {
+    "texte": "Fermée",
+    "origine": "src/lib/statut.ts"
+   },
+   {
+    "texte": "Autorisé",
+    "origine": "src/lib/statut.ts"
+   },
+   {
+    "texte": "Autorisée",
+    "origine": "src/lib/statut.ts"
+   },
+   {
+    "texte": "Interdit",
+    "origine": "src/lib/statut.ts"
+   },
+   {
+    "texte": "Interdite",
+    "origine": "src/lib/statut.ts"
    }
   ]
  },
@@ -911,7 +967,7 @@
     "origine": "src/app/[lang]/contact/actions.ts"
    },
    {
-    "texte": "Abonnement",
+    "texte": "Abonnement {formule}",
     "origine": "src/app/[lang]/contact/actions.ts"
    },
    {
@@ -975,6 +1031,14 @@
     "origine": "src/app/[lang]/contact/actions.ts"
    },
    {
+    "texte": "Autre question",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Sujet",
+    "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
     "texte": "Choisissez le type de demande.",
     "origine": "src/app/[lang]/contact/actions.ts"
    },
@@ -1023,6 +1087,10 @@
     "origine": "src/components/sections/contact/formulaire-contact.tsx"
    },
    {
+    "texte": "Abonnement",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
     "texte": "Tarif annuel",
     "origine": "src/components/sections/contact/formulaire-contact.tsx"
    },
@@ -1064,10 +1132,6 @@
    },
    {
     "texte": "Votre question",
-    "origine": "src/components/sections/contact/formulaire-contact.tsx"
-   },
-   {
-    "texte": "Sujet",
     "origine": "src/components/sections/contact/formulaire-contact.tsx"
    },
    {
@@ -1414,10 +1478,6 @@
     "origine": "src/app/[lang]/academie/page.tsx"
    },
    {
-    "texte": "L'Académie · Bannière.ACADEMIE_BANNIERE_TITRE",
-    "origine": "src/app/[lang]/academie/page.tsx"
-   },
-   {
     "texte": "Actualités",
     "origine": "src/app/[lang]/actualites/page.tsx"
    },
@@ -1431,10 +1491,6 @@
    },
    {
     "texte": "Calendrier des compétitions du golf de Château l'Arc à Fuveau : scrambles, Grand Prix, seniors. Inscriptions en ligne et résultats dès le lendemain.",
-    "origine": "src/app/[lang]/competitions/page.tsx"
-   },
-   {
-    "texte": "Compétitions · Bannière.COMPETITIONS_PAGE_BANNIERE_TITRE",
     "origine": "src/app/[lang]/competitions/page.tsx"
    },
    {
@@ -1454,10 +1510,6 @@
     "origine": "src/app/[lang]/contact/page.tsx"
    },
    {
-    "texte": "Contact · Bannière.CONTACT_TITRE",
-    "origine": "src/app/[lang]/contact/page.tsx"
-   },
-   {
     "texte": "Questions fréquentes",
     "origine": "src/app/[lang]/faq/page.tsx"
    },
@@ -1474,19 +1526,11 @@
     "origine": "src/app/[lang]/histoire/page.tsx"
    },
    {
-    "texte": "Histoire · Bannière.HISTOIRE_BANNIERE_TITRE",
-    "origine": "src/app/[lang]/histoire/page.tsx"
-   },
-   {
     "texte": "Parcours 18 trous près d'Aix",
     "origine": "src/app/[lang]/le-parcours/page.tsx"
    },
    {
     "texte": "Le parcours 18 trous par 70 (5 817 m) dessiné par Robert Trent Jones II à Fuveau : trou par trou, repères de départ, practice et infos pratiques.",
-    "origine": "src/app/[lang]/le-parcours/page.tsx"
-   },
-   {
-    "texte": "Le parcours · Bannière.PARCOURS_PAGE_BANNIERE_TITRE",
     "origine": "src/app/[lang]/le-parcours/page.tsx"
    },
    {
@@ -1498,10 +1542,6 @@
     "origine": "src/app/[lang]/page.tsx"
    },
    {
-    "texte": "Accueil · Bannière.BANNER_TITRE",
-    "origine": "src/app/[lang]/page.tsx"
-   },
-   {
     "texte": "Tarifs green fees et abonnements",
     "origine": "src/app/[lang]/tarifs/page.tsx"
    },
@@ -1510,8 +1550,28 @@
     "origine": "src/app/[lang]/tarifs/page.tsx"
    },
    {
-    "texte": "Tarifs · Bannière.TARIFS_PAGE_BANNIERE_TITRE",
-    "origine": "src/app/[lang]/tarifs/page.tsx"
+    "texte": "Practice",
+    "origine": "src/lib/seo.tsx"
+   },
+   {
+    "texte": "Putting-green",
+    "origine": "src/lib/seo.tsx"
+   },
+   {
+    "texte": "Club-house",
+    "origine": "src/lib/seo.tsx"
+   },
+   {
+    "texte": "Restaurant",
+    "origine": "src/lib/seo.tsx"
+   },
+   {
+    "texte": "Proshop",
+    "origine": "src/lib/seo.tsx"
+   },
+   {
+    "texte": "École de golf",
+    "origine": "src/lib/seo.tsx"
    }
   ]
  },
@@ -1539,8 +1599,16 @@
     "origine": "src/components/sections/academie-stages.tsx"
    },
    {
+    "texte": "Voir les abonnements",
+    "origine": "src/components/sections/appel-adhesion.tsx"
+   },
+   {
     "texte": "s'ouvre dans un nouvel onglet",
     "origine": "src/components/sections/art-de-vivre.tsx"
+   },
+   {
+    "texte": "Demander une adhésion",
+    "origine": "src/components/sections/avantages-membres.tsx"
    },
    {
     "texte": "Le parcours entre les pins, face à la montagne Sainte-Victoire",
@@ -1751,7 +1819,23 @@
     "origine": "src/components/sections/explorer-parcours.tsx"
    },
    {
+    "texte": "Parcours",
+    "origine": "src/components/sections/infos-pratiques.tsx"
+   },
+   {
+    "texte": "voiturettes",
+    "origine": "src/components/sections/infos-pratiques.tsx"
+   },
+   {
+    "texte": "sur les chemins",
+    "origine": "src/components/sections/infos-pratiques.tsx"
+   },
+   {
     "texte": "Le parcours entre pins et garrigue, la Sainte-Victoire en toile de fond",
+    "origine": "src/components/sections/parcours-signature.tsx"
+   },
+   {
+    "texte": "Explorer le parcours",
     "origine": "src/components/sections/parcours-signature.tsx"
    },
    {
@@ -1929,6 +2013,10 @@
    {
     "texte": "Ouverture le",
     "origine": "src/lib/competitions.ts"
+   },
+   {
+    "texte": "Golf 18 trous par 70 (5 817 m) dessiné par Robert Trent Jones II en 1985, entre pins et garrigue, face à la montagne Sainte-Victoire, à 15 minutes d'Aix-en-Provence.",
+    "origine": "src/lib/seo.tsx"
    },
    {
     "texte": "Du",

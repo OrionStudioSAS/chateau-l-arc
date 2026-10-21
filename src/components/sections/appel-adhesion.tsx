@@ -11,7 +11,7 @@ import { i18n } from "@/lib/i18n/serveur";
  * retrait des bords de l'écran, comme sur la maquette.
  */
 export async function AppelAdhesion() {
-  const { T } = await i18n();
+  const { T, tr } = await i18n();
   const { ADHESION_DESCRIPTION, ADHESION_IMAGE, ADHESION_SAISON, ADHESION_TITRE } = T;
   return (
     <section className="bg-white px-3 pt-14 sm:px-4 lg:pt-20">
@@ -52,7 +52,7 @@ export async function AppelAdhesion() {
               href="/tarifs"
               className="inline-flex items-center justify-center gap-2 rounded-sm bg-or-500 px-6 py-4 text-[12px] font-semibold uppercase tracking-[0.1em] text-white transition-colors hover:bg-or-600"
             >
-              Voir les abonnements <span aria-hidden="true">→</span>
+              {tr("Voir les abonnements")} <span aria-hidden="true">→</span>
             </Link>
             <a
               href={site.contact.telephoneLien}

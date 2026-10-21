@@ -58,7 +58,8 @@ export function surtitrePopup(
   tr: (francais: string) => string = (x) => x,
 ): string {
   const page = lien?.startsWith("/") ? pagesDuSite.find((p) => p.href === lien)?.libelle : undefined;
-  const rubrique = page && page !== "Accueil" ? tr(page.replace(/^(L'|Le |La |Les )/, "")) : null;
+  // Nom de la page sans article, dans la langue affichée (« L'Académie » → « Académie », « Academy »).
+  const rubrique = page && page !== "Accueil" ? tr(page).replace(/^(L'|L’|Le |La |Les |The )/, "") : null;
   const date = debut ? new Date(`${debut}T12:00:00Z`) : null;
   const saison = date ? `${tr(saisons[date.getUTCMonth()])} ${date.getUTCFullYear()}` : null;
   return [rubrique, saison].filter(Boolean).join(" · ");

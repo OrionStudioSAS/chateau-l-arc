@@ -2,9 +2,8 @@ import "server-only";
 
 import { lang } from "next/root-params";
 
+import { constantes, dictionnaire } from "@/lib/i18n/dictionnaires";
 import {
-  constantes,
-  dictionnaire,
   estLangue,
   formateurEuros,
   LANGUE_PRINCIPALE,

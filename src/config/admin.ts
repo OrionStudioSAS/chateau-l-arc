@@ -72,10 +72,6 @@ export const adminNavPied: AdminNavItem[] = [
 /** Rubriques sans écran pour l'instant : servies par admin/[rubrique]. */
 export const rubriquesAVenir: Record<string, { titre: string; description: string }> = {
   blog: { titre: "Blog", description: "Actualités et articles du club." },
-  "orion-translate": {
-    titre: "Orion Translate",
-    description: "Traduction du site en anglais et dans d'autres langues.",
-  },
   "orion-faq": { titre: "Orion FAQ", description: "Questions fréquentes du centre d'aide." },
   "orion-reviews": {
     titre: "Orion Reviews",

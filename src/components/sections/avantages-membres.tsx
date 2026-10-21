@@ -44,7 +44,7 @@ export async function AvantagesMembres() {
               href={pagesAVenir.devenirMembre}
               className="inline-flex items-center gap-2 rounded-sm bg-club-950 px-6 py-3.5 text-[13px] font-semibold text-sable-50 transition-colors hover:bg-club-800"
             >
-              Demander une adhésion <span aria-hidden="true">→</span>
+              {tr("Demander une adhésion")} <span aria-hidden="true">→</span>
             </Link>
             <a
               href={site.contact.telephoneLien}

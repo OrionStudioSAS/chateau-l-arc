@@ -3,6 +3,8 @@ import { cacheLife, cacheTag } from "next/cache";
 import { site, urlReservation } from "@/config/site";
 import { estPagePubliqueVisible } from "@/config/visibilite";
 import { getCompetitions, getGrilleTarifs, tags } from "@/lib/api/content";
+import { cheminLocal } from "@/lib/i18n/chemins";
+import { infoLangue } from "@/lib/i18n/langues";
 import { euros, saisonsDe } from "@/lib/tarifs";
 
 /**
@@ -30,6 +32,32 @@ const pages: { chemin: string; titre: string; description: string }[] = [
   { chemin: "/faq", titre: "Questions fréquentes", description: "Réservation, niveau requis, tenue, tarifs, accès." },
   { chemin: "/contact", titre: "Contact et accès", description: "Coordonnées et itinéraire." },
 ];
+
+/** Version anglaise du site (Orion Translate), annoncée quand elle est en ligne. */
+const pagesAnglaises: { chemin: string; titre: string; description: string }[] = [
+  { chemin: "/le-parcours", titre: "The course", description: "18 holes, par 70, hole by hole, tees, driving range and practice area." },
+  { chemin: "/tarifs", titre: "Rates", description: "Green fees, green fee books, hire and annual memberships." },
+  { chemin: "/academie", titre: "Academy", description: "Junior golf school from age 4, adult programmes, courses and taster sessions." },
+  { chemin: "/competitions", titre: "Competitions", description: "Season calendar and online entry." },
+  { chemin: "/histoire", titre: "History", description: "The château since 1620 and the golf course since 1985." },
+  { chemin: "/faq", titre: "FAQ", description: "Bookings, required level, dress code, rates, access." },
+  { chemin: "/contact", titre: "Contact", description: "Membership, lessons, events and directions." },
+];
+
+const sectionAnglaise = () =>
+  infoLangue("en").code === "en" && infoLangue("en").publiee
+    ? [
+        "## In English",
+        "",
+        "> 18-hole par 70 golf course (5,817 m) designed by Robert Trent Jones II in 1985, at Domaine Château l'Arc in Fuveau, between Aix-en-Provence and Marseille, facing the Sainte-Victoire mountain. Open to everyone, members and visitors, all year round.",
+        "",
+        `- [Home](${absolu(cheminLocal("/", "en"))}): about the club.`,
+        ...pagesAnglaises
+          .filter((page) => estPagePubliqueVisible(page.chemin))
+          .map((page) => `- [${page.titre}](${absolu(cheminLocal(page.chemin, "en"))}): ${page.description}`),
+        "",
+      ]
+    : [];
 
 async function contenu() {
   "use cache";
@@ -102,6 +130,7 @@ async function contenu() {
           "",
         ]
       : []),
+    ...sectionAnglaise(),
     "## Optional",
     "",
     `- [Plan du site](${absolu("/sitemap.xml")})`,

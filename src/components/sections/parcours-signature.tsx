@@ -89,7 +89,7 @@ export async function ParcoursSignature() {
               href="/le-parcours"
               className="inline-flex items-center gap-2 rounded-sm bg-club-950 px-5 py-3.5 text-[12px] font-semibold uppercase tracking-[0.1em] text-sable-50 transition-colors hover:bg-club-800"
             >
-              Explorer le parcours <span aria-hidden="true">→</span>
+              {tr("Explorer le parcours")} <span aria-hidden="true">→</span>
             </Link>
             <Link
               href={pagesAVenir.carteDeScore}

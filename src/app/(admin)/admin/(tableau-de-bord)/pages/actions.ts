@@ -1,9 +1,18 @@
 "use server";
 
+import { listesExtensibles } from "@/config/pages-cms";
 import { exigerUtilisateur } from "@/lib/admin/session";
 import { analyser, appliquer, CHEMIN_CONSTANTES, type MiseAJourCms } from "@/lib/cms/constantes";
 import { commiter, type Changement } from "@/lib/contenu/depot";
 import { slugifier } from "@/lib/admin/formulaire-competition";
+import { versJson } from "@/lib/contenu/stockage";
+import type { FichierTraductions } from "@/lib/i18n";
+import { CHEMINS_TRADUCTIONS } from "@/lib/traductions/depot";
+import { reindexerTraductions } from "@/lib/traductions/reindexer";
+
+/** Trie les clés d'un objet (diffs GitHub stables). */
+const trier = <T,>(objet: Record<string, T>) =>
+  Object.fromEntries(Object.entries(objet).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)));
 
 const TYPES_IMAGE = ["image/jpeg", "image/png", "image/webp"];
 const TAILLE_MAX_IMAGE = 2 * 1024 * 1024;
@@ -63,16 +72,56 @@ export async function publierPage(
       const contenu = await lire(CHEMIN_CONSTANTES);
       if (contenu === null) throw new Error("constants.ts introuvable");
 
-      // Seules les constantes existantes (et de même nature) peuvent changer.
-      const connus = new Map(analyser(contenu).flatMap((s) => s.champs.map((c) => [c.nom, c.type])));
-      const refuse = resolues.find((m) => connus.get(m.nom) !== m.type);
+      // Seules les constantes existantes (et de même nature) peuvent changer ;
+      // le nombre d'éléments, seulement pour les listes extensibles.
+      const connus = new Map(analyser(contenu).flatMap((s) => s.champs.map((c) => [c.nom, c])));
+      const refuse = resolues.find((m) => {
+        const champ = connus.get(m.nom);
+        if (!champ || champ.type !== m.type) return true;
+        if (m.type !== "objets" || champ.type !== "objets" || m.valeur.length === champ.valeur.length) return false;
+        const regle = listesExtensibles[m.nom];
+        return !regle || m.valeur.length < regle.min || m.valeur.length > regle.max;
+      });
       if (refuse) {
         inconnu = refuse.nom;
         return null;
       }
 
-      const changements: Changement[] = [{ chemin: CHEMIN_CONSTANTES, contenu: appliquer(contenu, resolues) }];
+      // Listes extensibles : éléments complets, clés connues seulement ; les
+      // traductions suivent les éléments déplacés par un retrait.
+      const deplacements: { nom: string; provenance: (number | null)[] }[] = [];
+      const finales = resolues.map((m): MiseAJourCms => {
+        const champ = connus.get(m.nom);
+        if (m.type !== "objets" || champ?.type !== "objets" || !listesExtensibles[m.nom]) return m;
+        const valeur = m.valeur.map((o) => Object.fromEntries(champ.cles.map((cle) => [cle, String(o[cle] ?? "")])));
+        const provenance =
+          Array.isArray(m.provenance) && m.provenance.length === valeur.length
+            ? m.provenance.map((r) => (Number.isInteger(r) && r! >= 0 && r! < champ.valeur.length ? r : null))
+            : valeur.map((_, i) => (i < champ.valeur.length ? i : null));
+        if (provenance.some((r, i) => r !== i)) deplacements.push({ nom: m.nom, provenance });
+        return { nom: m.nom, type: "objets", valeur };
+      });
+
+      const changements: Changement[] = [{ chemin: CHEMIN_CONSTANTES, contenu: appliquer(contenu, finales) }];
       for (const image of images.values()) changements.push(image);
+
+      if (deplacements.length) {
+        const [texteTraductions, texteOrigines] = await Promise.all([
+          lire(CHEMINS_TRADUCTIONS.traductions),
+          lire(CHEMINS_TRADUCTIONS.origines),
+        ]);
+        const traductions: FichierTraductions = texteTraductions ? JSON.parse(texteTraductions) : {};
+        const origines: Record<string, Record<string, string>> = texteOrigines ? JSON.parse(texteOrigines) : {};
+        let change = false;
+        for (const { nom, provenance } of deplacements) change = reindexerTraductions(nom, provenance, traductions, origines) || change;
+        if (change) {
+          for (const dico of Object.values(traductions)) dico.constantes = trier(dico.constantes);
+          changements.push(
+            { chemin: CHEMINS_TRADUCTIONS.traductions, contenu: versJson(traductions) },
+            { chemin: CHEMINS_TRADUCTIONS.origines, contenu: versJson(Object.fromEntries(Object.entries(origines).map(([l, o]) => [l, trier(o)]))) },
+          );
+        }
+      }
       return changements;
     });
     if (inconnu) return { ok: false, message: `Champ inconnu : ${inconnu}. Rechargez la page.` };

@@ -21,10 +21,18 @@ export function CmsBridge() {
       if (e.data?.type === "cms:field-update") {
         zones(e.data.path).forEach((el) => {
           if (el.hasAttribute("data-cms-image")) {
-            const img = el instanceof HTMLImageElement ? el : el.querySelector("img");
+            let img = el instanceof HTMLImageElement ? el : el.querySelector("img");
+            // Zone sans image (photo facultative, initiales) : on en pose une.
+            if (!img && e.data.value) {
+              img = document.createElement("img");
+              img.alt = "";
+              Object.assign(img.style, { position: "absolute", inset: "0", width: "100%", height: "100%", objectFit: "cover" });
+              el.appendChild(img);
+            }
             if (img) {
               img.removeAttribute("srcset");
-              img.src = e.data.value;
+              img.style.visibility = e.data.value ? "" : "hidden";
+              if (e.data.value) img.src = e.data.value;
             }
           } else {
             el.textContent = e.data.value;

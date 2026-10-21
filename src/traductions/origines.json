@@ -2,6 +2,8 @@
   "en": {
     "ACADEMIE_BANNIERE_TEXTE": "Débutant ou confirmé, dès 4 ans : apprenez et progressez avec nos enseignants diplômés d'État, face à la Sainte-Victoire.",
     "ACADEMIE_BANNIERE_TITRE": "L’Académie",
+    "ACADEMIE_ENSEIGNANTS.0.titre": "Enseignant diplômé d'État",
+    "ACADEMIE_ENSEIGNANTS.1.titre": "Enseignant diplômé d'État",
     "ACADEMIE_ENSEIGNANTS_SURTITRE": "Nos enseignants",
     "ACADEMIE_ENSEIGNANTS_TITRE": "Une équipe pour vous accompagner",
     "ACADEMIE_INTRO_CARTES.0.label": "Juniors",

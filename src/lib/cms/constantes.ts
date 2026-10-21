@@ -119,7 +119,16 @@ export function analyser(contenu: string): SectionCms[] {
 export type MiseAJourCms =
   | { nom: string; type: "texte"; valeur: string }
   | { nom: string; type: "liste"; valeur: string[] }
-  | { nom: string; type: "objets"; valeur: Record<string, string>[] };
+  | {
+      nom: string;
+      type: "objets";
+      valeur: Record<string, string>[];
+      /**
+       * Listes extensibles (config/pages-cms) : rang d'origine de chaque élément,
+       * null pour un ajout. Sert à suivre les traductions quand un élément est retiré.
+       */
+      provenance?: (number | null)[];
+    };
 
 function remplacerTexte(contenu: string, nom: string, valeur: string): string {
   const litteral = valeur.includes("\n") ? `\`${valeur.replace(/`/g, "'")}\`` : `"${echapper(valeur)}"`;
@@ -151,11 +160,22 @@ function remplacerListe(contenu: string, nom: string, valeur: string[]): string 
   return contenu.slice(0, bornes[0]) + corps + contenu.slice(bornes[1]);
 }
 
-/** Met à jour les valeurs textuelles des objets, un à un (le nombre d'éléments ne change pas). */
+/**
+ * Met à jour les valeurs textuelles des objets, un à un. Si le nombre
+ * d'éléments change (liste extensible), le tableau est réécrit en entier.
+ */
 function remplacerObjets(contenu: string, nom: string, valeur: Record<string, string>[]): string {
   const bornes = bornesTableau(contenu, nom);
   if (!bornes) return contenu;
   let tableau = contenu.slice(bornes[0], bornes[1]);
+
+  if ((tableau.match(/\{[^{}]*\}/g) ?? []).length !== valeur.length) {
+    const lignes = valeur.map(
+      (element) => `  { ${Object.entries(element).map(([cle, v]) => `${cle}: "${echapper(v)}"`).join(", ")} },`,
+    );
+    return contenu.slice(0, bornes[0]) + `\n${lignes.join("\n")}\n` + contenu.slice(bornes[1]);
+  }
+
   let curseur = 0;
 
   for (const element of valeur) {

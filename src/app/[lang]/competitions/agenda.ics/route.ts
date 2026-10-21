@@ -1,5 +1,6 @@
 import { site } from "@/config/site";
-import { getCompetitions } from "@/lib/api/content";
+import { getCompetitions, getEvenements } from "@/lib/api/content";
+import { finEvenement } from "@/lib/evenements";
 
 /**
  * Calendrier des compétitions à venir au format iCalendar (.ics), pour le
@@ -42,6 +43,21 @@ export async function GET() {
     ].join("\r\n"),
   );
 
+  // Autres dates publiées : entretien du parcours, fermetures, animations.
+  const autres = (await getEvenements()).map((e) =>
+    [
+      "BEGIN:VEVENT",
+      `UID:${e.id}@chateaularcgolfclub`,
+      `DTSTAMP:${horodatage}`,
+      `DTSTART;VALUE=DATE:${dateIcs(e.dateDebut)}`,
+      `DTEND;VALUE=DATE:${dateIcs(finEvenement(e), 1)}`,
+      `SUMMARY:${echapper(e.titre)}`,
+      `DESCRIPTION:${echapper([e.horaires, e.description].filter(Boolean).join(" · "))}`,
+      `LOCATION:${echapper(lieu)}`,
+      "END:VEVENT",
+    ].join("\r\n"),
+  );
+
   const calendrier = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
@@ -50,6 +66,7 @@ export async function GET() {
     "METHOD:PUBLISH",
     "X-WR-CALNAME:Compétitions — Golf Château l'Arc",
     ...evenements,
+    ...autres,
     "END:VCALENDAR",
     "",
   ].join("\r\n");

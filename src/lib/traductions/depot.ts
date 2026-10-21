@@ -51,11 +51,12 @@ const json = <T,>(texte: string, secours: T): T => {
 /** Textes des contenus du back-office en ligne (mêmes champs que scripts/extraire-textes.mjs). */
 async function textesBackOffice(): Promise<string[] | null> {
   try {
-    const [tarifs, statut, popup, competitions] = await Promise.all([
+    const [tarifs, statut, popup, competitions, evenements] = await Promise.all([
       lireContenu("tarifs"),
       lireContenu("statut"),
       lireContenu("popup"),
       lireContenu("competitions"),
+      lireContenu("evenements"),
     ]);
     const textes: (string | null | undefined)[] = [];
     for (const ligne of [...tarifs.greenFees, ...tarifs.carnets, ...tarifs.locations, ...tarifs.abonnements]) {
@@ -71,6 +72,7 @@ async function textesBackOffice(): Promise<string[] | null> {
         c.modeInscription, c.droitJeuMembres, c.droitJeuVisiteurs, c.description,
       );
     }
+    for (const e of evenements) if (e.public) textes.push(e.titre, e.horaires, e.description);
     return [...new Set(textes.map((t) => t?.trim() ?? "").filter((t) => /[A-Za-zÀ-ÿ]{2}/.test(t)))];
   } catch (erreur) {
     console.error("Lecture des contenus du back-office impossible", erreur);

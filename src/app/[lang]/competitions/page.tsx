@@ -4,7 +4,7 @@ import { Banniere } from "@/components/layout/banniere";
 import { AppelAdhesion } from "@/components/sections/appel-adhesion";
 import { CompetitionsListe } from "@/components/sections/competitions-liste";
 import { DernieresCompetitions } from "@/components/sections/dernieres-competitions";
-import { getCompetitions } from "@/lib/api/content";
+import { getCompetitions, getEvenements } from "@/lib/api/content";
 import { metadonnees } from "@/lib/seo";
 import { i18n } from "@/lib/i18n/serveur";
 
@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Page() {
   const { T } = await i18n();
   const { COMPETITIONS_PAGE_BANNIERE_IMAGE, COMPETITIONS_PAGE_BANNIERE_TEXTE, COMPETITIONS_PAGE_BANNIERE_TITRE } = T;
-  const competitions = await getCompetitions();
+  const [competitions, evenements] = await Promise.all([getCompetitions(), getEvenements()]);
 
   // Saison affichée : celle de la première compétition du calendrier.
   const saison = Number((competitions[0]?.dateDebut ?? "2026").slice(0, 4));
@@ -41,7 +41,7 @@ export default async function Page() {
         hauteur="min-h-[70svh]"
       />
 
-      <CompetitionsListe competitions={competitions} />
+      <CompetitionsListe competitions={competitions} evenements={evenements} />
 
       <DernieresCompetitions saison={saison} />
 

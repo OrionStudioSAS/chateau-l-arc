@@ -8,6 +8,7 @@ import { site } from "@/config/site";
 import type { CategorieCompetition, CompetitionAvecEtat } from "@/lib/api/types";
 import { cn } from "@/lib/cn";
 import { libelleEtat, libellesCategorie, tonsPastille } from "@/lib/competitions";
+import { couvre, finEvenement, typesEvenement, type EvenementCalendrier, type TypeEvenement } from "@/lib/evenements";
 import type { Traducteur } from "@/lib/i18n";
 import { useI18n } from "@/lib/i18n/client";
 
@@ -94,6 +95,44 @@ function Icone({ nom }: { nom: "telephone" | "cloche" | "liste" | "calendrier" |
   );
 }
 
+/** Autres dates du calendrier (entretien, fermetures, animations). */
+const tonsEvenement: Record<TypeEvenement, string> = {
+  entretien: "bg-lime-700/10 text-lime-900",
+  fermeture: "bg-red-700/10 text-red-800",
+  animation: "bg-or-400/20 text-or-700",
+  autre: "bg-encre/[0.06] text-encre/70",
+};
+
+function LigneEvenement({ evenement }: { evenement: EvenementCalendrier }) {
+  const { tr, locale } = useI18n();
+  const f = formats(locale);
+  const date = dateDe(evenement.dateDebut);
+  const periode = evenement.dateFin
+    ? `${tr("Du")} ${f.jourMois.format(date)} ${tr("au")} ${f.jourMois.format(dateDe(evenement.dateFin))}`
+    : null;
+  const meta = [periode, evenement.horaires ? tr(evenement.horaires) : null].filter(Boolean).join(" · ");
+
+  return (
+    <li className="grid grid-cols-[3.5rem_minmax(0,1fr)] gap-x-5 border-b border-encre/10 py-5 sm:grid-cols-[4.5rem_minmax(0,1fr)] lg:gap-x-8">
+      <p className="text-center leading-none text-encre/55">
+        <span className="block text-[11px] uppercase tracking-[0.12em]">{f.jourSemaine.format(date)}</span>
+        <span className="mt-1.5 block font-butler text-[26px] font-medium sm:text-[30px]">{f.jour.format(date)}</span>
+        <span className="mt-1 block text-[11px] font-medium uppercase tracking-[0.12em]">{f.mois.format(date)}</span>
+      </p>
+      <div className="min-w-0">
+        <p className="flex flex-wrap items-center gap-2">
+          <span className={cn("inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-medium", tonsEvenement[evenement.type])}>
+            {tr(typesEvenement[evenement.type].libelle)}
+          </span>
+          {meta ? <span className="text-[12px] text-encre/55">{meta}</span> : null}
+        </p>
+        <h3 className="mt-2 font-butler text-[20px] font-medium leading-tight text-club-950 sm:text-[22px]">{tr(evenement.titre)}</h3>
+        {evenement.description ? <p className="mt-1 text-[13px] text-encre/60">{tr(evenement.description)}</p> : null}
+      </div>
+    </li>
+  );
+}
+
 const boutonClair =
   "inline-flex items-center justify-center gap-2 rounded-sm border border-club-950/25 bg-white px-4 py-3 text-[13px] font-semibold text-club-950 transition-colors hover:bg-sable-50";
 const boutonFonce =
@@ -176,8 +215,11 @@ function LigneCompetition({ competition }: { competition: CompetitionAvecEtat })
   );
 }
 
-/** Vue calendrier : une grille par mois, compétitions posées sur leurs jours. */
-function Calendrier({ mois }: { mois: [string, CompetitionAvecEtat[]][] }) {
+/**
+ * Vue calendrier : une grille par mois, compétitions posées sur leurs jours,
+ * avec les autres dates du club (entretien du parcours, fermetures…).
+ */
+function Calendrier({ mois, evenements }: { mois: [string, CompetitionAvecEtat[]][]; evenements: EvenementCalendrier[] }) {
   const { tr, locale } = useI18n();
   const f = formats(locale);
   // Lundi → dimanche, abrégés dans la langue de la page (5 janvier 2026 : un lundi).
@@ -201,6 +243,8 @@ function Calendrier({ mois }: { mois: [string, CompetitionAvecEtat[]][] }) {
         // Dernière semaine complétée par des cases vides.
         const cases = [...jours, ...Array.from({ length: (7 - (jours.length % 7)) % 7 }, () => null)];
 
+        const dateDuJour = (jour: number) => `${cle}-${String(jour).padStart(2, "0")}`;
+        const autresDuMois = evenements.filter((e) => e.dateDebut.slice(0, 7) <= cle && finEvenement(e).slice(0, 7) >= cle);
         const duJour = (jour: number) =>
           competitions.filter((competition) => {
             const debut = Number(competition.dateDebut.slice(8, 10));
@@ -246,6 +290,20 @@ function Calendrier({ mois }: { mois: [string, CompetitionAvecEtat[]][] }) {
                             </Link>
                           </li>
                         ))}
+                        {autresDuMois
+                          .filter((e) => couvre(e, dateDuJour(jour)))
+                          .map((e) => (
+                            <li
+                              key={e.id}
+                              title={`${tr(e.titre)}${e.horaires ? ` · ${tr(e.horaires)}` : ""}`}
+                              className={cn(
+                                "block h-2 rounded-full max-sm:bg-current sm:h-auto sm:truncate sm:rounded-sm sm:px-1.5 sm:py-1 sm:text-[12px]",
+                                tonsEvenement[e.type],
+                              )}
+                            >
+                              <span className="sr-only sm:not-sr-only">{tr(e.titre)}</span>
+                            </li>
+                          ))}
                       </ul>
                     </>
                   ) : null}
@@ -270,6 +328,13 @@ function Calendrier({ mois }: { mois: [string, CompetitionAvecEtat[]][] }) {
                   </Link>
                 </li>
               ))}
+              {autresDuMois.map((e) => (
+                <li key={e.id} className="flex items-center gap-3 py-3 text-[15px] text-club-950">
+                  <span aria-hidden="true" className={cn("size-2.5 shrink-0 rounded-full bg-current", tonsEvenement[e.type])} />
+                  <span className="w-12 shrink-0 text-[13px] text-encre/55">{f.jourMois.format(dateDe(e.dateDebut))}</span>
+                  {tr(e.titre)}
+                </li>
+              ))}
             </ul>
           </section>
         );
@@ -278,7 +343,14 @@ function Calendrier({ mois }: { mois: [string, CompetitionAvecEtat[]][] }) {
   );
 }
 
-export function CompetitionsListe({ competitions }: { competitions: CompetitionAvecEtat[] }) {
+export function CompetitionsListe({
+  competitions,
+  evenements = [],
+}: {
+  competitions: CompetitionAvecEtat[];
+  /** Autres dates publiées : affichées avec le filtre « Toutes ». */
+  evenements?: EvenementCalendrier[];
+}) {
   const { tr, locale } = useI18n();
   const f = formats(locale);
   const [filtre, setFiltre] = useState<Filtre>("toutes");
@@ -294,13 +366,28 @@ export function CompetitionsListe({ competitions }: { competitions: CompetitionA
           : competition.categorie === filtre,
     );
 
-  // Regroupement par mois, dans l'ordre du calendrier (clé AAAA-MM).
+  const autres = filtre === "toutes" ? evenements : [];
+
+  // Regroupement par mois, dans l'ordre du calendrier (clé AAAA-MM). Une date
+  // sur plusieurs mois apparaît dans chacun d'eux au calendrier.
   const parMois = new Map<string, CompetitionAvecEtat[]>();
   for (const competition of visibles) {
     const cle = competition.dateDebut.slice(0, 7);
     parMois.set(cle, [...(parMois.get(cle) ?? []), competition]);
   }
-  const mois = [...parMois.entries()];
+  for (const e of autres) {
+    for (let d = dateDe(e.dateDebut); d <= dateDe(finEvenement(e)); d.setMonth(d.getMonth() + 1, 1)) {
+      const cle = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+      if (!parMois.has(cle)) parMois.set(cle, []);
+    }
+  }
+  const mois = [...parMois.entries()].sort(([a], [b]) => a.localeCompare(b));
+  // Vue liste : chaque date dans le mois de son premier jour, avec les compétitions.
+  const lignesDuMois = (cle: string, liste: CompetitionAvecEtat[]) =>
+    [
+      ...liste.map((c) => ({ date: c.dateDebut, competition: c, evenement: null })),
+      ...autres.filter((e) => e.dateDebut.startsWith(cle)).map((e) => ({ date: e.dateDebut, competition: null, evenement: e })),
+    ].sort((a, b) => a.date.localeCompare(b.date));
 
   return (
     <section className="bg-white">
@@ -363,26 +450,36 @@ export function CompetitionsListe({ competitions }: { competitions: CompetitionA
             {tr("Aucune compétition à venir dans cette catégorie pour le moment.")}
           </p>
         ) : vue === "calendrier" ? (
-          <Calendrier mois={mois} />
+          <Calendrier mois={mois} evenements={autres} />
         ) : (
           <div className="space-y-12">
-            {mois.map(([cle, liste]) => (
+            {mois.map(([cle, liste]) => {
+              const lignes = lignesDuMois(cle, liste);
+              if (!lignes.length) return null;
+              return (
               <section key={cle}>
                 <div className="flex items-baseline justify-between gap-4">
                   <h2 className="font-butler text-[24px] font-medium text-club-950 sm:text-[28px]">
                     {majuscule(f.moisAnnee.format(dateDe(`${cle}-01`)))}
                   </h2>
-                  <p className="text-[12px] text-encre/50">
-                    {liste.length} {liste.length > 1 ? tr("compétitions") : tr("compétition")}
-                  </p>
+                  {liste.length ? (
+                    <p className="text-[12px] text-encre/50">
+                      {liste.length} {liste.length > 1 ? tr("compétitions") : tr("compétition")}
+                    </p>
+                  ) : null}
                 </div>
                 <ul className="mt-2">
-                  {liste.map((competition) => (
-                    <LigneCompetition key={competition.id} competition={competition} />
-                  ))}
+                  {lignes.map((ligne) =>
+                    ligne.competition ? (
+                      <LigneCompetition key={ligne.competition.id} competition={ligne.competition} />
+                    ) : (
+                      <LigneEvenement key={ligne.evenement.id} evenement={ligne.evenement} />
+                    ),
+                  )}
                 </ul>
               </section>
-            ))}
+              );
+            })}
           </div>
         )}
       </Container>

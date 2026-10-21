@@ -1,11 +1,13 @@
 import "server-only";
 
 import competitionsEmbarquees from "@contenu/competitions.json";
+import evenementsEmbarques from "@contenu/evenements.json";
 import popupEmbarquee from "@contenu/popup.json";
 import statutEmbarque from "@contenu/statut.json";
 import tarifsEmbarques from "@contenu/tarifs.json";
 
 import type { CategorieCompetition, Installation, StatutCompetition } from "@/lib/api/types";
+import type { EvenementCalendrier } from "@/lib/evenements";
 import type { GrilleTarifs } from "@/lib/tarifs";
 import { depotConfigure, lireTexte } from "@/lib/contenu/depot";
 
@@ -72,6 +74,7 @@ type Fichiers = {
   statut: FichierStatut;
   popup: FichierPopup;
   competitions: FicheCompetition[];
+  evenements: EvenementCalendrier[];
   tarifs: GrilleTarifs;
 };
 
@@ -82,6 +85,7 @@ export const cheminsContenu: Record<CleContenu, string> = {
   statut: "contenu/statut.json",
   popup: "contenu/popup.json",
   competitions: "contenu/competitions.json",
+  evenements: "contenu/evenements.json",
   tarifs: "contenu/tarifs.json",
 };
 
@@ -93,6 +97,7 @@ const embarques: Fichiers = {
   statut: statutEmbarque as FichierStatut,
   popup: popupEmbarquee as FichierPopup,
   competitions: competitionsEmbarquees as FicheCompetition[],
+  evenements: evenementsEmbarques as EvenementCalendrier[],
   tarifs: tarifsEmbarques as GrilleTarifs,
 };
 

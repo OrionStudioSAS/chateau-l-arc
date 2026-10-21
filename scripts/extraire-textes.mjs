@@ -5,7 +5,8 @@
 //   - les libellés de données écrits dans le code (trous, repères, académie,
 //     menus, états des compétitions…) ;
 //   - les contenus du back-office lus dans contenu/ (tarifs, statut, bandeau,
-//     pop-up, compétitions). Le back-office relit leur version en ligne.
+//     pop-up, compétitions, autres dates du calendrier). Le back-office relit
+//     leur version en ligne.
 //
 // Les textes de src/constants.ts ne sont pas listés ici : l'écran de
 // traduction les lit directement (mêmes champs que l'éditeur visuel).
@@ -78,6 +79,7 @@ const donnees = [
   ["src/lib/competitions.ts", /\b(club|"grand-prix"|seniors):\s*"((?:[^"\\]|\\.)*)"/g, "Compétitions"],
   ["src/lib/admin/popup.ts", /"(Hiver|Printemps|Été|Automne)"/g, "Pop-up marketing"],
   ["src/lib/seo.tsx", /amenityFeature:\s*\[([^\]]*)\]/g, "Référencement (titres et descriptions Google)"],
+  ["src/lib/evenements.ts", /\blibelle:\s*"((?:[^"\\]|\\.)*)"/g, "Compétitions"],
   ["src/lib/demandes.ts", /\bequipe:\s*"((?:[^"\\]|\\.)*)"/g, "Page Contact"],
   ["src/components/layout/panneau-statut.tsx", /\blibelle:\s*"((?:[^"\\]|\\.)*)"/g, "État du parcours"],
   ["src/components/layout/not-found-content.tsx", /\b(titre|texte):\s*"((?:[^"\\]|\\.)*)"/g, "Page 404"],
@@ -127,6 +129,10 @@ try {
   }
 } catch {
   // Pas de pop-up enregistrée.
+}
+for (const e of lire("evenements")) {
+  if (!e.public) continue;
+  for (const cle of ["titre", "horaires", "description"]) ajouter(contenus, e[cle], "contenu/evenements.json");
 }
 for (const c of lire("competitions")) {
   if (c.statut !== "publie") continue;

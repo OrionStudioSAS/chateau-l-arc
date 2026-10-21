@@ -62,12 +62,3 @@ export const stages = [
   { titre: "Ateliers thématiques", texte: "Petit jeu, putting, sortie de bunker…" },
   { titre: "Stages tous niveaux", texte: "Pendant les vacances scolaires et toute l'année." },
 ];
-
-/**
- * TODO : photos et présentations des enseignants à fournir ; en attendant,
- * leurs initiales tiennent la place du portrait.
- */
-export const enseignants = [
-  { nom: "Julien Lefevre", titre: "Enseignant diplômé d'État" },
-  { nom: "Arnaud Bonnard", titre: "Enseignant diplômé d'État" },
-];

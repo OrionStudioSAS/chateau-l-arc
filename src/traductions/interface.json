@@ -27,6 +27,22 @@
     "origine": "src/lib/competitions.ts"
    },
    {
+    "texte": "Entretien du parcours",
+    "origine": "src/lib/evenements.ts"
+   },
+   {
+    "texte": "Fermeture",
+    "origine": "src/lib/evenements.ts"
+   },
+   {
+    "texte": "Animation",
+    "origine": "src/lib/evenements.ts"
+   },
+   {
+    "texte": "Autre",
+    "origine": "src/lib/evenements.ts"
+   },
+   {
     "texte": "Toutes",
     "origine": "src/components/sections/competitions-liste.tsx"
    },
@@ -724,10 +740,6 @@
    },
    {
     "texte": "Pendant les vacances scolaires et toute l'année.",
-    "origine": "src/lib/academie.ts"
-   },
-   {
-    "texte": "Enseignant diplômé d'État",
     "origine": "src/lib/academie.ts"
    },
    {
@@ -1715,6 +1727,14 @@
     "origine": "src/components/sections/competitions-liste.tsx"
    },
    {
+    "texte": "Du",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
+    "texte": "au",
+    "origine": "src/components/sections/competitions-liste.tsx"
+   },
+   {
     "texte": "Ouvert à tous",
     "origine": "src/components/sections/competitions-liste.tsx"
    },
@@ -2017,14 +2037,6 @@
    {
     "texte": "Golf 18 trous par 70 (5 817 m) dessiné par Robert Trent Jones II en 1985, entre pins et garrigue, face à la montagne Sainte-Victoire, à 15 minutes d'Aix-en-Provence.",
     "origine": "src/lib/seo.tsx"
-   },
-   {
-    "texte": "Du",
-    "origine": "src/lib/tarifs.ts"
-   },
-   {
-    "texte": "au",
-    "origine": "src/lib/tarifs.ts"
    },
    {
     "texte": "Carte postale ancienne du Château l'Arc, à Fuveau",

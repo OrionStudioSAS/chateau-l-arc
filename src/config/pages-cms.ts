@@ -14,3 +14,23 @@ export const pagesCms: PageCms[] = [
   { cle: "faq", titre: "FAQ", chemin: "/faq", vignette: "/images/parcours.png" },
   { cle: "contact", titre: "Contact", chemin: "/contact", vignette: "/images/academie.png" },
 ];
+
+/**
+ * Listes dont le back-office peut ajouter ou retirer des éléments. Les autres
+ * gardent leur nombre d'éléments : leur mise en page en dépend (pictos, grilles).
+ */
+export const listesExtensibles: Record<
+  string,
+  { element: string; ajout: string; min: number; max: number; modele: Record<string, string> }
+> = {
+  ACADEMIE_ENSEIGNANTS: {
+    element: "Enseignant",
+    ajout: "Ajouter un enseignant",
+    min: 1,
+    max: 12,
+    modele: { nom: "", titre: "Enseignant diplômé d'État", photo: "" },
+  },
+};
+
+/** Clés d'objets qui portent une image, même vide (photo facultative). */
+export const clesImage = ["photo", "image"];

@@ -6,6 +6,7 @@ import { dernierJour, slugCompetitionLiee } from "@/lib/bandeau";
 import { avecEtat, mapperCompetition } from "@/lib/competitions";
 import { lireContenu, type FichierPopup } from "@/lib/contenu/stockage";
 import { aujourdhuiAParis } from "@/lib/format";
+import { finEvenement, type EvenementCalendrier } from "@/lib/evenements";
 import { normaliserInstallation } from "@/lib/statut";
 import type { GrilleTarifs } from "@/lib/tarifs";
 import type {
@@ -28,6 +29,7 @@ export const tags = {
   popup: "popup",
   actualites: "actualites",
   competitions: "competitions",
+  evenements: "evenements",
   tarifs: "tarifs",
   formules: "formules",
 } as const;
@@ -108,6 +110,21 @@ export async function getCompetition(
 
   const competitions = await getCompetitions();
   return competitions.find((competition) => competition.slug === slug) ?? null;
+}
+
+/**
+ * Autres dates du calendrier (entretien, fermetures, animations) visibles sur
+ * le site, à venir ou en cours, par date.
+ */
+export async function getEvenements(): Promise<EvenementCalendrier[]> {
+  "use cache";
+  cacheTag(tags.evenements);
+  cacheLife("hours");
+
+  const aujourdhui = aujourdhuiAParis();
+  return (await lireContenu("evenements"))
+    .filter((e) => e.public && finEvenement(e) >= aujourdhui)
+    .sort((a, b) => a.dateDebut.localeCompare(b.dateDebut));
 }
 
 /** Grille tarifaire publiée (contenu/tarifs.json), modifiée depuis le back-office. */

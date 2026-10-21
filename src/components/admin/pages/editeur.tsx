@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from
 import { publierPage } from "@/app/(admin)/admin/(tableau-de-bord)/pages/actions";
 import { classeChamp } from "@/components/admin/competitions/champs";
 import { IconeAdmin } from "@/components/admin/icone-admin";
-import type { PageCms } from "@/config/pages-cms";
+import { clesImage, listesExtensibles, type PageCms } from "@/config/pages-cms";
 import { estImage, type ChampCms, type MiseAJourCms, type SectionCms } from "@/lib/cms/constantes";
 import { cn } from "@/lib/cn";
 
@@ -36,19 +36,33 @@ function ChampImage({
   valeur,
   apercu,
   onChoisir,
+  onRetirer,
 }: {
   valeur: string;
   apercu: string;
   onChoisir: (fichier: File) => void;
+  /** Image facultative : « Retirer » la vide. */
+  onRetirer?: () => void;
 }) {
   const champ = useRef<HTMLInputElement>(null);
   return (
     <div className="flex items-center gap-3 rounded-lg border border-neutral-200 bg-neutral-50 p-2">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={apercu} alt="" className="h-12 w-16 rounded object-cover" />
+      {valeur ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={apercu} alt="" className="h-12 w-16 rounded object-cover" />
+      ) : (
+        <span className="flex h-12 w-16 items-center justify-center rounded bg-neutral-200/70 text-neutral-400">
+          <IconeAdmin nom="image" className="size-4" />
+        </span>
+      )}
       <p className="min-w-0 flex-1 truncate text-[12px] text-neutral-500">
-        {valeur.startsWith(PREFIXE_FICHIER) ? "Nouvelle image" : valeur.split("/").pop()}
+        {!valeur ? "Aucune photo" : valeur.startsWith(PREFIXE_FICHIER) ? "Nouvelle image" : valeur.split("/").pop()}
       </p>
+      {valeur && onRetirer ? (
+        <button type="button" onClick={onRetirer} className="rounded-md px-2 py-1.5 text-[13px] text-neutral-500 hover:bg-neutral-200/60 hover:text-neutral-800">
+          Retirer
+        </button>
+      ) : null}
       <input
         ref={champ}
         type="file"
@@ -62,7 +76,7 @@ function ChampImage({
         }}
       />
       <button type="button" onClick={() => champ.current?.click()} className="rounded-md px-2.5 py-1.5 text-[13px] font-medium text-neutral-700 hover:bg-neutral-200/60">
-        Remplacer
+        {valeur ? "Remplacer" : "Ajouter"}
       </button>
     </div>
   );
@@ -99,6 +113,8 @@ function ChampTexte({
 /** Nom affiché des clés d'objets (« texteLien » → « Texte du lien »). */
 const libellesCles: Record<string, string> = {
   reponse: "Réponse",
+  nom: "Prénom et nom",
+  photo: "Photo (facultative)",
   lien: "Lien (page du site /…, https://, tel: ou mailto:)",
   texteLien: "Texte du lien",
 };
@@ -114,6 +130,8 @@ export function EditeurVisuel({ page, sections }: { page: PageCms; sections: Sec
   );
   const [brouillon, setBrouillon] = useState<Record<string, Valeur>>(publies);
   const [fichiers, setFichiers] = useState<Record<string, { fichier: File; url: string }>>({});
+  // Listes extensibles : rang d'origine de chaque élément (null : ajouté).
+  const [provenances, setProvenances] = useState<Record<string, (number | null)[]>>({});
   const [presents, setPresents] = useState<string[] | null>(null);
   const [actif, setActif] = useState<string | null>(null);
   const [appareil, setAppareil] = useState<"ordinateur" | "mobile">("ordinateur");
@@ -240,11 +258,20 @@ export function EditeurVisuel({ page, sections }: { page: PageCms; sections: Sec
     }
     setBrouillon(publies);
     setFichiers({});
+    setProvenances({});
   };
 
   const publier = useCallback(() => {
     if (modifies.length === 0 || enCours) return;
-    const mises = modifies.map((nom) => ({ nom, type: champs.get(nom)!.type, valeur: brouillon[nom] }) as MiseAJourCms);
+    const mises = modifies.map(
+      (nom) =>
+        ({
+          nom,
+          type: champs.get(nom)!.type,
+          valeur: brouillon[nom],
+          ...(provenances[nom] ? { provenance: provenances[nom] } : {}),
+        }) as MiseAJourCms,
+    );
     const donnees = new FormData();
     donnees.set("page", page.titre);
     donnees.set("mises", JSON.stringify(mises));
@@ -255,10 +282,13 @@ export function EditeurVisuel({ page, sections }: { page: PageCms; sections: Sec
 
     demarrer(async () => {
       const resultat = await publierPage(donnees);
-      if (resultat.ok) setPublies(brouillon);
+      if (resultat.ok) {
+        setPublies(brouillon);
+        setProvenances({});
+      }
       afficher(resultat.ok, resultat.message);
     });
-  }, [modifies, enCours, champs, brouillon, fichiers, page.titre]);
+  }, [modifies, enCours, champs, brouillon, fichiers, provenances, page.titre]);
 
   useEffect(() => {
     const surTouche = (e: KeyboardEvent) => {
@@ -336,23 +366,56 @@ export function EditeurVisuel({ page, sections }: { page: PageCms; sections: Sec
     }
 
     const objets = valeur as Record<string, string>[];
+    const extensible = listesExtensibles[champ.nom];
+    const provenance = provenances[champ.nom] ?? objets.map((_, i) => i);
+    const ajouter = () => {
+      if (!extensible) return;
+      setProvenances((p) => ({ ...p, [champ.nom]: [...provenance, null] }));
+      modifier(champ.nom, [...objets, Object.fromEntries(champ.cles.map((cle) => [cle, extensible.modele[cle] ?? ""]))]);
+    };
+    const retirer = (i: number) => {
+      const nom = objets[i]?.nom?.trim();
+      if (!window.confirm(`Retirer ${nom ? `« ${nom} »` : "cet élément"} ? Il disparaîtra du site à la publication.`)) return;
+      setProvenances((p) => ({ ...p, [champ.nom]: provenance.filter((_, j) => j !== i) }));
+      modifier(champ.nom, objets.filter((_, j) => j !== i));
+    };
     return (
       <div data-champ={chemin} key={champ.nom}>
         <p className="mb-1.5 text-[13px] font-medium text-neutral-700">{champ.libelle}</p>
         <div className="space-y-3">
           {objets.map((objet, i) => (
             <div key={i} className="space-y-2 rounded-lg border border-neutral-200 p-3">
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-neutral-400">Élément {i + 1}</p>
+              <div className="flex items-center justify-between gap-2">
+                <p className="truncate text-[11px] font-semibold uppercase tracking-wide text-neutral-400">
+                  {extensible ? `${extensible.element} ${i + 1}${objet.nom?.trim() ? ` · ${objet.nom}` : ""}` : `Élément ${i + 1}`}
+                </p>
+                {extensible && objets.length > extensible.min ? (
+                  <button
+                    type="button"
+                    onClick={() => retirer(i)}
+                    className="inline-flex shrink-0 items-center gap-1 rounded-md px-1.5 py-1 text-[12px] text-red-700 hover:bg-red-50"
+                  >
+                    <IconeAdmin nom="corbeille" className="size-3.5" />
+                    Retirer
+                  </button>
+                ) : null}
+              </div>
               {champ.cles.map((cle) => {
                 const sousChemin = `${chemin}.${i}.${cle}`;
                 const v = objet[cle] ?? "";
                 const maj = (nouvelle: string) =>
                   modifier(champ.nom, objets.map((o, j) => (j === i ? { ...o, [cle]: nouvelle } : o)));
+                const image = clesImage.includes(cle) || estImage(champ.valeur[i]?.[cle] ?? "");
                 return (
                   <div key={cle} data-champ={sousChemin}>
                     <label htmlFor={sousChemin} className="mb-1 block text-[12px] text-neutral-500">{libelleCle(cle)}</label>
-                    {estImage(champ.valeur[i]?.[cle] ?? "") ? (
-                      <ChampImage valeur={v} apercu={apercuImage(v)} onChoisir={(f) => remplacerImage(f, `${champ.nom}-${i}-${cle}`, maj)} />
+                    {image ? (
+                      <ChampImage
+                        valeur={v}
+                        apercu={apercuImage(v)}
+                        onChoisir={(f) => remplacerImage(f, `${champ.nom}-${i}-${cle}-${Date.now()}`, maj)}
+                        onRetirer={extensible ? () => maj("") : undefined}
+                      />
                     ) : (
                       <ChampTexte id={sousChemin} valeur={v} actif={actif === sousChemin} onFocus={() => focaliser(sousChemin)} onChange={maj} />
                     )}
@@ -361,6 +424,23 @@ export function EditeurVisuel({ page, sections }: { page: PageCms; sections: Sec
               })}
             </div>
           ))}
+          {extensible ? (
+            <>
+              {objets.length < extensible.max ? (
+                <button
+                  type="button"
+                  onClick={ajouter}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-neutral-300 px-3 py-2.5 text-[13px] font-medium text-neutral-700 hover:border-neutral-400 hover:bg-neutral-50"
+                >
+                  <IconeAdmin nom="plus" className="size-4" />
+                  {extensible.ajout}
+                </button>
+              ) : null}
+              {objets.length !== champ.valeur.length ? (
+                <p className="text-[12px] text-neutral-500">Les ajouts et retraits apparaissent sur la page après publication.</p>
+              ) : null}
+            </>
+          ) : null}
         </div>
       </div>
     );

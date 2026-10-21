@@ -8,6 +8,7 @@ import {
   supprimerCompetition,
 } from "@/app/(admin)/admin/(tableau-de-bord)/competitions/actions";
 import { AssistantCompetition } from "@/components/admin/competitions/assistant";
+import { ModaleEvenement, tonsEvenement } from "@/components/admin/competitions/evenement";
 import { ModaleResultats } from "@/components/admin/competitions/resultats";
 import { IconeAdmin, type NomIconeAdmin } from "@/components/admin/icone-admin";
 import {
@@ -18,6 +19,7 @@ import {
 import type { CategorieCompetition, CompetitionAvecEtat } from "@/lib/api/types";
 import { libellesCategorie } from "@/lib/competitions";
 import { cn } from "@/lib/cn";
+import { couvre, finEvenement, typesEvenement, type EvenementCalendrier } from "@/lib/evenements";
 
 type Onglet = "a-venir" | "brouillons" | "terminees" | "toutes";
 type Ton = "vert" | "bleu" | "gris" | "ambre";
@@ -199,10 +201,13 @@ function exporterCsv(competitions: CompetitionAvecEtat[]) {
  */
 export function CompetitionsAdmin({
   competitions,
+  evenements: evenementsInitiaux,
   aujourdhui,
   maintenant,
 }: {
   competitions: CompetitionAvecEtat[];
+  /** Autres dates du calendrier : entretien, fermetures, animations. */
+  evenements: EvenementCalendrier[];
   aujourdhui: string;
   maintenant: number;
 }) {
@@ -215,6 +220,8 @@ export function CompetitionsAdmin({
   const [vue, setVue] = useState<"liste" | "calendrier">("liste");
   const [edition, setEdition] = useState<Edition | null>(null);
   const [resultatsPour, setResultatsPour] = useState<CompetitionAvecEtat | null>(null);
+  const [evenements, setEvenements] = useState(evenementsInitiaux);
+  const [editionEvenement, setEditionEvenement] = useState<{ initial: EvenementCalendrier | null; jour: string } | null>(null);
   const [message, setMessage] = useState<{ ok: boolean; texte: string } | null>(null);
   const [, demarrer] = useTransition();
   const champRecherche = useRef<HTMLInputElement>(null);
@@ -233,7 +240,7 @@ export function CompetitionsAdmin({
   useEffect(() => {
     const surTouche = (e: KeyboardEvent) => {
       const cible = e.target as HTMLElement;
-      if (edition || resultatsPour || e.metaKey || e.ctrlKey || e.altKey) return;
+      if (edition || resultatsPour || editionEvenement || e.metaKey || e.ctrlKey || e.altKey) return;
       if (/INPUT|TEXTAREA|SELECT/.test(cible.tagName) || cible.isContentEditable) return;
       if (e.key.toLowerCase() === "n") {
         e.preventDefault();
@@ -242,7 +249,7 @@ export function CompetitionsAdmin({
     };
     document.addEventListener("keydown", surTouche);
     return () => document.removeEventListener("keydown", surTouche);
-  }, [edition, resultatsPour, nouvelle]);
+  }, [edition, resultatsPour, editionEvenement, nouvelle]);
 
   const aVenir = competitions.filter((c) => fin(c) >= aujourdhui);
   const terminees = competitions.filter((c) => fin(c) < aujourdhui);
@@ -282,6 +289,36 @@ export function CompetitionsAdmin({
     );
     return triee;
   }, [onglet, aVenir, brouillons, terminees, competitions, filtrer]);
+
+  // Autres dates du calendrier, selon l'onglet et la recherche.
+  const evenementsVisibles = useMemo(() => {
+    const terme = recherche.trim().toLowerCase();
+    return evenements
+      .filter((e) =>
+        onglet === "a-venir" ? finEvenement(e) >= aujourdhui : onglet === "terminees" ? finEvenement(e) < aujourdhui : onglet === "toutes",
+      )
+      .filter((e) => !terme || [e.titre, e.description].some((v) => v?.toLowerCase().includes(terme)))
+      .sort((a, b) => (onglet === "terminees" ? b.dateDebut.localeCompare(a.dateDebut) : a.dateDebut.localeCompare(b.dateDebut)));
+  }, [evenements, onglet, recherche, aujourdhui]);
+
+  const ajouterEvenement = useCallback((jour?: string) => setEditionEvenement({ initial: null, jour: jour ?? aujourdhui }), [aujourdhui]);
+  const fermerEvenement = useCallback(() => setEditionEvenement(null), []);
+  const surEvenement = useCallback(
+    (evenement: EvenementCalendrier, texte: string) => {
+      setEvenements((liste) => [...liste.filter((e) => e.id !== evenement.id), evenement].sort((a, b) => a.dateDebut.localeCompare(b.dateDebut)));
+      setEditionEvenement(null);
+      afficher(true, texte);
+    },
+    [afficher],
+  );
+  const surSuppressionEvenement = useCallback(
+    (id: string, texte: string) => {
+      setEvenements((liste) => liste.filter((e) => e.id !== id));
+      setEditionEvenement(null);
+      afficher(true, texte);
+    },
+    [afficher],
+  );
 
   const groupes = useMemo(() => {
     const parMois = new Map<string, CompetitionAvecEtat[]>();
@@ -376,7 +413,8 @@ export function CompetitionsAdmin({
         <div>
           <h1 className="text-[24px] font-semibold tracking-tight text-neutral-900">Compétitions</h1>
           <p className="mt-1 text-[14px] text-neutral-500">
-            Créez une compétition, ouvrez les inscriptions et publiez les résultats.
+            Créez une compétition, ouvrez les inscriptions et publiez les résultats. Ajoutez aussi au calendrier
+            l&apos;entretien du parcours, les fermetures ou les animations.
           </p>
         </div>
         <div className="flex gap-2">
@@ -387,6 +425,14 @@ export function CompetitionsAdmin({
           >
             <IconeAdmin nom="telechargement" className="size-4" />
             Exporter
+          </button>
+          <button
+            type="button"
+            onClick={() => ajouterEvenement()}
+            className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-[14px] font-medium text-neutral-800 hover:bg-neutral-50"
+          >
+            <IconeAdmin nom="calendrier" className="size-4" />
+            Ajouter au calendrier
           </button>
           <button
             type="button"
@@ -516,7 +562,15 @@ export function CompetitionsAdmin({
       </div>
 
       {vue === "calendrier" ? (
-        <Calendrier competitions={selection} aujourdhui={aujourdhui} maintenant={maintenant} onOuvrir={modifier} />
+        <Calendrier
+          competitions={selection}
+          evenements={evenementsVisibles}
+          aujourdhui={aujourdhui}
+          maintenant={maintenant}
+          onOuvrir={modifier}
+          onOuvrirEvenement={(e) => setEditionEvenement({ initial: e, jour: e.dateDebut })}
+          onAjouter={ajouterEvenement}
+        />
       ) : groupes.length === 0 ? (
         <p className="mt-6 rounded-xl border border-dashed border-neutral-300 px-5 py-12 text-center text-[14px] text-neutral-500">
           {recherche || filtresActifs ? "Aucune compétition ne correspond." : "Aucune compétition ici pour l'instant."}
@@ -602,6 +656,54 @@ export function CompetitionsAdmin({
         </div>
       )}
 
+      {vue === "liste" && evenementsVisibles.length ? (
+        <section className="mt-5 rounded-xl border border-neutral-200">
+          <h2 className="flex items-center justify-between gap-3 border-b border-neutral-200 bg-neutral-50 px-4 py-2 text-[13px] font-semibold text-neutral-800">
+            <span>
+              Autres dates du calendrier <span className="ml-1 font-normal text-neutral-500">{evenementsVisibles.length}</span>
+            </span>
+            <button type="button" onClick={() => ajouterEvenement()} className="inline-flex items-center gap-1 font-medium text-neutral-600 hover:text-neutral-900">
+              <IconeAdmin nom="plus" className="size-3.5" />
+              Ajouter
+            </button>
+          </h2>
+          <ul>
+            {evenementsVisibles.map((e) => (
+              <li key={e.id} className="border-b border-neutral-200 last:border-b-0">
+                <button
+                  type="button"
+                  onClick={() => setEditionEvenement({ initial: e, jour: e.dateDebut })}
+                  className="flex w-full items-center gap-3 px-4 py-3 text-left hover:bg-neutral-50"
+                >
+                  <Tuile jour={e.dateDebut} terminee={finEvenement(e) < aujourdhui} />
+                  <span className="min-w-0 flex-1">
+                    <span className="flex flex-wrap items-center gap-2 text-[14px] font-medium text-neutral-900">
+                      {e.titre}
+                      <span className={cn("rounded border px-1.5 text-[11px] font-medium", tonsEvenement[e.type])}>
+                        {typesEvenement[e.type].libelle}
+                      </span>
+                      {e.public ? null : (
+                        <span className="rounded border border-neutral-200 px-1.5 text-[11px] font-normal text-neutral-500">Interne</span>
+                      )}
+                    </span>
+                    <span className="mt-0.5 block truncate text-[13px] text-neutral-500">
+                      {[
+                        e.dateFin ? `Du ${jourMois.format(midi(e.dateDebut))} au ${jourMois.format(midi(e.dateFin))}` : null,
+                        e.horaires,
+                        e.description,
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
+                    </span>
+                  </span>
+                  <IconeAdmin nom="crayon" className="size-4 shrink-0 text-neutral-400" />
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
       {message ? (
         <p
           role="status"
@@ -625,6 +727,16 @@ export function CompetitionsAdmin({
         />
       ) : null}
 
+      {editionEvenement ? (
+        <ModaleEvenement
+          initial={editionEvenement.initial}
+          jourParDefaut={editionEvenement.jour}
+          onFermer={fermerEvenement}
+          onEnregistre={surEvenement}
+          onSupprime={surSuppressionEvenement}
+        />
+      ) : null}
+
       {resultatsPour ? (
         <ModaleResultats competition={resultatsPour} onFermer={fermerResultats} onPublie={surResultats} />
       ) : null}
@@ -640,21 +752,50 @@ const pastilleCalendrier: Record<Ton, string> = {
   ambre: "border-amber-200 bg-amber-50 text-amber-900",
 };
 
-/** Vue calendrier : un mois par bloc, compétitions posées sur leurs jours. */
+/** Mois (AAAA-MM) couverts par une période, du premier au dernier jour. */
+function moisCouverts(debut: string, fin: string): string[] {
+  const liste: string[] = [];
+  let [annee, mois] = debut.slice(0, 7).split("-").map(Number);
+  const dernier = fin.slice(0, 7);
+  for (let garde = 0; garde < 24; garde++) {
+    const cle = `${annee}-${String(mois).padStart(2, "0")}`;
+    liste.push(cle);
+    if (cle >= dernier) break;
+    mois += 1;
+    if (mois > 12) [annee, mois] = [annee + 1, 1];
+  }
+  return liste;
+}
+
+/**
+ * Vue calendrier : un mois par bloc, compétitions et autres dates (entretien,
+ * fermetures, animations) posées sur leurs jours ; « + » ajoute une date.
+ */
 function Calendrier({
   competitions,
+  evenements,
   aujourdhui,
   maintenant,
   onOuvrir,
+  onOuvrirEvenement,
+  onAjouter,
 }: {
   competitions: CompetitionAvecEtat[];
+  evenements: EvenementCalendrier[];
   aujourdhui: string;
   maintenant: number;
   onOuvrir: (c: CompetitionAvecEtat) => void;
+  onOuvrirEvenement: (e: EvenementCalendrier) => void;
+  onAjouter: (jour: string) => void;
 }) {
-  const mois = [...new Set(competitions.map((c) => c.dateDebut.slice(0, 7)))].sort();
+  const mois = [
+    ...new Set([
+      ...competitions.map((c) => c.dateDebut.slice(0, 7)),
+      ...evenements.flatMap((e) => moisCouverts(e.dateDebut, finEvenement(e))),
+    ]),
+  ].sort();
   if (mois.length === 0) {
-    return <p className="mt-6 text-center text-[14px] text-neutral-500">Aucune compétition à afficher.</p>;
+    return <p className="mt-6 text-center text-[14px] text-neutral-500">Rien à afficher dans le calendrier.</p>;
   }
 
   return (
@@ -676,12 +817,23 @@ function Calendrier({
               {cases.map((jour, i) => {
                 const date = jour ? `${cle}-${String(jour).padStart(2, "0")}` : null;
                 const du = date ? competitions.filter((c) => c.dateDebut <= date && fin(c) >= date) : [];
+                const autres = date ? evenements.filter((e) => couvre(e, date)) : [];
                 return (
-                  <div key={i} className={cn("min-h-20 border-b border-r border-neutral-100 p-1.5", !jour && "bg-neutral-50/60")}>
-                    {jour ? (
-                      <span className={cn("text-[12px]", date === aujourdhui ? "rounded bg-neutral-900 px-1 font-semibold text-white" : "text-neutral-500")}>
-                        {jour}
-                      </span>
+                  <div key={i} className={cn("group min-h-20 border-b border-r border-neutral-100 p-1.5", !jour && "bg-neutral-50/60")}>
+                    {jour && date ? (
+                      <div className="flex items-center justify-between">
+                        <span className={cn("text-[12px]", date === aujourdhui ? "rounded bg-neutral-900 px-1 font-semibold text-white" : "text-neutral-500")}>
+                          {jour}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => onAjouter(date)}
+                          aria-label={`Ajouter une date le ${jour}`}
+                          className="rounded p-0.5 text-neutral-400 opacity-0 hover:bg-neutral-100 hover:text-neutral-800 focus:opacity-100 group-hover:opacity-100"
+                        >
+                          <IconeAdmin nom="plus" className="size-3.5" />
+                        </button>
+                      </div>
                     ) : null}
                     <div className="mt-1 space-y-1">
                       {du.map((c) => (
@@ -696,6 +848,20 @@ function Calendrier({
                           )}
                         >
                           {c.nom}
+                        </button>
+                      ))}
+                      {autres.map((e) => (
+                        <button
+                          key={e.id}
+                          type="button"
+                          onClick={() => onOuvrirEvenement(e)}
+                          title={`${typesEvenement[e.type].libelle} : ${e.titre}${e.horaires ? ` (${e.horaires})` : ""}`}
+                          className={cn(
+                            "block w-full truncate rounded border border-dashed px-1.5 py-0.5 text-left text-[11px] font-medium",
+                            tonsEvenement[e.type],
+                          )}
+                        >
+                          {e.titre}
                         </button>
                       ))}
                     </div>

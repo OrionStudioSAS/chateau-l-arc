@@ -4,7 +4,8 @@ import { Banniere } from "@/components/layout/banniere";
 import { FormulaireContact } from "@/components/sections/contact/formulaire-contact";
 import { AutresDemandes, CoordonneesBanniere, VenirContact } from "@/components/sections/contact/sections-contact";
 import { getGrilleTarifs } from "@/lib/api/content";
-import { enseignants, formulesJuniors, formulesPrestige } from "@/lib/academie";
+import { ACADEMIE_ENSEIGNANTS } from "@/constants";
+import { formulesJuniors, formulesPrestige } from "@/lib/academie";
 import { metadonnees } from "@/lib/seo";
 import { i18n } from "@/lib/i18n/serveur";
 
@@ -43,7 +44,7 @@ export default async function Page() {
           remise: grille.remiseComptant.taux,
           prestige: formulesPrestige.map(({ titre, prix, description }) => ({ titre, prix, description })),
           juniors: formulesJuniors,
-          enseignants: enseignants.map((e) => e.nom),
+          enseignants: ACADEMIE_ENSEIGNANTS.map((e) => e.nom).filter(Boolean),
         }}
       />
       <AutresDemandes />

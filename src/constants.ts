@@ -505,6 +505,12 @@ export const ACADEMIE_ENSEIGNANTS_SURTITRE = "Nos enseignants";
 /** Titre */
 export const ACADEMIE_ENSEIGNANTS_TITRE = "Une équipe pour vous accompagner";
 
+/** Enseignants */
+export const ACADEMIE_ENSEIGNANTS = [
+  { nom: "Julien Lefevre", titre: "Enseignant diplômé d'État", photo: "" },
+  { nom: "Arnaud Bonnard", titre: "Enseignant diplômé d'État", photo: "" },
+];
+
 // ─── FAQ · Bannière ───
 
 /** Surtitre */

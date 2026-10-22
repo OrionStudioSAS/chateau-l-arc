@@ -16,5 +16,14 @@
     "principale": false,
     "publiee": true,
     "incluse": true
+  },
+  {
+    "code": "de",
+    "nom": "Allemand",
+    "natif": "Deutsch",
+    "locale": "de_DE",
+    "principale": false,
+    "publiee": false,
+    "incluse": false
   }
 ]

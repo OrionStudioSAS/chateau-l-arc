@@ -74,7 +74,7 @@ const dateParis = new Intl.DateTimeFormat("fr-CA", { timeZone: "Europe/Paris" })
  * N'est rendu qu'à l'ouverture du panneau, donc côté navigateur : `new Date()`
  * y donne bien l'heure du visiteur.
  */
-function libelleMiseAJour(installations: Installation[], tr: Traducteur, locale: string): string | null {
+export function libelleMiseAJour(installations: Installation[], tr: Traducteur, locale: string): string | null {
   const derniere = installations.reduce<string | null>(
     (plusRecente, { majLe }) => (!plusRecente || majLe > plusRecente ? majLe : plusRecente),
     null,

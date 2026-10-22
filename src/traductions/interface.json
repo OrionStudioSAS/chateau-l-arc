@@ -409,6 +409,38 @@
     "origine": "src/components/layout/carte-popup.tsx"
    },
    {
+    "texte": "Réserver un départ",
+    "origine": "src/components/layout/menu-reservation.tsx"
+   },
+   {
+    "texte": "En ligne",
+    "origine": "src/components/layout/menu-reservation.tsx"
+   },
+   {
+    "texte": "Choisissez votre créneau et réglez en quelques clics.",
+    "origine": "src/components/layout/menu-reservation.tsx"
+   },
+   {
+    "texte": "Disponible 24 h/24",
+    "origine": "src/components/layout/menu-reservation.tsx"
+   },
+   {
+    "texte": "Par téléphone",
+    "origine": "src/components/layout/menu-reservation.tsx"
+   },
+   {
+    "texte": "Notre accueil vous conseille et réserve pour vous.",
+    "origine": "src/components/layout/menu-reservation.tsx"
+   },
+   {
+    "texte": "tous les jours",
+    "origine": "src/components/layout/menu-reservation.tsx"
+   },
+   {
+    "texte": "statut",
+    "origine": "src/components/layout/menu-reservation.tsx"
+   },
+   {
     "texte": "Erreur 404",
     "origine": "src/components/layout/not-found-content.tsx"
    },

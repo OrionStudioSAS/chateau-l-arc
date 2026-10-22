@@ -5,6 +5,7 @@ import { useSelectedLayoutSegments } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { Logo } from "@/components/layout/logo";
+import { MenuReservation } from "@/components/layout/menu-reservation";
 import { Drapeau, SelecteurLangue } from "@/components/layout/selecteur-langue";
 import {
   PanneauStatut,
@@ -261,12 +262,7 @@ export function SiteHeader({
             >
               {tr(headerActions.membre.label)}
             </BoutonClair>
-            <BoutonOr
-              href={headerActions.reservation.href}
-              className={cn(boutonEnTete, "hidden lg:inline-flex")}
-            >
-              {tr(headerActions.reservation.label)}
-            </BoutonOr>
+            <MenuReservation statut={statut} className="hidden lg:block" />
 
             <button
               type="button"

@@ -28,7 +28,7 @@ export const listesExtensibles: Record<
     ajout: "Ajouter un enseignant",
     min: 1,
     max: 12,
-    modele: { nom: "", titre: "Enseignant diplômé d'État", photo: "" },
+    modele: { nom: "", titre: "Enseignant diplômé d'État", email: "", photo: "" },
   },
 };
 

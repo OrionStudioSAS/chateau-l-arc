@@ -507,8 +507,10 @@ export const ACADEMIE_ENSEIGNANTS_TITRE = "Une équipe pour vous accompagner";
 
 /** Enseignants */
 export const ACADEMIE_ENSEIGNANTS = [
-  { nom: "Julien Lefevre", titre: "Enseignant diplômé d'État", photo: "" },
-  { nom: "Arnaud Bonnard", titre: "Enseignant diplômé d'État", photo: "" },
+  { nom: "Arnaud Bonnard", titre: "Enseignant diplômé d'État", email: "arnaudbonnard@icloud.com", photo: "" },
+  { nom: "Julian Audibert", titre: "Enseignant diplômé d'État", email: "julian.audibert.pro@gmail.com", photo: "" },
+  { nom: "Alexandre Cardinal", titre: "Enseignant diplômé d'État", email: "gea.alexandre@gmail.com", photo: "" },
+  { nom: "Isabelle Boineau", titre: "Enseignante diplômée d'État", email: "isa.golf13@gmail.com", photo: "" },
 ];
 
 // ─── FAQ · Bannière ───
@@ -733,7 +735,7 @@ export const FAQ_ACADEMIE_QUESTIONS = [
   },
   {
     question: "Qui sont les enseignants ?",
-    reponse: "Julien Lefevre et Arnaud Bonnard, enseignants diplômés d'État.",
+    reponse: "Arnaud Bonnard, Julian Audibert, Alexandre Cardinal et Isabelle Boineau, enseignants diplômés d'État.",
     lien: "",
     texteLien: "",
   },
@@ -1009,7 +1011,7 @@ export const CONTACT_COURS_SUITE = [
 export const CONTACT_COURS_EQUIPE = "L'Académie";
 
 /** Équipe · précision */
-export const CONTACT_COURS_EQUIPE_TEXTE = "Julien Lefevre · Arnaud Bonnard";
+export const CONTACT_COURS_EQUIPE_TEXTE = "Arnaud Bonnard · Julian Audibert · Alexandre Cardinal · Isabelle Boineau";
 
 // ─── Contact · Séminaire & privatisation ───
 

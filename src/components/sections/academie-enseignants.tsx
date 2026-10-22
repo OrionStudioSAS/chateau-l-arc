@@ -64,8 +64,9 @@ export async function AcademieEnseignants() {
                     <PictoAcademie nom="diplome" className="size-3.5 text-or-600" />
                     <Editable path={`${chemin}.titre`}>{enseignant.titre}</Editable>
                   </p>
+                  {/* Réservation auprès du pro par e-mail, sinon l'accueil du club. */}
                   <a
-                    href={site.contact.telephoneLien}
+                    href={enseignant.email?.trim() ? `mailto:${enseignant.email.trim()}` : site.contact.telephoneLien}
                     className="mt-4 inline-flex rounded-sm border border-club-950/25 px-4 py-2.5 text-[13px] font-semibold text-club-950 transition-colors hover:bg-sable-50"
                   >
                     {tr("Réserver un cours")}

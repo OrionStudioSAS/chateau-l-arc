@@ -115,6 +115,7 @@ const libellesCles: Record<string, string> = {
   reponse: "Réponse",
   nom: "Prénom et nom",
   photo: "Photo (facultative)",
+  email: "E-mail (bouton « Réserver un cours » ; vide : téléphone du club)",
   lien: "Lien (page du site /…, https://, tel: ou mailto:)",
   texteLien: "Texte du lien",
 };

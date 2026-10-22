@@ -37,8 +37,8 @@ export type GroupesInterface = { groupe: string; textes: { texte: string; origin
 
 const CONSTANTES_IGNOREES = /_(IMAGE|VIDEO|PHOTOS|LIEN|URL|ID)$/;
 // « lien » est parfois le texte du bouton (PROFITER_CARTES) : les adresses sont écartées par aTraduire.
-// « nom » : noms propres (enseignants), identiques dans toutes les langues.
-const CLES_IGNOREES = new Set(["href", "url", "image", "photo", "video", "nom"]);
+// « nom », « email » : noms propres et adresses des enseignants, identiques dans toutes les langues.
+const CLES_IGNOREES = new Set(["href", "url", "image", "photo", "video", "nom", "email"]);
 
 /** Vrai pour un texte lisible (ni image, ni adresse, ni nombre seul). */
 export const aTraduire = (valeur: string) =>

@@ -16,6 +16,8 @@ const segments: Record<Langue, Record<string, string>> = {
     resultats: "results",
     histoire: "history",
     actualites: "news",
+    "mentions-legales": "legal-notice",
+    "politique-de-confidentialite": "privacy-policy",
   },
 };
 

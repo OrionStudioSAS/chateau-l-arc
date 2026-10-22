@@ -20,6 +20,8 @@ const pages: { chemin: string; priorite: number; frequence: MetadataRoute.Sitema
   { chemin: "/competitions/resultats", priorite: 0.6, frequence: "weekly" },
   { chemin: "/histoire", priorite: 0.6, frequence: "yearly", image: "/og/histoire.jpg" },
   { chemin: "/faq", priorite: 0.6, frequence: "monthly" },
+  { chemin: "/mentions-legales", priorite: 0.2, frequence: "yearly" },
+  { chemin: "/politique-de-confidentialite", priorite: 0.2, frequence: "yearly" },
   { chemin: "/contact", priorite: 0.5, frequence: "yearly" },
 ];
 

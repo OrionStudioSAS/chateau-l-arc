@@ -861,10 +861,6 @@
     "origine": "src/config/site.ts"
    },
    {
-    "texte": "CGV",
-    "origine": "src/config/site.ts"
-   },
-   {
     "texte": "Mentions légales",
     "origine": "src/config/site.ts"
    },
@@ -1444,6 +1440,18 @@
     "origine": "src/app/[lang]/le-parcours/page.tsx"
    },
    {
+    "texte": "En savoir plus :",
+    "origine": "src/app/[lang]/mentions-legales/page.tsx"
+   },
+   {
+    "texte": "Conception graphique",
+    "origine": "src/app/[lang]/mentions-legales/page.tsx"
+   },
+   {
+    "texte": "Développement",
+    "origine": "src/app/[lang]/mentions-legales/page.tsx"
+   },
+   {
     "texte": "Découvrir le parcours",
     "origine": "src/app/[lang]/page.tsx"
    },
@@ -1550,12 +1558,28 @@
     "origine": "src/app/[lang]/le-parcours/page.tsx"
    },
    {
+    "texte": "Mentions légales",
+    "origine": "src/app/[lang]/mentions-legales/page.tsx"
+   },
+   {
+    "texte": "Éditeur, directeur de la publication, hébergement, propriété intellectuelle, cookies et crédits du site du Château l'Arc Golf Club à Fuveau.",
+    "origine": "src/app/[lang]/mentions-legales/page.tsx"
+   },
+   {
     "texte": "Château l'Arc Golf Club — Golf 18 trous près d'Aix-en-Provence",
     "origine": "src/app/[lang]/page.tsx"
    },
    {
     "texte": "Golf 18 trous par 70 signé Robert Trent Jones II, face à la Sainte-Victoire, à 15 min d'Aix-en-Provence. Green fees, abonnements, école de golf et restaurant.",
     "origine": "src/app/[lang]/page.tsx"
+   },
+   {
+    "texte": "Politique de confidentialité",
+    "origine": "src/app/[lang]/politique-de-confidentialite/page.tsx"
+   },
+   {
+    "texte": "Comment le Château l'Arc Golf Club utilise, conserve et protège vos données personnelles, et comment exercer vos droits d'accès, de rectification et de suppression.",
+    "origine": "src/app/[lang]/politique-de-confidentialite/page.tsx"
    },
    {
     "texte": "Tarifs green fees et abonnements",
@@ -1853,6 +1877,22 @@
    {
     "texte": "sur les chemins",
     "origine": "src/components/sections/infos-pratiques.tsx"
+   },
+   {
+    "texte": "Dernière mise à jour :",
+    "origine": "src/components/sections/legal/page-legale.tsx"
+   },
+   {
+    "texte": "Une question ?",
+    "origine": "src/components/sections/legal/page-legale.tsx"
+   },
+   {
+    "texte": "Contactez l'accueil du golf.",
+    "origine": "src/components/sections/legal/page-legale.tsx"
+   },
+   {
+    "texte": "Sommaire",
+    "origine": "src/components/sections/legal/sommaire-legal.tsx"
    },
    {
     "texte": "Le parcours entre pins et garrigue, la Sainte-Victoire en toile de fond",

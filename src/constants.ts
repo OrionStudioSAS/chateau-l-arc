@@ -1177,3 +1177,166 @@ export const CONTACT_VENIR_BOUTON = "Itinéraire";
 
 /** Photo */
 export const CONTACT_VENIR_IMAGE = "/images/hp-academie.png";
+
+// ─── Confidentialité · Bannière ───
+
+/** Surtitre */
+export const CONFIDENTIALITE_SURTITRE = "Données personnelles";
+
+/** Titre */
+export const CONFIDENTIALITE_TITRE = "Politique de confidentialité";
+
+/** Texte */
+export const CONFIDENTIALITE_TEXTE = "Comment le Château l'Arc Golf Club utilise, conserve et protège les données que vous lui confiez, et comment exercer vos droits.";
+
+/** Date de mise à jour */
+export const CONFIDENTIALITE_MISE_A_JOUR = "octobre 2026";
+
+/** Sommaire */
+export const CONFIDENTIALITE_SOMMAIRE = [
+  "Utilisation et conservation",
+  "Consentement et traitement",
+  "Retrait du consentement",
+  "Droit d'accès",
+  "Abonnements et préférences",
+];
+
+// ─── Confidentialité · Utilisation et conservation ───
+
+/** Titre */
+export const CONFIDENTIALITE_UTILISATION_TITRE = "Utilisation et conservation de vos données personnelles";
+
+/** Texte */
+export const CONFIDENTIALITE_UTILISATION_TEXTE = `Les informations recueillies sur ce site internet sont enregistrées dans une base de données. Elles sont conservées pendant 10 ans et sont destinées à des fins d'exploitation pour notre structure : traitement des demandes via les formulaires de contact, inscriptions aux compétitions, gestion des départs et résultats de compétitions, alertes par e-mail, etc.
+
+Cette base de données est accessible uniquement par la direction et ses collaborateurs habilités. Conformément à la loi « Informatique et Libertés », vous pouvez exercer votre droit d'accès aux données vous concernant et les faire rectifier en nous contactant :`;
+
+// ─── Confidentialité · Nous contacter ───
+
+/** Moyens de contact */
+export const CONFIDENTIALITE_CONTACTS = [
+  { titre: "Par courrier", texte: "À la Direction, en recommandé avec accusé de réception" },
+  { titre: "Sur place", texte: "À notre siège social, avec une pièce d'identité valable. Vous pouvez vous faire accompagner et demander une copie de vos données." },
+  { titre: "Par e-mail", texte: "Sur notre adresse générale : golf@chateaularcgolfclub.com" },
+];
+
+// ─── Confidentialité · Consentement et traitement ───
+
+/** Titre */
+export const CONFIDENTIALITE_CONSENTEMENT_TITRE = "Consentement et traitement de vos données personnelles";
+
+/** Texte */
+export const CONFIDENTIALITE_CONSENTEMENT_TEXTE = "Vos données personnelles ne seront jamais communiquées à des tiers. Vous autorisez explicitement le stockage et le traitement de vos données dans le but d'être informé sur nos services, à savoir :";
+
+/** Liste */
+export const CONFIDENTIALITE_CONSENTEMENT_LISTE = [
+  "Les actualités de notre structure",
+  "La réception de la newsletter d'informations",
+  "L'envoi, par le service communication, d'informations personnalisées sur nos services et événements",
+];
+
+// ─── Confidentialité · Retrait du consentement ───
+
+/** Titre */
+export const CONFIDENTIALITE_RETRAIT_TITRE = "Retrait du consentement concernant vos données personnelles";
+
+/** Sous-titre (droit d'accès) */
+export const CONFIDENTIALITE_ACCES_TITRE = "Droit d'accès à vos données personnelles";
+
+/** Texte (droit d'accès) */
+export const CONFIDENTIALITE_ACCES_TEXTE = "Vous disposez d'un droit d'accès, de modification et/ou de suppression des données vous concernant à tout moment, en nous contactant :";
+
+/** Délai de réponse */
+export const CONFIDENTIALITE_DELAI = "Le ou les responsables de la base de données disposent d'un délai de réponse maximal de 2 mois à compter de la demande, qu'elle ait été exercée par voie postale ou sur place.";
+
+/** Sous-titre (abonnements) */
+export const CONFIDENTIALITE_ABONNEMENTS_TITRE = "Modification de vos abonnements et préférences";
+
+/** Texte (abonnements) */
+export const CONFIDENTIALITE_ABONNEMENTS_TEXTE = "Vous pouvez modifier librement vos abonnements à nos communications en cliquant sur les liens de désabonnement en bas de chacune de nos communications envoyées par e-mail (newsletter). Vous pouvez également nous contacter :";
+
+// ─── Mentions légales · Bannière ───
+
+/** Surtitre */
+export const MENTIONS_SURTITRE = "Informations légales";
+
+/** Titre */
+export const MENTIONS_TITRE = "Mentions légales & Crédits";
+
+/** Texte */
+export const MENTIONS_TEXTE = "Les informations relatives à l'éditeur, à l'hébergement et à l'utilisation du site du Château l'Arc Golf Club.";
+
+/** Date de mise à jour */
+export const MENTIONS_MISE_A_JOUR = "octobre 2026";
+
+// ─── Mentions légales · Informations générales ───
+
+/** Titre */
+export const MENTIONS_INFOS_TITRE = "Informations générales";
+
+/** Informations */
+export const MENTIONS_INFOS = [
+  { libelle: "Directeur de la publication", valeur: "Philippe Laurent" },
+  { libelle: "Hébergement du site", valeur: "Vercel Inc. · 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis" },
+  { libelle: "Adresse", valeur: "Domaine Château l'Arc, 13710 Fuveau" },
+  { libelle: "Téléphone", valeur: "+33 (0)4 42 29 83 41" },
+  { libelle: "E-mail", valeur: "golf@chateaularcgolfclub.com" },
+];
+
+// ─── Mentions légales · Responsabilité ───
+
+/** Titre */
+export const MENTIONS_RESPONSABILITE_TITRE = "Responsabilité";
+
+/** Texte */
+export const MENTIONS_RESPONSABILITE_TEXTE = `Notre structure s'efforce d'assurer au mieux de ses possibilités l'exactitude et la mise à jour des informations diffusées sur ce site, dont elle se réserve le droit de corriger, à tout moment et sans préavis, le contenu. Toutefois, notre structure ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations mises à disposition sur ce site.
+
+En conséquence, notre structure décline toute responsabilité pour toute interruption du site, problèmes techniques, pour toute inexactitude ou omission sur des informations disponibles sur le site, pour tous dommages résultant d'une intrusion frauduleuse d'un tiers ayant entraîné une modification des informations mises à disposition sur le site.`;
+
+// ─── Mentions légales · Cookies ───
+
+/** Titre */
+export const MENTIONS_COOKIES_TITRE = "Utilisation des cookies";
+
+/** Texte */
+export const MENTIONS_COOKIES_TEXTE = "Ce site ne dépose aucun cookie publicitaire ni de réseau social. La fréquentation du site est mesurée de façon anonyme, sans cookie ni stockage dans votre navigateur. Seul un cookie technique, indispensable, est utilisé pour l'espace d'administration réservé à l'équipe du club.";
+
+/** Encadré */
+export const MENTIONS_COOKIES_NOTE = "Aucun cookie soumis à votre consentement : il n'y a donc pas de préférences à régler.";
+
+// ─── Mentions légales · Propriété intellectuelle ───
+
+/** Titre */
+export const MENTIONS_PROPRIETE_TITRE = "Propriété intellectuelle";
+
+/** Texte */
+export const MENTIONS_PROPRIETE_TEXTE = `La reproduction de tous documents publiés sur ce site est seulement autorisée aux fins exclusives d'information pour un usage personnel et privé, toute reproduction et toute utilisation de copies réalisées à d'autres fins étant expressément interdites.
+
+Tous les contenus, photographies et autres documents sur ce site sont la propriété de notre structure ou sont diffusés avec l'autorisation de leurs propriétaires, et sont soumis aux droits d'auteur et autres droits de propriété intellectuelle.
+
+Les marques de commerce, logos et modèles présents sur ce site appartiennent à notre structure. Aucune interprétation ne peut être faite en faveur d'une licence d'utilisation ou d'un quelconque droit d'utiliser la marque affichée sur le site internet.
+
+L'utilisation frauduleuse de la marque ou de tout autre contenu du site internet est totalement interdite. Il est notamment interdit de copier, reproduire, représenter, modifier et/ou exploiter, de quelque façon que ce soit et à quelque fin que ce soit, tout ou partie de la structure et du contenu du site. Notre structure vous informe qu'elle usera largement de ses droits de propriété intellectuelle pour engager des poursuites si nécessaire.`;
+
+// ─── Mentions légales · Protection des données personnelles ───
+
+/** Titre */
+export const MENTIONS_DONNEES_TITRE = "Protection des données personnelles";
+
+/** Texte */
+export const MENTIONS_DONNEES_TEXTE = "Toute donnée personnelle que vous soumettez à notre structure, à l'occasion de toute requête, l'est de manière volontaire, consentie et en connaissance de cause. Les formulaires d'enregistrement contiennent d'une part des champs obligatoires (indiqués par un astérisque *), et d'autre part des champs facultatifs ; à défaut de compléter les champs obligatoires, notre structure ne pourra peut-être pas répondre à votre requête.";
+
+/** Liste */
+export const MENTIONS_DONNEES_LISTE = [
+  "Notre structure n'utilisera pas vos données personnelles pour des communications non sollicitées.",
+  "Sur demande, notre structure supprimera de sa base de données vos informations personnelles, annulant de ce fait votre enregistrement via le site web.",
+  "Vous pouvez accéder à vos données personnelles et/ou demander qu'elles soient corrigées, modifiées ou effacées, par e-mail (via la page Contact) ou par courrier à notre adresse postale.",
+];
+
+// ─── Mentions légales · Crédits ───
+
+/** Titre */
+export const MENTIONS_CREDITS_TITRE = "Crédits";
+
+/** Texte */
+export const MENTIONS_CREDITS_TEXTE = "Le site web du Château l'Arc Golf Club a été conçu et développé par Orion Studio.";

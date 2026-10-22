@@ -105,9 +105,6 @@ export const pagesAVenir = {
   groupePrivatisation: "/groupe-privatisation" as Route,
   recrutement: "/recrutement" as Route,
   carteDeScore: "/le-parcours/scorecard" as Route,
-  cgv: "/cgv" as Route,
-  mentionsLegales: "/mentions-legales" as Route,
-  politiqueConfidentialite: "/politique-de-confidentialite" as Route,
 };
 
 /**
@@ -135,9 +132,8 @@ export const liensInstitutionnels: NavItem[] = [
 ];
 
 export const liensLegaux: NavItem[] = [
-  { label: "CGV", href: pagesAVenir.cgv },
-  { label: "Mentions légales", href: pagesAVenir.mentionsLegales },
-  { label: "Politique de confidentialité", href: pagesAVenir.politiqueConfidentialite },
+  { label: "Mentions légales", href: "/mentions-legales" },
+  { label: "Politique de confidentialité", href: "/politique-de-confidentialite" },
 ];
 
 /** Accueils téléphoniques affichés en pied de page. TODO : numéros à confirmer. */

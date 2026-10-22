@@ -13,6 +13,8 @@ export const pagesCms: PageCms[] = [
   { cle: "academie", titre: "L'Académie", chemin: "/academie", vignette: "/images/academie.png" },
   { cle: "faq", titre: "FAQ", chemin: "/faq", vignette: "/images/parcours.png" },
   { cle: "contact", titre: "Contact", chemin: "/contact", vignette: "/images/academie.png" },
+  { cle: "mentions-legales", titre: "Mentions légales", chemin: "/mentions-legales", vignette: null },
+  { cle: "confidentialite", titre: "Confidentialité", chemin: "/politique-de-confidentialite", vignette: null },
 ];
 
 /**

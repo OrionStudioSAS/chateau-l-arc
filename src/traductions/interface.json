@@ -1703,6 +1703,14 @@
     "origine": "src/components/sections/avis-google.tsx"
    },
    {
+    "texte": "Avis précédent",
+    "origine": "src/components/sections/carrousel-avis.tsx"
+   },
+   {
+    "texte": "Avis suivant",
+    "origine": "src/components/sections/carrousel-avis.tsx"
+   },
+   {
     "texte": "Merci pour votre retour !",
     "origine": "src/components/sections/centre-aide.tsx"
    },

@@ -148,5 +148,7 @@ const exemple: FicheAvis = {
     { id: "exemple-1", auteur: "Exemple A.", auteurUrl: null, photo: null, note: 5, texte: "Texte d'exemple : un parcours superbe, très bien entretenu, avec une vue magnifique. Le vrai contenu viendra de la fiche Google.", quand: "il y a 4 mois", publieLe: "2026-06-12T10:00:00Z", lien: null },
     { id: "exemple-2", auteur: "Exemple B.", auteurUrl: null, photo: null, note: 5, texte: "Texte d'exemple : avis de longueur moyenne pour juger de l'équilibre des cartes.", quand: "il y a 5 mois", publieLe: "2026-05-20T10:00:00Z", lien: null },
     { id: "exemple-3", auteur: "Exemple C.", auteurUrl: null, photo: null, note: 4, texte: "Texte d'exemple : avis court.", quand: "il y a 6 mois", publieLe: "2026-04-08T10:00:00Z", lien: null },
+    { id: "exemple-4", auteur: "Exemple D.", auteurUrl: null, photo: null, note: 5, texte: "Texte d'exemple : quatrième avis, visible avec la flèche.", quand: "il y a 7 mois", publieLe: "2026-03-15T10:00:00Z", lien: null },
+    { id: "exemple-5", auteur: "Exemple E.", auteurUrl: null, photo: null, note: 5, texte: "Texte d'exemple : cinquième et dernier avis renvoyé par Google.", quand: "il y a 8 mois", publieLe: "2026-02-02T10:00:00Z", lien: null },
   ],
 };

@@ -1687,23 +1687,19 @@
     "origine": "src/components/sections/avantages-membres.tsx"
    },
    {
-    "texte": "avis sur Google",
+    "texte": "Avis Google",
     "origine": "src/components/sections/avis-google.tsx"
    },
    {
-    "texte": "Note moyenne",
+    "texte": "Note moyenne sur",
     "origine": "src/components/sections/avis-google.tsx"
    },
    {
-    "texte": "Voir tous les avis",
+    "texte": "avis, synchronisée automatiquement avec Google.",
     "origine": "src/components/sections/avis-google.tsx"
    },
    {
-    "texte": "Donner mon avis",
-    "origine": "src/components/sections/avis-google.tsx"
-   },
-   {
-    "texte": "Lire sur Google",
+    "texte": "Lire tous les avis",
     "origine": "src/components/sections/avis-google.tsx"
    },
    {

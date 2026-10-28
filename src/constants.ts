@@ -134,10 +134,10 @@ export const PARTENAIRES_TITRE = "Ils accompagnent le club";
 // ─── Accueil · Avis Google ───
 
 /** Surtitre */
-export const ACCUEIL_AVIS_SURTITRE = "Avis Google";
+export const ACCUEIL_AVIS_SURTITRE = "Ils ont joué ici";
 
 /** Titre */
-export const ACCUEIL_AVIS_TITRE = "Ce qu'en disent nos golfeurs";
+export const ACCUEIL_AVIS_TITRE = "Ce qu'en disent les joueurs";
 
 // ─── Commun · Appel à l'adhésion ───
 

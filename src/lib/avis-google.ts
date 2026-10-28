@@ -140,13 +140,13 @@ export async function lireAvisGoogle(langue: string): Promise<FicheAvis | null> 
 /** Aperçu de mise en page, en développement sans clé : textes fictifs signalés comme tels. */
 const exemple: FicheAvis = {
   exemple: true,
-  note: 4.6,
+  note: 4.8,
   nombre: 128,
   lienAvis: null,
   lienDonnerAvis: null,
   avis: [
-    { id: "exemple-1", auteur: "Exemple A.", auteurUrl: null, photo: null, note: 5, texte: "Texte d'exemple : avis long pour vérifier la mise en page sur plusieurs lignes. Le vrai contenu viendra de la fiche Google du golf dès que la clé sera configurée.", quand: "il y a 2 semaines", publieLe: null, lien: null },
-    { id: "exemple-2", auteur: "Exemple B.", auteurUrl: null, photo: null, note: 4, texte: "Texte d'exemple : avis court.", quand: "il y a 1 mois", publieLe: null, lien: null },
-    { id: "exemple-3", auteur: "Exemple C.", auteurUrl: null, photo: null, note: 5, texte: "Texte d'exemple : avis de longueur moyenne, pour juger de l'équilibre entre les cartes.", quand: "il y a 3 mois", publieLe: null, lien: null },
+    { id: "exemple-1", auteur: "Exemple A.", auteurUrl: null, photo: null, note: 5, texte: "Texte d'exemple : un parcours superbe, très bien entretenu, avec une vue magnifique. Le vrai contenu viendra de la fiche Google.", quand: "il y a 4 mois", publieLe: "2026-06-12T10:00:00Z", lien: null },
+    { id: "exemple-2", auteur: "Exemple B.", auteurUrl: null, photo: null, note: 5, texte: "Texte d'exemple : avis de longueur moyenne pour juger de l'équilibre des cartes.", quand: "il y a 5 mois", publieLe: "2026-05-20T10:00:00Z", lien: null },
+    { id: "exemple-3", auteur: "Exemple C.", auteurUrl: null, photo: null, note: 4, texte: "Texte d'exemple : avis court.", quand: "il y a 6 mois", publieLe: "2026-04-08T10:00:00Z", lien: null },
   ],
 };

@@ -131,6 +131,14 @@ export const ART_DE_VIVRE_CARTES = [
 /** Titre */
 export const PARTENAIRES_TITRE = "Ils accompagnent le club";
 
+// ─── Accueil · Avis Google ───
+
+/** Surtitre */
+export const ACCUEIL_AVIS_SURTITRE = "Avis Google";
+
+/** Titre */
+export const ACCUEIL_AVIS_TITRE = "Ce qu'en disent nos golfeurs";
+
 // ─── Commun · Appel à l'adhésion ───
 
 /** Surtitre */

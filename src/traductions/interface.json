@@ -1687,6 +1687,26 @@
     "origine": "src/components/sections/avantages-membres.tsx"
    },
    {
+    "texte": "avis sur Google",
+    "origine": "src/components/sections/avis-google.tsx"
+   },
+   {
+    "texte": "Note moyenne",
+    "origine": "src/components/sections/avis-google.tsx"
+   },
+   {
+    "texte": "Voir tous les avis",
+    "origine": "src/components/sections/avis-google.tsx"
+   },
+   {
+    "texte": "Donner mon avis",
+    "origine": "src/components/sections/avis-google.tsx"
+   },
+   {
+    "texte": "Lire sur Google",
+    "origine": "src/components/sections/avis-google.tsx"
+   },
+   {
     "texte": "Merci pour votre retour !",
     "origine": "src/components/sections/centre-aide.tsx"
    },

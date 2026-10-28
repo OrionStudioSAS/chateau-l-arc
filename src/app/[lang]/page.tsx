@@ -5,6 +5,7 @@ import { Banniere } from "@/components/layout/banniere";
 import { BoutonOr } from "@/components/ui/bouton-or";
 import { AppelAdhesion } from "@/components/sections/appel-adhesion";
 import { ArtDeVivre } from "@/components/sections/art-de-vivre";
+import { AvisGoogle } from "@/components/sections/avis-google";
 import { ChiffresCles } from "@/components/sections/chiffres-cles";
 import { CompetitionsApercu } from "@/components/sections/competitions-apercu";
 import { Partenaires } from "@/components/sections/partenaires";
@@ -79,7 +80,7 @@ export default async function Page() {
 
       <ArtDeVivre />
 
-      {/* Emplacement du widget « avis Google » (intégré par Orion). */}
+      <AvisGoogle />
 
       <Partenaires />
 

@@ -4,7 +4,6 @@ import { CarteDomaine } from "@/components/layout/carte-domaine";
 import {
   liensInstitutionnels,
   liensLegaux,
-  pagesAVenir,
   reseaux,
   servicesContact,
   site,
@@ -141,7 +140,7 @@ export async function SiteFooter() {
                   {tr("Nous appeler")}
                 </a>
                 <Link
-                  href={pagesAVenir.devenirMembre}
+                  href="/contact"
                   className="rounded-sm bg-white px-5 py-3 text-[12px] font-medium uppercase tracking-[0.06em] text-club-950 transition-colors hover:bg-sable-50"
                 >
                   {tr("En savoir plus")}

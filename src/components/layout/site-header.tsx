@@ -140,7 +140,7 @@ export function SiteHeader({
                 const actif =
                   pathname === item.href || pathname.startsWith(`${item.href}/`);
                 return (
-                  <li key={item.href}>
+                  <li key={item.href} className={cn(item.grandEcran && "hidden min-[1440px]:block")}>
                     <Link
                       href={item.href}
                       aria-current={actif ? "page" : undefined}

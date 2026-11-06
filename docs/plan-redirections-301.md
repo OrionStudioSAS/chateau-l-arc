@@ -4,24 +4,28 @@ Domaine : **https://www.chateaularcgolfclub.com** (l'ancien et le nouveau site p
 
 Les règles sont dans `src/config/redirections.ts` et servies par `next.config.ts` avec un vrai code **301**. Chaque ancienne URL est couverte avec et sans « / » final, en **un seul saut** vers une page qui répond 200 ; la chaîne de requête (`?utm_…`) est conservée. Table produite en testant chaque URL sur le build de production.
 
+**Dernier contrôle (novembre 2026)** : 505 anciennes URL testées sur le build de production (parcours complet de l'ancien site et URL archivées par Wayback Machine, PDF compris), toutes en 301 vers une page qui répond 200 ou vers Prima Golf. Seule exception : 3 anciens PDF archivés avec un double « // », normalisés par Next (308) avant le 301, soit 2 sauts.
+
+**À faire à la mise en ligne, hors du code** : pointer le domaine vers Vercel, et rediriger `chateaularcgolfclub.com` (sans www) vers `www.` dans les réglages de domaine Vercel. Tant que ce n'est pas fait, ces redirections ne s'appliquent pas sur le domaine réel.
+
 ## Principes
 
 - **Équivalent exact quand il existe** (`/fr/tarifs` → `/tarifs`, `/fr/histoire` → `/histoire`…).
 - **Sinon, la page la plus proche du sujet** : les 18 pages « Trou n° X » vers `/le-parcours` (section Trou par trou) ; les fiches des anciennes compétitions vers `/competitions` ; chaque ancienne actualité vers la page de son thème (état du parcours, résultats, recrutement…).
 - **Jamais l'accueil par défaut** pour une page qui a un équivalent : Google traite une redirection massive vers l'accueil comme une page introuvable (soft 404). Seul un filet `/fr/*` pour des URL inconnues mène à l'accueil.
 - **PDF de l'ancienne plateforme** (`/models/golfcompetition/…`, `/models/gallerymedia/…`) : vers les résultats et le calendrier.
-- **Espace membre** (`/connexion`, `/account/…`) : vers la réservation en ligne Prima Golf.
+- **Espace membre** (`/fr/espace-membres`, `/connexion`, `/account/…`) : vers la réservation en ligne Prima Golf.
 
 ## Règles génériques (filets)
 
 | Ancienne URL | Nouvelle URL |
 | --- | --- |
 | `/fr/parcours/*` | `/le-parcours` |
-| `/fr/competitions/list/*`, `/fr/competitions/*` | `/competitions` |
+| `/fr/competitions/list/*`, `/fr/competitions/*`, `/fr/competitions_fiche/*` | `/competitions` |
 | `/fr/actualites/*` (non listée ci-dessous) | `/competitions` |
 | `/models/golfcompetition/*` (PDF départs et résultats) | `/competitions/resultats` |
 | `/models/gallerymedia/*` (documents de l'AS) | `/competitions` |
-| `/connexion/*`, `/account/*` | https://prima.golf/sainte-victoire/home |
+| `/fr/espace-membres`, `/connexion/*`, `/account/*` | https://prima.golf/sainte-victoire/home |
 | `/videos/*` | `/le-parcours` |
 | `/fr/*` (toute autre ancienne page) | `/` |
 | Toute URL du nouveau site avec « / » final | même URL sans « / » |
@@ -37,11 +41,11 @@ Les règles sont dans `src/config/redirections.ts` et servies par `next.config.t
 | `/fr/contact` | Contact | `/contact` |
 | `/fr/histoire` | Histoire | `/histoire` |
 | `/fr/le-chateau-d-arc` | Le Château l'Arc | `/histoire` |
-| `/fr/mentions-legales-credits` | Mentions légales & Crédits | `/` (page pas encore construite) |
+| `/fr/mentions-legales-credits` | Mentions légales & Crédits | `/mentions-legales` |
 | `/fr/nos-salles` | Nos salles | `/contact` (page Groupe & privatisation pas encore construite) |
 | `/fr/nous-suivre` | Nous suivre | `/contact` |
 | `/fr/organisation` | Nos Partenaires | `/` |
-| `/fr/politique-de-confidentialite` | Politique de confidentialité | `/` (page pas encore construite) |
+| `/fr/politique-de-confidentialite` | Politique de confidentialité | `/politique-de-confidentialite` |
 | `/fr/presentation-1` | Présentation | `/academie` |
 | `/fr/s-inscrire` | S'inscrire | `/academie` |
 | `/fr/tarifs` | Tarifs | `/tarifs` |

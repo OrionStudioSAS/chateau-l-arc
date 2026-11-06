@@ -81,6 +81,8 @@ export const urlRestaurant =
 export type NavItem = {
   label: string;
   href: string;
+  /** En-tête : lien masqué sous 1440 px, pour libérer la place (il reste dans le menu mobile). */
+  grandEcran?: boolean;
 };
 
 /** Liens de gauche dans l'en-tête, dans l'ordre de la maquette. */
@@ -88,8 +90,9 @@ export const headerNav: NavItem[] = [
   { label: "Parcours", href: "/le-parcours" },
   { label: "Tarifs", href: "/tarifs" },
   { label: "Compétitions", href: "/competitions" },
-  { label: "Histoire", href: "/histoire" },
+  { label: "Histoire", href: "/histoire", grandEcran: true },
   { label: "Vie académie", href: "/academie" },
+  { label: "Contact", href: "/contact" },
 ];
 
 /**
@@ -98,7 +101,6 @@ export const headerNav: NavItem[] = [
  * Une fois une page créée, retirer son `as Route` suffit.
  */
 export const pagesAVenir = {
-  devenirMembre: "/devenir-membre" as Route,
   restaurant: "/restaurant" as Route,
   proshop: "/proshop" as Route,
   aPropos: "/a-propos" as Route,
@@ -112,7 +114,8 @@ export const pagesAVenir = {
  * `info` reste la page complète de l'état des installations (menu mobile).
  */
 export const headerActions = {
-  membre: { label: "Devenir membre", href: pagesAVenir.devenirMembre },
+  // Le formulaire de la page Contact s'ouvre sur la demande d'adhésion.
+  membre: { label: "Devenir membre", href: "/contact" as Route },
   reservation: { label: "Réserver un départ", href: urlReservation as Route },
 };
 
@@ -129,6 +132,7 @@ export const liensInstitutionnels: NavItem[] = [
   { label: "Groupe & Privatisation", href: pagesAVenir.groupePrivatisation },
   { label: "Recrutement", href: pagesAVenir.recrutement },
   { label: "FAQ", href: "/faq" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const liensLegaux: NavItem[] = [
@@ -164,7 +168,6 @@ export const partenaires: { nom: string; logo: string; url?: string }[] = [
 /** Pages publiques existantes (statistiques et ciblage de la pop-up dans le back-office). */
 export const routesPubliques: NavItem[] = [
   ...headerNav,
-  { label: "Nous contacter", href: "/contact" },
   { label: "Résultats des compétitions", href: "/competitions/resultats" },
   { label: "Actualités", href: "/actualites" },
   { label: "FAQ", href: "/faq" },

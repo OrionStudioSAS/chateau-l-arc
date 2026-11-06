@@ -853,6 +853,10 @@
     "origine": "src/config/site.ts"
    },
    {
+    "texte": "Contact",
+    "origine": "src/config/site.ts"
+   },
+   {
     "texte": "Devenir membre",
     "origine": "src/config/site.ts"
    },
@@ -938,10 +942,6 @@
    },
    {
     "texte": "Autosprinter Toyota Aix-en-Provence",
-    "origine": "src/config/site.ts"
-   },
-   {
-    "texte": "Nous contacter",
     "origine": "src/config/site.ts"
    },
    {
@@ -2112,6 +2112,14 @@
    },
    {
     "texte": "Rubriques de la page",
+    "origine": "src/components/sections/tarifs-navigation.tsx"
+   },
+   {
+    "texte": "Saisons",
+    "origine": "src/components/sections/tarifs-navigation.tsx"
+   },
+   {
+    "texte": "saison en cours",
     "origine": "src/components/sections/tarifs-navigation.tsx"
    },
    {

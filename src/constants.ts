@@ -699,7 +699,7 @@ export const FAQ_ABONNEMENTS_QUESTIONS = [
   {
     question: "Comment devenir membre ?",
     reponse: "Faites votre demande d'adhésion en ligne ou auprès de l'accueil : l'équipe vous accompagne dans le choix de la formule.",
-    lien: "/devenir-membre",
+    lien: "/contact",
     texteLien: "Devenir membre",
   },
   {

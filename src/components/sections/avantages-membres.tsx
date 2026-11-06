@@ -3,7 +3,7 @@ import { Lien as Link } from "@/components/ui/lien";
 
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
-import { pagesAVenir, site } from "@/config/site";
+import { site } from "@/config/site";
 import { Editable } from "@/components/cms/editable";
 import { i18n } from "@/lib/i18n/serveur";
 
@@ -41,7 +41,7 @@ export async function AvantagesMembres() {
 
           <div className="mt-10 flex flex-wrap gap-3">
             <Link
-              href={pagesAVenir.devenirMembre}
+              href="/contact"
               className="inline-flex items-center gap-2 rounded-sm bg-club-950 px-6 py-3.5 text-[13px] font-semibold text-sable-50 transition-colors hover:bg-club-800"
             >
               {tr("Demander une adhésion")} <span aria-hidden="true">→</span>

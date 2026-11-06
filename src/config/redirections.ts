@@ -62,6 +62,8 @@ export const redirections: Redirection[] = [
   // Fiches des anciennes compétitions (épreuves passées) : calendrier.
   { source: "/fr/competitions/:slug", destination: "/competitions" },
   { source: "/fr/competitions/:slug/:chemin*", destination: "/competitions" },
+  // Ancien format des fiches de compétition (encore archivé) : même calendrier.
+  { source: "/fr/competitions_fiche/:chemin*", destination: "/competitions" },
   { source: "/fr/association-sportive", destination: "/competitions" },
 
   // ─── Académie, événements, contact ───
@@ -80,11 +82,12 @@ export const redirections: Redirection[] = [
   { source: "/fr/actualites/:chemin*", destination: "/competitions" },
 
   // ─── Pages légales ───
-  { source: "/fr/politique-de-confidentialite", destination: "/" },
-  { source: "/fr/mentions-legales-credits", destination: "/" },
+  { source: "/fr/politique-de-confidentialite", destination: "/politique-de-confidentialite" },
+  { source: "/fr/mentions-legales-credits", destination: "/mentions-legales" },
 
   // ─── Espace membres et médias de l'ancienne plateforme ───
   // Connexion membre : la réservation des départs se fait désormais sur Prima Golf.
+  { source: "/fr/espace-membres", destination: urlReservation },
   { source: "/connexion", destination: urlReservation },
   { source: "/connexion/:chemin*", destination: urlReservation },
   { source: "/account/:chemin*", destination: urlReservation },

@@ -873,6 +873,10 @@
     "origine": "src/config/site.ts"
    },
    {
+    "texte": "Facebook",
+    "origine": "src/config/site.ts"
+   },
+   {
     "texte": "TikTok",
     "origine": "src/config/site.ts"
    },
@@ -1117,6 +1121,14 @@
    {
     "texte": "L'envoi a échoué. Réessayez dans un instant ou appelez l'accueil au",
     "origine": "src/app/[lang]/contact/actions.ts"
+   },
+   {
+    "texte": "Merci de me prévenir de l'ouverture des inscriptions :",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
+   },
+   {
+    "texte": "Je souhaite m'inscrire à la compétition :",
+    "origine": "src/components/sections/contact/formulaire-contact.tsx"
    },
    {
     "texte": "an",
@@ -1425,6 +1437,14 @@
    },
    {
     "texte": "Télécharger les résultats (PDF)",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "S'inscrire",
+    "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
+   },
+   {
+    "texte": "Être prévenu",
     "origine": "src/app/[lang]/competitions/[slug]/page.tsx"
    },
    {

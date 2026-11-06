@@ -4,7 +4,7 @@ import { Lien as Link } from "@/components/ui/lien";
 import { Editable } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
-import { pagesAVenir, urlRestaurant } from "@/config/site";
+import { liensContact, urlRestaurant, urlSvis } from "@/config/site";
 import { estPagePubliqueVisible } from "@/config/visibilite";
 import { cn } from "@/lib/cn";
 import { i18n } from "@/lib/i18n/serveur";
@@ -26,9 +26,8 @@ type Carte = {
 const dispositions: Omit<Carte, "label" | "titre" | "image">[] = [
   { externe: urlRestaurant, grille: "lg:col-span-7 lg:row-span-2", large: true },
   { href: "/academie", grille: "lg:col-span-5" },
-  // TODO : destination à fournir (site de l'école, probablement externe).
-  { grille: "lg:col-span-5" },
-  { href: pagesAVenir.proshop, grille: "lg:col-span-6" },
+  { externe: urlSvis, grille: "lg:col-span-5" },
+  { href: liensContact.question, grille: "lg:col-span-6" },
   { href: "/competitions", grille: "lg:col-span-6" },
 ];
 

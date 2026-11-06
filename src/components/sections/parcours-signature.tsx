@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Lien as Link } from "@/components/ui/lien";
 
 import { Editable } from "@/components/cms/editable";
-import { pagesAVenir } from "@/config/site";
+import { urlCarteDeScore } from "@/config/site";
 import { Container } from "@/components/ui/container";
 import { Surtitre } from "@/components/ui/surtitre";
 import { i18n } from "@/lib/i18n/serveur";
@@ -91,12 +91,14 @@ export async function ParcoursSignature() {
             >
               {tr("Explorer le parcours")} <span aria-hidden="true">→</span>
             </Link>
-            <Link
-              href={pagesAVenir.carteDeScore}
-              className="inline-flex items-center gap-2 rounded-sm border border-club-950/25 px-5 py-3.5 text-[12px] font-semibold uppercase tracking-[0.1em] text-club-950 transition-colors hover:bg-white"
-            >
-              {tr("Carte de score (PDF)")}
-            </Link>
+            {urlCarteDeScore ? (
+              <Link
+                href={urlCarteDeScore}
+                className="inline-flex items-center gap-2 rounded-sm border border-club-950/25 px-5 py-3.5 text-[12px] font-semibold uppercase tracking-[0.1em] text-club-950 transition-colors hover:bg-white"
+              >
+                {tr("Carte de score (PDF)")}
+              </Link>
+            ) : null}
           </div>
         </div>
       </Container>

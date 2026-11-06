@@ -621,7 +621,7 @@ export const FAQ_RESERVATIONS_QUESTIONS = [
   {
     question: "Puis-je réserver pour un groupe ?",
     reponse: "Oui. Pour un groupe, une sortie d'entreprise ou un événement, contactez l'accueil pour organiser vos départs.",
-    lien: "/groupe-privatisation",
+    lien: "/contact?demande=evenement#formulaire",
     texteLien: "Groupes & privatisation",
   },
   {

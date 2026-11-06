@@ -4,16 +4,15 @@ import { Container } from "@/components/ui/container";
 import { LienFleche } from "@/components/ui/lien-fleche";
 import { Surtitre } from "@/components/ui/surtitre";
 import { Editable } from "@/components/cms/editable";
-import { pagesAVenir } from "@/config/site";
+import { liensContact, urlRestaurant, urlSvis } from "@/config/site";
 import { i18n } from "@/lib/i18n/serveur";
 
 const SECTION = "Histoire · Le domaine aujourd'hui";
 
 /**
- * Textes et images dans constants.ts (éditeur visuel) ; liens ici, dans le
- * même ordre. TODO : lien du site de la SVIS (sans lien, pas de « En savoir plus »).
+ * Textes et images dans constants.ts (éditeur visuel) ; liens ici, dans le même ordre.
  */
-const liens: (string | undefined)[] = [pagesAVenir.restaurant, pagesAVenir.groupePrivatisation, undefined];
+const liens = [urlRestaurant, liensContact.evenement, urlSvis];
 
 export async function DomaineAujourdhui() {
   const { T, tr } = await i18n();

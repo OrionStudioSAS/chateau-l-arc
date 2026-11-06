@@ -76,6 +76,10 @@ export default async function Page({ params }: PageProps<"/[lang]/competitions/[
     { libelle: tr("Sponsor"), valeur: competition.sponsor ? tr(competition.sponsor) : undefined },
   ].filter((ligne) => Boolean(ligne.valeur));
 
+  const inscriptionOuverte =
+    competition.etat.cle === "ouverte" && !competition.modeInscription?.toLowerCase().includes("invitation");
+  const lienInscription = `/contact?competition=${encodeURIComponent(tr(competition.nom))}${inscriptionOuverte ? "" : "&prevenir=1"}#formulaire`;
+
   return (
     <article className="py-14 lg:py-20">
       <JsonLd
@@ -158,7 +162,13 @@ export default async function Page({ params }: PageProps<"/[lang]/competitions/[
           </p>
         ) : null}
 
-        <div className="mt-12">
+        <div className="mt-12 flex flex-wrap gap-3">
+          {/* Inscriptions et alertes : formulaire de la page Contact, pré-rempli. */}
+          {competition.etat.cle !== "terminee" ? (
+            <ButtonLink href={lienInscription}>
+              {inscriptionOuverte ? tr("S'inscrire") : tr("Être prévenu")}
+            </ButtonLink>
+          ) : null}
           <ButtonLink href="/competitions" variant="secondary">
             {tr("Retour au calendrier")}
           </ButtonLink>

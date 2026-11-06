@@ -74,6 +74,9 @@ export const urlItineraire = `https://www.google.com/maps/dir/?${new URLSearchPa
 /** Réservation des départs en ligne (Prima Golf), ouverte dans un nouvel onglet. */
 export const urlReservation = "https://prima.golf/sainte-victoire/home";
 
+/** Sainte-Victoire International School, installée sur le domaine. */
+export const urlSvis = "https://www.svis.fr/";
+
 /** Restaurant « La Table du Golf » sur Tripadvisor (avis et réservation). */
 export const urlRestaurant =
   "https://www.tripadvisor.fr/Restaurant_Review-g675388-d21110116-Reviews-La_Table_Du_Golf-Fuveau_Bouches_du_Rhone_Provence_Alpes_Cote_d_Azur.html";
@@ -96,18 +99,16 @@ export const headerNav: NavItem[] = [
 ];
 
 /**
- * Pages pas encore construites (supprimées en attendant leur maquette) : les
- * liens restent en place et mènent à la page 404 jusqu'à leur création.
- * Une fois une page créée, retirer son `as Route` suffit.
+ * Page Contact ouverte sur le bon formulaire (cf. FormulaireContact) : ces
+ * liens remplacent les pages qui n'existent pas (groupes, recrutement, proshop).
  */
-export const pagesAVenir = {
-  restaurant: "/restaurant" as Route,
-  proshop: "/proshop" as Route,
-  aPropos: "/a-propos" as Route,
-  groupePrivatisation: "/groupe-privatisation" as Route,
-  recrutement: "/recrutement" as Route,
-  carteDeScore: "/le-parcours/scorecard" as Route,
-};
+export const liensContact = {
+  evenement: "/contact?demande=evenement#formulaire",
+  question: "/contact?demande=autre#formulaire",
+} as const;
+
+/** Carte de score à télécharger. TODO : PDF à fournir ; sans adresse, les boutons sont masqués. */
+export const urlCarteDeScore: string | null = null;
 
 /**
  * Bloc de droite dans l'en-tête : état du parcours, téléphone, deux boutons.
@@ -119,18 +120,20 @@ export const headerActions = {
   reservation: { label: "Réserver un départ", href: urlReservation as Route },
 };
 
-/** Réseaux sociaux du club. TODO : renseigner les URL, sinon le libellé reste inerte. */
+/** Réseaux sociaux du club. TODO : URL LinkedIn, TikTok et YouTube à fournir ; sans URL, le libellé reste inerte. */
 export const reseaux: { label: string; url: string }[] = [
   { label: "Linkedin", url: "" },
-  { label: "Instagram", url: "" },
+  { label: "Instagram", url: "https://www.instagram.com/chateaularcgolfclub/" },
+  { label: "Facebook", url: "https://www.facebook.com/Chateaularcgolfclubprovence/" },
   { label: "TikTok", url: "" },
   { label: "Youtube", url: "" },
 ];
 
 export const liensInstitutionnels: NavItem[] = [
-  { label: "À propos", href: pagesAVenir.aPropos },
-  { label: "Groupe & Privatisation", href: pagesAVenir.groupePrivatisation },
-  { label: "Recrutement", href: pagesAVenir.recrutement },
+  { label: "À propos", href: "/histoire" },
+  { label: "Histoire", href: "/histoire" },
+  { label: "Groupe & Privatisation", href: liensContact.evenement },
+  { label: "Recrutement", href: liensContact.question },
   { label: "FAQ", href: "/faq" },
   { label: "Contact", href: "/contact" },
 ];
@@ -153,15 +156,15 @@ export const servicesContact = [
 
 /**
  * Partenaires du club.
- * Les liens restent vides tant que les adresses des partenaires ne sont pas connues.
+ * Liens repris de l'ancien site ; les autres restent vides tant que leur adresse n'est pas connue.
  */
 export const partenaires: { nom: string; logo: string; url?: string }[] = [
   { nom: "Les Masques", logo: "/images/logo1.png" },
   { nom: "Golf d'Aix-en-Provence — Set Club", logo: "/images/logo2.png" },
   { nom: "La Cabre d'Or Golf", logo: "/images/logo3.png" },
   { nom: "Le Club Golf", logo: "/images/logo4.png" },
-  { nom: "Les Alchimistes", logo: "/images/logo5.png" },
-  { nom: "Golf des Marques", logo: "/images/logo6.png" },
+  { nom: "Les Alchimistes", logo: "/images/logo5.png", url: "https://lesalchimistes-joaillerie.com/" },
+  { nom: "Golf des Marques", logo: "/images/logo6.png", url: "https://www.golfdesmarques.com/" },
   { nom: "Autosprinter Toyota Aix-en-Provence", logo: "/images/logo7.png" },
 ];
 

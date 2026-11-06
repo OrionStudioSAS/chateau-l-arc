@@ -58,7 +58,7 @@ export async function SiteFooter() {
 
               <ul className="space-y-3">
                 {liensInstitutionnels.map((lien) => (
-                  <li key={lien.href}>
+                  <li key={lien.label}>
                     <Link href={lien.href} className={lienPied}>
                       {tr(lien.label)}
                     </Link>
@@ -68,7 +68,7 @@ export async function SiteFooter() {
 
               <ul className="space-y-3">
                 {liensLegaux.map((lien) => (
-                  <li key={lien.href}>
+                  <li key={lien.label}>
                     <Link href={lien.href} className={lienPied}>
                       {tr(lien.label)}
                     </Link>

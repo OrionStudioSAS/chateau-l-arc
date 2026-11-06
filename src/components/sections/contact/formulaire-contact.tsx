@@ -6,7 +6,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { envoyerDemande, type EnvoiDemande, type ResultatEnvoi } from "@/app/[lang]/contact/actions";
 import { Editable, useModeEdition } from "@/components/cms/editable";
 import { Container } from "@/components/ui/container";
-import type { TypeDemande } from "@/lib/demandes";
+import { typesDemande, type TypeDemande } from "@/lib/demandes";
 import { cn } from "@/lib/cn";
 import * as FR from "@/constants";
 import { useI18n } from "@/lib/i18n/client";
@@ -294,6 +294,25 @@ export function FormulaireContact({ offres }: { offres: OffresContact }) {
     const minuteur = window.setTimeout(() => setMois(liste), 0);
     return () => window.clearTimeout(minuteur);
   }, [locale]);
+
+  // Arrivée depuis un lien du site : ?demande=evenement ouvre ce formulaire ;
+  // ?competition=Nom pré-remplit la question (&prevenir=1 : ouverture des inscriptions).
+  useEffect(() => {
+    const parametres = new URLSearchParams(window.location.search);
+    const demande = parametres.get("demande");
+    const competition = parametres.get("competition")?.trim().slice(0, 120);
+    const minuteur = window.setTimeout(() => {
+      if (demande && demande in typesDemande) setType(demande as TypeDemande);
+      if (!competition) return;
+      setType("autre");
+      const rang = FR.CONTACT_AUTRE_SUJETS.indexOf("Compétitions");
+      if (T.CONTACT_AUTRE_SUJETS[rang]) setSujet([T.CONTACT_AUTRE_SUJETS[rang]]);
+      setMessage(
+        `${parametres.has("prevenir") ? tr("Merci de me prévenir de l'ouverture des inscriptions :") : tr("Je souhaite m'inscrire à la compétition :")} ${competition}`,
+      );
+    }, 0);
+    return () => window.clearTimeout(minuteur);
+  }, [T, tr]);
 
   const enfant = publicCours === 1;
   const formulesCours = enfant

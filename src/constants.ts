@@ -1165,7 +1165,7 @@ export const CONTACT_AUTRES_SURTITRE = "Autres demandes";
 /** Cartes (lien : page du site, https://, tel: ou mailto:) */
 export const CONTACT_AUTRES_CARTES = [
   { titre: "Réserver un départ", texte: "Green fee 9 ou 18 trous, réservation en ligne.", texteLien: "Réserver", lien: "https://prima.golf/sainte-victoire/home" },
-  { titre: "Restaurant", texte: "Réservez une table au Club House.", texteLien: "Appeler le restaurant", lien: "tel:+33130939559" },
+  { titre: "Restaurant", texte: "Réservez une table au Club House.", texteLien: "Appeler le restaurant", lien: "tel:+33442298341" },
   { titre: "Une autre question ?", texte: "Horaires, accès, location de matériel…", texteLien: "Écrire à l'accueil", lien: "mailto:golf@chateaularcgolfclub.com" },
 ];
 

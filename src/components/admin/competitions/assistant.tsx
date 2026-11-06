@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 
-import { sauvegarderCompetition } from "@/app/(admin)/admin/(tableau-de-bord)/competitions/actions";
+import { sauvegarderCompetition, supprimerCompetition } from "@/app/(admin)/admin/(tableau-de-bord)/competitions/actions";
 import {
   Champ,
   classeChamp,
@@ -30,6 +30,10 @@ import type { CategorieCompetition } from "@/lib/api/types";
 const ETAPES = ["Le jeu", "Inscriptions", "Présentation", "Vérification"] as const;
 const CLE_LOCALE = "chateau-larc:competition:";
 const TAILLE_MAX_REGLEMENT = 2 * 1024 * 1024;
+
+/** Confirmation commune au bouton de la liste et à celui de l'assistant. */
+export const questionSuppression = (nom: string) =>
+  `Supprimer « ${nom} » ? Ses fichiers (affiche, règlement, résultats) seront retirés du site. C'est définitif.`;
 
 /** Réduit l'affiche à 1600 px de côté (JPEG) : envoi rapide, sous la limite de Vercel. */
 async function reduireImage(fichier: File): Promise<{ fichier: File; largeur: number; hauteur: number }> {
@@ -73,6 +77,7 @@ export function AssistantCompetition({
   memoriser = true,
   onFermer,
   onEnregistre,
+  onSupprime,
 }: {
   initial: BrouillonCompetition;
   /** Faux pour une copie : ne pas reprendre une autre saisie gardée sur l'appareil. */
@@ -81,6 +86,7 @@ export function AssistantCompetition({
   titre: string;
   onFermer: () => void;
   onEnregistre: (message: string) => void;
+  onSupprime: (message: string) => void;
 }) {
   const cleLocale = CLE_LOCALE + (memoriser ? (initial.id ?? "nouvelle") : "copie");
   const [b, setB] = useState<BrouillonCompetition>(initial);
@@ -164,6 +170,25 @@ export function AssistantCompetition({
     },
     [b, pieces, cleLocale, onEnregistre],
   );
+
+  const supprimer = () => {
+    if (!initial.id || !window.confirm(questionSuppression(initial.nom))) return;
+    const id = initial.id;
+    setErreur(null);
+    demarrer(async () => {
+      const resultat = await supprimerCompetition(id);
+      if (!resultat.ok) {
+        setErreur(resultat.message);
+        return;
+      }
+      try {
+        window.localStorage.removeItem(cleLocale);
+      } catch {
+        // Voir plus haut.
+      }
+      onSupprime(resultat.message);
+    });
+  };
 
   const suivant = useCallback(() => {
     if (etape < ETAPES.length - 1) setEtape((e) => e + 1);
@@ -645,6 +670,17 @@ export function AssistantCompetition({
             <IconeAdmin nom="oeil" className="size-4" />
             Aperçu
           </button>
+          {initial.id ? (
+            <button
+              type="button"
+              disabled={enCours}
+              onClick={supprimer}
+              className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-[14px] text-red-700 hover:bg-red-50 disabled:opacity-60"
+            >
+              <IconeAdmin nom="corbeille" className="size-4" />
+              Supprimer
+            </button>
+          ) : null}
           {etape === 0 || etape === 3 ? (
             <button
               type="button"

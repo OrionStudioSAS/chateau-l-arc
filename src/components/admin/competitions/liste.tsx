@@ -7,7 +7,7 @@ import {
   changerStatutCompetition,
   supprimerCompetition,
 } from "@/app/(admin)/admin/(tableau-de-bord)/competitions/actions";
-import { AssistantCompetition } from "@/components/admin/competitions/assistant";
+import { AssistantCompetition, questionSuppression } from "@/components/admin/competitions/assistant";
 import { ModaleEvenement, tonsEvenement } from "@/components/admin/competitions/evenement";
 import { ModaleResultats } from "@/components/admin/competitions/resultats";
 import { IconeAdmin, type NomIconeAdmin } from "@/components/admin/icone-admin";
@@ -362,6 +362,10 @@ export function CompetitionsAdmin({
       if (resultat.ok) router.refresh();
     });
 
+  const supprimer = (c: CompetitionAvecEtat) => {
+    if (window.confirm(questionSuppression(c.nom))) executer(() => supprimerCompetition(c.id));
+  };
+
   const actionsDe = (c: CompetitionAvecEtat) => [
     { libelle: "Modifier", icone: "crayon" as const, onClick: () => modifier(c) },
     ...(c.statut === "publie"
@@ -378,11 +382,7 @@ export function CompetitionsAdmin({
       libelle: "Supprimer",
       icone: "corbeille" as const,
       danger: true,
-      onClick: () => {
-        if (window.confirm(`Supprimer « ${c.nom} » ? Ses fichiers (affiche, règlement, résultats) seront retirés du site.`)) {
-          executer(() => supprimerCompetition(c.id));
-        }
-      },
+      onClick: () => supprimer(c),
     },
   ];
 
@@ -577,7 +577,7 @@ export function CompetitionsAdmin({
         </p>
       ) : (
         <div className="mt-5 rounded-xl border border-neutral-200">
-          <div className="hidden grid-cols-[minmax(0,1fr)_200px_150px_92px] border-b border-neutral-200 px-4 py-2.5 text-[13px] text-neutral-500 md:grid">
+          <div className="hidden grid-cols-[minmax(0,1fr)_200px_150px_164px] border-b border-neutral-200 px-4 py-2.5 text-[13px] text-neutral-500 md:grid">
             <span>Compétition</span>
             <span>Statut</span>
             <span>Clôture</span>
@@ -599,7 +599,7 @@ export function CompetitionsAdmin({
                   return (
                     <li
                       key={c.id}
-                      className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-2 border-b border-neutral-200 px-4 py-3 last:border-b-0 md:grid-cols-[minmax(0,1fr)_200px_150px_92px]"
+                      className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-2 border-b border-neutral-200 px-4 py-3 last:border-b-0 md:grid-cols-[minmax(0,1fr)_200px_150px_164px]"
                     >
                       <button type="button" onClick={() => modifier(c)} className="flex min-w-0 items-center gap-3 text-left">
                         <Tuile jour={c.dateDebut} terminee={passee} />
@@ -645,6 +645,15 @@ export function CompetitionsAdmin({
                             <IconeAdmin nom="crayon" className="size-4" />
                           </button>
                         )}
+                        <button
+                          type="button"
+                          aria-label={`Supprimer ${c.nom}`}
+                          title="Supprimer"
+                          onClick={() => supprimer(c)}
+                          className="rounded-md p-1.5 text-neutral-500 hover:bg-red-50 hover:text-red-700"
+                        >
+                          <IconeAdmin nom="corbeille" className="size-4" />
+                        </button>
                         <Menu actions={actionsDe(c)} />
                       </span>
                     </li>
@@ -724,6 +733,7 @@ export function CompetitionsAdmin({
           memoriser={edition.memoriser}
           onFermer={fermerEdition}
           onEnregistre={surEnregistre}
+          onSupprime={surEnregistre}
         />
       ) : null}
 

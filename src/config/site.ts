@@ -143,15 +143,17 @@ export const liensLegaux: NavItem[] = [
   { label: "Politique de confidentialité", href: "/politique-de-confidentialite" },
 ];
 
-/** Accueils téléphoniques affichés en pied de page. TODO : numéros à confirmer. */
+/** Accueils affichés en pied de page : un seul numéro, celui du golf. */
+const TELEPHONE_INTERNATIONAL = "+33 4 42 29 83 41";
+
 export const servicesContact = [
-  { nom: "S.C.I", horaires: "Lundi - Dimanche | 12h-1h", telephone: "+33 1 34 76 74 70" },
+  { nom: "S.C.I", horaires: "Lundi - Dimanche | 12h-1h", telephone: TELEPHONE_INTERNATIONAL },
   {
     nom: "Bar / Restaurant",
     horaires: "Lundi - Dimanche | 12h-1h",
-    telephone: "+33 1 30 93 95 59",
+    telephone: TELEPHONE_INTERNATIONAL,
   },
-  { nom: "Pro-shop", horaires: "Lundi - Dimanche | 12h-1h", telephone: "+33 1 34 76 65 57" },
+  { nom: "Pro-shop", horaires: "Lundi - Dimanche | 12h-1h", telephone: TELEPHONE_INTERNATIONAL },
 ];
 
 /**

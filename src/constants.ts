@@ -641,19 +641,19 @@ export const FAQ_TARIFS_TITRE = "Tarifs & paiement";
 export const FAQ_TARIFS_QUESTIONS = [
   {
     question: "Quels sont les tarifs des green fees ?",
-    reponse: "18 trous : 85 € toute l'année. 9 trous : 55 € en haute saison (du 16 avril au 14 novembre) et 45 € en basse saison (du 15 novembre au 15 avril).",
+    reponse: "18 trous : 90 € en haute saison, 80 € en basse saison. 9 trous : 55 € en haute saison (du 1er avril au 15 novembre) et 45 € en basse saison (du 15 novembre au 15 avril).",
     lien: "/tarifs",
     texteLien: "Tous les tarifs",
   },
   {
     question: "Existe-t-il des carnets de green fees ?",
-    reponse: "Oui, valables 12 mois : 6 parcours 18 trous à 350 €, 12 parcours 18 trous à 700 €, 12 parcours 9 trous à 450 €.",
+    reponse: "Oui, valables 12 mois : 10 parcours 18 trous à 700 €",
     lien: "",
     texteLien: "",
   },
   {
     question: "Combien coûte la location d'une voiturette ?",
-    reponse: "Voiturette 18 trous : 40 € (28 € pour les membres) ; voiturette 9 trous : 33 € (25 € pour les membres).",
+    reponse: "Voiturette 18 trous : 42 € (30 € pour les membres) ; voiturette 9 trous : 36 € (27 € pour les membres).",
     lien: "",
     texteLien: "",
   },

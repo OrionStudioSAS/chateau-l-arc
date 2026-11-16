@@ -36,7 +36,7 @@ export const ACCUEIL_CHIFFRES = [
 export const PRESENTATION_SURTITRE = "Le plus beau golf entre Aix et Marseille";
 
 /** Texte */
-export const PRESENTATION_TEXTE = `Le Château l'Arc Golf Club fait indéniablement partie des plus beaux lieux golfiques de la région Provence Alpes Côte d'Azur. Le parcours, créé en 1985 et dessiné par Robert Trent Jones II, est idéalement situé aux portes d'Aix-En-Provence et Marseille. Ce par 70 de 5817 mètres propose une expérience golfique variée grâce à son dessin qui serpente entre pins et garrigue dans un environnement d'exception puisqu'il donne une vue fantastique sur la montagne Sainte-Victoire.`;
+export const PRESENTATION_TEXTE = "Le Château l’Arc Golf Club compte parmi les plus beaux sites golfiques de la région Provence-Alpes-Côte d’Azur. Dessiné en 1985 par Robert Trent Jones II, le parcours bénéficie d’une situation privilégiée, aux portes d’Aix-en-Provence et de Marseille. Ce par 70 de 5 817 mètres offre une expérience de jeu variée. Il serpente entre pins et garrigue, dans un cadre d’exception dominé par une vue spectaculaire sur la montagne Sainte-Victoire.";
 
 /** Vignettes autour du texte */
 export const PRESENTATION_VIGNETTES = [

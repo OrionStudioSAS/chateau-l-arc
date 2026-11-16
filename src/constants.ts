@@ -40,7 +40,7 @@ export const PRESENTATION_TEXTE = "Le Château l’Arc Golf Club compte parmi le
 
 /** Vignettes autour du texte */
 export const PRESENTATION_VIGNETTES = [
-  "/images/hp-haut-gauche.png",
+  "/images/cms-1934-010-1794837787006-0.jpg",
   "/images/hp-milieu-gauche.png",
   "/images/hp-bas-gauche.png",
   "/images/hp-haut-droite.png",
@@ -122,7 +122,7 @@ export const ART_DE_VIVRE_CARTES = [
   { label: "La table du golf", titre: "Déjeuner face au parcours", image: "/images/hp-dejeuner.png" },
   { label: "Practice & Académie", titre: "Travailler le swing et le reste", image: "/images/hp-swing.png" },
   { label: "Grandir au cœur du domaine", titre: "SVIS - École internationale", image: "/images/hp-svis.png" },
-  { label: "Proshop", titre: "S'équiper au club", image: "/images/hp-sequipe.png" },
+  { label: "Proshop", titre: "S'équiper au club", image: "/images/cms-1934-094-1794837787007-1.jpg" },
   { label: "Compétitions & association", titre: "Se retrouver entre amis", image: "/images/hp-amis.png" },
 ];
 

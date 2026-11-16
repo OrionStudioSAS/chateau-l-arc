@@ -49,7 +49,7 @@ export const PRESENTATION_VIGNETTES = [
 ];
 
 /** Vidéo YouTube (identifiant) */
-export const VIDEO_YOUTUBE_ID = "SMyeVemkx6EZ";
+export const VIDEO_YOUTUBE_ID = "hbJSMWfHjAI";
 
 // ─── Accueil · Bienvenue ───
 

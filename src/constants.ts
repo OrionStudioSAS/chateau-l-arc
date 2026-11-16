@@ -198,7 +198,7 @@ export const TARIFS_PAGE_BANNIERE_TITRE = "Tarifs";
 export const TARIFS_PAGE_BANNIERE_TEXTE = "Les prix affichés sont toujours à jour : ils sont gérés directement par l'accueil du club.";
 
 /** Image de fond */
-export const TARIFS_PAGE_BANNIERE_IMAGE = "/images/tarifs.png";
+export const TARIFS_PAGE_BANNIERE_IMAGE = "/images/cms-1934-095-1794846021813-0.jpg";
 
 // ─── L'Académie · Bannière ───
 
@@ -431,10 +431,10 @@ export const AVANTAGES_TITRE = "Bien plus qu'un accès au parcours";
 /** Avantages */
 export const AVANTAGES_LISTE = [
   "Accès illimité au parcours 18 trous",
-  "Compétitions et vie de l'association sportive",
+  "Accords de réciprocité dans plusieurs autres clubs ",
   "Tarifs membres sur les voiturettes et le practice",
   "Réservation prioritaire des départs",
-  "Accès au club-house et aux événements du club",
+  "Bénéficiez de notre cahier des partenaires et de leurs offres exclusives",
 ];
 
 /** Photo */

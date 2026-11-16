@@ -64,9 +64,9 @@ export const PROFITER_DESCRIPTION = "Joueur de passage, futur membre ou débutan
 
 /** Cartes */
 export const PROFITER_CARTES = [
-  { titre: "Jouer une partie", texte: "18 trous ou 9 trous, réservation en ligne en deux minutes. Voiturette sur demande.", prix: "Dès 45 €", lien: "Réserver un départ", image: "/images/hp-jouer.png" },
+  { titre: "Jouer une partie", texte: "18 trous ou 9 trous, réservation en ligne en deux minutes. Voiturette sur demande.", prix: "Dès 45 €", lien: "Réserver un départ", image: "/images/cms-1934-094-1794839082333-0.jpg" },
   { titre: "Rejoindre le club", texte: "Accès illimité au parcours, compétitions, practice et vie du club toute l'année.", prix: "Dès 540 € / an", lien: "Voir les abonnements", image: "/images/hp-join.png" },
-  { titre: "L'Académie", texte: "Cours individuels, stages enfants et adultes, préparation à la carte verte.", prix: "Cours & stages toute l'année", lien: "Découvrir l'Académie", image: "/images/hp-academie.png" },
+  { titre: "L'Académie", texte: "Cours individuels, stages enfants et adultes, préparation à la carte verte.", prix: "Cours & stages toute l'année", lien: "Découvrir l'Académie", image: "/images/cms-1934-093-1794839082334-1.jpg" },
 ];
 
 // ─── Accueil · Le parcours ───

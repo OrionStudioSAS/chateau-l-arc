@@ -1,7 +1,7 @@
 {
   "saisons": {
-    "hauteDebut": "04-16",
-    "hauteFin": "11-14"
+    "hauteDebut": "04-01",
+    "hauteFin": "11-15"
   },
   "remiseComptant": {
     "taux": 0.05,
@@ -11,7 +11,7 @@
     {
       "id": "gf-18",
       "libelle": "18 trous",
-      "detail": "Du 1er avril au 31 octobre",
+      "detail": "Du 1er avril au 15 novembre",
       "prix": 90,
       "saison": null,
       "miseEnAvant": true
@@ -19,7 +19,7 @@
     {
       "id": "b2d07ef7-3b1d-442a-b213-2753f090a73d",
       "libelle": "18 trous",
-      "detail": "Du 1er novembre au 31 mars",
+      "detail": "Du 16 novembre au 31 mars",
       "prix": 80,
       "saison": "basse",
       "miseEnAvant": false
@@ -27,7 +27,7 @@
     {
       "id": "1d9ba09d-6ebd-42b2-bc7e-083c9a9a16f2",
       "libelle": "18 trous fin de journée (4h avant le coucher du soleil)",
-      "detail": "Du 1er avril au 31 octobre",
+      "detail": "Du 1er avril au 15 novembre",
       "prix": 70,
       "saison": null,
       "miseEnAvant": false
@@ -35,7 +35,7 @@
     {
       "id": "c063977c-6c99-4e79-9385-a598ba90d2ea",
       "libelle": "18 trous fin de journée (4h avant le coucher du soleil)",
-      "detail": "Du 1er novembre au 31 mars",
+      "detail": "Du 16 novembre au 31 mars",
       "prix": 60,
       "saison": null,
       "miseEnAvant": false
@@ -43,7 +43,7 @@
     {
       "id": "7fa64494-5468-41cd-810e-a7e38c53efb9",
       "libelle": "18 trous moins de 26 ans ou étudiant",
-      "detail": "Du 1er avril au 31 octobre",
+      "detail": "Du 1er avril au 15 novembre",
       "prix": 40,
       "saison": null,
       "miseEnAvant": false
@@ -51,7 +51,7 @@
     {
       "id": "6c65e084-0eeb-4b72-bcee-54028eb38b72",
       "libelle": "18 trous moins de 26 ans ou étudiant",
-      "detail": "Du 1er novembre au 31 mars",
+      "detail": "Du 16 novembre au 31 mars",
       "prix": 35,
       "saison": null,
       "miseEnAvant": false
@@ -59,7 +59,7 @@
     {
       "id": "gf-9-haute",
       "libelle": "9 trous · haute saison",
-      "detail": "Du 1er avril au 31 octobre",
+      "detail": "Du 1er avril au 15 novembre",
       "prix": 55,
       "saison": "haute",
       "miseEnAvant": false
@@ -67,7 +67,7 @@
     {
       "id": "gf-9-basse",
       "libelle": "9 trous · basse saison",
-      "detail": "Du 1er novembre au 31 mars",
+      "detail": "Du 16 novembre au 31 mars",
       "prix": 45,
       "saison": "basse",
       "miseEnAvant": false
@@ -95,7 +95,7 @@
       "libelle": "Voiturette 18 trous",
       "detail": null,
       "prix": 42,
-      "membres": 28,
+      "membres": 30,
       "groupe": "location"
     },
     {
@@ -103,7 +103,7 @@
       "libelle": "Voiturette 9 trous",
       "detail": null,
       "prix": 36,
-      "membres": 25,
+      "membres": 27,
       "groupe": "location"
     },
     {

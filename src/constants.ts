@@ -209,7 +209,7 @@ export const ACADEMIE_BANNIERE_TITRE = "L’Académie";
 export const ACADEMIE_BANNIERE_TEXTE = "Débutant ou confirmé, dès 4 ans : apprenez et progressez avec nos enseignants diplômés d'État, face à la Sainte-Victoire.";
 
 /** Image de fond */
-export const ACADEMIE_BANNIERE_IMAGE = "/images/academie.png";
+export const ACADEMIE_BANNIERE_IMAGE = "/images/cms-1934-091-1794846259804-0.jpg";
 
 // ─── Le parcours · Chiffres clés ───
 

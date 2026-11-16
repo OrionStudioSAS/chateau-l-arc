@@ -681,7 +681,7 @@ export const FAQ_ABONNEMENTS_TITRE = "Abonnements & vie de club";
 export const FAQ_ABONNEMENTS_QUESTIONS = [
   {
     question: "Quelles formules d'abonnement proposez-vous ?",
-    reponse: "Individuel 2 280 €, Couple 3 732 €, Famille (2 adultes) 3 732 €, Individuel −35 ans 1 560 €, Couple −35 ans 2 748 €, −25 ans & étudiants 984 €, −15 ans 540 €, Individuel +80 ans 2 052 €, Couple +80 ans 3 300 €, par an.",
+    reponse: "Individuel 2 400 €, Duo  3 924 €, Individuel −40 ans 1 644 €, Couple −40 ans 2 880 €, −25 ans & étudiants 1032 €, −15 ans 564 €, Individuel +80 ans 2 160 €, Couple +80 ans 3 468 €, par an.",
     lien: "/tarifs",
     texteLien: "Voir les abonnements",
   },

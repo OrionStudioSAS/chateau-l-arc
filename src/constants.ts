@@ -659,7 +659,8 @@ export const FAQ_TARIFS_QUESTIONS = [
   },
   {
     question: "Quels moyens de paiement acceptez-vous ?",
-    reponse: "L'accueil vous renseigne sur les moyens de paiement acceptés sur place.",
+    reponse: "Vous pouvez régler vos achats par carte ou espèces. Les cartes Amex ne sont pas acceptées.
+",
     lien: "",
     texteLien: "",
   },

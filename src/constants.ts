@@ -119,10 +119,10 @@ export const ART_DE_VIVRE_DESCRIPTION = "Restaurant, Académie, proshop et salon
 
 /** Cartes */
 export const ART_DE_VIVRE_CARTES = [
-  { label: "La table du golf", titre: "Déjeuner face au parcours", image: "/images/hp-dejeuner.png" },
-  { label: "Practice & Académie", titre: "Travailler le swing et le reste", image: "/images/hp-swing.png" },
-  { label: "Grandir au cœur du domaine", titre: "SVIS - École internationale", image: "/images/hp-svis.png" },
-  { label: "Proshop", titre: "S'équiper au club", image: "/images/cms-1934-094-1794837787007-1.jpg" },
+  { label: "Le Solaia ", titre: "Bistrot ensoleillé au cœur du golf", image: "/images/hp-dejeuner.png" },
+  { label: "Practice & Académie", titre: "Travailler le swing et le reste", image: "/images/cms-1934-091-1794838444985-1.jpg" },
+  { label: "Grandir au cœur du domaine", titre: "SVIS - École internationale", image: "/images/cms-2917-0146-1794838444985-2.jpg" },
+  { label: "Proshop", titre: "S'équiper au club", image: "/images/cms-1934-094-1794838444984-0.jpg" },
   { label: "Compétitions & association", titre: "Se retrouver entre amis", image: "/images/hp-amis.png" },
 ];
 

@@ -11,15 +11,55 @@
     {
       "id": "gf-18",
       "libelle": "18 trous",
-      "detail": "Toute l'année, réservation en ligne.",
-      "prix": 85,
+      "detail": "Du 1er avril au 31 octobre",
+      "prix": 90,
       "saison": null,
       "miseEnAvant": true
     },
     {
+      "id": "b2d07ef7-3b1d-442a-b213-2753f090a73d",
+      "libelle": "18 trous",
+      "detail": "Du 1er novembre au 31 mars",
+      "prix": 80,
+      "saison": "basse",
+      "miseEnAvant": false
+    },
+    {
+      "id": "1d9ba09d-6ebd-42b2-bc7e-083c9a9a16f2",
+      "libelle": "18 trous fin de journée (4h avant le coucher du soleil)",
+      "detail": "Du 1er avril au 31 octobre",
+      "prix": 70,
+      "saison": null,
+      "miseEnAvant": false
+    },
+    {
+      "id": "c063977c-6c99-4e79-9385-a598ba90d2ea",
+      "libelle": "18 trous fin de journée (4h avant le coucher du soleil)",
+      "detail": "Du 1er novembre au 31 mars",
+      "prix": 60,
+      "saison": null,
+      "miseEnAvant": false
+    },
+    {
+      "id": "7fa64494-5468-41cd-810e-a7e38c53efb9",
+      "libelle": "18 trous moins de 26 ans ou étudiant",
+      "detail": "Du 1er avril au 31 octobre",
+      "prix": 40,
+      "saison": null,
+      "miseEnAvant": false
+    },
+    {
+      "id": "6c65e084-0eeb-4b72-bcee-54028eb38b72",
+      "libelle": "18 trous moins de 26 ans ou étudiant",
+      "detail": "Du 1er novembre au 31 mars",
+      "prix": 35,
+      "saison": null,
+      "miseEnAvant": false
+    },
+    {
       "id": "gf-9-haute",
       "libelle": "9 trous · haute saison",
-      "detail": null,
+      "detail": "Du 1er avril au 31 octobre",
       "prix": 55,
       "saison": "haute",
       "miseEnAvant": false
@@ -27,7 +67,7 @@
     {
       "id": "gf-9-basse",
       "libelle": "9 trous · basse saison",
-      "detail": null,
+      "detail": "Du 1er novembre au 31 mars",
       "prix": 45,
       "saison": "basse",
       "miseEnAvant": false
@@ -35,23 +75,16 @@
   ],
   "carnets": [
     {
-      "id": "carnet-6-18",
-      "libelle": "6 parcours 18 trous",
-      "detail": "5 achetés + 1 offert",
-      "prix": 350,
-      "parties": 6
-    },
-    {
       "id": "carnet-12-18",
-      "libelle": "12 parcours 18 trous",
-      "detail": "10 achetés + 2 offerts",
+      "libelle": "10 parcours 18 trous",
+      "detail": "Valable toute l'année à utiliser dans les 12 mois de l'achat",
       "prix": 700,
       "parties": 12
     },
     {
       "id": "carnet-12-9",
-      "libelle": "12 parcours 9 trous",
-      "detail": "10 achetés + 2 offerts",
+      "libelle": "10parcours 9 trous",
+      "detail": "Valable toute l'année à utiliser dans les 12 mois de l'achat",
       "prix": 450,
       "parties": 12
     }
@@ -61,7 +94,7 @@
       "id": "voiturette-18",
       "libelle": "Voiturette 18 trous",
       "detail": null,
-      "prix": 40,
+      "prix": 42,
       "membres": 28,
       "groupe": "location"
     },
@@ -69,7 +102,7 @@
       "id": "voiturette-9",
       "libelle": "Voiturette 9 trous",
       "detail": null,
-      "prix": 33,
+      "prix": 36,
       "membres": 25,
       "groupe": "location"
     },
@@ -77,7 +110,7 @@
       "id": "chariot",
       "libelle": "Chariot manuel",
       "detail": null,
-      "prix": 5,
+      "prix": 8,
       "membres": null,
       "groupe": "location"
     },
@@ -125,65 +158,58 @@
   "abonnements": [
     {
       "id": "abo-individuel",
-      "libelle": "Individuel",
+      "libelle": "Individuel 7/7",
       "detail": null,
-      "prix": 2280,
+      "prix": 2400,
       "miseEnAvant": true
     },
     {
       "id": "abo-couple",
-      "libelle": "Couple",
+      "libelle": "Duo 7/7",
       "detail": null,
-      "prix": 3732,
-      "miseEnAvant": false
-    },
-    {
-      "id": "abo-famille",
-      "libelle": "Famille (2 adultes)",
-      "detail": null,
-      "prix": 3732,
+      "prix": 3924,
       "miseEnAvant": false
     },
     {
       "id": "abo-35",
-      "libelle": "Individuel −35 ans",
+      "libelle": "Actif  −40 ans",
       "detail": null,
-      "prix": 1560,
+      "prix": 1644,
       "miseEnAvant": false
     },
     {
       "id": "abo-couple-35",
-      "libelle": "Couple −35 ans",
+      "libelle": "Duo actif -40  ans",
       "detail": null,
-      "prix": 2748,
+      "prix": 2880,
       "miseEnAvant": false
     },
     {
       "id": "abo-25",
       "libelle": "−25 ans & étudiants",
       "detail": null,
-      "prix": 984,
+      "prix": 1032,
       "miseEnAvant": false
     },
     {
       "id": "abo-15",
       "libelle": "−15 ans",
       "detail": null,
-      "prix": 540,
+      "prix": 564,
       "miseEnAvant": false
     },
     {
       "id": "abo-80",
       "libelle": "Individuel +80 ans",
       "detail": null,
-      "prix": 2052,
+      "prix": 2160,
       "miseEnAvant": false
     },
     {
       "id": "abo-couple-80",
-      "libelle": "Couple +80 ans",
+      "libelle": "Duo +80 ans",
       "detail": null,
-      "prix": 3300,
+      "prix": 3468,
       "miseEnAvant": false
     }
   ]

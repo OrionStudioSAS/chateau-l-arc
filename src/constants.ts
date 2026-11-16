@@ -249,10 +249,10 @@ export const PARCOURS_PRESENTATION_PARAGRAPHES = [
 
 /** Photos */
 export const PARCOURS_PRESENTATION_PHOTOS = [
-  "/images/parcours-galerie-1.png",
+  "/images/cms-14-3-1794838611831-0.jpg",
   "/images/parcours-galerie-2.png",
   "/images/parcours-galerie-3.png",
-  "/images/hp-jouer.png",
+  "/images/cms-1934-094-1794838611836-1.jpg",
   "/images/parcours-galerie-5.png",
 ];
 

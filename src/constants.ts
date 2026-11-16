@@ -475,7 +475,7 @@ export const ACADEMIE_JUNIORS_SURTITRE = "École de golf juniors";
 export const ACADEMIE_JUNIORS_TITRE = "Le golf dès 4 ans";
 
 /** Photo */
-export const ACADEMIE_JUNIORS_IMAGE = "/images/hp-bas-droite.png";
+export const ACADEMIE_JUNIORS_IMAGE = "/images/cms-dsc01128-1794846384310-0.jpg";
 
 // ─── L'Académie · Formules Prestige ───
 
@@ -489,7 +489,7 @@ export const ACADEMIE_PRESTIGE_TITRE = "Les formules Prestige";
 export const ACADEMIE_PRESTIGE_TEXTE = "Des cours collectifs en petit comité pour progresser vite et durablement, encadrés par nos enseignants diplômés d'État.";
 
 /** Photo */
-export const ACADEMIE_PRESTIGE_IMAGE = "/images/academie-prestige.png";
+export const ACADEMIE_PRESTIGE_IMAGE = "/images/cms-1934-064-1794846384314-1.jpg";
 
 // ─── L'Académie · Stages & initiations ───
 
@@ -503,7 +503,7 @@ export const ACADEMIE_STAGES_TITRE = "De 2 à 30 personnes";
 export const ACADEMIE_STAGES_TEXTE = "Toute l'année, entre amis, en famille ou entre collègues : réservez en ligne ou par téléphone.";
 
 /** Photo */
-export const ACADEMIE_STAGES_IMAGE = "/images/hp-academie.png";
+export const ACADEMIE_STAGES_IMAGE = "/images/cms-18-5-1794846384315-2.jpg";
 
 // ─── L'Académie · Enseignants ───
 

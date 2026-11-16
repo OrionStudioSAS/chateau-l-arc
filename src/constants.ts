@@ -462,7 +462,7 @@ export const ACADEMIE_INTRO_TEXTE = "Cours en petits groupes, stages pendant les
 /** Cartes (juniors, adultes, groupes) */
 export const ACADEMIE_INTRO_CARTES = [
   { label: "Juniors", titre: "Le golf dès 4 ans", texte: "Éveil par le jeu puis technique et premières compétitions, le mercredi et le samedi.", lien: "École juniors" },
-  { label: "Adultes", titre: "Les formules Prestige", texte: "Cours collectifs de 6 personnes maximum, une heure par jour, quatre jours par semaine.", lien: "Formules adultes" },
+  { label: "Adultes", titre: "Les formules", texte: "Cours collectifs de 6 personnes maximum, une heure par jour, quatre jours par semaine.", lien: "Formules adultes" },
   { label: "Groupes", titre: "Stages & initiations", texte: "De 2 à 30 personnes, toute l'année : découverte, ateliers thématiques, stages tous niveaux.", lien: "Stages & initiations" },
 ];
 

@@ -60,7 +60,19 @@
     "origine": "contenu/tarifs.json"
    },
    {
-    "texte": "Toute l'année, réservation en ligne.",
+    "texte": "Du 1er avril au 15 novembre",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "Du 16 novembre au 31 mars",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "18 trous fin de journée (4h avant le coucher du soleil)",
+    "origine": "contenu/tarifs.json"
+   },
+   {
+    "texte": "18 trous moins de 26 ans ou étudiant",
     "origine": "contenu/tarifs.json"
    },
    {
@@ -72,23 +84,15 @@
     "origine": "contenu/tarifs.json"
    },
    {
-    "texte": "6 parcours 18 trous",
+    "texte": "10 parcours 18 trous",
     "origine": "contenu/tarifs.json"
    },
    {
-    "texte": "5 achetés + 1 offert",
+    "texte": "Valable toute l'année à utiliser dans les 12 mois de l'achat",
     "origine": "contenu/tarifs.json"
    },
    {
-    "texte": "12 parcours 18 trous",
-    "origine": "contenu/tarifs.json"
-   },
-   {
-    "texte": "10 achetés + 2 offerts",
-    "origine": "contenu/tarifs.json"
-   },
-   {
-    "texte": "12 parcours 9 trous",
+    "texte": "10parcours 9 trous",
     "origine": "contenu/tarifs.json"
    },
    {
@@ -124,23 +128,19 @@
     "origine": "contenu/tarifs.json"
    },
    {
-    "texte": "Individuel",
+    "texte": "Individuel 7/7",
     "origine": "contenu/tarifs.json"
    },
    {
-    "texte": "Couple",
+    "texte": "Duo 7/7",
     "origine": "contenu/tarifs.json"
    },
    {
-    "texte": "Famille (2 adultes)",
+    "texte": "Actif  −40 ans",
     "origine": "contenu/tarifs.json"
    },
    {
-    "texte": "Individuel −35 ans",
-    "origine": "contenu/tarifs.json"
-   },
-   {
-    "texte": "Couple −35 ans",
+    "texte": "Duo actif -40  ans",
     "origine": "contenu/tarifs.json"
    },
    {
@@ -156,7 +156,7 @@
     "origine": "contenu/tarifs.json"
    },
    {
-    "texte": "Couple +80 ans",
+    "texte": "Duo +80 ans",
     "origine": "contenu/tarifs.json"
    },
    {

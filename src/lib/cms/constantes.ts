@@ -16,8 +16,80 @@ export type ChampCms =
 
 export type SectionCms = { nom: string; champs: ChampCms[] };
 
-const decoder = (s: string) => s.replace(/\\"/g, '"').replace(/\\\\/g, "\\");
-const echapper = (s: string) => s.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+/** Contenu d'une chaîne "…" du fichier → texte (\" \\ \n \t…). */
+const decoder = (s: string) =>
+  s.replace(/\\([\s\S])/g, (_, c: string) => (c === "n" ? "\n" : c === "t" ? "\t" : c === "r" ? "" : c));
+
+/**
+ * Texte → contenu d'une chaîne "…". Un retour à la ligne doit être échappé :
+ * écrit tel quel, il casse la compilation du site (cf. verifierConstantes).
+ */
+const echapper = (s: string) =>
+  s.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\r?\n/g, "\\n").replace(/\t/g, "\\t");
+
+/** Contenu d'un gabarit `…` (texte sur plusieurs lignes) → texte. */
+const decoderGabarit = (s: string) => s.replace(/\\([\\`$])/g, "$1");
+
+/** Texte → contenu d'un gabarit `…` : ni accent grave, ni « ${ » interprété. */
+const echapperGabarit = (s: string) => s.replace(/\\/g, "\\\\").replace(/`/g, "'").replace(/\$\{/g, "\\${");
+
+/**
+ * Saute un texte (« "…" », « '…' », « `…` ») ou un commentaire commençant en
+ * `i` : renvoie l'index de son dernier caractère, ou `i` s'il n'y en a pas.
+ * Les crochets et accolades écrits dans les textes ne comptent donc jamais.
+ */
+function sauter(s: string, i: number): number {
+  const c = s[i];
+  if (c === "/" && s[i + 1] === "/") {
+    const fin = s.indexOf("\n", i);
+    return fin === -1 ? s.length : fin;
+  }
+  if (c === "/" && s[i + 1] === "*") {
+    const fin = s.indexOf("*/", i + 2);
+    return fin === -1 ? s.length : fin + 1;
+  }
+  if (c !== '"' && c !== "'" && c !== "`") return i;
+  for (let j = i + 1; j < s.length; j++) {
+    if (s[j] === "\\") j++;
+    else if (s[j] === c) return j;
+  }
+  return s.length;
+}
+
+/** Index du crochet ou de l'accolade qui ferme celui ouvert en `i`, ou -1. */
+function fermeture(s: string, i: number): number {
+  let profondeur = 0;
+  for (let j = i; j < s.length; j++) {
+    const saut = sauter(s, j);
+    if (saut !== j) {
+      j = saut;
+      continue;
+    }
+    if (s[j] === "[" || s[j] === "{") profondeur++;
+    else if (s[j] === "]" || s[j] === "}") {
+      profondeur--;
+      if (profondeur === 0) return j;
+    }
+  }
+  return -1;
+}
+
+/** Bornes [« { », « } »] des objets de premier niveau d'un contenu de tableau. */
+function objetsDe(tableau: string): [number, number][] {
+  const objets: [number, number][] = [];
+  for (let j = 0; j < tableau.length; j++) {
+    const saut = sauter(tableau, j);
+    if (saut !== j) {
+      j = saut;
+    } else if (tableau[j] === "{") {
+      const fin = fermeture(tableau, j);
+      if (fin === -1) break;
+      objets.push([j, fin]);
+      j = fin;
+    }
+  }
+  return objets;
+}
 
 function humaniser(nom: string): string {
   const mots = nom.toLowerCase().split("_");
@@ -29,6 +101,9 @@ export function analyser(contenu: string): SectionCms[] {
   const sections: SectionCms[] = [];
   let courante: SectionCms | null = null;
   const lignes = contenu.split("\n");
+  // Position de chaque début de ligne dans le fichier (lecture des tableaux).
+  const debutsLignes: number[] = [];
+  lignes.reduce((position, l) => (debutsLignes.push(position), position + l.length + 1), 0);
   let libelle: string | null = null;
 
   for (let i = 0; i < lignes.length; i++) {
@@ -75,31 +150,25 @@ export function analyser(contenu: string): SectionCms[] {
           valeur += `${lignes[j]}\n`;
         }
       }
-      courante.champs.push({ nom, libelle: titre, type: "texte", valeur });
+      courante.champs.push({ nom, libelle: titre, type: "texte", valeur: decoderGabarit(valeur) });
       continue;
     }
 
-    if (/=\s*\[/.test(ligne)) {
-      let texte = "";
-      let profondeur = 0;
-      for (let j = i; j < lignes.length; j++) {
-        texte += `${lignes[j]}\n`;
-        for (const c of lignes[j]) {
-          if (c === "[") profondeur++;
-          if (c === "]") profondeur--;
-        }
-        if (profondeur === 0) {
-          i = j;
-          break;
-        }
-      }
+    const tableau = ligne.match(/=\s*\[/);
+    if (tableau?.index !== undefined) {
+      const ouverture = debutsLignes[i] + tableau.index + tableau[0].length - 1;
+      const fin = fermeture(contenu, ouverture);
+      if (fin === -1) continue;
+      const texte = contenu.slice(ouverture + 1, fin);
+      i = contenu.slice(0, fin).split("\n").length - 1;
 
-      if (texte.includes("{")) {
+      const objets = objetsDe(texte);
+      if (objets.length) {
         const valeur: Record<string, string>[] = [];
         const cles = new Set<string>();
-        for (const objet of texte.matchAll(/\{([^{}]*)\}/g)) {
+        for (const [debutObjet, finObjet] of objets) {
           const element: Record<string, string> = {};
-          for (const [, cle, v] of objet[1].matchAll(/(\w+)\s*:\s*"((?:[^"\\]|\\.)*)"/g)) {
+          for (const [, cle, v] of texte.slice(debutObjet + 1, finObjet).matchAll(/(\w+)\s*:\s*"((?:[^"\\]|\\.)*)"/g)) {
             element[cle] = decoder(v);
             cles.add(cle);
           }
@@ -131,7 +200,7 @@ export type MiseAJourCms =
     };
 
 function remplacerTexte(contenu: string, nom: string, valeur: string): string {
-  const litteral = valeur.includes("\n") ? `\`${valeur.replace(/`/g, "'")}\`` : `"${echapper(valeur)}"`;
+  const litteral = valeur.includes("\n") ? `\`${echapperGabarit(valeur)}\`` : `"${echapper(valeur)}"`;
   const guillemets = new RegExp(`(export const ${nom}[^=]*=\\s*)"(?:[^"\\\\]|\\\\.)*"`);
   if (guillemets.test(contenu)) return contenu.replace(guillemets, (_, debut) => debut + litteral);
   const gabarit = new RegExp(`(export const ${nom}[^=]*=\\s*)\`[\\s\\S]*?\``);
@@ -142,15 +211,9 @@ function remplacerTexte(contenu: string, nom: string, valeur: string): string {
 function bornesTableau(contenu: string, nom: string): [number, number] | null {
   const debut = contenu.match(new RegExp(`export const ${nom}[^=]*=\\s*\\[`));
   if (!debut || debut.index === undefined) return null;
-  const ouverture = debut.index + debut[0].length;
-  let profondeur = 1;
-  let fin = ouverture;
-  while (profondeur > 0 && fin < contenu.length) {
-    if (contenu[fin] === "[") profondeur++;
-    if (contenu[fin] === "]") profondeur--;
-    if (profondeur > 0) fin++;
-  }
-  return [ouverture, fin];
+  const crochet = debut.index + debut[0].length - 1;
+  const fin = fermeture(contenu, crochet);
+  return fin === -1 ? null : [crochet + 1, fin];
 }
 
 function remplacerListe(contenu: string, nom: string, valeur: string[]): string {
@@ -169,19 +232,18 @@ function remplacerObjets(contenu: string, nom: string, valeur: Record<string, st
   if (!bornes) return contenu;
   let tableau = contenu.slice(bornes[0], bornes[1]);
 
-  if ((tableau.match(/\{[^{}]*\}/g) ?? []).length !== valeur.length) {
+  const objets = objetsDe(tableau);
+  if (objets.length !== valeur.length) {
     const lignes = valeur.map(
       (element) => `  { ${Object.entries(element).map(([cle, v]) => `${cle}: "${echapper(v)}"`).join(", ")} },`,
     );
     return contenu.slice(0, bornes[0]) + `\n${lignes.join("\n")}\n` + contenu.slice(bornes[1]);
   }
 
-  let curseur = 0;
-
-  for (const element of valeur) {
-    const debut = tableau.indexOf("{", curseur);
-    if (debut === -1) break;
-    const fin = tableau.indexOf("}", debut);
+  // Du dernier objet au premier : les positions des précédents restent valables.
+  for (let n = objets.length - 1; n >= 0; n--) {
+    const element = valeur[n];
+    const [debut, fin] = objets[n];
     let objet = tableau.slice(debut, fin + 1);
     for (const [cle, v] of Object.entries(element)) {
       objet = objet.replace(
@@ -190,18 +252,60 @@ function remplacerObjets(contenu: string, nom: string, valeur: Record<string, st
       );
     }
     tableau = tableau.slice(0, debut) + objet + tableau.slice(fin + 1);
-    curseur = debut + objet.length;
   }
   return contenu.slice(0, bornes[0]) + tableau + contenu.slice(bornes[1]);
 }
 
+/** Espaces et retours à la ligne en trop au début et à la fin d'un texte saisi. */
+const net = (valeur: string) => String(valeur ?? "").replace(/\r\n?/g, "\n").trim();
+
 export function appliquer(contenu: string, mises: MiseAJourCms[]): string {
   return mises.reduce((texte, m) => {
     if (!/^\w+$/.test(m.nom)) return texte;
-    if (m.type === "texte") return remplacerTexte(texte, m.nom, m.valeur);
-    if (m.type === "liste") return remplacerListe(texte, m.nom, m.valeur);
-    return remplacerObjets(texte, m.nom, m.valeur);
+    if (m.type === "texte") return remplacerTexte(texte, m.nom, net(m.valeur));
+    if (m.type === "liste") return remplacerListe(texte, m.nom, m.valeur.map(net));
+    return remplacerObjets(
+      texte,
+      m.nom,
+      m.valeur.map((objet) => Object.fromEntries(Object.entries(objet).map(([cle, v]) => [cle, net(v)]))),
+    );
   }, contenu);
+}
+
+/**
+ * Garde-fou avant publication : le fichier produit doit rester du code
+ * valide (chaînes et gabarits fermés, sans retour à la ligne brut dans une
+ * chaîne, crochets et accolades équilibrés). Renvoie l'erreur, ou null.
+ * Sans lui, un texte mal formé bloquerait toute mise en ligne du site.
+ */
+export function verifierConstantes(contenu: string): string | null {
+  const pile: string[] = [];
+  const paires: Record<string, string> = { ")": "(", "]": "[", "}": "{" };
+  const ligne = (i: number) => contenu.slice(0, i).split("\n").length;
+  for (let i = 0; i < contenu.length; i++) {
+    const c = contenu[i];
+    if (c === "/" && contenu[i + 1] === "/") {
+      const fin = contenu.indexOf("\n", i);
+      i = fin === -1 ? contenu.length : fin;
+    } else if (c === "/" && contenu[i + 1] === "*") {
+      const fin = contenu.indexOf("*/", i + 2);
+      if (fin === -1) return `commentaire non fermé (ligne ${ligne(i)})`;
+      i = fin + 1;
+    } else if (c === '"' || c === "'" || c === "`") {
+      const debut = i;
+      for (i++; i < contenu.length && contenu[i] !== c; i++) {
+        if (contenu[i] === "\\") i++;
+        else if (c !== "`" && contenu[i] === "\n") return `retour à la ligne dans un texte (ligne ${ligne(i)})`;
+        else if (c === "`" && contenu[i] === "$" && contenu[i + 1] === "{") return `« \${ » dans un texte (ligne ${ligne(i)})`;
+      }
+      if (i >= contenu.length) return `texte non fermé (ligne ${ligne(debut)})`;
+    } else if (c === "(" || c === "[" || c === "{") {
+      pile.push(c);
+    } else if (c in paires) {
+      if (pile.pop() !== paires[c]) return `crochet ou accolade en trop (ligne ${ligne(i)})`;
+    }
+  }
+  return pile.length ? "crochet ou accolade non fermé" : null;
 }
 
 /** Valeur ressemblant à une image du site (champ affiché avec un sélecteur d'image). */

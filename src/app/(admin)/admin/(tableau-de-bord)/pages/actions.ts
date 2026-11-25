@@ -2,7 +2,7 @@
 
 import { listesExtensibles } from "@/config/pages-cms";
 import { exigerUtilisateur } from "@/lib/admin/session";
-import { analyser, appliquer, CHEMIN_CONSTANTES, type MiseAJourCms } from "@/lib/cms/constantes";
+import { analyser, appliquer, CHEMIN_CONSTANTES, verifierConstantes, type MiseAJourCms } from "@/lib/cms/constantes";
 import { commiter, type Changement } from "@/lib/contenu/depot";
 import { slugifier } from "@/lib/admin/formulaire-competition";
 import { versJson } from "@/lib/contenu/stockage";
@@ -67,6 +67,7 @@ export async function publierPage(
   });
 
   let inconnu = null as string | null;
+  let invalide = null as string | null;
   try {
     const resultat = await commiter(`Back-office : textes de la page ${titrePage}`, async (lire) => {
       const contenu = await lire(CHEMIN_CONSTANTES);
@@ -102,7 +103,14 @@ export async function publierPage(
         return { nom: m.nom, type: "objets", valeur };
       });
 
-      const changements: Changement[] = [{ chemin: CHEMIN_CONSTANTES, contenu: appliquer(contenu, finales) }];
+      // Garde-fou : jamais de constants.ts invalide (le site ne se construirait plus).
+      const nouveau = appliquer(contenu, finales);
+      invalide = verifierConstantes(nouveau);
+      if (invalide) {
+        console.error("Publication refusée : constants.ts invalide", invalide);
+        return null;
+      }
+      const changements: Changement[] = [{ chemin: CHEMIN_CONSTANTES, contenu: nouveau }];
       for (const image of images.values()) changements.push(image);
 
       if (deplacements.length) {
@@ -125,6 +133,9 @@ export async function publierPage(
       return changements;
     });
     if (inconnu) return { ok: false, message: `Champ inconnu : ${inconnu}. Rechargez la page.` };
+    if (invalide) {
+      return { ok: false, message: `Publication bloquée pour protéger le site (${invalide}). Rien n'a été publié : contactez Orion.` };
+    }
     if (!resultat) return { ok: true, message: "Rien n'a changé : la page est déjà à jour." };
   } catch (erreur) {
     console.error("Publication de la page impossible", erreur);
